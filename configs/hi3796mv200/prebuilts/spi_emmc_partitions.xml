@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<Partition_Info>
+<Part Sel="1" PartitionName="fastboot" FlashType="spi" FileSystem="none" Start="0" Length="1M" SelectFile="fastboot.bin"/>
+<Part Sel="1" PartitionName="bootargs" FlashType="spi" FileSystem="none" Start="1M" Length="1M" SelectFile="bootargs.bin"/>
+<Part Sel="1" PartitionName="baseparam" FlashType="emmc" FileSystem="none" Start="0" Length="4M" SelectFile="baseparam.img"/>
+<Part Sel="1" PartitionName="pqparam" FlashType="emmc" FileSystem="none" Start="4M" Length="4M" SelectFile="pq_param.bin"/>
+<Part Sel="1" PartitionName="logo" FlashType="emmc" FileSystem="none" Start="8M" Length="4M" SelectFile="logo.img"/>
+<Part Sel="1" PartitionName="deviceinfo" FlashType="emmc" FileSystem="none" Start="12M" Length="4M" SelectFile=""/>
+<Part Sel="1" PartitionName="softwareinfo" FlashType="emmc" FileSystem="none" Start="16M" Length="4M" SelectFile=""/>
+<Part Sel="1" PartitionName="loaderdb" FlashType="emmc" FileSystem="none" Start="20M" Length="4M" SelectFile=""/>
+<Part Sel="1" PartitionName="loader" FlashType="emmc" FileSystem="none" Start="24M" Length="32M" SelectFile=""/>
+<Part Sel="1" PartitionName="trustedcore" FlashType="emmc" FileSystem="none" Start="56M" Length="16M" SelectFile="trustedcore.img"/>
+<Part Sel="1" PartitionName="kernel" FlashType="emmc" FileSystem="none" Start="72M" Length="32M" SelectFile="hi_kernel.bin"/>
+<Part Sel="1" PartitionName="rootfs" FlashType="emmc" FileSystem="ext3/4" Start="104M" Length="256M" SelectFile="rootfs_256M.ext4"/>
+</Partition_Info>

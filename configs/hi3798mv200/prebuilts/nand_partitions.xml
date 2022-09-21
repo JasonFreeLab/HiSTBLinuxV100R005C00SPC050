@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<Partition_Info>
+<Part Sel="1" PartitionName="fastboot" FlashType="nand" FileSystem="none" Start="0" Length="1M" SelectFile="fastboot.bin"/>
+<Part Sel="1" PartitionName="bootargs" FlashType="nand" FileSystem="none" Start="1M" Length="1M" SelectFile="bootargs.bin"/>
+<Part Sel="1" PartitionName="baseparam" FlashType="nand" FileSystem="none" Start="2M" Length="1M" SelectFile="baseparam.img"/>
+<Part Sel="1" PartitionName="pqparam" FlashType="nand" FileSystem="none" Start="3M" Length="1M" SelectFile="pq_param.bin"/>
+<Part Sel="1" PartitionName="logo" FlashType="nand" FileSystem="none" Start="4M" Length="1M" SelectFile="logo.img"/>
+<Part Sel="0" PartitionName="deviceinfo" FlashType="nand" FileSystem="none" Start="5M" Length="1M" SelectFile=""/>
+<Part Sel="0" PartitionName="softwareinfo" FlashType="nand" FileSystem="none" Start="6M" Length="1M" SelectFile=""/>
+<Part Sel="0" PartitionName="loaderdb" FlashType="nand" FileSystem="none" Start="7M" Length="1M" SelectFile=""/>
+<Part Sel="0" PartitionName="loader" FlashType="nand" FileSystem="none" Start="8M" Length="8M" SelectFile="apploader.bin"/>
+<Part Sel="1" PartitionName="trustedcore" FlashType="nand" FileSystem="none" Start="16M" Length="8M" SelectFile="trustedcore.img"/>
+<Part Sel="1" PartitionName="kernel" FlashType="nand" FileSystem="none" Start="24M" Length="8M" SelectFile="hi_kernel.bin"/>
+<Part Sel="1" PartitionName="rootfs" FlashType="nand" FileSystem="yaffs" Start="32M" Length="64M" SelectFile="rootfs_2k4b.yaffs"/>
+</Partition_Info>
