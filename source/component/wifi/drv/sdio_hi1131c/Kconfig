@@ -1,0 +1,31 @@
+#
+#Generic huawei hisi misc drivers configuration
+#
+menuconfig CONNECTIVITY_HI110X
+	bool "Hisilicon Wireless Connectivity Support"
+	default y
+	---help---
+		If you want to use Hisilicon  Wireless Connectivity, you should set this,
+		and choose one product
+ 
+if CONNECTIVITY_HI110X
+config HI110X_DRIVER_PATH
+	string "The Kernel Driver Path"
+	default "drivers/wifi/sdio_hi1131c/drivers"
+
+config HI1131_HI3798MV2X
+  bool "Hisilicon 1131 adapt hi3798mv2x"
+  default y
+  
+config HAS_WAKELOCK
+  bool "Hisilicon 1131 wakelock"
+  default y	  
+ 
+config DEV_CLK_40M
+  bool "provide 40M clk to 1131c chip"
+  default n
+
+source "drivers/wifi/sdio_hi1131c/drivers/Kconfig"
+source "drivers/wifi/sdio_hi1131c/drivers/platform/Kconfig"
+source "drivers/wifi/sdio_hi1131c/drivers/wifi/Kconfig"
+endif

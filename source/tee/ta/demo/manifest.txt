@@ -1,0 +1,7 @@
+gpd.ta.appID: 8f194022-c9a2-11e6-9d9d-cec0c932ce01
+gpd.ta.service_name: task_hisi_demo
+gpd.ta.singleInstance: true
+gpd.ta.multiSession: false
+gpd.ta.instanceKeepAlive: false
+gpd.ta.dataSize: 65536
+gpd.ta.stackSize: 16384

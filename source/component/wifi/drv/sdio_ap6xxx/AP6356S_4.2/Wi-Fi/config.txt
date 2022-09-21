@@ -1,0 +1,6 @@
+use_rxchain=0
+tcpack_sup_mode=1
+tx_in_rx=0
+dhd_rxbound=64
+ampdu_ba_wsize=64
+bus:txglom=1

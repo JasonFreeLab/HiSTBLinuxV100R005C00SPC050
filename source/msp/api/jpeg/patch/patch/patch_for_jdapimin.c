@@ -1,0 +1,46 @@
+/******************************************************************************
+*
+* Copyright (C) 2017 Hisilicon Technologies Co., Ltd.  All rights reserved.
+*
+* This program is confidential and proprietary to Hisilicon  Technologies Co., Ltd. (Hisilicon),
+* and may not be copied, reproduced, modified, disclosed to others, published or used, in
+* whole or in part, without the express prior written permission of Hisilicon.
+*
+******************************************************************************
+File Name        : patch_for_jdapimin.c
+Version           : Initial Draft
+Author            :
+Created          : 2017/03/16
+Description     : sdk
+Function List   :
+
+History           :
+Date                          Author                    Modification
+2017/03/16           sdk              Created file
+******************************************************************************/
+
+
+/****************************  add include here     *********************************/
+//HISILICON add begin
+//ADP_HARD_DECODE:
+#include "hi_type.h"
+//HISILICON add end
+
+
+/***************************** Macro Definition     ********************************/
+
+/***************************** Structure Definition *******************************/
+
+
+/********************** Global Variable declaration ********************************/
+
+
+/********************** API forward declarations    ********************************/
+extern HI_VOID JPEG_HDEC_Init(j_common_ptr cinfo);
+extern HI_VOID JPEG_SDEC_GetInputBufferOffset(j_decompress_ptr cinfo);
+/**********************       API realization       ***********************************/
+//HISILICON add begin
+//ADP_HARD_DEC: initial hard decode resource and get input buffer offset
+#define adp_for_init_hdec_resource          JPEG_HDEC_Init((j_common_ptr)cinfo);
+#define adp_for_get_inputbuffer_offset      JPEG_SDEC_GetInputBufferOffset(cinfo);
+//HISILICON add end

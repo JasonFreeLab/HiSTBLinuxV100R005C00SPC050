@@ -1,0 +1,130 @@
+
+config TIMER_HISP804
+	bool "Support for hisilicon SP804 module"
+	depends on GENERIC_SCHED_CLOCK && CLKDEV_LOOKUP
+	select CLKSRC_MMIO
+	select CLKSRC_OF if OF
+
+config TIMER_HIFIXTIMER
+	bool "Support for fixtimer module"
+	depends on ARM_TIMER_SP804 || TIMER_HISP804
+	default y
+
+config MTD_BLOCK_ROMBLOCK
+	tristate "Readonly(romblock) block device access to MTD devices"
+	depends on BLOCK
+	select MTD_BLKDEVS
+	default y
+	help
+	  Same as readonly block driver, but this allow you to mount read-only
+	  file systems from an MTD device, containing bad blocks.
+
+config PART_CHANGE
+	bool "Support change partition by file '/proc/partchange'"
+	default y
+	select BLK_CMDLINE_PARSER
+	select CMDLINE_PARTITION
+	---help---
+	  Support change partition by file '/proc/partchange'
+
+menu "Hisilicon CPU frequency scaling config"
+
+config MICRO_FREQUENCY_UP_THRESHOLD
+	int "Micro frequency up threshold"
+	default 80
+
+config DEFAULT_GO_HISPEED_LOAD
+	int "Default go hispeed load"
+	default 80
+	help
+	  Go to hi speed when CPU load at or above this value.
+
+config DEFAULT_TARGET_LOAD
+	int "Default target load"
+	default 70
+	help
+	  Target load, lower values result in higher CPU speeds.
+
+endmenu
+
+config HI_I2C
+	tristate "Hisilicon high-speed I2C devices"
+	default n
+	depends on I2C
+	help
+	Say Y here to include support for Hisilicon high-speed I2C controller.
+
+	This driver can also be built as a module.  If so, the module
+	will be called hi-i2c.
+
+config PAGEALLOC_LOCK
+	bool "lock page when free page, and unlock page when alloc page"
+	default n
+	select DEBUG_PAGEALLOC
+	help
+	  for page alloc debug.
+
+menuconfig SUPPORT_DSP_RUN_MEM
+        bool "Support DSP run memory"
+        default n
+        help
+          Support DSP run memory
+
+config DSP_RUN_MEM_ADDR
+        hex "DSP run memory address"
+        depends on SUPPORT_DSP_RUN_MEM
+        default "0x2000000"
+        help
+          The start address of DSP run memory.
+
+config DSP_RUN_MEM_SIZE
+        hex "DSP run memory size"
+        depends on SUPPORT_DSP_RUN_MEM
+        default "0x800000"
+        help
+          The size of DSP run memory.
+
+menuconfig SUPPORT_ATF_MEM
+        bool "Support reserving arm trusted firmware"
+        default n
+        help
+          Support arm trusted firmware
+
+config ATF_MEM_ADDR
+        hex "arm trusted firmware memory address"
+        depends on SUPPORT_ATF_MEM
+        default "0x8020000" if ARCH_HI3796MV2X
+	default "0x4400000" if ARCH_HI3798CV2X || ARCH_HI3798MV2X
+        help
+          The start address of arm trusted firmware.
+
+config ATF_MEM_SIZE
+        hex "arm trusted firmware memory size"
+        depends on SUPPORT_ATF_MEM
+        default "0x200000"
+        help
+          The size of arm trusted firmware memory.
+
+menuconfig SUPPORT_SMCU_MEM
+        bool "Support reserving SMCU memory"
+        default n
+        help
+          Support SMCU memory
+
+config SMCU_MEM_ADDR
+        hex "SMCU memory address"
+        depends on SUPPORT_SMCU_MEM
+        default "0x8000000" if ARCH_HI3796MV2X
+        help
+          The start address of arm trusted firmware.
+
+config SMCU_MEM_SIZE
+        hex "SMCU memory size"
+        depends on SUPPORT_SMCU_MEM
+        default "0x10000"
+        help
+          The size of SMCU memory.
+
+config HISI_EXT4_TMP_QUIRK
+	bool "Ext4 temp quirk"
+	default n

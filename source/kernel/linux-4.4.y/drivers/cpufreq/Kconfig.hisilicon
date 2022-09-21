@@ -1,0 +1,16 @@
+
+config MICRO_FREQUENCY_UP_THRESHOLD
+	int "Micro frequency up threshold"
+	default 80
+
+config DEFAULT_GO_HISPEED_LOAD
+	int "Default go hispeed load"
+	default 80
+	help 
+	  Go to hi speed when CPU load at or above this value.
+
+config DEFAULT_TARGET_LOAD
+	int "Default target load"
+	default 70
+	help
+	  Target load, lower values result in higher CPU speeds.

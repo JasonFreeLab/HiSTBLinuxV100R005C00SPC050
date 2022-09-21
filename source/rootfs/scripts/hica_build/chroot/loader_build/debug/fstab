@@ -1,0 +1,5 @@
+proc		/proc		proc	defaults	0	0
+sysfs		/sys		sysfs	defaults	0	0
+dev		/dev		tmpfs	nosuid,noexec,mode=0660	0	0
+appdev          /home/stb/dev   tmpfs   nosuid,noexec,mode=0760	0       0
+tmp		/tmp		tmpfs	nosuid,noexec,nodev,mode=1777	0	0

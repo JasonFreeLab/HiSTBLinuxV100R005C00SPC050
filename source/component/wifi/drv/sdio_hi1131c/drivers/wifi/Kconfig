@@ -1,0 +1,36 @@
+menuconfig HI1102_WIFI
+	tristate "Hisilicon Wireless Connectivity WiFi Module"
+	depends on CONNECTIVITY_HI110X && WIRELESS && CFG80211
+	select WIRELESS_EXT
+	select WEXT_SPY
+	select WEXT_PRIV
+	default m
+	---help---
+		If you want to use Hisilicon  Wireless Connectivity,first choose this.
+		
+if HI1102_WIFI
+config HI1102_WIFI_HMAC
+  bool "Hisilicon 1102 wifi hmac module"
+  default y
+  ---help---
+	Hisilicon 1102 wifi hmac module
+  
+config HI1102_WIFI_WAL
+  bool "Hisilicon 1102 wifi wal module"
+  default y
+  ---help---
+	Hisilicon 1102 wifi wal module
+	
+config HI1102_WIFI_MAIN
+  bool "Hisilicon 1102 wifi main module"
+  default y
+  ---help---
+	Hisilicon 1102 wifi main module
+	
+config HI1102_WIFI_DMAC
+  bool "Hisilicon 1102 wifi dmac module"
+  default n
+  ---help---
+	Hisilicon 1102 wifi dmac module
+	
+endif

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+mount -t tmpfs tmpfs /home/stb/proc
+cp /proc/cmdline /home/stb/proc
+cp /proc/mtd /home/stb/proc
+cp /proc/filesystems /home/stb/proc
+chown -R stb:stb /home/stb/proc
+
+mount -t tmpfs tmpfs /home/stb/sys
+mkdir /home/stb/sys/power
+mount -o bind /sys/power /home/stb/sys/power
+chown -R stb:stb /home/stb/sys
+
+mkdir /home/stb/sys/block
+mount -o bind /sys/block /home/stb/sys/block
+
+su -s /bin/sh -c "sandbox /home/stb /loader" stb

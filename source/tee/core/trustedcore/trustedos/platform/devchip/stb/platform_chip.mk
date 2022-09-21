@@ -1,0 +1,92 @@
+include $(TRUSTEDCORE_DIR)/platform/${PLATFORM_DIR}/stb/chip/${PLATFORM_CHIP_NAME}/chip.mk
+
+#################### Memory Layout(512M) ###########################################
+#                  offset      pa           va          
+#----------------- 0x04000000  0x20000000   0xC4000000  
+# TA run mem(44M)
+#----------------- 0x01400000  0x1D400000   0xC1400000(TRUSTEDCORE_TASK_LOAD_BASE)  
+# share mem(4M)
+#----------------- 0x01000000  0x1D000000   0xC1000000  
+# kernel mem(16M)
+#----------------- 0x00000000  0x1C000000   0xC0000000(TRUSTEDCORE_TASK_MEM_BASE)  
+####################################################################################
+TRUSTEDCORE_MEM_SIZE ?= 64
+TRUSTEDCORE_TA_RUN_MEM_SIZE ?= 44
+TRUSTEDCORE_TA_SHARE_MEM_SIZE ?= 3
+TRUSTEDCORE_KERNEL_MEM_SIZE ?= 16
+####################################################################################
+
+
+TRUSTEDCORE_VIRT_BASE ?= 0xC0008000
+TRUSTEDCORE_TASK_MEM_BASE ?= 0xC0000000
+TRUSTEDCORE_TASK_LOAD_BASE ?= 0xC1400000
+
+TRUSTEDCORE_SEC_MMZ_MEM_SIZE = 16
+TRUSTEDCORE_SEC_SMMU_PAGETABLE_SIZE = 4
+# TODO: TRUSTEDCORE_RAM_TOTAL_AMOUNT and TRUSTEDCORE_RAM_ORDER are discard code, keep for compile
+TRUSTEDCORE_RAM_TOTAL_AMOUNT = 32
+TRUSTEDCORE_RAM_ORDER = 6
+
+ATF_MEM_SIZE = 2
+
+# 0:error, 1:warn, 2:info, 3:debug, 4:verbo, on:5, 99:disable uart
+TRUSTEDCORE_DEVCHIP_LOG_LEVEL ?= 0
+
+WITH_NEON_SUPPORT = true
+WITH_TUI_SUPPORT = false
+TRUSTEDCORE_FINGERPRINT = false
+WITH_SOCKET_API = false
+WITH_RPMB_DEVICE = true
+
+#CFG_HI_TEE_WERROR_SUPPORT ?= y
+CFG_HI_TEE_COMMON_SUPPORT ?= y
+CFG_HI_TEE_LOG_SUPPORT ?= y
+CFG_HI_TEE_SEC_MMZ_SUPPORT := y
+CFG_HI_TEE_CIPHER_SUPPORT := y
+CFG_HI_TEE_OTP_SUPPORT := y
+CFG_HI_TEE_STB_PLATFORM_SUPPORT :=y
+CFG_HI_TEE_SEC_TIMER_SUPPORT ?= n
+CFG_HI_TEE_SMMU_SUPPORT ?= n
+CFG_HI_TEE_VFMW_SUPPORT ?= n
+CFG_HI_TEE_KLAD_SUPPORT ?= n
+CFG_HI_TEE_PVR_SUPPORT ?= n
+CFG_HI_TEE_DEMUX_SUPPORT ?= n
+CFG_HI_TEE_HDMI_SUPPORT ?= n
+CFG_HI_TEE_DEMO_SUPPORT ?= n
+CFG_HI_TEE_CRYVER_SUPPORT ?= n
+CFG_HI_TEE_VDP_SUPPORT ?= n
+CFG_HI_TEE_BEIDOU_SUPPORT ?= n
+CFG_HI_TEE_I2C_SUPPORT ?= n
+CFG_HI_TEE_WIDEVINE_SUPPORT ?= n
+CFG_HI_TEE_EMPTYDRM_SUPPORT ?= n
+CFG_HI_TEE_PLAYREADY_SUPPORT ?= n
+CFG_HI_TEE_VMX_ULTRA_SUPPORT ?= n
+CFG_HI_TEE_VMXTAC_TEST_SUPPORT ?= n
+CFG_HI_TEE_ITAC_TEST_SUPPORT ?= n
+CFG_HI_TEE_TEST_SUPPORT ?= n
+CFG_HI_TEE_TEST_TA_SUPPORT ?= n
+CFG_HI_TEE_STORAGE_TA_SUPPORT ?= n
+CFG_HI_TEE_DEBUG_SUPPORT ?=n
+CFG_HI_TEE_FPGA_SUPPORT ?= n
+CFG_HI_TEE_PM_SUPPORT ?= n
+CFG_HI_TEE_TA_LOAD_SUPPORT ?= n
+CFG_HI_TEE_RPMB_KEY_SUPPORT ?=n
+CFG_HI_TEE_SM_SUPPORT ?= n
+
+ifeq ($(CFG_HI_CPU_ARCH), arm64)
+WITH_ARMV8_SUPPORT = true
+TRUSTEDCORE_LINK_FILE ?= platform/${PLATFORM_DIR}/${PLATFORM_DIR_NAME}/trustedcore_DDR_armv8.ld
+else
+WITH_CLEAR_BOOT = true
+TRUSTEDCORE_LINK_FILE ?= platform/${PLATFORM_DIR}/${PLATFORM_DIR_NAME}/trustedcore_DDR_armv7.ld
+endif
+TRUSTEDCORE_PACK_TA_SCRIPT := $(TRUSTEDCORE_DIR)/platform/${PLATFORM_DIR}/pack_ta.py
+
+#Config:api/drv/ta code dir
+HI_SDK_DIR ?= $(shell cd $(CURDIR)/../../../.. && /bin/pwd)
+export HI_TEE_OS_DIR   := $(HI_SDK_DIR)/source/tee/core/trustedcore
+export HI_TEE_API_DIR  := $(HI_SDK_DIR)/source/tee/api
+export HI_TEE_DRV_DIR  := $(HI_SDK_DIR)/source/tee/drv
+export HI_TEE_TA_DIR   := $(HI_SDK_DIR)/source/tee/ta
+
+$(info HI_SDK_DIR=$(HI_SDK_DIR))

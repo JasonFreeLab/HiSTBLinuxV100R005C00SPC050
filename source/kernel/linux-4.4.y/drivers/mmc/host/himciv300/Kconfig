@@ -1,0 +1,14 @@
+#
+# himci v300 device configuration
+#
+
+config HIMCIV300_SDIO_SYNOPSYS
+	tristate "Himciv300 SDIO/MMC device support"
+	depends on ARCH_HI3798MV2X || ARCH_HI3796MV2X
+	default n
+	select MMC_UNSAFE_RESUME
+	select MMC_EMBEDDED_SDIO
+	select MMC_BLOCK
+	select MMC_BLOCK_BOUNCE
+	help
+	  This selects the mmc family device.

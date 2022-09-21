@@ -1,0 +1,6 @@
+@WiFi patch info    
+PARA_VERSION=Hi1131CV100;    
+PARA_WRITEM=2,0x40010100,1;    
+ADDR_FILE_FILES=1,0xfc000,/etc/Wireless/firmware/RW.bin;     
+QUIT;    
+@compile timestamp:2016.11.07-10:42:17  

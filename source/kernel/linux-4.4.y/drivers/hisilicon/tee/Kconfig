@@ -1,0 +1,48 @@
+menuconfig  TEE
+	tristate "Secure TEE driver"
+	default n
+	help
+	 Provides a communication interface between userspace and
+	 TrustZone Operating Environment.
+
+config  TEE_HISI
+	tristate "Trustedcore Secure TEE driver"
+	default n
+	depends on TEE
+	help
+	 Provides a communication interface between userspace and
+	 TrustZone Operating Environment.
+
+config  TEE_VMX_ULTRA
+	tristate "Trustedcore for vmx ultra"
+	default n
+	depends on TEE
+	help
+	  Support for Trustedcore for vmx ultra
+
+config TEE_RESERVED_MEM
+	bool "Reserve memory for TEE"
+	default n
+	depends on TEE
+	help
+	 Reserve memory for TEE
+
+config TEE_RESERVED_MEM_ADDR
+	hex "Reserve memory address for TEE"
+	default 0x8000000
+	depends on TEE_RESERVED_MEM
+	help
+	 Reserve memory address for TEE
+
+config TEE_RESERVED_MEM_SIZE
+	hex "Reserve memory size for TEE"
+	default 0x5800000
+	depends on TEE_RESERVED_MEM
+	help
+	 Reserve memory size for TEE
+
+if TEE_HISI
+source drivers/hisilicon/tee/tee_hisi/tzdriver/Kconfig
+endif
+
+

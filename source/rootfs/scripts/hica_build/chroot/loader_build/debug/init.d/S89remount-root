@@ -1,0 +1,5 @@
+#!/bin/sh -e
+chmod 0666 /sys/power/state
+filecap /bin/sandbox sys_chroot
+
+mount -o remount,ro /

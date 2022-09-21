@@ -1,0 +1,16 @@
+export QT_ROOT=/usr/lib/qt
+export LD_LIBRARY_PATH=$QT_ROOT/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
+export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+export QT_QPA_FONTDIR=$QT_ROOT/lib/fonts
+export QML2_IMPORT_PATH=$QT_ROOT/qml
+export QT_LOGGING_CONF=/kmod/qtlog.ini
+export QT_QPA_PLATFORM=eglfs
+export QT_LIBDIR_EGL=/usr/lib
+export QT_LIBDIR_GLES2=/usr/lib
+export FONTCONFIG_FILE=$QT_ROOT/lib/fonts/fonts.conf
+export FONTCONFIG_PATH=$QT_ROOT/lib/fonts/
+export ICU_DATA=$QT_ROOT/resources/icudtl.dat
+mkdir -p /dev/shm
+cd $QT_ROOT/bin/minibrowser/
+./minibrowser file://$QT_ROOT/bin/minibrowser/webgl/index.html

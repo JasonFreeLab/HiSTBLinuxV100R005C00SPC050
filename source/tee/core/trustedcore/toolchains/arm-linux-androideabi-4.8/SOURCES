@@ -1,0 +1,49 @@
+Using built-in specs.
+COLLECT_GCC=./bin/arm-linux-androideabi-gcc
+COLLECT_LTO_WRAPPER=/tmp/android-4.8-2013-08-20/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64/bin/../libexec/gcc/arm-linux-androideabi/4.8/lto-wrapper
+Target: arm-linux-androideabi
+Configured with: /tmp/AOSP-toolchain/build/../gcc/gcc-4.8/configure --prefix=/tmp/toolchain-build-linux-4.8/prefix --target=arm-linux-androideabi --host=x86_64-linux-gnu --build=x86_64-linux-gnu --with-gnu-as --with-gnu-ld --enable-languages=c,c++ --with-gmp=/tmp/toolchain-build-linux-4.8/temp-install --with-mpfr=/tmp/toolchain-build-linux-4.8/temp-install --with-mpc=/tmp/toolchain-build-linux-4.8/temp-install --with-cloog=/tmp/toolchain-build-linux-4.8/temp-install --with-isl=/tmp/toolchain-build-linux-4.8/temp-install --with-ppl=/tmp/toolchain-build-linux-4.8/temp-install --disable-ppl-version-check --disable-cloog-version-check --disable-isl-version-check --enable-cloog-backend=isl --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --disable-libssp --enable-threads --disable-nls --disable-libmudflap --disable-libgomp --disable-libstdc__-v3 --disable-sjlj-exceptions --disable-shared --disable-tls --disable-libitm --with-float=soft --with-fpu=vfp --with-arch=armv5te --enable-target-optspace --enable-initfini-array --disable-nls --prefix=/tmp/toolchain-build-linux-4.8/prefix --with-sysroot=/tmp/toolchain-build-linux-4.8/prefix/sysroot --with-binutils-version=2.23 --with-mpfr-version=3.1.1 --with-mpc-version=1.0.1 --with-gmp-version=5.0.5 --with-gcc-version=4.8 --with-gdb-version=7.6 --with-gxx-include-dir=/tmp/toolchain-build-linux-4.8/prefix/include/c++/4.8 --with-bugurl=http://source.android.com/source/report-bugs.html --disable-bootstrap --disable-libquadmath --enable-plugins --enable-libgomp --disable-libsanitizer --enable-gold --enable-graphite=yes --with-cloog-version=0.18.0 --with-isl-version=0.11.1 --enable-eh-frame-hdr-for-static --with-arch=armv5te --program-transform-name='s&^&arm-linux-androideabi-&' --enable-gold=default
+Thread model: posix
+gcc version 4.8 (GCC) 
+
+gcc:
+commit 7577ecda9609b61419f01b1bd4d8d5b0c2d3fbb1
+Author: Alexander Ivchenko <alexander.ivchenko@intel.com>
+
+    [4.8] Fix ICE when building bullet library.
+
+binutils:
+commit 250ab64769fdb34c9ffebb94a8697f503747a2f8
+Author: Iceberg Fu <Chao-Ying.Fu@imgtec.com>
+
+    Add MXU support to binutils-2.21/2.22/2.23
+
+gdb:
+commit c981efc62640e1844c9832167a109ca3b70bbb01
+Author: Ryan V Bissell <rbissell@nvidia.com>
+
+    Skip ARM.exidx data for unwinding in prologue code
+
+gmp:
+commit e6b9669dafc6a5f83c80b4b4176359b78bccdc90
+Author: David 'Digit' Turner <digit@google.com>
+
+    Add gmp-5.0.5.tar.bz2
+
+mpfr:
+commit bfcf1bfa38469208aaad8873cd4c68781061d90f
+Author: Andrew Hsieh <andrewhsieh@google.com>
+
+    add mpfr-3.1.1.tar.bz2
+
+build:
+commit 7fea44a379d6700cdfe69bd1f166cad4be955cf7
+Author: Pavel Chupin <pavel.v.chupin@intel.com>
+
+    Replace -march=atom with -march=x86-64 for better host compatibility
+
+expat:
+commit 40172a0ae9d40a068f1e1a48ffcf6a1ccf765ed5
+Author: Jing Yu <jingyu@google.com>
+
+    expat package for building gdb-7.3

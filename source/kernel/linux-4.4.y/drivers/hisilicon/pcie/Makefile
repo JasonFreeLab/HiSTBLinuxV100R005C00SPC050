@@ -1,0 +1,1 @@
+obj-$(CONFIG_PCIE_HISILICON) += pcie-hisilicon.o

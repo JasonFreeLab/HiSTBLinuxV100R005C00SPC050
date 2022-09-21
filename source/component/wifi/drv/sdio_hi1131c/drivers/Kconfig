@@ -1,0 +1,20 @@
+#
+# Generic huawei hisi misc drivers configuration
+#
+config HI110X_SDIO_STD_CARD_SUPPORT
+	bool
+	default n
+
+config HI110X_SDIO_FPGA
+	bool
+	default y
+
+config HI110X_SDIO_NON_STD_CARD_SUPPORT
+	bool
+	default y
+	depends on !HI110X_SDIO_STD_CARD_SUPPORT
+
+config HI110X_SDIO_DETECT_FUNCTION
+	bool
+	default y
+

@@ -1,0 +1,59 @@
+#ifndef _VDM_HAL_V4R3C1_API_HEADER_
+#define _VDM_HAL_V4R3C1_API_HEADER_
+
+
+#include "basedef.h"
+#include "mem_manage.h"
+#include "vfmw.h"
+//#include "vdm_hal_v4r3c1_local.h"
+#include "vfmw_ctrl.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+SINT32 VDMHAL_V4R3C1_GetHalMemSize(VOID);
+SINT32 VDMHAL_V4R3C1_CalcFsSize(SINT32 ChanID, SINT32 Width, SINT32 Height, SINT32 UserDec, VID_STD_E VidStd, VFMW_FRAME_SIZE_INFO_S *pstVfmwFrameSizeInfo);
+SINT32 VDMHAL_V4R3C1_OpenHAL(VDMHAL_OPENPARAM_S *pOpenParam);
+VOID VDMHAL_V4R3C1_CloseHAL(SINT32 VdhId);
+SINT32 VDMHAL_V4R3C1_ArrangeMem( UADDR MemAddr, SINT32 MemSize, SINT32 Width, SINT32 Height, SINT32 PmvNum, SINT32 FrameNum, SINT32 UserDec, ARRANGE_FLAG_E eFlag, VDMHAL_MEM_ARRANGE_S *pVdmMemArrange );
+VOID VDMHAL_V4R3C1_ResetVdm( SINT32 VdhId );
+VOID VDMHAL_V4R3C1_SetSmmuPageTableAddr(UINT32 VdhId);
+VOID VDMHAL_V4R3C1_EnableSmmu( VOID );
+VOID VDMHAL_V4R3C1_GlbReset( VOID );
+VOID VDMHAL_V4R3C1_GlbResetX( SINT32 VdhId);
+VOID VDMHAL_V4R3C1_ResetGlb( VOID );
+VOID VDMHAL_V4R3C1_ClearIntState( SINT32 VdhId );
+VOID VDMHAL_V4R3C1_ClearMMUIntState(SINT32 VdhId);
+VOID VDMHAL_V4R3C1_MaskInt( SINT32 VdhId );
+VOID VDMHAL_V4R3C1_EnableInt( SINT32 VdhId );
+SINT32 VDMHAL_V4R3C1_CheckReg(REG_ID_E reg_id, SINT32 VdhId);
+UINT32 VDMHAL_V4R3C1_ReadMMUMask(SINT32 VdhId);
+VOID   VDMHAL_V4R3C1_WriteMMUMask(UINT32 mask, SINT32 VdhId);
+VOID VDMHAL_V4R3C1_StartHwRepair(SINT32 VdhId, VOID *pTask);
+VOID VDMHAL_V4R3C1_StartHwDecode(SINT32 VdhId, VOID *pTask);
+SINT32 VDMHAL_V4R3C1_PrepareDec( VID_STD_E VidStd, VOID *pDecParam, SINT32 VdhId, VOID *pTask);
+SINT32 VDMHAL_V4R3C1_IsVdmReady(SINT32 VdhId);
+SINT32 VDMHAL_V4R3C1_IsVdmRun(SINT32 VdhId);
+SINT32 VDMHAL_V4R3C1_PrepareRepair( VID_STD_E VidStd, VOID *pDecParam, SINT32 RepairTime, SINT32 VdhId, VOID *pTask);
+SINT32 VDMHAL_V4R3C1_MakeDecReport(MAKE_DEC_REPORT_S *pMakeDecReport);
+SINT32 VDMHAL_V4R3C1_CfgRpReg(VID_STD_E VidStd, VDMHAL_HWMEM_S *pHwMem, VOID *pDecParam, SINT32 VdhId, VOID *pTask);
+SINT32 VDMHAL_V4R3C1_CfgRpMsg(VDMHAL_REPAIR_PARAM_S *pRepairParam, VDMHAL_HWMEM_S *pHwMem, SINT32 VdhId);
+SINT32 VDMHAL_V4R3C1_WriteMsgSlot(SINT32 *pDst, SINT32 *pSrc, UINT32 dnmsg_size);
+SINT32 VDMHAL_V4R3C1_ReadMsgSlot(SINT32 *pDst, SINT32 *pSrc, UINT32 upmsg_size);
+SINT32 VDMHAL_V4R3C1_UpdateHardwareInfo(SINT32 VdhId);
+VOID VDMHAL_V4R3C1_GetCharacter(VOID);
+VOID VDMHAL_V4R3C1_WriteBigTitle1DYuv( VOID *fpYuv, UINT8 *Yaddress, UINT32 Width, UINT32 Height, UINT32 chroma_idc);
+VOID   CRG_ConfigReg(UINT32 Reg, UINT32 Data, VOID *pTask);
+VOID   MFDE_ConfigReg(UINT32 Reg, UINT32 Data, SINT32 Id, VOID *pTask);
+SINT32 VDMHAL_V4R3C1_IsVdhDecOver(REG_ID_E reg_id, SINT32 VdhId);
+SINT32 VDMHAL_V4R3C1_IsVdhPartDecOver(REG_ID_E reg_id, SINT32 VdhId);
+
+SINT32 VDMHAL_V4R3C1_GetRpuSize(VOID);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#endif
+

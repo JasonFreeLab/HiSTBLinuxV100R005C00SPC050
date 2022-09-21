@@ -1,0 +1,7 @@
+export QT_ROOT=/usr/lib/qt
+export LD_LIBRARY_PATH=$QT_ROOT/lib:$LD_LIBRARY_PATH
+export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+export QT_QPA_PLATFORM=eglfs
+export QT_QPA_FONTDIR=$QT_ROOT/lib/fonts
+cd $QT_ROOT/bin
+./browser file://$QT_ROOT/bin/webgl/index.html

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+mknod /dev/ttyAMA0 c 204 64
+mknod /dev/ttyAMA1 c 204 65
+mknod /dev/ttyS000 c 204 64
+
+mkdir /dev/shm
+chown -R stb:gstb /dev/shm
+mkdir /dev/mqueue
+chown -R stb:gstb /dev/mqueue

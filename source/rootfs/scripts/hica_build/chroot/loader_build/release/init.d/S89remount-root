@@ -1,0 +1,5 @@
+#!/bin/sh -e
+chmod 0660 /sys/power/state
+chmod o-rwx /proc
+chmod o-rwx /sys
+mount -o remount,ro /

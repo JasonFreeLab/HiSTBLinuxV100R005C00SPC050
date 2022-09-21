@@ -1,0 +1,128 @@
+# Load configure.prf from qtbase first
+load(configure)
+load(functions)
+
+defineTest(runConfigure) {
+    webengine_successfully_configured: return(true)
+    linux:contains(QT_CONFIG,no-pkg-config) {
+        skipBuild("pkg-config is required")
+        return(false)
+    }
+    # Ignore the cached config tests results in case they were not successful
+    CONFIG += recheck
+    #Override the config.tests path
+    QMAKE_CONFIG_TESTS_DIR = $$QTWEBENGINE_ROOT/tools/qmake/config.tests
+    CONFIG_TESTS = $$files($$QMAKE_CONFIG_TESTS_DIR/*.pro, true)
+    log("Running configure tests$${EOL}")
+    for(test, CONFIG_TESTS) {
+        test = $$basename(test)
+        test ~= s/\\.pro$//
+        qtCompileTest($$test)
+    }
+
+    linux {
+        # libcap-dev package doesn't ship .pc files on Ubuntu.
+        #!config_libcap:skipBuild("libcap development package appears to be missing")
+        !config_khr:skipBuild("khronos development headers appear to be missing (mesa/libegl1-mesa-dev)")
+
+        REQUIRED_PACKAGES = dbus-1 fontconfig
+        !cross_compile: contains(QT_CONFIG, xcb): REQUIRED_PACKAGES += libdrm xcomposite xcursor xi xrandr xscrnsaver xtst
+        contains(QT_CONFIG, pulseaudio): REQUIRED_PACKAGES += libpulse
+        contains(QT_CONFIG, system-png): REQUIRED_PACKAGES += libpng
+        contains(QT_CONFIG, system-harfbuzz): REQUIRED_PACKAGES += harfbuzz
+        !cross_compile: REQUIRED_PACKAGES += libpci
+
+        for(package, $$list($$REQUIRED_PACKAGES)) {
+            !packagesExist($$package):skipBuild("Unmet dependency: $$package")
+        }
+        packagesExist(minizip, zlib): WEBENGINE_CONFIG += use_system_minizip
+        else: log("System zlib or minizip not found. Using Chromium's copies.$${EOL}")
+        packagesExist(libwebp,libwebpdemux): WEBENGINE_CONFIG += use_system_libwebp
+        else: log("System libwebp or libwebpdemux not found. Using Chromium's copies.$${EOL}")
+        packagesExist(libxml-2.0,libxslt): WEBENGINE_CONFIG += use_system_libxslt
+        else: log("System libxml2 or libxslt not found. Using Chromium's copies.$${EOL}")
+        for(package, $$list("libevent jsoncpp opus protobuf")) {
+            packagesExist($$package): WEBENGINE_CONFIG += use_system_$$package
+            else: log("System $$package not found. Using Chromium's copy.$${EOL}")
+        }
+        use?(system_protobuf) {
+            !system("which protoc > /dev/null") {
+                log("Protobuf compiler not found. Using Chromium's copy of protobuf.$${EOL}")
+                WEBENGINE_CONFIG -= use_system_protobuf
+            }
+        }
+        config_libvpx: WEBENGINE_CONFIG += use_system_vpx
+        else: log("Compatible system libvpx not found. Using Chromium's copy.$${EOL}")
+        config_srtp: WEBENGINE_CONFIG += use_system_libsrtp
+        else: log("System libsrtp not found. Using Chromium's copy.$${EOL}")
+        config_snappy: WEBENGINE_CONFIG += use_system_snappy
+        else: log("System snappy not found. Using Chromium's copy.$${EOL}")
+
+        !cross_compile {
+            packagesExist(nss): WEBENGINE_CONFIG += use_nss
+            else: log("System NSS not found, BoringSSL will be used.$${EOL}")
+        }
+    }
+
+    # Spellcheck support is moved to dev
+    WEBENGINE_CONFIG += no_spellcheck
+
+    isEmpty(skipBuildReason): {
+        cache(CONFIG, add, $$list(webengine_successfully_configured))
+        !isEmpty(WEBENGINE_CONFIG) {
+            cache(WEBENGINE_CONFIG, add, $$list($$WEBENGINE_CONFIG))
+            export(WEBENGINE_CONFIG)
+        }
+    }
+
+}
+
+# This is called from default_post, at which point we've also parsed
+# command line options
+defineTest(finalizeConfigure) {
+    linux {
+        use?(nss) {
+            log("Certificate handling.............. Using system NSS$${EOL}")
+        } else {
+            log("Certificate handling.............. Using bundled BoringSSL$${EOL}")
+        }
+        use?(system_icu) {
+            packagesExist("icu-uc icu-i18n") {
+                log("ICU............................... Using system version$${EOL}")
+            } else {
+                log("ICU............................... System ICU not found$${EOL}")
+                skipBuild("Unmet dependencies: icu-uc, icu-i18n")
+            }
+        } else {
+            log("ICU............................... Using internal copy (Default, force system ICU with WEBENGINE_CONFIG+=use_system_icu)$${EOL}")
+        }
+        use?(system_ffmpeg) {
+            packagesExist("libavcodec libavformat libavutil") {
+                packagesExist("libwebp, libwebpdemux, opus, \'vpx >= 1.4\'"){
+                    log("FFMPEG............................ Using system version$${EOL}")
+                } else {
+                    log("FFMPEG............................ Conflicting FFMPEG dependencies$${EOL}")
+                    skipBuild("Unmet dependencies: opus, vpx, libwebp, libwebpdemux")
+                }
+            } else {
+                log("FFMPEG............................ System FFMPEG not found$${EOL}")
+                skipBuild("Unmet dependencies: libavcodec, libavformat, libavutil")
+            }
+        } else {
+            log("FFMPEG............................ Using internal copy (Default, force system FFMPEG with WEBENGINE_CONFIG+=use_system_ffmpeg)$${EOL}")
+        }
+    }
+    use?(proprietary_codecs) {
+        log("Proprietary codecs (H264, MP3).... Enabled$${EOL}")
+    } else {
+        log("Proprietary codecs (H264, MP3).... Not enabled         (Default, enable with WEBENGINE_CONFIG+=use_proprietary_codecs)$${EOL}")
+    }
+    osx {
+        use?(appstore_compliant_code) {
+            log("AppStore Compliant ............... Enabled$${EOL}")
+        } else {
+            log("AppStore Compliant ............... Not enabled         (Default, enable with WEBENGINE_CONFIG+=use_appstore_compliant_code)$${EOL}")
+        }
+    }
+}
+

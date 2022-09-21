@@ -1,0 +1,7 @@
+
+config DEVFREQ_GOV_GPU_ONDEMAND
+	tristate "DEVFREQ_GOV_GPU_ONDEMAND"
+	help
+	  This driver provides support for the governor to do DVFS
+
+

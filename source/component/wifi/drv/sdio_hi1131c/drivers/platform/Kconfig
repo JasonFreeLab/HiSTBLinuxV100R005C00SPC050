@@ -1,0 +1,61 @@
+menuconfig HI1102_PLATFORM
+	tristate "Hisilicon Wireless Connectivity Platform Module"
+	depends on CONNECTIVITY_HI110X
+	default m
+	---help---
+		If you want to use Hisilicon  Wireless Connectivity,first choose this.
+		
+if HI1102_PLATFORM
+
+config HI1102_PLAT_HW_CHR
+  bool "Hisilicon 1102 platform chr log"
+  depends on !HI1131_HI3798MV2X
+  default y
+  ---help---
+	Hisilicon 1102 platform chr log
+
+config HI1102_PLAT_OAL
+  bool "Hisilicon 1102 platform oal module"
+  default y
+  select HI110X_SDIO_STD_CARD_SUPPORT
+  select HI110X_SDIO_DETECT_FUNCTION
+  ---help---
+	Hisilicon 1102 platform oal module
+  
+config HI1102_PLAT_FRW
+  bool "Hisilicon 1102 platform framework module"
+  default y
+  ---help---
+	Hisilicon 1102 platform oal module
+	
+config HI1102_PLAT_OAM
+  bool "Hisilicon 1102 platform oam module"
+  default y
+  ---help---
+	Hisilicon 1102 platform oam module
+	
+config HI1102_PLAT_SDT
+  bool "Hisilicon 1102 platform sdt module"
+  default y
+  ---help---
+	Hisilicon 1102 platform sdt module
+	
+config HI1102_PLAT_PS
+  bool "Hisilicon 1102 platform ps module"
+  default y
+  ---help---
+	Hisilicon 1102 platform ps module
+	
+config HI1102_PLAT_PM
+  bool "Hisilicon 1102 platform power manager module"
+  default y
+  ---help---
+	Hisilicon 1102 platform power manager module
+	
+config HI1102_PLAT_MAIN
+  bool "Hisilicon 1102 platform main module"
+  default y
+  ---help---
+	Hisilicon 1102 platform main module
+	
+endif

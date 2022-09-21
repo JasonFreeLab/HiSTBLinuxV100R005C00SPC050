@@ -1,0 +1,9 @@
+::sysinit:/etc/init.d/rcS
+
+#::respawn:/sbin/getty -L ttyS000 115200 vt100 
+::respawn:-/bin/sh
+
+::restart:/sbin/init
+
+#::ctrlaltdel:/sbin/reboot
+::shutdown:/bin/umount -a -r

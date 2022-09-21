@@ -1,0 +1,96 @@
+include $(LITEOSTOPDIR)/config.mk
+
+WIFI_DRIVER_DIR := $(LITEOSTOPDIR)/drivers/wifi/hi1131_driver/drivers
+PLAT_DIR := $(WIFI_DRIVER_DIR)/platform
+
+ARFLAGS = cr
+
+LIB = $(OUT)/lib/libhi1131cplat.a
+RM = -rm -rf
+
+CONFIG_HI1102_PLAT_MAIN = y
+
+oal-objs := oal_bus_if.o oal_main.o oal_mem.o oal_net.o oal_hardware.o oal_schedule.o oal_pci_if.o oal_aes.o oal_cfg80211.o oal_profiling.o oal_hcc_host.o oal_hcc_test.o  oal_dft.o oal_skbuff.o oam_main.o
+
+ifneq ($(USB_VERSION), y)
+oal-objs += oal_sdio_host.o
+else
+oal-objs += oal_usb_host.o
+endif
+
+oal-objs := $(addprefix oal/,$(oal-objs))
+
+frw-objs := frw_event_deploy.o frw_event_main.o frw_event_sched.o frw_ipc_msgqueue.o frw_main.o frw_task.o frw_timer.o
+frw-objs := $(addprefix frw/,$(frw-objs))
+
+oam-objs := oam_main.o oam_event.o oam_log.o
+oam-objs := $(addprefix oam/,$(oam-objs))
+
+sdt-objs := sdt_drv.o
+sdt-objs := $(addprefix sdt/,$(sdt-objs))
+
+customize-objs := hisi_ini.o hisi_customize_wifi.o
+customize-objs := $(addprefix ../common/customize/,$(customize-objs))
+
+chr_devs-objs := chr_devs.o
+chr_devs-objs := $(addprefix ../common/chr_log/,$(chr_devs-objs))
+
+main-objs := plat_main.o
+main-objs := $(addprefix main/,$(main-objs))
+
+pm-objs :=  plat_firmware.o plat_pm.o  plat_pm_wlan.o plat_pm_user_ctrl.o plat_cali.o
+pm-objs := $(addprefix pm/,$(pm-objs))
+
+driver-objs := mcu_uart.o hi_ext_hal_mcu.o
+
+ifneq ($(USB_VERSION), y)
+driver-objs += plat_sdio.o
+else
+driver-objs += plat_usb.o
+endif
+
+driver-objs := $(addprefix driver/,$(driver-objs))
+
+#obj-$(CONFIG_HI1102_PLAT_PS) +=ps.o 
+dft-objs := exception_rst.o heartbeat_host.o
+dft-objs := $(addprefix ../dft/,$(dft-objs))
+
+board-objs := board_hi3516/board.o
+board-objs := $(addprefix board/,$(board-objs))
+
+oneimage-objs := oneimage.o
+oneimage-objs := $(addprefix ../common/oneimage/,$(oneimage-objs))
+
+plat-objs += $(main-objs)
+plat-objs += $(dft-objs)
+plat-objs += $(driver-objs)
+plat-objs += $(board-objs)
+plat-objs += $(pm-objs)
+plat-objs += $(oal-objs)
+plat-objs += $(frw-objs)
+plat-objs += $(customize-objs)
+plat-objs += $(oam-objs)
+
+COBJS = $(plat-objs)
+
+all: $(LIBOUT) $(LIB)
+
+$(COBJS): %.o : %.c
+	@$(CC) $(LITEOS_CFLAGS) -c $< -o $@
+
+OBJS = $(COBJS)
+
+$(LIB): $(OBJS)
+	@$(AR) $(ARFLAGS) $@ $(OBJS)
+	-find ./ -type f -name "*.o" -exec rm -f {} \;
+	-find ../common/ -type f -name "*.o" -exec rm -f {} \;
+
+$(LIBOUT):
+	mkdir -p $(LIBOUT)
+
+clean:
+	@$(RM) $(OBJS) $(LIB) $(LIBOUT) *.bak *~
+
+.PHONY: all clean
+
+

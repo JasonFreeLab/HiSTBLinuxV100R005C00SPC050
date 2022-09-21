@@ -1,0 +1,5 @@
+#!/bin/sh
+mkdir /dev/shm
+chown -R stb:gstb /dev/shm
+mkdir /dev/mqueue
+chown -R stb:gstb /dev/mqueue

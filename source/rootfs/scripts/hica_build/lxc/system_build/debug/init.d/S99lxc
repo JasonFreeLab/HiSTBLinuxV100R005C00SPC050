@@ -1,0 +1,7 @@
+#!/bin/sh
+
+mount -t cgroup none /sys/fs/cgroup
+
+brctl addbr br0
+ifconfig br0 10.66.1.1 promisc up 
+

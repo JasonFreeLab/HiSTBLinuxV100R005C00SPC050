@@ -1,0 +1,76 @@
+diff -urNa lxc-2.0.8/src/lxc/lxccontainer.c lxc-2.0.8M/src/lxc/lxccontainer.c
+--- lxc-2.0.8/src/lxc/lxccontainer.c	2017-05-12 01:23:06.000000000 +0800
++++ lxc-2.0.8M/src/lxc/lxccontainer.c	2017-07-21 18:46:45.000000000 +0800
+@@ -779,7 +779,6 @@
+ 	* while container is running...
+ 	*/
+ 	if (daemonize) {
+-		char title[2048];
+ 		lxc_monitord_spawn(c->config_path);
+ 
+ 		pid_t pid = fork();
+@@ -794,14 +793,6 @@
+ 			return wait_on_daemonized_start(c, pid);
+ 		}
+ 
+-		/* We don't really care if this doesn't print all the
+-		 * characters; all that it means is that the proctitle will be
+-		 * ugly. Similarly, we also don't care if setproctitle()
+-		 * fails. */
+-		snprintf(title, sizeof(title), "[lxc monitor] %s %s", c->config_path, c->name);
+-		INFO("Attempting to set proc title to %s", title);
+-		setproctitle(title);
+-
+ 		/* second fork to be reparented by init */
+ 		pid = fork();
+ 		if (pid < 0) {
+diff -urNa lxc-2.0.8/src/lxc/start.c lxc-2.0.8M/src/lxc/start.c
+--- lxc-2.0.8/src/lxc/start.c	2017-05-12 01:23:06.000000000 +0800
++++ lxc-2.0.8M/src/lxc/start.c	2017-07-21 17:51:02.000000000 +0800
+@@ -193,13 +193,10 @@
+ 	int fd, fddir;
+ 	DIR *dir;
+ 
+-	if (conf && conf->close_all_fds)
+-		closeall = true;
+-
+ restart:
+ 	dir = opendir("/proc/self/fd");
+ 	if (!dir) {
+-		WARN("Failed to open directory: %m.");
++		WARN("failed to open directory: %m");
+ 		return -1;
+ 	}
+ 
+@@ -215,27 +212,21 @@
+ 		if (!strcmp(direntp->d_name, ".."))
+ 			continue;
+ 
+-		if (lxc_safe_int(direntp->d_name, &fd) < 0) {
+-			INFO("Could not parse file descriptor for: %s", direntp->d_name);
+-			continue;
+-		}
++		fd = atoi(direntp->d_name);
+ 
+ 		if (fd == fddir || fd == lxc_log_fd || fd == fd_to_ignore)
+ 			continue;
+ 
+-		if (current_config && fd == current_config->logfd)
+-			continue;
+-
+ 		if (match_fd(fd))
+ 			continue;
+ 
+-		if (closeall) {
++		if (conf == NULL || conf->close_all_fds) {
+ 			close(fd);
+ 			closedir(dir);
+-			INFO("Closed inherited fd: %d.", fd);
++			INFO("closed inherited fd %d", fd);
+ 			goto restart;
+ 		}
+-		WARN("Inherited fd: %d.", fd);
++		WARN("inherited fd %d", fd);
+ 	}
+ 
+ 	closedir(dir); /* cannot fail */

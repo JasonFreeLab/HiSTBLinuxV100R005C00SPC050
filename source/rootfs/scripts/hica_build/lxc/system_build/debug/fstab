@@ -1,0 +1,4 @@
+proc		/proc		proc	rw,nosuid,nodev,noexec	0	0
+sysfs		/sys		sysfs	nosuid,nodev,noexec,nouser	0	0
+dev		/dev		tmpfs	suid,exec,gid=1000,mode=0770	0	0
+tmp		/tmp		tmpfs	nosuid,noexec,nodev,gid=1000,mode=1770	0	0

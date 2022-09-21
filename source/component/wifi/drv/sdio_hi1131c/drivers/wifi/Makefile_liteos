@@ -1,0 +1,54 @@
+include $(LITEOSTOPDIR)/config.mk
+
+WIFI_DRIVER_DIR := $(LITEOSTOPDIR)/drivers/wifi/hi1131_driver/drivers
+PLAT_DIR := $(WIFI_DRIVER_DIR)wifi
+
+ARFLAGS = cr
+
+LIB = $(OUT)/lib/libhi1131cwifi.a
+RM = -rm -rf
+
+main-objs := main.o
+main-objs := $(addprefix main/,$(main-objs))
+
+dmac-objs  := mac_board.o mac_data.o mac_device.o mac_frame.o mac_ie.o mac_pm.o mac_regdomain.o mac_resource.o  mac_user.o mac_vap.o
+dmac-objs := $(addprefix dmac/,$(dmac-objs))
+
+hmac_srcs = $(wildcard hmac/*.c) 
+hmac-objs = $(patsubst %.c,%.o,$(hmac_srcs))
+
+hwal_srcs = $(wildcard hwal/*.c) 
+hwal-objs = $(patsubst %.c,%.o,$(hwal_srcs))
+
+wal_srcs = $(wildcard wal/*.c) 
+wal-objs = $(patsubst %.c,%.o,$(wal_srcs))
+
+wifi-objs += $(main-objs)
+wifi-objs += $(dmac-objs)
+wifi-objs += $(hmac-objs)
+wifi-objs += $(hwal-objs)
+wifi-objs += $(wal-objs)
+
+COBJS = $(wifi-objs)
+
+all: $(LIBOUT) $(LIB)
+
+$(COBJS): %.o : %.c
+	@$(CC) $(LITEOS_CFLAGS) -c $< -o $@
+
+OBJS = $(COBJS)
+
+$(LIB): $(OBJS)
+	@$(AR) $(ARFLAGS) $@ $(OBJS)
+	-find ./ -type f -name "*.o" -exec rm -f {} \;
+
+
+$(LIBOUT):
+	mkdir -p $(LIBOUT)
+
+clean:
+	@$(RM) $(OBJS) $(LIB) $(LIBOUT) *.bak *~
+
+.PHONY: all clean
+
+

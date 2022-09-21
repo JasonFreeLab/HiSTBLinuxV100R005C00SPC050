@@ -1,0 +1,15290 @@
+#include "hi_asm_define.h"
+	.arch armv7-a
+	.fpu softvfp
+	.eabi_attribute 20, 1
+	.eabi_attribute 21, 1
+	.eabi_attribute 23, 3
+	.eabi_attribute 24, 1
+	.eabi_attribute 25, 1
+	.eabi_attribute 26, 2
+	.eabi_attribute 30, 2
+	.eabi_attribute 34, 0
+	.eabi_attribute 18, 4
+	.file	"vfmw_ctrl.c"
+	.text
+	.align	2
+	.type	VfmwProc_SetPrintLevel, %function
+VfmwProc_SetPrintLevel:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2
+	ldr	r2, [r0]
+	str	r2, [r3]
+	ldmfd	sp, {fp, sp, pc}
+.L3:
+	.align	2
+.L2:
+	.word	g_PrintEnable
+	UNWIND(.fnend)
+	.size	VfmwProc_SetPrintLevel, .-VfmwProc_SetPrintLevel
+	.align	2
+	.type	VfmwProc_OpenScdLowdly, %function
+VfmwProc_OpenScdLowdly:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L5
+	mov	r2, #1
+	ldr	r1, [r0]
+	ldr	r3, [r3, r1, asl #3]
+	str	r2, [r3, #40]
+	ldmfd	sp, {fp, sp, pc}
+.L6:
+	.align	2
+.L5:
+	.word	s_SmIIS
+	UNWIND(.fnend)
+	.size	VfmwProc_OpenScdLowdly, .-VfmwProc_OpenScdLowdly
+	.align	2
+	.type	VfmwProc_CloseScdLowdly, %function
+VfmwProc_CloseScdLowdly:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L8
+	mov	r2, #0
+	ldr	r1, [r0]
+	ldr	r3, [r3, r1, asl #3]
+	str	r2, [r3, #40]
+	ldmfd	sp, {fp, sp, pc}
+.L9:
+	.align	2
+.L8:
+	.word	s_SmIIS
+	UNWIND(.fnend)
+	.size	VfmwProc_CloseScdLowdly, .-VfmwProc_CloseScdLowdly
+	.align	2
+	.global	VCTRL_EventReport
+	.type	VCTRL_EventReport, %function
+VCTRL_EventReport:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	cmp	r0, #31
+	bhi	.L22
+	ldr	lr, .L26
+	ldr	ip, [lr, r0, asl #2]
+	cmp	ip, #0
+	beq	.L23
+	ldr	ip, [ip, #32]
+	cmp	ip, #0
+	beq	.L15
+	cmp	ip, #1
+	bne	.L24
+	ldr	r3, [lr, #372]
+	cmp	r3, #0
+	beq	.L25
+.L18:
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	bx	r3
+.L24:
+	str	r3, [sp]
+	mov	r0, #0
+	mov	r3, ip
+	ldr	r2, .L26+4
+	ldr	r1, .L26+8
+	bl	dprint_vfmw
+.L12:
+	mvn	r0, #0
+	sub	sp, fp, #12
+	ldmfd	sp, {fp, sp, pc}
+.L15:
+	ldr	r3, [lr, #368]
+	cmp	r3, #0
+	bne	.L18
+	mov	r0, r3
+	ldr	r1, .L26+12
+	bl	dprint_vfmw
+	b	.L12
+.L25:
+	mov	r0, r3
+	ldr	r1, .L26+16
+	bl	dprint_vfmw
+	b	.L12
+.L22:
+	ldr	r3, .L26+20
+	mov	r2, #980
+	ldr	r1, .L26+24
+	mov	r0, #0
+	bl	dprint_vfmw
+	b	.L12
+.L23:
+	mov	r0, ip
+	ldr	r3, .L26+28
+	movw	r2, #981
+	ldr	r1, .L26+24
+	bl	dprint_vfmw
+	b	.L12
+.L27:
+	.align	2
+.L26:
+	.word	.LANCHOR0
+	.word	.LANCHOR1
+	.word	.LC5
+	.word	.LC3
+	.word	.LC4
+	.word	.LC0
+	.word	.LC1
+	.word	.LC2
+	UNWIND(.fnend)
+	.size	VCTRL_EventReport, .-VCTRL_EventReport
+	.align	2
+	.type	VfmwProc_SetStandardObedience, %function
+VfmwProc_SetStandardObedience:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L29
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L29+4
+	mov	r2, r3
+	str	r3, [ip, #392]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L30:
+	.align	2
+.L29:
+	.word	.LANCHOR0
+	.word	.LC6
+	UNWIND(.fnend)
+	.size	VfmwProc_SetStandardObedience, .-VfmwProc_SetStandardObedience
+	.align	2
+	.type	VfmwProc_SetClkSelect, %function
+VfmwProc_SetClkSelect:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	ldr	r2, .L35
+	cmp	r3, #4
+	strls	r3, [r2]
+	ldmlsfd	sp, {fp, sp, pc}
+	ldr	r1, .L35+4
+	mov	r0, #32
+	ldr	r2, [r2]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L36:
+	.align	2
+.L35:
+	.word	.LANCHOR2
+	.word	.LC7
+	UNWIND(.fnend)
+	.size	VfmwProc_SetClkSelect, .-VfmwProc_SetClkSelect
+	.align	2
+	.type	VfmwProc_SetCompressPara, %function
+VfmwProc_SetCompressPara:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #36)
+	sub	sp, sp, #36
+	ldr	ip, .L81
+	ldr	r5, [r0, #4]
+	mov	r3, r0
+	mov	r2, #16
+	mov	r1, #0
+	sub	r0, fp, #52
+	ldr	ip, [ip, #48]
+	ldr	r4, [r3]
+	ldr	r7, [r3, #8]
+	ldr	r8, [r3, #12]
+	ldr	r6, [r3, #16]
+	blx	ip
+	cmp	r5, #0
+	beq	.L73
+	cmp	r7, #0
+	beq	.L74
+	movw	r3, #625
+	cmp	r8, r3
+	mov	r3, #1
+	str	r3, [fp, #-52]
+	str	r3, [fp, #-48]
+	beq	.L68
+	bls	.L75
+	movw	r3, #750
+	cmp	r8, r3
+	beq	.L46
+	movw	r3, #875
+	cmp	r8, r3
+	moveq	r3, #3
+	streq	r3, [fp, #-44]
+.L48:
+	movw	r3, #625
+	cmp	r6, r3
+	beq	.L50
+.L80:
+	bls	.L76
+	movw	r3, #750
+	cmp	r6, r3
+	moveq	r3, #2
+	streq	r3, [fp, #-40]
+	beq	.L49
+	movw	r3, #875
+	cmp	r6, r3
+	moveq	r3, #3
+	streq	r3, [fp, #-40]
+	b	.L49
+.L74:
+	mvn	r3, #0
+	mov	r2, #1
+	str	r7, [fp, #-48]
+	str	r2, [fp, #-52]
+	str	r3, [fp, #-44]
+	str	r3, [fp, #-40]
+.L49:
+	ldr	r1, [fp, #-48]
+	cmp	r1, #1
+	beq	.L77
+	cmp	r1, #0
+	beq	.L78
+.L39:
+	mov	r2, r4
+	ldr	r1, .L81+4
+	mov	r0, #32
+	bl	dprint_vfmw
+.L56:
+	ldr	r3, .L81+8
+	ldr	r2, [r3, r4, asl #2]
+	cmp	r2, #0
+	beq	.L79
+.L57:
+	mov	r2, r4
+	ldr	r1, .L81+12
+	mov	r0, #32
+	bl	dprint_vfmw
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L73:
+	mvn	r3, #0
+	str	r5, [fp, #-52]
+	str	r5, [fp, #-48]
+	str	r3, [fp, #-44]
+	str	r3, [fp, #-40]
+	b	.L39
+.L75:
+	cmp	r8, #500
+	moveq	r3, #0
+	streq	r3, [fp, #-44]
+	movw	r3, #625
+	cmp	r6, r3
+	bne	.L80
+.L50:
+	mov	r3, #1
+	str	r3, [fp, #-40]
+	b	.L49
+.L76:
+	cmp	r6, #500
+	moveq	r3, #0
+	streq	r3, [fp, #-40]
+	b	.L49
+.L46:
+	mov	r3, #2
+.L68:
+	str	r3, [fp, #-44]
+	b	.L48
+.L78:
+	str	r1, [sp]
+	mov	r3, #1
+	mov	r2, r4
+	ldr	r1, .L81+16
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, .L81+8
+	ldr	r2, [r3, r4, asl #2]
+	cmp	r2, #0
+	bne	.L57
+.L79:
+	ldr	lr, [fp, #-44]
+	add	r3, r3, r4, lsl #4
+	ldr	ip, [fp, #-40]
+	mov	r2, r4
+	ldr	r6, [fp, #-52]
+	mov	r0, #32
+	ldr	r5, [fp, #-48]
+	str	lr, [r3, #404]
+	str	ip, [r3, #408]
+	str	r6, [r3, #396]
+	str	r5, [r3, #400]
+	ldr	r1, .L81+20
+	bl	dprint_vfmw
+	ldr	r2, [fp, #-52]
+	ldr	r1, .L81+24
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r2, [fp, #-48]
+	ldr	r1, .L81+28
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, [fp, #-40]
+	ldr	r2, [fp, #-44]
+	mov	r0, #32
+	ldr	r1, .L81+32
+	bl	dprint_vfmw
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L77:
+	mov	r3, r1
+	str	r1, [sp]
+	str	r6, [sp, #8]
+	mov	r2, r4
+	str	r8, [sp, #4]
+	mov	r0, #32
+	ldr	r1, .L81+36
+	bl	dprint_vfmw
+	b	.L56
+.L82:
+	.align	2
+.L81:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC10
+	.word	.LANCHOR0
+	.word	.LC15
+	.word	.LC9
+	.word	.LC11
+	.word	.LC12
+	.word	.LC13
+	.word	.LC14
+	.word	.LC8
+	UNWIND(.fnend)
+	.size	VfmwProc_SetCompressPara, .-VfmwProc_SetCompressPara
+	.align	2
+	.type	VfmwProc_SetTunnelLineNumber, %function
+VfmwProc_SetTunnelLineNumber:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L84
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L84+4
+	mov	r2, r3
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L85:
+	.align	2
+.L84:
+	.word	g_TunnelLineNumber
+	.word	.LC16
+	UNWIND(.fnend)
+	.size	VfmwProc_SetTunnelLineNumber, .-VfmwProc_SetTunnelLineNumber
+	.align	2
+	.type	VfmwProc_SetSaveYuvBitWidth, %function
+VfmwProc_SetSaveYuvBitWidth:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	bic	r2, r3, #2
+	cmp	r2, #8
+	bne	.L88
+	ldr	ip, .L89
+	mov	r2, r3
+	ldr	r1, .L89+4
+	mov	r0, #32
+	str	r3, [ip, #4]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L88:
+	mov	r2, r3
+	ldr	r1, .L89+8
+	mov	r0, #32
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L90:
+	.align	2
+.L89:
+	.word	.LANCHOR2
+	.word	.LC18
+	.word	.LC17
+	UNWIND(.fnend)
+	.size	VfmwProc_SetSaveYuvBitWidth, .-VfmwProc_SetSaveYuvBitWidth
+	.align	2
+	.type	VfmwProc_SetTraceImgPeriod, %function
+VfmwProc_SetTraceImgPeriod:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L92
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L92+4
+	mov	r2, r3
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L93:
+	.align	2
+.L92:
+	.word	g_TraceImgPeriod
+	.word	.LC19
+	UNWIND(.fnend)
+	.size	VfmwProc_SetTraceImgPeriod, .-VfmwProc_SetTraceImgPeriod
+	.align	2
+	.type	VfmwProc_SetTraceFramePeriod, %function
+VfmwProc_SetTraceFramePeriod:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L95
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L95+4
+	mov	r2, r3
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L96:
+	.align	2
+.L95:
+	.word	g_TraceFramePeriod
+	.word	.LC20
+	UNWIND(.fnend)
+	.size	VfmwProc_SetTraceFramePeriod, .-VfmwProc_SetTraceFramePeriod
+	.align	2
+	.type	VfmwProc_SetTraceBSPeriod, %function
+VfmwProc_SetTraceBSPeriod:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L98
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L98+4
+	mov	r2, r3
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L99:
+	.align	2
+.L98:
+	.word	g_TraceBsPeriod
+	.word	.LC21
+	UNWIND(.fnend)
+	.size	VfmwProc_SetTraceBSPeriod, .-VfmwProc_SetTraceBSPeriod
+	.align	2
+	.type	VfmwProc_SetTraceCtrl, %function
+VfmwProc_SetTraceCtrl:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L101
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L101+4
+	mov	r2, r3
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L102:
+	.align	2
+.L101:
+	.word	g_TraceCtrl
+	.word	.LC22
+	UNWIND(.fnend)
+	.size	VfmwProc_SetTraceCtrl, .-VfmwProc_SetTraceCtrl
+	.align	2
+	.type	VfmwProc_TestStopDec, %function
+VfmwProc_TestStopDec:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L104
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L104+4
+	mov	r2, r3
+	str	r3, [ip, #908]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L105:
+	.align	2
+.L104:
+	.word	.LANCHOR0
+	.word	.LC23
+	UNWIND(.fnend)
+	.size	VfmwProc_TestStopDec, .-VfmwProc_TestStopDec
+	.align	2
+	.type	VfmwProc_TestTimeSequence, %function
+VfmwProc_TestTimeSequence:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L107
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L107+4
+	mov	r2, r3
+	str	r3, [ip, #912]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L108:
+	.align	2
+.L107:
+	.word	.LANCHOR0
+	.word	.LC24
+	UNWIND(.fnend)
+	.size	VfmwProc_TestTimeSequence, .-VfmwProc_TestTimeSequence
+	.align	2
+	.type	VfmwProc_SaveEL, %function
+VfmwProc_SaveEL:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #64)
+	sub	sp, sp, #64
+	ldr	r4, [r0]
+	cmp	r4, #31
+	bhi	.L109
+	ldr	r6, .L115
+	add	r5, r6, r4, lsl #2
+	ldr	r7, [r5, #916]
+	cmp	r7, #0
+	beq	.L114
+	ldr	r1, .L115+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, .L115+8
+	ldr	r0, [r5, #916]
+	ldr	r3, [r3, #36]
+	blx	r3
+	mov	r3, #0
+	str	r3, [r5, #916]
+.L109:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L114:
+	ldr	r2, [r6, #1044]
+	mov	r1, #50
+	ldr	r8, .L115+8
+	sub	r0, fp, #88
+	add	ip, r2, #1
+	ldr	r3, .L115+12
+	str	r2, [sp]
+	ldr	r9, [r8, #68]
+	ldr	r2, .L115+16
+	str	ip, [r6, #1044]
+	blx	r9
+	ldr	r3, [r8, #32]
+	mov	r2, r7
+	sub	r0, fp, #88
+	mov	r1, #66
+	blx	r3
+	str	r4, [r6, #1048]
+	cmp	r0, #0
+	str	r0, [r5, #916]
+	beq	.L112
+	mov	r3, r4
+	sub	r2, fp, #88
+	ldr	r1, .L115+20
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L109
+.L112:
+	sub	r2, fp, #88
+	ldr	r1, .L115+24
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L109
+.L116:
+	.align	2
+.L115:
+	.word	.LANCHOR0
+	.word	.LC28
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR2+8
+	.word	.LC25
+	.word	.LC26
+	.word	.LC27
+	UNWIND(.fnend)
+	.size	VfmwProc_SaveEL, .-VfmwProc_SaveEL
+	.align	2
+	.type	VfmwProc_SetCurProcChan, %function
+VfmwProc_SetCurProcChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	cmp	r3, #32
+	bhi	.L119
+	ldr	ip, .L120
+	mov	r2, r3
+	ldr	r1, .L120+4
+	mov	r0, #32
+	str	r3, [ip, #1052]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L119:
+	mov	r2, r3
+	ldr	r1, .L120+8
+	mov	r0, #32
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L121:
+	.align	2
+.L120:
+	.word	.LANCHOR0
+	.word	.LC30
+	.word	.LC29
+	UNWIND(.fnend)
+	.size	VfmwProc_SetCurProcChan, .-VfmwProc_SetCurProcChan
+	.align	2
+	.type	VfmwProc_SetSaveFileAfterReset, %function
+VfmwProc_SetSaveFileAfterReset:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	cmp	r3, #1
+	bls	.L124
+	mov	r2, r3
+	ldr	r1, .L125
+	mov	r0, #32
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L124:
+	ldr	ip, .L125+4
+	mov	r2, r3
+	ldr	r1, .L125+8
+	mov	r0, #32
+	str	r3, [ip, #1056]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L126:
+	.align	2
+.L125:
+	.word	.LC32
+	.word	.LANCHOR0
+	.word	.LC31
+	UNWIND(.fnend)
+	.size	VfmwProc_SetSaveFileAfterReset, .-VfmwProc_SetSaveFileAfterReset
+	.align	2
+	.type	VfmwProc_SetUSE_FF_APT_EN, %function
+VfmwProc_SetUSE_FF_APT_EN:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	cmp	r3, #1
+	bls	.L129
+	mov	r2, r3
+	ldr	r1, .L130
+	mov	r0, #32
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L129:
+	ldr	ip, .L130+4
+	mov	r2, r3
+	ldr	r1, .L130+8
+	mov	r0, #32
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L131:
+	.align	2
+.L130:
+	.word	.LC34
+	.word	USE_FF_APT_EN
+	.word	.LC33
+	UNWIND(.fnend)
+	.size	VfmwProc_SetUSE_FF_APT_EN, .-VfmwProc_SetUSE_FF_APT_EN
+	.align	2
+	.type	VfmwProc_SetVp9DecFrameNum, %function
+VfmwProc_SetVp9DecFrameNum:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L133
+	ldr	r3, [r0]
+	mov	r0, #32
+	ldr	r1, .L133+4
+	mov	r2, r3
+	str	r3, [ip]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L134:
+	.align	2
+.L133:
+	.word	g_CfgVp9FrmNum
+	.word	.LC35
+	UNWIND(.fnend)
+	.size	VfmwProc_SetVp9DecFrameNum, .-VfmwProc_SetVp9DecFrameNum
+	.align	2
+	.type	VfmwProc_SetDefaultOutputOrder, %function
+VfmwProc_SetDefaultOutputOrder:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, [r0]
+	cmp	r4, #7
+	mov	r2, r4
+	bhi	.L137
+	ldr	r1, .L138
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, .L138+4
+	str	r4, [r3, #72]
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L137:
+	ldr	r1, .L138+8
+	mov	r0, #32
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	dprint_vfmw
+.L139:
+	.align	2
+.L138:
+	.word	.LC37
+	.word	.LANCHOR2
+	.word	.LC36
+	UNWIND(.fnend)
+	.size	VfmwProc_SetDefaultOutputOrder, .-VfmwProc_SetDefaultOutputOrder
+	.align	2
+	.global	VCTRL_Isr_0
+	.type	VCTRL_Isr_0, %function
+VCTRL_Isr_0:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #0
+	bl	VDMDRV_IsrProcess
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_Isr_0, .-VCTRL_Isr_0
+	.align	2
+	.global	VCTRL_Scd_Isr
+	.type	VCTRL_Scd_Isr, %function
+VCTRL_Scd_Isr:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #0
+	bl	SM_SCDIntServeProc
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_Scd_Isr, .-VCTRL_Scd_Isr
+	.align	2
+	.global	VCTRL_MMU_ISR
+	.type	VCTRL_MMU_ISR, %function
+VCTRL_MMU_ISR:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #0
+	bl	VDMDRV_MMUIntServeProc
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_MMU_ISR, .-VCTRL_MMU_ISR
+	.align	2
+	.type	VfmwProc_SaveReorderMetadata, %function
+VfmwProc_SaveReorderMetadata:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #64)
+	sub	sp, sp, #64
+	ldr	r4, [r0]
+	cmp	r4, #31
+	bhi	.L143
+	ldr	r6, .L149
+	add	r5, r6, r4, lsl #2
+	ldr	r7, [r5, #1060]
+	cmp	r7, #0
+	beq	.L148
+	ldr	r1, .L149+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, .L149+8
+	ldr	r0, [r5, #1060]
+	ldr	r3, [r3, #36]
+	blx	r3
+	mov	r3, #0
+	str	r3, [r5, #1060]
+.L143:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L148:
+	ldr	r8, .L149+8
+	mov	r0, #24
+	ldr	r9, [r8, #68]
+	bl	VFMW_GetString
+	ldr	r2, [r6, #1188]
+	mov	r1, #50
+	ldr	r3, .L149+12
+	add	ip, r2, #1
+	str	ip, [r6, #1188]
+	str	r2, [sp]
+	mov	r2, r0
+	sub	r0, fp, #88
+	blx	r9
+	ldr	r3, [r8, #32]
+	mov	r2, r7
+	sub	r0, fp, #88
+	mov	r1, #66
+	blx	r3
+	str	r4, [r6, #1192]
+	cmp	r0, #0
+	str	r0, [r5, #1060]
+	beq	.L146
+	mov	r3, r4
+	sub	r2, fp, #88
+	ldr	r1, .L149+16
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L143
+.L146:
+	sub	r2, fp, #88
+	ldr	r1, .L149+20
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L143
+.L150:
+	.align	2
+.L149:
+	.word	.LANCHOR0
+	.word	.LC40
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR2+8
+	.word	.LC38
+	.word	.LC39
+	UNWIND(.fnend)
+	.size	VfmwProc_SaveReorderMetadata, .-VfmwProc_SaveReorderMetadata
+	.align	2
+	.type	VfmwProc_SaveMetadata, %function
+VfmwProc_SaveMetadata:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #64)
+	sub	sp, sp, #64
+	ldr	r4, [r0]
+	cmp	r4, #31
+	bls	.L157
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L157:
+	ldr	r5, .L159
+	mov	r1, r4
+	ldr	r7, .L159+4
+	mov	r0, #2
+	add	r6, r7, r4, lsl #2
+	ldr	r3, [r5, #24]
+	blx	r3
+	ldr	r8, [r6, #1196]
+	cmp	r8, #0
+	beq	.L158
+	ldr	r1, .L159+8
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, [r5, #36]
+	ldr	r0, [r6, #1196]
+	blx	r3
+	mov	r3, #0
+	str	r3, [r6, #1196]
+.L156:
+	ldr	r3, [r5, #28]
+	mov	r1, r4
+	mov	r0, #2
+	blx	r3
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L158:
+	mov	r0, #23
+	ldr	r9, [r5, #68]
+	bl	VFMW_GetString
+	ldr	r2, [r7, #1324]
+	ldr	r3, .L159+12
+	mov	r1, #50
+	add	ip, r2, #1
+	str	ip, [r7, #1324]
+	str	r2, [sp]
+	mov	r2, r0
+	sub	r0, fp, #88
+	blx	r9
+	mov	r2, r8
+	sub	r0, fp, #88
+	ldr	r3, [r5, #32]
+	mov	r1, #66
+	blx	r3
+	sub	r2, fp, #88
+	str	r4, [r7, #1328]
+	cmp	r0, #0
+	str	r0, [r6, #1196]
+	beq	.L154
+	mov	r3, r4
+	ldr	r1, .L159+16
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L156
+.L154:
+	ldr	r1, .L159+20
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L156
+.L160:
+	.align	2
+.L159:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC40
+	.word	.LANCHOR2+8
+	.word	.LC41
+	.word	.LC42
+	UNWIND(.fnend)
+	.size	VfmwProc_SaveMetadata, .-VfmwProc_SaveMetadata
+	.align	2
+	.type	VfmwProc_Save1DYUV, %function
+VfmwProc_Save1DYUV:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #64)
+	sub	sp, sp, #64
+	ldr	r4, .L168
+	ldmia	r0, {r5, r7}
+	mov	r3, r0
+	ldr	r8, [r3, #8]
+	ldr	r1, [r4, #204]
+	mov	r0, r5
+	blx	r1
+	subs	r6, r0, #0
+	beq	.L167
+	mov	r0, #22
+	ldr	r9, [r4, #68]
+	bl	VFMW_GetString
+	str	r5, [sp]
+	mov	r1, #50
+	ldr	r3, .L168+4
+	mov	r2, r0
+	sub	r0, fp, #88
+	blx	r9
+	sub	r0, fp, #88
+	ldr	r3, [r4, #32]
+	mov	r2, #0
+	mov	r1, #66
+	blx	r3
+	subs	r5, r0, #0
+	beq	.L164
+	ldr	r3, .L168+8
+	ldr	ip, [r3, #148]
+	cmp	ip, #0
+	beq	.L165
+	mov	lr, #1
+	mov	r3, r8
+	mov	r2, r7
+	mov	r1, r6
+	str	lr, [sp]
+	blx	ip
+.L166:
+	mov	r0, r5
+	ldr	r3, [r4, #36]
+	blx	r3
+	sub	r2, fp, #88
+	ldr	r1, .L168+12
+	mov	r0, #32
+	bl	dprint_vfmw
+.L163:
+	ldr	r3, [r4, #156]
+	mov	r0, r6
+	blx	r3
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L165:
+	mov	r0, ip
+	movw	r2, #7391
+	ldr	r1, .L168+16
+	bl	dprint_vfmw
+	b	.L166
+.L167:
+	mov	r2, r5
+	ldr	r1, .L168+20
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L163
+.L164:
+	sub	r2, fp, #88
+	ldr	r1, .L168+24
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L163
+.L169:
+	.align	2
+.L168:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR2+8
+	.word	g_vdm_hal_fun_ptr
+	.word	.LC45
+	.word	.LC44
+	.word	.LC43
+	.word	.LC46
+	UNWIND(.fnend)
+	.size	VfmwProc_Save1DYUV, .-VfmwProc_Save1DYUV
+	.align	2
+	.type	VfmwProc_SaveSeg, %function
+VfmwProc_SaveSeg:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #64)
+	sub	sp, sp, #64
+	ldr	r4, [r0]
+	cmp	r4, #31
+	bhi	.L170
+	ldr	r6, .L176
+	add	r5, r6, r4, lsl #2
+	ldr	r7, [r5, #1332]
+	cmp	r7, #0
+	beq	.L175
+	ldr	r1, .L176+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, .L176+8
+	ldr	r0, [r5, #1332]
+	ldr	r3, [r3, #36]
+	blx	r3
+	mov	r3, #0
+	str	r3, [r5, #1332]
+.L170:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L175:
+	ldr	r8, .L176+8
+	mov	r0, #19
+	ldr	r9, [r8, #68]
+	bl	VFMW_GetString
+	ldr	r2, [r6, #1460]
+	mov	r1, #50
+	ldr	r3, .L176+12
+	add	ip, r2, #1
+	str	ip, [r6, #1460]
+	str	r2, [sp]
+	mov	r2, r0
+	sub	r0, fp, #88
+	blx	r9
+	ldr	r3, [r8, #32]
+	mov	r2, r7
+	sub	r0, fp, #88
+	mov	r1, #66
+	blx	r3
+	str	r4, [r6, #1464]
+	cmp	r0, #0
+	str	r0, [r5, #1332]
+	beq	.L173
+	mov	r3, r4
+	sub	r2, fp, #88
+	ldr	r1, .L176+16
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L170
+.L173:
+	sub	r2, fp, #88
+	ldr	r1, .L176+20
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L170
+.L177:
+	.align	2
+.L176:
+	.word	.LANCHOR0
+	.word	.LC49
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR2+8
+	.word	.LC47
+	.word	.LC48
+	UNWIND(.fnend)
+	.size	VfmwProc_SaveSeg, .-VfmwProc_SaveSeg
+	.align	2
+	.type	VfmwProc_Savestream, %function
+VfmwProc_Savestream:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #64)
+	sub	sp, sp, #64
+	ldr	r4, [r0]
+	cmp	r4, #31
+	bhi	.L178
+	ldr	r6, .L184
+	add	r5, r6, r4, lsl #2
+	ldr	r7, [r5, #1468]
+	cmp	r7, #0
+	beq	.L183
+	ldr	r1, .L184+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, .L184+8
+	ldr	r0, [r5, #1468]
+	ldr	r3, [r3, #36]
+	blx	r3
+	mov	r3, #0
+	str	r3, [r5, #1468]
+.L178:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L183:
+	ldr	r8, .L184+8
+	mov	r0, #18
+	ldr	r9, [r8, #68]
+	bl	VFMW_GetString
+	ldr	r2, [r6, #1596]
+	mov	r1, #50
+	ldr	r3, .L184+12
+	add	ip, r2, #1
+	str	ip, [r6, #1596]
+	str	r2, [sp]
+	mov	r2, r0
+	sub	r0, fp, #88
+	blx	r9
+	ldr	r3, [r8, #32]
+	mov	r2, r7
+	sub	r0, fp, #88
+	mov	r1, #66
+	blx	r3
+	str	r4, [r6, #1600]
+	cmp	r0, #0
+	str	r0, [r5, #1468]
+	beq	.L181
+	mov	r3, r4
+	sub	r2, fp, #88
+	ldr	r1, .L184+16
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L178
+.L181:
+	sub	r2, fp, #88
+	ldr	r1, .L184+20
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L178
+.L185:
+	.align	2
+.L184:
+	.word	.LANCHOR0
+	.word	.LC52
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR2+8
+	.word	.LC50
+	.word	.LC51
+	UNWIND(.fnend)
+	.size	VfmwProc_Savestream, .-VfmwProc_Savestream
+	.align	2
+	.type	VfmwProc_SaveYUV, %function
+VfmwProc_SaveYUV:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 104
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #116)
+	sub	sp, sp, #116
+	ldr	r6, [r0]
+	cmp	r6, #31
+	bls	.L196
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L196:
+	ldr	r7, .L199
+	mov	r1, r6
+	ldr	r4, .L199+4
+	mov	r0, #2
+	add	r8, r4, r6, lsl #2
+	ldr	r3, [r7, #24]
+	blx	r3
+	ldr	r5, [r8, #1604]
+	cmp	r5, #0
+	beq	.L197
+	ldr	r1, .L199+8
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r3, [r7, #36]
+	ldr	r0, [r8, #1604]
+	mov	r5, #0
+	blx	r3
+	ldr	r0, [r4, #1744]
+	ldr	r3, .L199+12
+	mvn	r2, #0
+	cmp	r0, r5
+	str	r5, [r8, #1604]
+	str	r5, [r4, #1760]
+	str	r2, [r3, #76]
+	str	r5, [r4, #1764]
+	str	r5, [r4, #1768]
+	str	r5, [r4, #1772]
+	str	r5, [r4, #1776]
+	str	r5, [r4, #1780]
+	str	r5, [r4, #1788]
+	str	r5, [r4, #1784]
+	bne	.L198
+.L192:
+	ldr	r3, [r7, #28]
+	mov	r1, r6
+	mov	r0, #2
+	blx	r3
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L198:
+	ldr	r1, [r4, #1740]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [r4, #1752]
+	ldr	r1, [r4, #1740]
+	ldr	r0, [r4, #1744]
+	bl	MEM_DelMemRecord
+	mov	r1, r5
+	ldr	r3, [r7, #48]
+	mov	r2, #24
+	ldr	r0, .L199+16
+	blx	r3
+	b	.L192
+.L197:
+	mov	r0, #20
+	ldr	r10, [r7, #68]
+	bl	VFMW_GetString
+	ldr	r3, [r4, #1732]
+	ldr	r9, .L199+12
+	mov	r1, #100
+	add	r2, r3, #1
+	str	r2, [r4, #1732]
+	str	r3, [sp]
+	add	r3, r9, #8
+	mov	r2, r0
+	sub	r0, fp, #144
+	blx	r10
+	sub	r0, fp, #144
+	ldr	r3, [r7, #32]
+	mov	r2, r5
+	movw	r1, #578
+	blx	r3
+	cmp	r0, #0
+	str	r0, [r8, #1604]
+	beq	.L189
+	mov	r2, #24
+	mov	r1, r5
+	ldr	r3, [r7, #48]
+	ldr	r0, .L199+16
+	blx	r3
+	mov	r0, #27
+	mov	r3, #3
+	str	r3, [r4, #1756]
+	bl	VFMW_GetString
+	str	r5, [sp]
+	ldr	r3, .L199+16
+	mov	r2, #47185920
+	mov	r1, r5
+	bl	MEM_AllocMemBlock
+	cmp	r0, #0
+	beq	.L190
+	ldr	r1, .L199+20
+	mov	r0, #1
+	bl	dprint_vfmw
+	ldr	r3, [r7, #36]
+	ldr	r0, [r8, #1604]
+	blx	r3
+	mvn	r3, #0
+	str	r5, [r8, #1604]
+	str	r5, [r4, #1760]
+	str	r5, [r4, #1764]
+	str	r5, [r4, #1768]
+	str	r5, [r4, #1772]
+	str	r5, [r4, #1776]
+	str	r5, [r4, #1780]
+	str	r5, [r4, #1784]
+	str	r3, [r9, #76]
+	b	.L192
+.L189:
+	sub	r2, fp, #144
+	ldr	r1, .L199+24
+	mov	r0, #32
+	bl	dprint_vfmw
+	b	.L192
+.L190:
+	ldr	r2, [r4, #1752]
+	mov	r5, r6, lsr #24
+	ldr	r1, [r4, #1740]
+	ldr	r0, [r4, #1744]
+	bl	MEM_AddMemRecord
+	ldr	ip, [r4, #1740]
+	and	lr, r6, #3
+	sub	r2, fp, #144
+	ldr	r1, .L199+28
+	mov	r3, r5
+	str	lr, [sp]
+	mov	r0, #32
+	add	r8, ip, #9437184
+	add	r10, ip, #11796480
+	str	ip, [r4, #1768]
+	str	r8, [r4, #1764]
+	add	r8, ip, #14155776
+	str	r10, [r4, #1760]
+	add	r10, ip, #23592960
+	str	r8, [r4, #1780]
+	add	r8, ip, #25952256
+	str	r10, [r4, #1776]
+	add	ip, ip, #28311552
+	str	r8, [r4, #1772]
+	str	ip, [r4, #1788]
+	str	r5, [r9, #76]
+	str	lr, [r4, #1784]
+	bl	dprint_vfmw
+	b	.L192
+.L200:
+	.align	2
+.L199:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC56
+	.word	.LANCHOR2
+	.word	.LANCHOR0+1736
+	.word	.LC53
+	.word	.LC55
+	.word	.LC54
+	UNWIND(.fnend)
+	.size	VfmwProc_SaveYUV, .-VfmwProc_SaveYUV
+	.align	2
+	.type	VfmwProc_SetScdPrint, %function
+VfmwProc_SetScdPrint:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, .L202
+	mov	r1, #1
+	ldr	r0, [r0]
+	mov	r3, #67108864
+	ldr	r5, [r4]
+	str	r3, [r4]
+	bl	PrintScdRawState
+	str	r5, [r4]
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L203:
+	.align	2
+.L202:
+	.word	g_PrintEnable
+	UNWIND(.fnend)
+	.size	VfmwProc_SetScdPrint, .-VfmwProc_SetScdPrint
+	.align	2
+	.type	VfmwProc_PrintTracer, %function
+VfmwProc_PrintTracer:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r1, .L205
+	ldr	r4, [r0]
+	mov	r0, #32
+	bl	dprint_vfmw
+	mov	r0, r4
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	DBG_PrintTracer
+.L206:
+	.align	2
+.L205:
+	.word	.LC57
+	UNWIND(.fnend)
+	.size	VfmwProc_PrintTracer, .-VfmwProc_PrintTracer
+	.align	2
+	.type	VfmwProc_SetSmmuIrqEnable, %function
+VfmwProc_SetSmmuIrqEnable:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, [r0]
+	cmp	r4, #0
+	ldmnefd	sp, {r4, r5, fp, sp, pc}
+	ldr	r5, .L211
+	ldr	r3, [r5, #80]
+	cmp	r3, #1
+	beq	.L210
+	ldr	r1, .L211+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	mov	r3, #1
+	str	r3, [r5, #80]
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L210:
+	ldr	r1, .L211+8
+	mov	r0, #32
+	bl	dprint_vfmw
+	str	r4, [r5, #80]
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L212:
+	.align	2
+.L211:
+	.word	.LANCHOR2
+	.word	.LC59
+	.word	.LC58
+	UNWIND(.fnend)
+	.size	VfmwProc_SetSmmuIrqEnable, .-VfmwProc_SetSmmuIrqEnable
+	.align	2
+	.type	VfmwProc_SetSedOnlyEnable, %function
+VfmwProc_SetSedOnlyEnable:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	cmp	r3, #0
+	beq	.L215
+	ldr	r3, .L216
+	mov	r2, #1
+	ldr	r1, .L216+4
+	mov	r0, #32
+	str	r2, [r3, #84]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L215:
+	ldr	r2, .L216
+	mov	r0, #32
+	ldr	r1, .L216+8
+	str	r3, [r2, #84]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L217:
+	.align	2
+.L216:
+	.word	.LANCHOR2
+	.word	.LC61
+	.word	.LC60
+	UNWIND(.fnend)
+	.size	VfmwProc_SetSedOnlyEnable, .-VfmwProc_SetSedOnlyEnable
+	.align	2
+	.type	VfmwProc_CloseModuleLowly, %function
+VfmwProc_CloseModuleLowly:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	cmp	r3, #31
+	bhi	.L220
+	ldr	lr, .L221
+	mov	r2, r3
+	mov	ip, #0
+	ldr	r1, .L221+4
+	mov	r0, #32
+	ldr	r3, [lr, r3, asl #2]
+	str	ip, [r3, #1168]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L220:
+	ldr	r1, .L221+8
+	mov	r0, #0
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L222:
+	.align	2
+.L221:
+	.word	.LANCHOR0
+	.word	.LC16
+	.word	.LC62
+	UNWIND(.fnend)
+	.size	VfmwProc_CloseModuleLowly, .-VfmwProc_CloseModuleLowly
+	.align	2
+	.type	VfmwProc_OpenModuleLowly, %function
+VfmwProc_OpenModuleLowly:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	cmp	r3, #31
+	bhi	.L225
+	ldr	lr, .L226
+	mov	r2, r3
+	mov	ip, #1
+	ldr	r1, .L226+4
+	mov	r0, #32
+	ldr	r3, [lr, r3, asl #2]
+	str	ip, [r3, #1168]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L225:
+	ldr	r1, .L226+8
+	mov	r0, #0
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L227:
+	.align	2
+.L226:
+	.word	.LANCHOR0
+	.word	.LC16
+	.word	.LC62
+	UNWIND(.fnend)
+	.size	VfmwProc_OpenModuleLowly, .-VfmwProc_OpenModuleLowly
+	.align	2
+	.type	VCTRL_StopTask.part.9, %function
+VCTRL_StopTask.part.9:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L240
+	ldr	r3, [r5, #132]
+	cmp	r3, #1
+	beq	.L231
+	ldr	r6, .L240+4
+	mov	r0, #10
+	mov	r4, #49
+	ldr	r3, [r6, #120]
+	blx	r3
+	b	.L232
+.L239:
+	ldr	r3, [r6, #120]
+	blx	r3
+	subs	r4, r4, #1
+	beq	.L238
+.L232:
+	ldr	r3, [r5, #132]
+	mov	r0, #10
+	cmp	r3, #1
+	bne	.L239
+.L231:
+	mov	r0, #0
+.L230:
+	mov	r3, #0
+	str	r3, [r5, #136]
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L238:
+	mvn	r0, #0
+	b	.L230
+.L241:
+	.align	2
+.L240:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_StopTask.part.9, .-VCTRL_StopTask.part.9
+	.align	2
+	.type	VCTRL_StartTask.part.10, %function
+VCTRL_StartTask.part.10:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L254
+	ldr	r3, [r5, #132]
+	cmp	r3, #2
+	beq	.L245
+	ldr	r6, .L254+4
+	mov	r0, #10
+	mov	r4, #49
+	ldr	r3, [r6, #120]
+	blx	r3
+	b	.L246
+.L253:
+	ldr	r3, [r6, #120]
+	blx	r3
+	subs	r4, r4, #1
+	beq	.L252
+.L246:
+	ldr	r3, [r5, #132]
+	mov	r0, #10
+	cmp	r3, #2
+	bne	.L253
+.L245:
+	mov	r0, #0
+.L244:
+	mov	r3, #0
+	str	r3, [r5, #136]
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L252:
+	mvn	r0, #0
+	b	.L244
+.L255:
+	.align	2
+.L254:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_StartTask.part.10, .-VCTRL_StartTask.part.10
+	.align	2
+	.type	VCTRL_SetSendStreamAgainFlag.part.11, %function
+VCTRL_SetSendStreamAgainFlag.part.11:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L257
+	movw	r2, #1290
+	ldr	r1, .L257+4
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L258:
+	.align	2
+.L257:
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_SetSendStreamAgainFlag.part.11, .-VCTRL_SetSendStreamAgainFlag.part.11
+	.align	2
+	.type	VCTRL_CanBeDecodedByHardWare.part.19, %function
+VCTRL_CanBeDecodedByHardWare.part.19:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	sub	r3, r0, #19
+	cmp	r0, #14
+	cmpne	r3, #1
+	movls	r0, #1
+	movhi	r0, #0
+	eor	r0, r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_CanBeDecodedByHardWare.part.19, .-VCTRL_CanBeDecodedByHardWare.part.19
+	.align	2
+	.global	VCTRL_Suspend
+	.type	VCTRL_Suspend, %function
+VCTRL_Suspend:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #20)
+	sub	sp, sp, #20
+	ldr	r6, .L314
+	ldr	r8, .L314+4
+	ldr	r3, [r6]
+	blx	r3
+	ldr	r3, [r8]
+	cmp	r3, #0
+	mov	r9, r0
+	beq	.L261
+	mov	r0, #0
+	blx	r3
+.L262:
+	mov	r0, #0
+	mov	r4, #32
+	mov	r5, r0
+	bl	SCDDRV_PrepareSleep
+	mov	r0, r5
+	mov	r7, r5
+	bl	VDMDRV_PrepareSleep
+	ldr	r3, [r6]
+	blx	r3
+	mov	r10, r0
+.L271:
+	mov	r0, #0
+	bl	SCDDRV_GetSleepStage
+	cmp	r0, #2
+	bne	.L306
+	mov	r0, #0
+	bl	VDMDRV_GetSleepStage
+	cmp	r0, #2
+	bne	.L307
+.L266:
+	ldr	r3, .L314+8
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L308
+.L273:
+	ldr	r3, .L314+12
+	ldr	r2, [r3, #128]
+	cmp	r2, #1
+	beq	.L309
+.L279:
+	ldr	r3, [r6]
+	blx	r3
+	ldr	r1, .L314+16
+	cmp	r9, r0
+	rsbls	r2, r9, r0
+	mvnhi	r9, r9
+	addhi	r2, r9, r0
+	mov	r0, #0
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, lr}
+	b	dprint_vfmw
+.L306:
+	mov	r0, #0
+	str	r7, [fp, #-48]
+	bl	VDMDRV_GetSleepStage
+	ldr	r3, [fp, #-48]
+	cmp	r0, #2
+	bne	.L282
+	mov	r5, #1
+	mov	r2, r5
+.L283:
+	tst	r2, r3
+	bne	.L266
+	subs	r4, r4, #1
+	beq	.L310
+	ldr	r3, [r6, #120]
+	mov	r0, #10
+	blx	r3
+	eor	r3, r5, #1
+	eor	r2, r7, #1
+	orrs	r3, r3, r2
+	bne	.L271
+	ldr	r3, .L314+8
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	bne	.L273
+.L308:
+	ldr	r3, [r8, #32]
+	cmp	r3, #0
+	beq	.L274
+	mov	r0, #0
+	blx	r3
+.L274:
+	ldr	r3, [r8, #24]
+	cmp	r3, #0
+	beq	.L311
+	mov	r0, #0
+	blx	r3
+	ldr	r3, [r8, #8]
+	cmp	r3, #0
+	beq	.L276
+.L313:
+	mov	r0, #0
+	blx	r3
+.L277:
+	ldr	r3, [r8, #40]
+	cmp	r3, #0
+	beq	.L273
+	mov	r0, #0
+	blx	r3
+	ldr	r3, .L314+12
+	ldr	r2, [r3, #128]
+	cmp	r2, #1
+	bne	.L279
+.L309:
+	mov	r2, #2
+	str	r2, [r3, #136]
+	bl	VCTRL_StopTask.part.9
+	b	.L279
+.L307:
+	mov	r7, #1
+	mov	r3, r7
+.L282:
+	mov	r2, r5
+	b	.L283
+.L310:
+	ldr	r3, [r6]
+	blx	r3
+	str	r5, [sp]
+	mov	r3, r7
+	ldr	r1, .L314+20
+	cmp	r10, r0
+	rsbls	r2, r10, r0
+	mvnhi	r10, r10
+	addhi	r2, r10, r0
+	mov	r0, #0
+	bl	dprint_vfmw
+	cmp	r7, #1
+	beq	.L312
+	mov	r2, #0
+	ldr	r1, .L314+24
+	mov	r0, r2
+	bl	dprint_vfmw
+	mov	r0, #0
+	bl	SCDDRV_ForceSleep
+	cmp	r5, #1
+	beq	.L266
+.L288:
+	mov	r2, #0
+	ldr	r1, .L314+28
+	mov	r0, r2
+	bl	dprint_vfmw
+	mov	r0, #0
+	bl	VDMDRV_ForceSleep
+	b	.L266
+.L312:
+	cmp	r5, #1
+	bne	.L288
+	b	.L266
+.L311:
+	mov	r0, r3
+	movw	r2, #387
+	ldr	r1, .L314+32
+	bl	dprint_vfmw
+	ldr	r3, [r8, #8]
+	cmp	r3, #0
+	bne	.L313
+.L276:
+	mov	r0, r3
+	mov	r2, #392
+	ldr	r1, .L314+32
+	bl	dprint_vfmw
+	b	.L277
+.L261:
+	mov	r0, r3
+	movw	r2, #289
+	ldr	r1, .L314+32
+	bl	dprint_vfmw
+	b	.L262
+.L315:
+	.align	2
+.L314:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_vdm_hal_fun_ptr
+	.word	g_HalDisable
+	.word	.LANCHOR0
+	.word	.LC64
+	.word	.LC65
+	.word	.LC66
+	.word	.LC63
+	.word	.LC44
+	UNWIND(.fnend)
+	.size	VCTRL_Suspend, .-VCTRL_Suspend
+	.align	2
+	.type	VfmwProc_TestSuspend, %function
+VfmwProc_TestSuspend:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r1, .L317
+	mov	r2, r0
+	mov	r0, #22
+	bl	dprint_vfmw
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_Suspend
+.L318:
+	.align	2
+.L317:
+	.word	.LC67
+	UNWIND(.fnend)
+	.size	VfmwProc_TestSuspend, .-VfmwProc_TestSuspend
+	.align	2
+	.global	VCTRL_Resume
+	.type	VCTRL_Resume, %function
+VCTRL_Resume:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L343
+	ldr	r3, [r5]
+	blx	r3
+	ldr	r3, .L343+4
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	mov	r4, r0
+	beq	.L339
+.L320:
+	mov	r0, #0
+	bl	SCDDRV_ExitSleep
+	mov	r0, #0
+	bl	VDMDRV_ExitSleep
+	ldr	r3, .L343+8
+	ldr	r2, [r3, #128]
+	cmp	r2, #1
+	beq	.L340
+.L330:
+	ldr	r3, [r5]
+	blx	r3
+	ldr	r1, .L343+12
+	cmp	r4, r0
+	rsbls	r2, r4, r0
+	mvnhi	r2, r4
+	addhi	r2, r2, r0
+	mov	r0, #0
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	dprint_vfmw
+.L339:
+	ldr	r6, .L343+16
+	ldr	r3, [r6, #4]
+	cmp	r3, #0
+	beq	.L341
+	mov	r0, #0
+	blx	r3
+.L322:
+	ldr	r3, [r6, #20]
+	cmp	r3, #0
+	beq	.L342
+	mov	r0, #0
+	blx	r3
+.L324:
+	ldr	r3, [r6, #28]
+	cmp	r3, #0
+	beq	.L325
+	mov	r0, #0
+	blx	r3
+.L325:
+	ldr	r3, [r6, #36]
+	cmp	r3, #0
+	beq	.L326
+	mov	r0, #0
+	blx	r3
+.L326:
+	ldr	r3, [r6, #68]
+	cmp	r3, #0
+	beq	.L327
+	mov	r0, #0
+	blx	r3
+.L328:
+	ldr	r0, [r6, #72]
+	cmp	r0, #0
+	beq	.L329
+	blx	r0
+	b	.L320
+.L340:
+	str	r2, [r3, #136]
+	bl	VCTRL_StartTask.part.10
+	b	.L330
+.L342:
+	mov	r0, r3
+	movw	r2, #435
+	ldr	r1, .L343+20
+	bl	dprint_vfmw
+	b	.L324
+.L327:
+	mov	r0, r3
+	movw	r2, #442
+	ldr	r1, .L343+20
+	bl	dprint_vfmw
+	b	.L328
+.L329:
+	movw	r2, #443
+	ldr	r1, .L343+20
+	bl	dprint_vfmw
+	b	.L320
+.L341:
+	mov	r0, r3
+	movw	r2, #430
+	ldr	r1, .L343+20
+	bl	dprint_vfmw
+	b	.L322
+.L344:
+	.align	2
+.L343:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_HalDisable
+	.word	.LANCHOR0
+	.word	.LC68
+	.word	g_vdm_hal_fun_ptr
+	.word	.LC44
+	UNWIND(.fnend)
+	.size	VCTRL_Resume, .-VCTRL_Resume
+	.align	2
+	.type	VfmwProc_TestResume, %function
+VfmwProc_TestResume:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r1, .L346
+	mov	r2, r0
+	mov	r0, #22
+	bl	dprint_vfmw
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_Resume
+.L347:
+	.align	2
+.L346:
+	.word	.LC67
+	UNWIND(.fnend)
+	.size	VfmwProc_TestResume, .-VfmwProc_TestResume
+	.align	2
+	.global	ChanCtx_Init
+	.type	ChanCtx_Init, %function
+ChanCtx_Init:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L351
+	mov	r2, #384
+	mov	r1, #0
+	ldr	r0, .L351+4
+	ldr	r3, [r3, #48]
+	blx	r3
+	ldr	r3, .L351+8
+	mvn	r1, #0
+	add	r2, r3, #128
+.L349:
+	str	r1, [r3, #4]!
+	cmp	r3, r2
+	bne	.L349
+	ldmfd	sp, {fp, sp, pc}
+.L352:
+	.align	2
+.L351:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_ChanCtx
+	.word	g_ChanCtx+124
+	UNWIND(.fnend)
+	.size	ChanCtx_Init, .-ChanCtx_Init
+	.align	2
+	.global	VCTRL_RecordPosTime
+	.type	VCTRL_RecordPosTime, %function
+VCTRL_RecordPosTime:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	cmp	r0, #11
+	mov	r4, r0
+	bhi	.L360
+	ldr	r6, .L361
+	ldrb	r3, [r6, r0]	@ zero_extendqisi2
+	cmp	r3, #14
+	movhi	r3, #0
+	strhib	r3, [r6, r0]
+	cmp	r0, #10
+	mov	r5, r3
+	ldreq	r3, .L361+4
+	moveq	r2, #1
+	streqb	r2, [r3, #1792]
+	ldr	r3, .L361+8
+	ldr	r3, [r3, #4]
+	blx	r3
+	rsb	r3, r4, r4, lsl #4
+	ldr	r1, .L361+12
+	add	r3, r3, r5
+	ldrb	r2, [r6, r4]	@ zero_extendqisi2
+	add	r2, r2, #1
+	strb	r2, [r6, r4]
+	str	r0, [r1, r3, asl #2]
+	sub	sp, fp, #24
+	ldmfd	sp, {r4, r5, r6, fp, sp, pc}
+.L360:
+	str	r0, [sp]
+	movw	r3, #693
+	ldr	r2, .L361+16
+	mov	r0, #32
+	ldr	r1, .L361+20
+	bl	dprint_vfmw
+	sub	sp, fp, #24
+	ldmfd	sp, {r4, r5, r6, fp, sp, pc}
+.L362:
+	.align	2
+.L361:
+	.word	g_TimeRecId
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_TimeRecTable
+	.word	.LANCHOR1+20
+	.word	.LC69
+	UNWIND(.fnend)
+	.size	VCTRL_RecordPosTime, .-VCTRL_RecordPosTime
+	.align	2
+	.global	VCTRL_RecordData
+	.type	VCTRL_RecordData, %function
+VCTRL_RecordData:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	cmp	r0, #1
+	bhi	.L368
+	ldr	ip, .L369
+	rsb	r2, r0, r0, lsl #4
+	ldr	r4, .L369+4
+	ldrb	r3, [ip, r0]	@ zero_extendqisi2
+	cmp	r3, #14
+	addls	lr, r3, #1
+	movhi	r3, #0
+	add	r3, r2, r3
+	uxtbls	lr, lr
+	movhi	lr, #1
+	str	r1, [r4, r3, asl #2]
+	strb	lr, [ip, r0]
+	sub	sp, fp, #16
+	ldmfd	sp, {r4, fp, sp, pc}
+.L368:
+	str	r0, [sp]
+	movw	r3, #717
+	ldr	r2, .L369+8
+	mov	r0, #32
+	ldr	r1, .L369+12
+	bl	dprint_vfmw
+	sub	sp, fp, #16
+	ldmfd	sp, {r4, fp, sp, pc}
+.L370:
+	.align	2
+.L369:
+	.word	g_DataRecId
+	.word	g_DataTable
+	.word	.LANCHOR1+40
+	.word	.LC70
+	UNWIND(.fnend)
+	.size	VCTRL_RecordData, .-VCTRL_RecordData
+	.align	2
+	.global	VCTRL_Isr_1
+	.type	VCTRL_Isr_1, %function
+VCTRL_Isr_1:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #1
+	bl	VDMDRV_IsrProcess
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_Isr_1, .-VCTRL_Isr_1
+	.align	2
+	.global	VCTRL_Isr_2
+	.type	VCTRL_Isr_2, %function
+VCTRL_Isr_2:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #2
+	bl	VDMDRV_IsrProcess
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_Isr_2, .-VCTRL_Isr_2
+	.align	2
+	.global	VCTRL_Scd_Isr_1
+	.type	VCTRL_Scd_Isr_1, %function
+VCTRL_Scd_Isr_1:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #1
+	bl	SM_SCDIntServeProc
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_Scd_Isr_1, .-VCTRL_Scd_Isr_1
+	.align	2
+	.global	VCTRL_Scd_Isr_2
+	.type	VCTRL_Scd_Isr_2, %function
+VCTRL_Scd_Isr_2:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r0, #2
+	bl	SM_SCDIntServeProc
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_Scd_Isr_2, .-VCTRL_Scd_Isr_2
+	.align	2
+	.global	VCTRL_InformVdmFree
+	.type	VCTRL_InformVdmFree, %function
+VCTRL_InformVdmFree:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L376
+	mov	r0, #0
+	ldr	r3, [r3, #128]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	bx	r3
+.L377:
+	.align	2
+.L376:
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_InformVdmFree, .-VCTRL_InformVdmFree
+	.align	2
+	.global	VCTRL_ExtraWakeUpThread
+	.type	VCTRL_ExtraWakeUpThread, %function
+VCTRL_ExtraWakeUpThread:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L379
+	mov	r0, #0
+	ldr	r3, [r3, #128]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	bx	r3
+.L380:
+	.align	2
+.L379:
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_ExtraWakeUpThread, .-VCTRL_ExtraWakeUpThread
+	.align	2
+	.global	VCTRL_SetMoreGapEnable
+	.type	VCTRL_SetMoreGapEnable, %function
+VCTRL_SetMoreGapEnable:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L387
+	ldr	r3, .L390
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L388
+	ldr	r2, [r3, #4]
+	cmp	r2, #1
+	bne	.L389
+	cmp	r1, #1
+	strls	r1, [r3, #1152]
+	movls	r0, #0
+	movhi	r2, #0
+	strhi	r2, [r3, #1152]
+	mvnhi	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L389:
+	ldr	r3, .L390+4
+	movw	r2, #905
+	ldr	r1, .L390+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L387:
+	ldr	r3, .L390+12
+	movw	r2, #903
+	ldr	r1, .L390+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L388:
+	mov	r0, r3
+	mov	r2, #904
+	ldr	r3, .L390+16
+	ldr	r1, .L390+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L391:
+	.align	2
+.L390:
+	.word	.LANCHOR0
+	.word	.LC72
+	.word	.LC1
+	.word	.LC71
+	.word	.LC2
+	UNWIND(.fnend)
+	.size	VCTRL_SetMoreGapEnable, .-VCTRL_SetMoreGapEnable
+	.align	2
+	.global	VCTRL_SetCallBack
+	.type	VCTRL_SetCallBack, %function
+VCTRL_SetCallBack:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r1, #0
+	beq	.L400
+	cmp	r0, #0
+	beq	.L396
+	cmp	r0, #1
+	bne	.L401
+	ldr	r3, .L402
+	mov	r0, #0
+	str	r1, [r3, #372]
+	ldmfd	sp, {fp, sp, pc}
+.L401:
+	mov	r3, r0
+	ldr	r2, .L402+4
+	ldr	r1, .L402+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L396:
+	ldr	r3, .L402
+	str	r1, [r3, #368]
+	ldmfd	sp, {fp, sp, pc}
+.L400:
+	mov	r0, r1
+	ldr	r3, .L402+12
+	movw	r2, #1022
+	ldr	r1, .L402+16
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L403:
+	.align	2
+.L402:
+	.word	.LANCHOR0
+	.word	.LANCHOR1+60
+	.word	.LC74
+	.word	.LC73
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_SetCallBack, .-VCTRL_SetCallBack
+	.align	2
+	.global	VCTRL_StopTask
+	.type	VCTRL_StopTask, %function
+VCTRL_StopTask:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L406
+	ldr	r2, [r3, #128]
+	cmp	r2, #1
+	bne	.L405
+	mov	r2, #2
+	str	r2, [r3, #136]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_StopTask.part.9
+.L405:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L407:
+	.align	2
+.L406:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_StopTask, .-VCTRL_StopTask
+	.align	2
+	.global	VCTRL_StartTask
+	.type	VCTRL_StartTask, %function
+VCTRL_StartTask:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L410
+	ldr	r2, [r3, #128]
+	cmp	r2, #1
+	bne	.L409
+	str	r2, [r3, #136]
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_StartTask.part.10
+.L409:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L411:
+	.align	2
+.L410:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_StartTask, .-VCTRL_StartTask
+	.align	2
+	.global	VCTRL_SetStreamInterface
+	.type	VCTRL_SetStreamInterface, %function
+VCTRL_SetStreamInterface:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	subs	r6, r1, #0
+	mov	r4, r0
+	beq	.L416
+	ldr	r3, .L418
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L417
+	ldr	r5, .L418+4
+	mov	r2, #12
+	add	r0, r0, #184
+	ldr	r3, [r5, #52]
+	blx	r3
+	mov	r3, r4, asl #4
+	ldr	r0, .L418+8
+	sub	r4, r3, r4, asl #2
+	mov	r1, r6
+	ldr	r3, [r5, #52]
+	add	r0, r0, r4
+	mov	r2, #12
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L417:
+	ldr	r3, .L418+12
+	movw	r2, #1279
+	ldr	r1, .L418+16
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L416:
+	mov	r0, r6
+	ldr	r3, .L418+20
+	movw	r2, #1278
+	ldr	r1, .L418+16
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L419:
+	.align	2
+.L418:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0+1796
+	.word	.LC2
+	.word	.LC1
+	.word	.LC75
+	UNWIND(.fnend)
+	.size	VCTRL_SetStreamInterface, .-VCTRL_SetStreamInterface
+	.align	2
+	.global	VCTRL_SetSendStreamAgainFlag
+	.type	VCTRL_SetSendStreamAgainFlag, %function
+VCTRL_SetSendStreamAgainFlag:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L423
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L422
+	add	r3, r3, #290816
+	mov	r0, #0
+	str	r1, [r3, #796]
+	ldmfd	sp, {fp, sp, pc}
+.L422:
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_SetSendStreamAgainFlag.part.11
+.L424:
+	.align	2
+.L423:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_SetSendStreamAgainFlag, .-VCTRL_SetSendStreamAgainFlag
+	.align	2
+	.global	VCTRL_GetSendStreamAgainFlag
+	.type	VCTRL_GetSendStreamAgainFlag, %function
+VCTRL_GetSendStreamAgainFlag:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L429
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L428
+	add	r0, r0, #290816
+	ldr	r0, [r0, #796]
+	ldmfd	sp, {fp, sp, pc}
+.L428:
+	ldr	r3, .L429+4
+	movw	r2, #1297
+	ldr	r1, .L429+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L430:
+	.align	2
+.L429:
+	.word	.LANCHOR0
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_GetSendStreamAgainFlag, .-VCTRL_GetSendStreamAgainFlag
+	.align	2
+	.global	VCTRL_GetStreamInterface
+	.type	VCTRL_GetStreamInterface, %function
+VCTRL_GetStreamInterface:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L437
+	mov	r4, r0
+	ldr	r1, [r5, r0, asl #2]
+	cmp	r1, #0
+	beq	.L435
+	ldr	r3, .L437+4
+	mov	ip, r0, asl #4
+	ldr	r0, .L437+8
+	sub	ip, ip, r4, asl #2
+	add	r1, r1, #184
+	mov	r2, #12
+	add	r0, r0, ip
+	ldr	r3, [r3, #60]
+	blx	r3
+	cmp	r0, #0
+	bne	.L436
+	ldr	r1, [r5, r4, asl #2]
+	add	r0, r1, #184
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L436:
+	mov	r3, r4
+	movw	r2, #1313
+	ldr	r1, .L437+12
+	mov	r0, #0
+	bl	dprint_vfmw
+.L435:
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L438:
+	.align	2
+.L437:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0+1796
+	.word	.LC76
+	UNWIND(.fnend)
+	.size	VCTRL_GetStreamInterface, .-VCTRL_GetStreamInterface
+	.align	2
+	.global	VCTRL_SetFrameInterface
+	.type	VCTRL_SetFrameInterface, %function
+VCTRL_SetFrameInterface:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	subs	r3, r1, #0
+	beq	.L443
+	ldr	r3, .L445
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L444
+	ldr	r3, .L445+4
+	mov	r2, #12
+	add	r0, r0, #208
+	ldr	r3, [r3, #52]
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L444:
+	ldr	r3, .L445+8
+	movw	r2, #1326
+	ldr	r1, .L445+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L443:
+	mov	r0, r3
+	movw	r2, #1325
+	ldr	r3, .L445+16
+	ldr	r1, .L445+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L446:
+	.align	2
+.L445:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC2
+	.word	.LC1
+	.word	.LC77
+	UNWIND(.fnend)
+	.size	VCTRL_SetFrameInterface, .-VCTRL_SetFrameInterface
+	.align	2
+	.global	VCTRL_GetFrameInterface
+	.type	VCTRL_GetFrameInterface, %function
+VCTRL_GetFrameInterface:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L450
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	addne	r0, r0, #208
+	ldmfd	sp, {fp, sp, pc}
+.L451:
+	.align	2
+.L450:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetFrameInterface, .-VCTRL_GetFrameInterface
+	.align	2
+	.global	VCTRL_GetStreamSize
+	.type	VCTRL_GetStreamSize, %function
+VCTRL_GetStreamSize:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L457
+	ldr	r3, .L460
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L458
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	bne	.L459
+	add	r0, r0, #99328
+	add	r0, r0, #544
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	GetSegStreamSize
+.L459:
+	ldr	r3, .L460+4
+	movw	r2, #1355
+	ldr	r1, .L460+8
+	mov	r0, #0
+	bl	dprint_vfmw
+.L454:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L457:
+	ldr	r3, .L460+12
+	movw	r2, #1353
+	ldr	r1, .L460+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	b	.L454
+.L458:
+	ldr	r3, .L460+16
+	movw	r2, #1354
+	ldr	r1, .L460+8
+	bl	dprint_vfmw
+	b	.L454
+.L461:
+	.align	2
+.L460:
+	.word	.LANCHOR0
+	.word	.LC79
+	.word	.LC1
+	.word	.LC71
+	.word	.LC78
+	UNWIND(.fnend)
+	.size	VCTRL_GetStreamSize, .-VCTRL_GetStreamSize
+	.align	2
+	.global	VCTRL_CheckFreshRaw
+	.type	VCTRL_CheckFreshRaw, %function
+VCTRL_CheckFreshRaw:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	cmp	r0, #31
+	mov	r3, #0
+	str	r3, [fp, #-28]
+	str	r3, [fp, #-24]
+	bhi	.L469
+	ldr	r2, .L472
+	ldr	r0, [r2, r0, asl #2]
+	cmp	r0, #0
+	beq	.L470
+	ldr	r2, [r0, #4]
+	cmp	r2, #1
+	bne	.L471
+	add	r4, r0, #1536
+	sub	r1, fp, #28
+	add	r4, r4, #8
+	mov	r0, r4
+	bl	GetRawStreamNum
+	cmp	r0, #0
+	bne	.L468
+	mov	r0, r4
+	sub	r1, fp, #24
+	bl	GetRawStreamSize
+	cmp	r0, #0
+	bne	.L468
+	ldr	r3, [fp, #-24]
+	mov	r0, #22
+	ldr	r2, [fp, #-28]
+	ldr	r1, .L472+4
+	bl	dprint_vfmw
+	ldr	r3, [fp, #-28]
+	cmp	r3, #0
+	ble	.L468
+	ldr	r0, [fp, #-24]
+	cmp	r0, #3
+	movgt	r0, #0
+	mvnle	r0, #0
+.L464:
+	sub	sp, fp, #16
+	ldmfd	sp, {r4, fp, sp, pc}
+.L468:
+	mvn	r0, #0
+	sub	sp, fp, #16
+	ldmfd	sp, {r4, fp, sp, pc}
+.L471:
+	mov	r0, r3
+	movw	r2, #1372
+	ldr	r3, .L472+8
+	ldr	r1, .L472+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L464
+.L469:
+	mov	r0, r3
+	movw	r2, #1370
+	ldr	r3, .L472+16
+	ldr	r1, .L472+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L464
+.L470:
+	ldr	r3, .L472+20
+	movw	r2, #1371
+	ldr	r1, .L472+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L464
+.L473:
+	.align	2
+.L472:
+	.word	.LANCHOR0
+	.word	.LC80
+	.word	.LC79
+	.word	.LC1
+	.word	.LC71
+	.word	.LC78
+	UNWIND(.fnend)
+	.size	VCTRL_CheckFreshRaw, .-VCTRL_CheckFreshRaw
+	.align	2
+	.global	VCTRL_CheckFreshSeg
+	.type	VCTRL_CheckFreshSeg, %function
+VCTRL_CheckFreshSeg:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	cmp	r0, #31
+	mov	r2, #0
+	str	r2, [fp, #-20]
+	str	r2, [fp, #-16]
+	bhi	.L479
+	ldr	r3, .L482
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L480
+	ldr	r1, [r0, #4]
+	cmp	r1, #1
+	bne	.L481
+	add	r0, r0, #99328
+	sub	r2, fp, #16
+	add	r0, r0, #544
+	sub	r1, fp, #20
+	bl	GetFreshSegStream
+	ldr	r3, [fp, #-16]
+	ldr	r2, [fp, #-20]
+	mov	r0, #22
+	ldr	r1, .L482+4
+	bl	dprint_vfmw
+	ldr	r0, [fp, #-20]
+	cmp	r0, #0
+	movgt	r0, #0
+	mvnle	r0, #0
+.L476:
+	sub	sp, fp, #12
+	ldmfd	sp, {fp, sp, pc}
+.L481:
+	mov	r0, r2
+	ldr	r3, .L482+8
+	movw	r2, #1398
+	ldr	r1, .L482+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L476
+.L479:
+	mov	r0, r2
+	ldr	r3, .L482+16
+	movw	r2, #1396
+	ldr	r1, .L482+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L476
+.L480:
+	ldr	r3, .L482+20
+	movw	r2, #1397
+	ldr	r1, .L482+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L476
+.L483:
+	.align	2
+.L482:
+	.word	.LANCHOR0
+	.word	.LC81
+	.word	.LC79
+	.word	.LC1
+	.word	.LC71
+	.word	.LC78
+	UNWIND(.fnend)
+	.size	VCTRL_CheckFreshSeg, .-VCTRL_CheckFreshSeg
+	.align	2
+	.global	VCTRL_SetDiscardPicParam
+	.type	VCTRL_SetDiscardPicParam, %function
+VCTRL_SetDiscardPicParam:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r4, r0
+	mov	r0, r1
+	bhi	.L490
+	cmp	r1, #0
+	beq	.L491
+	ldr	r5, .L493
+	ldr	r0, [r5, r4, asl #2]
+	cmp	r0, #0
+	beq	.L492
+	ldr	r3, .L493+4
+	mov	r2, #8
+	add	r0, r0, #1424
+	ldr	r3, [r3, #52]
+	blx	r3
+	ldr	r2, [r5, r4, asl #2]
+	mov	r0, #0
+	ldr	r3, [r2, #1424]
+	sub	r3, r3, #1
+	cmp	r3, #1
+	strhi	r0, [r2, #1424]
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L490:
+	ldr	r3, .L493+8
+	movw	r2, #1417
+	ldr	r1, .L493+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L492:
+	ldr	r3, .L493+16
+	movw	r2, #1419
+	ldr	r1, .L493+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L491:
+	ldr	r3, .L493+20
+	movw	r2, #1418
+	ldr	r1, .L493+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L494:
+	.align	2
+.L493:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC71
+	.word	.LC1
+	.word	.LC2
+	.word	.LC82
+	UNWIND(.fnend)
+	.size	VCTRL_SetDiscardPicParam, .-VCTRL_SetDiscardPicParam
+	.align	2
+	.global	VCTRL_GetSyntaxCtx
+	.type	VCTRL_GetSyntaxCtx, %function
+VCTRL_GetSyntaxCtx:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L498
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	addne	r0, r0, #294912
+	addne	r0, r0, #880
+	ldmfd	sp, {fp, sp, pc}
+.L499:
+	.align	2
+.L498:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetSyntaxCtx, .-VCTRL_GetSyntaxCtx
+	.align	2
+	.global	VCTRL_GetImageInterface
+	.type	VCTRL_GetImageInterface, %function
+VCTRL_GetImageInterface:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L503
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	addne	r0, r0, #196
+	ldmfd	sp, {fp, sp, pc}
+.L504:
+	.align	2
+.L503:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetImageInterface, .-VCTRL_GetImageInterface
+	.align	2
+	.global	VCTRL_PartitionMemForStdUser
+	.type	VCTRL_PartitionMemForStdUser, %function
+VCTRL_PartitionMemForStdUser:
+	UNWIND(.fnstart)
+	@ args = 4, pretend = 0, frame = 32
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #36)
+	sub	sp, sp, #36
+	ldr	r9, .L522
+	cmp	r2, #31
+	cmpgt	r1, #31
+	mov	r5, r2
+	mov	r6, r1
+	mov	r8, r0
+	movle	r2, #1
+	movgt	r2, #0
+	ldr	r4, [r9, r0, asl #2]
+	ble	.L518
+	ldr	r1, [fp, #4]
+	cmp	r1, #0
+	cmpne	r3, #0
+	moveq	r7, #1
+	movne	r7, #0
+	beq	.L519
+	ldr	r10, .L522+4
+	mov	r2, #20
+	mov	r1, r7
+	sub	r0, fp, #64
+	str	r3, [fp, #-72]
+	ldr	ip, [r10, #48]
+	blx	ip
+	sub	r1, fp, #64
+	mov	r0, r8
+	str	r5, [fp, #-56]
+	mov	r2, #1
+	str	r5, [fp, #-48]
+	str	r6, [fp, #-60]
+	str	r6, [fp, #-52]
+	strb	r7, [fp, #-63]
+	strb	r7, [fp, #-62]
+	strb	r7, [fp, #-61]
+	strb	r2, [fp, #-64]
+	bl	FSP_ConfigInstance
+	subs	r5, r0, #0
+	bne	.L509
+	ldr	r3, [fp, #-72]
+	mov	r0, r8
+	ldr	r2, [fp, #4]
+	mov	r1, r3
+	sub	r3, fp, #68
+	bl	FSP_ConfigFrameBuf
+	subs	r6, r0, #0
+	bne	.L520
+	mov	r0, r8
+	ldr	r1, .L522+8
+	bl	FSP_GetInstInfo
+	movw	r3, #2182
+	ldrsb	r3, [r9, r3]
+	cmp	r3, #16
+	movge	r3, #16
+	cmp	r3, #2
+	str	r3, [r4, #460]
+	ble	.L521
+	ldr	ip, [r9, #2184]
+	mov	r2, #64
+	ldr	r3, [r10, #48]
+	mov	r1, r5
+	add	r0, r4, #392
+	str	ip, [r4, #456]
+	blx	r3
+	ldr	r0, [r4, #460]
+	cmp	r0, #0
+	ble	.L507
+	ldr	r2, .L522+8
+	add	r4, r4, #388
+	mov	r3, r5
+.L514:
+	ldr	r1, [r2, #16]
+	add	r3, r3, #1
+	cmp	r3, r0
+	add	r2, r2, #88
+	str	r1, [r4, #4]!
+	bne	.L514
+.L507:
+	mov	r0, r5
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L519:
+	mov	r0, r2
+	ldr	r1, .L522+12
+	bl	dprint_vfmw
+	mvn	r5, #0
+	b	.L507
+.L509:
+	mov	r0, r7
+	ldr	r1, .L522+16
+	bl	dprint_vfmw
+.L517:
+	mvn	r5, #0
+	mov	r0, r5
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L520:
+	mov	r0, r5
+	ldr	r1, .L522+20
+	bl	dprint_vfmw
+	b	.L517
+.L521:
+	mov	r0, r6
+	movw	r3, #1571
+	ldr	r2, .L522+24
+	ldr	r1, .L522+28
+	bl	dprint_vfmw
+	b	.L517
+.L518:
+	mov	r3, r5
+	mov	r2, r1
+	mov	r0, #0
+	ldr	r1, .L522+32
+	bl	dprint_vfmw
+	mvn	r5, #0
+	b	.L507
+.L523:
+	.align	2
+.L522:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0+2180
+	.word	.LC84
+	.word	.LC87
+	.word	.LC85
+	.word	.LANCHOR1+80
+	.word	.LC86
+	.word	.LC83
+	UNWIND(.fnend)
+	.size	VCTRL_PartitionMemForStdUser, .-VCTRL_PartitionMemForStdUser
+	.align	2
+	.global	VCTRL_UnInstallChan
+	.type	VCTRL_UnInstallChan, %function
+VCTRL_UnInstallChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r4, r0
+	bl	FSP_DisableInstance
+	mov	r0, r4
+	bl	CloseUsdPool_WithMem
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_UnInstallChan, .-VCTRL_UnInstallChan
+	.align	2
+	.global	DelAllFrameMemRecord
+	.type	DelAllFrameMemRecord, %function
+DelAllFrameMemRecord:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r1, #0
+	movne	r4, r1
+	addne	r5, r4, #2304
+	beq	.L542
+.L531:
+	ldr	r3, [r4]
+	cmp	r3, #255
+	beq	.L528
+	ldr	r2, [r4, #12]
+	ldr	r1, [r4, #24]
+	ldr	r0, [r4, #32]
+	bl	MEM_DelMemRecord
+.L528:
+	ldr	r3, [r4, #4]
+	cmp	r3, #255
+	beq	.L529
+	ldr	r2, [r4, #16]
+	ldr	r1, [r4, #40]
+	ldr	r0, [r4, #48]
+	bl	MEM_DelMemRecord
+.L529:
+	ldr	r3, [r4, #8]
+	cmp	r3, #255
+	beq	.L530
+	ldr	r2, [r4, #20]
+	ldr	r1, [r4, #56]
+	ldr	r0, [r4, #64]
+	bl	MEM_DelMemRecord
+.L530:
+	add	r4, r4, #72
+	cmp	r4, r5
+	bne	.L531
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L542:
+	mov	r0, r1
+	ldr	r3, .L543
+	movw	r2, #1610
+	ldr	r1, .L543+4
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L544:
+	.align	2
+.L543:
+	.word	.LC88
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	DelAllFrameMemRecord, .-DelAllFrameMemRecord
+	.align	2
+	.global	VCTRL_FreeChanResource
+	.type	VCTRL_FreeChanResource, %function
+VCTRL_FreeChanResource:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	subs	r5, r1, #0
+	beq	.L569
+	ldr	r4, [r5]
+	cmp	r4, #0
+	beq	.L570
+	ldr	r3, [r5, #16]
+	cmp	r3, #1
+	beq	.L550
+	ldr	r2, [r4, #16]
+	ldr	r1, [r4, #4]
+	ldr	r0, [r4, #8]
+	bl	MEM_DelMemRecord
+.L551:
+	ldr	r3, [r5, #20]
+	cmp	r3, #1
+	beq	.L571
+.L549:
+	ldr	r4, [r5, #4]
+	cmp	r4, #0
+	beq	.L572
+	ldr	r2, [r4, #16]
+	ldr	r1, [r4, #4]
+	ldr	r0, [r4, #8]
+	bl	MEM_DelMemRecord
+	ldr	r3, [r5, #24]
+	cmp	r3, #1
+	beq	.L573
+.L554:
+	ldr	r4, [r5, #8]
+	cmp	r4, #0
+	beq	.L574
+.L555:
+	ldr	r2, [r4, #16]
+	ldr	r1, [r4, #4]
+	ldr	r0, [r4, #8]
+	bl	MEM_DelMemRecord
+	ldr	r3, [r5, #28]
+	cmp	r3, #1
+	bne	.L556
+	ldr	r0, [r4, #8]
+	cmp	r0, #0
+	bne	.L575
+.L556:
+	ldr	r3, .L577
+	ldr	r0, [r4, #4]
+	ldr	r3, [r3, #164]
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L550:
+	ldr	r1, [r5, #12]
+	cmp	r1, #0
+	beq	.L576
+	bl	DelAllFrameMemRecord
+	cmp	r0, #0
+	beq	.L551
+	ldr	r1, .L577+4
+	mov	r0, #0
+	bl	dprint_vfmw
+	ldr	r3, [r5, #20]
+	cmp	r3, #1
+	bne	.L549
+.L571:
+	ldr	r0, [r4, #8]
+	cmp	r0, #0
+	beq	.L549
+	ldr	r1, [r4, #4]
+	bl	MEM_ReleaseMemBlock
+	b	.L549
+.L573:
+	ldr	r0, [r4, #8]
+	cmp	r0, #0
+	beq	.L554
+	ldr	r1, [r4, #4]
+	bl	MEM_ReleaseMemBlock
+	b	.L554
+.L572:
+	mov	r0, r4
+	ldr	r2, .L577+8
+	ldr	r1, .L577+12
+	bl	dprint_vfmw
+	ldr	r4, [r5, #8]
+	cmp	r4, #0
+	bne	.L555
+.L574:
+	ldr	r2, .L577+8
+	mov	r0, r4
+	ldr	r1, .L577+16
+	bl	dprint_vfmw
+	mov	r0, r4
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L575:
+	ldr	r1, [r4, #4]
+	bl	MEM_ReleaseMemBlock
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L576:
+	mov	r0, r1
+	ldr	r2, .L577+8
+	ldr	r1, .L577+20
+	bl	dprint_vfmw
+	b	.L551
+.L570:
+	mov	r0, r4
+	ldr	r2, .L577+8
+	ldr	r1, .L577+24
+	bl	dprint_vfmw
+	b	.L549
+.L569:
+	mov	r0, r5
+	ldr	r2, .L577+8
+	ldr	r1, .L577+28
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L578:
+	.align	2
+.L577:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC92
+	.word	.LANCHOR1+112
+	.word	.LC93
+	.word	.LC94
+	.word	.LC91
+	.word	.LC90
+	.word	.LC89
+	UNWIND(.fnend)
+	.size	VCTRL_FreeChanResource, .-VCTRL_FreeChanResource
+	.align	2
+	.global	VCTRL_GetChanCtxSize
+	.type	VCTRL_GetChanCtxSize, %function
+VCTRL_GetChanCtxSize:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #26
+	movweq	r3, #62056
+	movwne	r3, #14152
+	movteq	r3, 177
+	movtne	r3, 12
+	str	r3, [r1]
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanCtxSize, .-VCTRL_GetChanCtxSize
+	.align	2
+	.global	VCTRL_GetChanCfg
+	.type	VCTRL_GetChanCfg, %function
+VCTRL_GetChanCfg:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r3, r1
+	bhi	.L587
+	cmp	r1, #0
+	beq	.L588
+	ldr	r2, .L590
+	ldr	r1, [r2, r0, asl #2]
+	cmp	r1, #0
+	beq	.L589
+	ldr	ip, .L590+4
+	add	r1, r1, #44
+	mov	r0, r3
+	mov	r2, #140
+	ldr	r3, [ip, #52]
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L587:
+	ldr	r3, .L590+8
+	movw	r2, #2639
+	ldr	r1, .L590+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L589:
+	mov	r0, r1
+	ldr	r3, .L590+16
+	movw	r2, #2641
+	ldr	r1, .L590+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L588:
+	mov	r0, r1
+	ldr	r3, .L590+20
+	mov	r2, #2640
+	ldr	r1, .L590+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L591:
+	.align	2
+.L590:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC71
+	.word	.LC1
+	.word	.LC2
+	.word	.LC95
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanCfg, .-VCTRL_GetChanCfg
+	.align	2
+	.global	VCTRL_CheckCommonParameter
+	.type	VCTRL_CheckCommonParameter, %function
+VCTRL_CheckCommonParameter:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L604
+	ldr	r2, [r1, #8]
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r0, [r3, #52]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #72]
+	ldr	r2, [r1, #28]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #68]
+	ldr	r2, [r1, #24]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #76]
+	ldr	r2, [r1, #32]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #80]
+	ldr	r2, [r1, #36]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #84]
+	ldr	r2, [r1, #40]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #100]
+	ldr	r2, [r1, #56]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #112]
+	ldr	r2, [r1, #68]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #108]
+	ldr	r2, [r1, #64]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r0, [r3, #104]
+	ldr	r2, [r1, #60]
+	cmp	r0, r2
+	bne	.L603
+	ldr	r3, [r3, #116]
+	ldr	r0, [r1, #72]
+	subs	r0, r3, r0
+	mvnne	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L603:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L605:
+	.align	2
+.L604:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_CheckCommonParameter, .-VCTRL_CheckCommonParameter
+	.align	2
+	.global	VCTRL_CmpConfigParameter
+	.type	VCTRL_CmpConfigParameter, %function
+VCTRL_CmpConfigParameter:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L613
+	mov	r5, r1
+	ldr	r4, [r3, r0, asl #2]
+	ldr	r3, [r4, #536]
+	cmp	r3, #21
+	beq	.L611
+	bl	VCTRL_CheckCommonParameter
+	cmp	r0, #0
+	bne	.L611
+	ldr	r3, [r4, #52]
+	cmp	r3, #1
+	beq	.L612
+	sub	r3, r3, #10
+	cmp	r3, #2
+	ldmhifd	sp, {r4, r5, fp, sp, pc}
+	ldr	r3, [r4, #56]
+	ldr	r0, [r5, #12]
+	subs	r0, r3, r0
+	mvnne	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L612:
+	ldr	r2, [r4, #56]
+	ldr	r3, [r5, #12]
+	cmp	r2, r3
+	bne	.L611
+	ldr	r3, [r4, #60]
+	ldr	r0, [r5, #16]
+	subs	r0, r3, r0
+	mvnne	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L611:
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L614:
+	.align	2
+.L613:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_CmpConfigParameter, .-VCTRL_CmpConfigParameter
+	.align	2
+	.global	VCTRL_CheckChanWH
+	.type	VCTRL_CheckChanWH, %function
+VCTRL_CheckChanWH:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L620
+	ldr	r2, .L620+4
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r2, [r2]
+	ldr	r0, [r3, #1228]
+	ldr	r3, [r3, #1232]
+	cmp	r0, r2
+	bgt	.L616
+	ldr	r0, .L620+8
+	ldr	r0, [r0]
+	cmp	r3, r0
+	ble	.L618
+.L616:
+	ldr	r0, [r1, #8]
+	cmp	r0, #20
+	cmpne	r0, #0
+	bic	r0, r0, #2
+	movne	r3, #1
+	moveq	r3, #0
+	cmp	r0, #13
+	moveq	r0, #0
+	andne	r0, r3, #1
+	cmp	r0, #0
+	ldmeqfd	sp, {fp, sp, pc}
+	ldr	r3, .L620+8
+	mov	r0, #0
+	ldr	r1, .L620+12
+	ldr	r3, [r3]
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L618:
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L621:
+	.align	2
+.L620:
+	.word	.LANCHOR0
+	.word	g_ChipMaxWidth
+	.word	g_ChipMaxHeight
+	.word	.LC96
+	UNWIND(.fnend)
+	.size	VCTRL_CheckChanWH, .-VCTRL_CheckChanWH
+	.align	2
+	.global	VCTRL_ConfigChanCompress
+	.type	VCTRL_ConfigChanCompress, %function
+VCTRL_ConfigChanCompress:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r1, #56]
+	cmp	r3, #2
+	ldr	r3, .L628
+	beq	.L627
+	add	r2, r3, r0, lsl #4
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r1, [r2, #400]
+	ldr	r0, [r2, #396]
+	cmp	r1, #1
+	str	r1, [r3, #1140]
+	ldreq	r1, [r2, #404]
+	mvnne	r2, #0
+	ldreq	r2, [r2, #408]
+	str	r0, [r3, #1136]
+	strne	r2, [r3, #1144]
+	streq	r1, [r3, #1144]
+	str	r2, [r3, #1148]
+	ldmfd	sp, {fp, sp, pc}
+.L627:
+	ldr	r3, [r3, r0, asl #2]
+	mov	r1, #0
+	mvn	r2, #0
+	str	r1, [r3, #1136]
+	str	r1, [r3, #1140]
+	str	r2, [r3, #1144]
+	str	r2, [r3, #1148]
+	ldmfd	sp, {fp, sp, pc}
+.L629:
+	.align	2
+.L628:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_ConfigChanCompress, .-VCTRL_ConfigChanCompress
+	.align	2
+	.global	VCTRL_SeekPts
+	.type	VCTRL_SeekPts, %function
+VCTRL_SeekPts:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L638
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L636
+	ldr	r3, [r3, #536]
+	sub	r2, r3, #10
+	cmp	r2, #2
+	bls	.L637
+.L633:
+	cmp	r3, #14
+	cmpne	r3, #4
+	beq	.L635
+	bl	SM_SeekPts
+	adds	r0, r0, #0
+	movne	r0, #1
+	rsb	r0, r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L637:
+	ldr	r2, .L638+4
+	ldr	r2, [r2, #-3180]
+	tst	r2, #1
+	bne	.L633
+.L635:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L636:
+	mov	r0, r3
+	movw	r2, #3205
+	ldr	r3, .L638+8
+	ldr	r1, .L638+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L639:
+	.align	2
+.L638:
+	.word	.LANCHOR0
+	.word	.LANCHOR3
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_SeekPts, .-VCTRL_SeekPts
+	.align	2
+	.global	VCTRL_ReleaseStream
+	.type	VCTRL_ReleaseStream, %function
+VCTRL_ReleaseStream:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L644
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L643
+	bl	SM_Reset
+	adds	r0, r0, #0
+	movne	r0, #1
+	rsb	r0, r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L643:
+	mov	r0, r3
+	movw	r2, #3469
+	ldr	r3, .L644+4
+	ldr	r1, .L644+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L645:
+	.align	2
+.L644:
+	.word	.LANCHOR0
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_ReleaseStream, .-VCTRL_ReleaseStream
+	.align	2
+	.global	VCTRL_ImageOutputEnable
+	.type	VCTRL_ImageOutputEnable, %function
+VCTRL_ImageOutputEnable:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r4, r0
+	mov	r6, r1
+	bhi	.L649
+	ldr	r5, .L650
+	mov	r0, #4
+	ldr	r3, [r5, #12]
+	blx	r3
+	ldr	r3, .L650+4
+	ldr	r2, [r6]
+	mov	r0, #4
+	ldr	r3, [r3, r4, asl #2]
+	str	r2, [r3, #12]
+	ldr	r3, [r5, #16]
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L649:
+	ldr	r3, .L650+8
+	movw	r2, #3583
+	ldr	r1, .L650+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L651:
+	.align	2
+.L650:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_ImageOutputEnable, .-VCTRL_ImageOutputEnable
+	.align	2
+	.global	VCTRL_TryToRelSpecialFrm
+	.type	VCTRL_TryToRelSpecialFrm, %function
+VCTRL_TryToRelSpecialFrm:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	cmp	r0, #31
+	mov	r4, r0
+	bhi	.L687
+	ldr	r5, .L692
+	ldr	r0, [r5, r0, asl #2]
+	cmp	r0, #0
+	beq	.L688
+	add	r3, r0, #294912
+	ldr	ip, [r3, #816]
+	cmp	ip, #0
+	beq	.L656
+	ldr	r3, [r3, #292]
+	cmp	r1, r3
+	movne	r2, #0
+	bne	.L659
+	b	.L689
+.L662:
+	add	r3, r3, #292
+	ldr	r3, [r0, r3]
+	cmp	r1, r3
+	beq	.L657
+.L659:
+	add	r2, r2, #1
+	cmp	r2, ip
+	mov	r3, r2, asl #4
+	mov	r6, r2
+	add	r3, r3, #294912
+	bne	.L662
+.L656:
+	mvn	r0, #0
+.L680:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L689:
+	mov	r6, #0
+.L657:
+	add	r3, r0, #282624
+	ldr	r2, [r3, #3080]
+	cmp	r2, r1
+	addne	r3, r3, #3168
+	movne	r7, #1
+	bne	.L666
+	b	.L690
+.L663:
+	add	r7, r7, #1
+	cmp	r7, #32
+	beq	.L691
+.L666:
+	ldr	r2, [r3]
+	add	r3, r3, #88
+	cmp	r2, r1
+	bne	.L663
+.L660:
+	ldr	r9, .L692+4
+	mov	r0, #3
+	sub	r8, ip, #1
+	ldr	r3, [r9, #12]
+	blx	r3
+	ldr	r1, [r5, r4, asl #2]
+	mov	ip, #88
+	mov	r3, #0
+	ldr	r2, [r9, #16]
+	mov	r0, #3
+	mla	r7, ip, r7, r1
+	add	r1, r7, #282624
+	add	r7, r7, #286720
+	strb	r3, [r1, #3074]
+	strb	r3, [r7, #1794]
+	blx	r2
+	cmp	r8, r6
+	bls	.L672
+	add	r7, r6, #18432
+	add	r7, r7, #18
+.L665:
+	ldr	r1, [r5, r4, asl #2]
+	add	r6, r6, #1
+	ldr	r3, [r9, #52]
+	mov	r2, #16
+	add	r0, r1, r7, lsl #4
+	add	r7, r6, #18432
+	add	r7, r7, #18
+	add	r1, r1, r7, lsl #4
+	blx	r3
+	cmp	r8, r6
+	bhi	.L665
+.L664:
+	add	ip, r8, #18432
+	ldr	r0, [r5, r4, asl #2]
+	add	ip, ip, #18
+	ldr	r3, [r9, #48]
+	mov	r2, #16
+	mov	r1, #0
+	add	r0, r0, ip, lsl #4
+	blx	r3
+	ldr	r3, [r5, r4, asl #2]
+	mov	r0, #0
+	add	r3, r3, #294912
+	ldr	r2, [r3, #816]
+	sub	r2, r2, #1
+	str	r2, [r3, #816]
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L691:
+	add	r0, r0, #262144
+	movw	r6, #1907
+	movw	r3, #3740
+	ldr	r2, .L692+8
+	ldrsb	ip, [r0, r6]
+	mov	r0, #1
+	ldr	r1, .L692+12
+	str	ip, [sp]
+	bl	dprint_vfmw
+	ldr	lr, [r5, r4, asl #2]
+	add	r3, lr, #262144
+	ldrsb	r3, [r3, r6]
+	cmp	r3, #0
+	movgt	r6, #0
+	ble	.L656
+.L668:
+	mov	r3, #88
+	movw	ip, #23560
+	mla	lr, r3, r6, lr
+	movt	ip, 4
+	movw	r3, #3743
+	mov	r0, #1
+	ldr	r2, .L692+8
+	add	r6, r6, r0
+	add	ip, lr, ip
+	ldr	r1, .L692+16
+	ldr	ip, [ip]
+	str	ip, [sp]
+	bl	dprint_vfmw
+	ldr	lr, [r5, r4, asl #2]
+	movw	r3, #1907
+	movt	r3, 4
+	add	r3, lr, r3
+	ldrsb	r3, [r3]
+	cmp	r3, r6
+	bgt	.L668
+	b	.L656
+.L690:
+	mov	r7, #0
+	b	.L660
+.L687:
+	ldr	r3, .L692+20
+	movw	r2, #3704
+	ldr	r1, .L692+24
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L680
+.L672:
+	mov	r8, r6
+	b	.L664
+.L688:
+	ldr	r3, .L692+20
+	movw	r2, #3705
+	ldr	r1, .L692+24
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L680
+.L693:
+	.align	2
+.L692:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR1+136
+	.word	.LC98
+	.word	.LC97
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_TryToRelSpecialFrm, .-VCTRL_TryToRelSpecialFrm
+	.align	2
+	.global	VCTRL_GetChanImage
+	.type	VCTRL_GetChanImage, %function
+VCTRL_GetChanImage:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 632
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #640)
+	sub	sp, sp, #640
+	mov	r4, r0
+	mov	r2, r0
+	mov	r5, r1
+	mov	r0, #2
+	ldr	r1, .L735
+	bl	dprint_vfmw
+	cmp	r4, #31
+	bhi	.L723
+	ldr	r6, .L735+4
+	ldr	r0, [r6, r4, asl #2]
+	cmp	r0, #0
+	beq	.L724
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	bne	.L725
+	ldr	r8, .L735+8
+	mov	r0, #4
+	ldr	r3, [r8, #12]
+	blx	r3
+	ldr	r0, [r6, r4, asl #2]
+	ldr	r3, [r0, #12]
+	cmp	r3, #1
+	bne	.L726
+	add	r0, r0, #294912
+	mov	r1, r5
+	add	r0, r0, #880
+	bl	SYNTAX_ReceiveImage
+	cmp	r0, #1
+	mov	r9, r0
+	beq	.L727
+	mov	r0, #9
+	mvn	r7, #0
+	bl	CHECK_REC_POS_ENABLE
+	cmp	r0, #0
+	bne	.L712
+.L711:
+	ldr	r3, [r6, r4, asl #2]
+	mov	r0, #4
+	ldr	r2, [r8, #16]
+	add	r3, r3, #311296
+	ldrb	r3, [r3, #316]	@ zero_extendqisi2
+	strb	r3, [r5, #392]
+	blx	r2
+.L720:
+	mov	r0, r7
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L727:
+	ldr	r2, [r5, #192]
+	mvn	r3, #0
+	str	r3, [r5, #188]
+	cmp	r2, #1
+	beq	.L728
+.L701:
+	mov	r0, #9
+	bl	CHECK_REC_POS_ENABLE
+	cmp	r0, #0
+	bne	.L729
+.L713:
+	ldr	r2, [r5, #64]
+	mov	r7, #0
+	ldr	r3, [r6, r4, asl #2]
+	str	r2, [r3, #364]
+	ldr	r2, [r5, #276]
+	str	r2, [r3, #368]
+	b	.L711
+.L729:
+	mov	r7, #0
+.L712:
+	ldr	r3, [r8]
+	blx	r3
+	ldr	r3, .L735+12
+	ldr	r1, .L735+16
+	add	r3, r3, r4, lsl #2
+	ldr	r2, [r3, #-3176]
+	ldr	r1, [r1]
+	rsb	r2, r2, r0
+	mov	ip, r0
+	cmp	r2, r1
+	bhi	.L730
+.L710:
+	cmp	r7, #0
+	bne	.L711
+	b	.L713
+.L730:
+	mov	r2, r4, asl #24
+	movw	r1, #4018
+	add	r2, r2, #589824
+	ldr	r0, .L735+20
+	cmp	r9, #1
+	addeq	r2, r2, #1
+	str	ip, [r3, #-3176]
+	bl	DBG_AddTrace
+	b	.L710
+.L728:
+	ldr	r2, [r5, #180]
+	cmp	r2, #0
+	beq	.L731
+	ldr	r0, [r5, #24]
+	mov	r2, #3
+	ldr	r1, [r5, #20]
+	str	r3, [r5, #188]
+	str	r9, [r5, #180]
+	str	r0, [r5, #200]
+	str	r1, [r5, #196]
+	str	r2, [r5, #276]
+	b	.L701
+.L725:
+	ldr	r3, .L735+24
+	movw	r2, #3882
+	ldr	r1, .L735+28
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r7, #0
+	b	.L720
+.L726:
+	ldr	r3, [r8, #16]
+	mov	r0, #4
+	blx	r3
+	ldr	r2, .L735+32
+	ldr	r1, .L735+36
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r7, #0
+	b	.L720
+.L731:
+	ldr	r0, [r6, r4, asl #2]
+	sub	r1, fp, #668
+	add	r0, r0, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReceiveImage
+	cmp	r0, #1
+	bne	.L732
+	ldr	r3, [r5, #184]
+	ldr	r2, [fp, #-484]
+	cmp	r3, r2
+	bge	.L704
+	ldr	r7, [fp, #-488]
+	mov	r3, #3
+	ldr	lr, [fp, #-644]
+	mov	r9, #1
+	cmp	r7, #0
+	ldr	ip, [fp, #-648]
+	ldr	r0, [fp, #-640]
+	ldr	r1, [fp, #-636]
+	movne	r7, #0
+	ldr	r2, [fp, #-520]
+	str	lr, [r5, #200]
+	str	ip, [r5, #196]
+	str	r0, [r5, #204]
+	str	r1, [r5, #208]
+	str	r2, [r5, #188]
+	str	r3, [r5, #276]
+	strne	r9, [r5, #180]
+.L709:
+	mov	r0, #9
+	bl	CHECK_REC_POS_ENABLE
+	cmp	r0, #0
+	bne	.L712
+	cmp	r7, #0
+	bne	.L711
+	b	.L713
+.L723:
+	ldr	r3, .L735+40
+	movw	r2, #3878
+	ldr	r1, .L735+28
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r7, #0
+	b	.L720
+.L732:
+	ldr	r3, [r6, r4, asl #2]
+	mov	r7, r0
+	add	r0, r3, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReturnImage
+	ldr	r3, [r8, #16]
+	mov	r0, #4
+	blx	r3
+	b	.L720
+.L704:
+	ldr	r0, [r6, r4, asl #2]
+	bgt	.L733
+	cmp	r3, #0
+	bne	.L707
+	add	r0, r0, #294912
+	mvn	r7, #0
+	add	r0, r0, #880
+	mvn	r9, #1
+	bl	SYNTAX_ReturnImage
+	ldr	r0, [r6, r4, asl #2]
+	mov	r1, r5
+	add	r0, r0, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReleaseImage
+	ldr	r3, [r5, #184]
+	ldr	r2, .L735+32
+	mov	r0, #1
+	ldr	r1, .L735+44
+	bl	dprint_vfmw
+	b	.L709
+.L707:
+	add	r0, r0, #294912
+	mov	r1, r5
+	add	r0, r0, #880
+	ldr	r7, .L735+4
+	bl	SYNTAX_ReleaseImage
+	ldr	r3, [fp, #-488]
+	cmp	r3, #0
+	beq	.L734
+	ldr	r3, [r5, #184]
+	mov	r0, #1
+	ldr	r2, .L735+32
+	ldr	r1, .L735+48
+	bl	dprint_vfmw
+	sub	r1, fp, #668
+	ldr	r3, [r8, #52]
+	mov	r2, #632
+	mov	r0, r5
+	blx	r3
+	ldr	r3, [fp, #-644]
+	ldr	r1, [fp, #-648]
+	mvn	r0, #0
+	mov	r2, #3
+	str	r0, [r5, #188]
+	str	r3, [r5, #200]
+	mov	r3, #1
+	str	r1, [r5, #196]
+	str	r2, [r5, #276]
+	str	r3, [r5, #180]
+	b	.L701
+.L724:
+	ldr	r3, .L735+52
+	movw	r2, #3879
+	ldr	r1, .L735+28
+	mvn	r7, #0
+	bl	dprint_vfmw
+	b	.L720
+.L733:
+	add	r0, r0, #294912
+	mvn	r7, #0
+	add	r0, r0, #880
+	mvn	r9, #1
+	bl	SYNTAX_ReturnImage
+	ldr	r0, [r6, r4, asl #2]
+	mov	r1, r5
+	add	r0, r0, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReleaseImage
+	ldr	ip, [fp, #-484]
+	ldr	r3, [r5, #184]
+	mov	r0, #1
+	ldr	r2, .L735+32
+	ldr	r1, .L735+56
+	str	ip, [sp]
+	bl	dprint_vfmw
+	b	.L709
+.L734:
+	ldr	r0, [r7, r4, asl #2]
+	sub	r1, fp, #668
+	mvn	r7, #0
+	mvn	r9, #1
+	add	r0, r0, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReleaseImage
+	ldr	r3, [r5, #184]
+	ldr	r2, .L735+32
+	mov	r0, #1
+	ldr	r1, .L735+48
+	bl	dprint_vfmw
+	b	.L709
+.L736:
+	.align	2
+.L735:
+	.word	.LC99
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3
+	.word	g_TraceImgPeriod
+	.word	.LANCHOR1+184
+	.word	.LC100
+	.word	.LC1
+	.word	.LANCHOR1+164
+	.word	.LC101
+	.word	.LC71
+	.word	.LC103
+	.word	.LC104
+	.word	.LC2
+	.word	.LC102
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanImage, .-VCTRL_GetChanImage
+	.align	2
+	.global	VCTRL_ReleaseChanImage
+	.type	VCTRL_ReleaseChanImage, %function
+VCTRL_ReleaseChanImage:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 632
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #636)
+	sub	sp, sp, #636
+	cmp	r0, #31
+	mov	r4, r0
+	mov	r7, r1
+	bhi	.L758
+	ldr	r8, .L766
+	ldr	r0, [r8, r0, asl #2]
+	cmp	r0, #0
+	beq	.L759
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	bne	.L760
+	cmp	r1, #0
+	beq	.L761
+	ldr	r6, .L766+4
+	mov	r2, r4
+	ldr	r3, [r1, #148]
+	mov	r0, #2
+	ldr	r1, .L766+8
+	bl	dprint_vfmw
+	ldr	r3, [r6, #12]
+	mov	r0, #4
+	blx	r3
+	ldr	r0, [r8, r4, asl #2]
+	cmp	r0, #0
+	movweq	r2, #4074
+	ldreq	r1, .L766+12
+	beq	.L757
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	bne	.L762
+	ldr	r1, [r7, #20]
+	mov	r0, r4
+	bl	VCTRL_TryToRelSpecialFrm
+	subs	r5, r0, #0
+	beq	.L763
+	ldr	r0, [r8, r4, asl #2]
+	mov	r1, r7
+	add	r0, r0, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReleaseImage
+	ldr	r3, [r7, #188]
+	cmn	r3, #1
+	mov	r5, r0
+	beq	.L746
+	ldr	r0, [r8, r4, asl #2]
+	sub	r1, fp, #668
+	str	r3, [fp, #-520]
+	add	r0, r0, #294912
+	add	r0, r0, #880
+	bl	SYNTAX_ReleaseImage
+	mov	r5, r0
+.L746:
+	mov	r0, #10
+	bl	CHECK_REC_POS_ENABLE
+	cmp	r0, #0
+	bne	.L764
+.L748:
+	subs	r4, r5, #1
+	mvnne	r4, #0
+	cmp	r4, #0
+	bne	.L765
+.L750:
+	ldr	r3, [r6, #16]
+	mov	r0, #4
+	blx	r3
+.L739:
+	mov	r0, r4
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L763:
+	ldr	r3, [r6, #16]
+	mov	r0, #4
+	blx	r3
+	movw	r2, #4095
+	ldr	r1, .L766+16
+	mov	r0, r5
+	bl	dprint_vfmw
+	mov	r4, r5
+	mov	r0, r4
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L765:
+	ldr	r2, .L766+20
+	mov	r0, #0
+	ldr	r1, .L766+24
+	bl	dprint_vfmw
+	b	.L750
+.L764:
+	ldr	r3, [r6]
+	blx	r3
+	ldr	r3, .L766+28
+	ldr	r1, .L766+32
+	add	r3, r3, r4, lsl #2
+	ldr	r2, [r3, #-3048]
+	ldr	r1, [r1]
+	rsb	r2, r2, r0
+	mov	ip, r0
+	cmp	r2, r1
+	bls	.L748
+	mov	r2, r4, asl #24
+	movw	r1, #4125
+	add	r2, r2, #655360
+	ldr	r0, .L766+36
+	cmp	r5, #1
+	addeq	r2, r2, #1
+	str	ip, [r3, #-3048]
+	bl	DBG_AddTrace
+	b	.L748
+.L762:
+	ldr	r1, .L766+40
+	movw	r2, #4083
+	mov	r0, #0
+.L757:
+	bl	dprint_vfmw
+	ldr	r3, [r6, #16]
+	mov	r0, #4
+	mvn	r4, #0
+	blx	r3
+	b	.L739
+.L760:
+	ldr	r3, .L766+44
+	movw	r2, #4066
+	ldr	r1, .L766+48
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r4, #0
+	b	.L739
+.L758:
+	ldr	r3, .L766+52
+	mov	r2, #4064
+	ldr	r1, .L766+48
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r4, #0
+	b	.L739
+.L761:
+	mov	r0, r1
+	ldr	r3, .L766+56
+	movw	r2, #4067
+	ldr	r1, .L766+48
+	bl	dprint_vfmw
+	mvn	r4, #0
+	b	.L739
+.L759:
+	ldr	r3, .L766+60
+	movw	r2, #4065
+	ldr	r1, .L766+48
+	mvn	r4, #0
+	bl	dprint_vfmw
+	b	.L739
+.L767:
+	.align	2
+.L766:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC106
+	.word	.LC107
+	.word	.LC109
+	.word	.LANCHOR1+228
+	.word	.LC110
+	.word	.LANCHOR3
+	.word	g_TraceImgPeriod
+	.word	.LANCHOR1+204
+	.word	.LC108
+	.word	.LC100
+	.word	.LC1
+	.word	.LC71
+	.word	.LC105
+	.word	.LC2
+	UNWIND(.fnend)
+	.size	VCTRL_ReleaseChanImage, .-VCTRL_ReleaseChanImage
+	.align	2
+	.global	VCTRL_GetVidStd
+	.type	VCTRL_GetVidStd, %function
+VCTRL_GetVidStd:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L769
+	ldr	r3, .L773
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L769
+	ldr	r2, [r3, #4]
+	cmp	r2, #1
+	beq	.L772
+	mov	r3, r0
+	movw	r2, #4157
+	ldr	r1, .L773+4
+	mov	r0, #0
+	bl	dprint_vfmw
+	mov	r0, #21
+	ldmfd	sp, {fp, sp, pc}
+.L769:
+	movw	r2, #4150
+	ldr	r1, .L773+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mov	r0, #21
+	ldmfd	sp, {fp, sp, pc}
+.L772:
+	ldr	r0, [r3, #536]
+	ldmfd	sp, {fp, sp, pc}
+.L774:
+	.align	2
+.L773:
+	.word	.LANCHOR0
+	.word	.LC112
+	.word	.LC111
+	UNWIND(.fnend)
+	.size	VCTRL_GetVidStd, .-VCTRL_GetVidStd
+	.align	2
+	.global	VCTRL_GetHDRConfigInfo
+	.type	VCTRL_GetHDRConfigInfo, %function
+VCTRL_GetHDRConfigInfo:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L776
+	ldr	r2, [r3, r0, asl #2]
+	ldrb	r2, [r2, #44]	@ zero_extendqisi2
+	strb	r2, [r1, #65]
+	ldr	r2, [r3, r0, asl #2]
+	ldrb	r2, [r2, #46]	@ zero_extendqisi2
+	strb	r2, [r1, #66]
+	ldr	r2, [r3, r0, asl #2]
+	ldr	r2, [r2, #152]
+	str	r2, [r1, #76]
+	ldr	r2, [r3, r0, asl #2]
+	ldr	r2, [r2, #156]
+	str	r2, [r1, #68]
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r3, [r3, #160]
+	str	r3, [r1, #72]
+	ldmfd	sp, {fp, sp, pc}
+.L777:
+	.align	2
+.L776:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetHDRConfigInfo, .-VCTRL_GetHDRConfigInfo
+	.align	2
+	.global	VCTRL_GetDecParam
+	.type	VCTRL_GetDecParam, %function
+VCTRL_GetDecParam:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L799
+	ldr	r3, .L802
+	ldr	r5, [r3, r0, asl #2]
+	cmp	r5, #0
+	moveq	r3, r5
+	beq	.L779
+	ldr	r3, [r5, #4]
+	cmp	r3, #1
+	beq	.L801
+.L799:
+	mov	r3, #0
+.L779:
+	mov	r0, r3
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L801:
+	ldr	r3, [r5, #8]
+	cmp	r3, #1
+	bne	.L799
+	ldr	r3, [r5, #536]
+	cmp	r3, #17
+	ldrls	pc, [pc, r3, asl #2]
+	b	.L780
+.L782:
+	.word	.L781
+	.word	.L790
+	.word	.L784
+	.word	.L790
+	.word	.L780
+	.word	.L790
+	.word	.L787
+	.word	.L780
+	.word	.L790
+	.word	.L790
+	.word	.L790
+	.word	.L790
+	.word	.L790
+	.word	.L790
+	.word	.L780
+	.word	.L792
+	.word	.L793
+	.word	.L790
+.L790:
+	add	r3, r5, #294912
+	ldr	r4, [r3, #892]
+.L795:
+	cmp	r4, #0
+	moveq	r3, r4
+	beq	.L779
+	ldr	r3, .L802+4
+	ldr	r3, [r3]
+	blx	r3
+	mov	r3, r4
+	str	r0, [r5, #40]
+	mov	r0, r3
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L792:
+	add	r3, r5, #294912
+	ldr	r4, [r3, #1116]
+	b	.L795
+.L784:
+	add	r3, r5, #294912
+	ldr	r4, [r3, #1924]
+	b	.L795
+.L793:
+	add	r3, r5, #294912
+	ldr	r4, [r3, #3268]
+	b	.L795
+.L781:
+	add	r3, r5, #294912
+	ldr	r4, [r3, #1248]
+	b	.L795
+.L787:
+	add	r3, r5, #294912
+	ldr	r4, [r3, #904]
+	b	.L795
+.L780:
+	ldr	r2, .L802+8
+	mov	r0, #0
+	ldr	r1, .L802+12
+	bl	dprint_vfmw
+	mov	r3, #0
+	b	.L779
+.L803:
+	.align	2
+.L802:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR1+252
+	.word	.LC113
+	UNWIND(.fnend)
+	.size	VCTRL_GetDecParam, .-VCTRL_GetDecParam
+	.align	2
+	.global	VCTRL_IsSedOnlyMode
+	.type	VCTRL_IsSedOnlyMode, %function
+VCTRL_IsSedOnlyMode:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	subs	r0, r1, #0
+	beq	.L806
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L806:
+	ldr	r1, .L807
+	bl	dprint_vfmw
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L808:
+	.align	2
+.L807:
+	.word	.LC114
+	UNWIND(.fnend)
+	.size	VCTRL_IsSedOnlyMode, .-VCTRL_IsSedOnlyMode
+	.align	2
+	.global	VCTRL_ChanDecparamInValidFlag
+	.type	VCTRL_ChanDecparamInValidFlag, %function
+VCTRL_ChanDecparamInValidFlag:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	cmp	r0, #31
+	mov	r2, r0
+	bhi	.L810
+	ldr	r5, .L821
+	ldr	r3, [r5, r0, asl #2]
+	cmp	r3, #0
+	beq	.L810
+	ldr	r1, [r3, #4]
+	cmp	r1, #1
+	bne	.L813
+	ldr	r6, [r3, #8]
+	cmp	r6, #1
+	beq	.L814
+.L813:
+	ldr	r1, .L821+4
+	mov	r0, #22
+	mov	r4, #0
+	bl	dprint_vfmw
+.L812:
+	mov	r0, r4
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L810:
+	mov	r3, r2
+	ldr	r1, .L821+8
+	movw	r2, #4343
+	mov	r0, #22
+	bl	dprint_vfmw
+	mov	r4, #0
+	mov	r0, r4
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L814:
+	str	r0, [fp, #-40]
+	bl	VCTRL_GetDecParam
+	ldr	r2, [fp, #-40]
+	subs	r7, r0, #0
+	beq	.L819
+	ldr	r2, [r5, r2, asl #2]
+	mov	r3, #0
+	mov	r4, r3
+	str	r3, [r2, #384]
+	str	r3, [r2, #388]
+	b	.L812
+.L819:
+	ldr	r8, [r5, r2, asl #2]
+	ldr	r4, [r8, #384]
+	cmp	r4, #0
+	beq	.L820
+	ldr	r3, .L821+12
+	str	r2, [fp, #-40]
+	ldr	r3, [r3]
+	blx	r3
+	ldr	r2, [fp, #-40]
+	ldr	r3, [r5, r2, asl #2]
+	ldr	r2, [r3, #388]
+	cmp	r0, r2
+	bls	.L817
+	rsb	r0, r2, r0
+	cmp	r0, #40
+	movls	r4, r7
+	bls	.L812
+.L817:
+	str	r7, [r3, #384]
+	mov	r4, r6
+	str	r7, [r3, #388]
+	b	.L812
+.L820:
+	ldr	r3, .L821+12
+	str	r6, [r8, #384]
+	ldr	r3, [r3]
+	blx	r3
+	str	r0, [r8, #388]
+	b	.L812
+.L822:
+	.align	2
+.L821:
+	.word	.LANCHOR0
+	.word	.LC116
+	.word	.LC115
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_ChanDecparamInValidFlag, .-VCTRL_ChanDecparamInValidFlag
+	.align	2
+	.global	VCTRL_ClearDecparam
+	.type	VCTRL_ClearDecparam, %function
+VCTRL_ClearDecparam:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L839
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r2, [r3, #536]
+	cmp	r2, #17
+	ldrls	pc, [pc, r2, asl #2]
+	b	.L823
+.L826:
+	.word	.L825
+	.word	.L835
+	.word	.L828
+	.word	.L835
+	.word	.L823
+	.word	.L835
+	.word	.L831
+	.word	.L823
+	.word	.L835
+	.word	.L835
+	.word	.L835
+	.word	.L835
+	.word	.L835
+	.word	.L835
+	.word	.L823
+	.word	.L836
+	.word	.L837
+	.word	.L835
+.L835:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #892]
+	ldmfd	sp, {fp, sp, pc}
+.L836:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #1116]
+.L823:
+	ldmfd	sp, {fp, sp, pc}
+.L831:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #904]
+	ldmfd	sp, {fp, sp, pc}
+.L825:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #1248]
+	ldmfd	sp, {fp, sp, pc}
+.L837:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #3268]
+	ldmfd	sp, {fp, sp, pc}
+.L828:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #1924]
+	ldmfd	sp, {fp, sp, pc}
+.L840:
+	.align	2
+.L839:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_ClearDecparam, .-VCTRL_ClearDecparam
+	.align	2
+	.global	VCTRL_VdmProcSedOnly
+	.type	VCTRL_VdmProcSedOnly, %function
+VCTRL_VdmProcSedOnly:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r3, r0
+	movwhi	r2, #4771
+	ldrhi	r3, .L847
+	bhi	.L845
+	ldr	r2, .L847+4
+	ldr	r3, [r2, r3, asl #2]
+	cmp	r3, #0
+	beq	.L846
+	ldr	r3, [r3, #8]
+	cmp	r3, #1
+	beq	.L844
+	ldr	r3, .L847+8
+	movw	r2, #4773
+.L845:
+	ldr	r1, .L847+12
+	mov	r0, #0
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L844:
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_GetDecParam
+.L846:
+	mov	r0, r3
+	movw	r2, #4772
+	ldr	r3, .L847+16
+	ldr	r1, .L847+12
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L848:
+	.align	2
+.L847:
+	.word	.LC117
+	.word	.LANCHOR0
+	.word	.LC118
+	.word	.LC1
+	.word	.LC100
+	UNWIND(.fnend)
+	.size	VCTRL_VdmProcSedOnly, .-VCTRL_VdmProcSedOnly
+	.align	2
+	.global	VCTRL_FlushDecoder
+	.type	VCTRL_FlushDecoder, %function
+VCTRL_FlushDecoder:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, .L879
+	mov	r5, r0
+	ldr	r0, [r4, r0, asl #2]
+	cmp	r0, #0
+	beq	.L876
+	add	r0, r0, #294912
+	ldr	r2, [r0, #880]
+	cmp	r2, #17
+	ldrls	pc, [pc, r2, asl #2]
+	b	.L869
+.L853:
+	.word	.L852
+	.word	.L854
+	.word	.L855
+	.word	.L856
+	.word	.L869
+	.word	.L857
+	.word	.L858
+	.word	.L869
+	.word	.L859
+	.word	.L860
+	.word	.L861
+	.word	.L861
+	.word	.L861
+	.word	.L862
+	.word	.L869
+	.word	.L863
+	.word	.L864
+	.word	.L865
+.L865:
+	add	r0, r0, #888
+	bl	VP9DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L852:
+	add	r0, r0, #888
+	bl	H264_FlushDecoder
+	bl	VDMDRV_WakeUpVdm
+	bl	VDMDRV_WakeUpVdm
+	ldr	r0, [r4, r5, asl #2]
+	add	r0, r0, #294912
+	add	r0, r0, #888
+	bl	FlushDPB
+	cmp	r0, #0
+	bne	.L877
+.L869:
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L855:
+	add	r0, r0, #888
+	bl	MPEG4DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L856:
+	add	r0, r0, #888
+	bl	MPEG2DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L854:
+	add	r0, r0, #888
+	bl	VC1DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L857:
+	add	r0, r0, #888
+	bl	DIVX3DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L858:
+	add	r0, r0, #888
+	bl	AVSDEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L859:
+	add	r0, r0, #888
+	bl	REAL8DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L860:
+	add	r0, r0, #888
+	bl	REAL9DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L861:
+	add	r0, r0, #888
+	bl	VP6DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L862:
+	add	r0, r0, #888
+	bl	VP8DEC_GetRemainImg
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L863:
+	add	r0, r0, #888
+	bl	MVC_FlushDecoder
+	bl	VDMDRV_WakeUpVdm
+	bl	VDMDRV_WakeUpVdm
+	ldr	r0, [r4, r5, asl #2]
+	mvn	r1, #0
+	add	r0, r0, #294912
+	add	r0, r0, #888
+	bl	MVC_FlushDPB
+	cmp	r0, #0
+	beq	.L869
+	movw	r3, #4862
+	ldr	r2, .L879+4
+	ldr	r1, .L879+8
+	mov	r0, #22
+	bl	dprint_vfmw
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L864:
+	add	r0, r0, #888
+	bl	HEVC_FlushOutputFrmFromDPB
+	cmp	r0, #0
+	bne	.L878
+.L867:
+	ldr	r1, .L879+12
+	mov	r0, #32
+	bl	dprint_vfmw
+	bl	VDMDRV_WakeUpVdm
+	bl	VDMDRV_WakeUpVdm
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L878:
+	movw	r2, #4839
+	ldr	r1, .L879+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	b	.L867
+.L877:
+	movw	r2, #4829
+	ldr	r1, .L879+16
+	mov	r0, #22
+	bl	dprint_vfmw
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L876:
+	ldr	r3, .L879+20
+	movw	r2, #4803
+	ldr	r1, .L879+24
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L880:
+	.align	2
+.L879:
+	.word	.LANCHOR0
+	.word	.LANCHOR1+272
+	.word	.LC121
+	.word	.LC120
+	.word	.LC119
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_FlushDecoder, .-VCTRL_FlushDecoder
+	.align	2
+	.global	VCTRL_GetImageBuffer
+	.type	VCTRL_GetImageBuffer, %function
+VCTRL_GetImageBuffer:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L904
+	ldr	r3, .L907
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L905
+	ldr	r0, [r3, #8]
+	cmp	r0, #1
+	bne	.L906
+	ldr	r2, [r3, #536]
+	cmp	r2, #17
+	ldrls	pc, [pc, r2, asl #2]
+	b	.L900
+.L887:
+	.word	.L886
+	.word	.L888
+	.word	.L889
+	.word	.L890
+	.word	.L900
+	.word	.L891
+	.word	.L892
+	.word	.L900
+	.word	.L893
+	.word	.L894
+	.word	.L895
+	.word	.L895
+	.word	.L895
+	.word	.L896
+	.word	.L900
+	.word	.L897
+	.word	.L898
+	.word	.L899
+.L899:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VP9DEC_GetImageBuffer
+.L886:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	H264DEC_GetImageBuffer
+.L888:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VC1DEC_GetImageBuffer
+.L889:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MPEG4DEC_GetImageBuffer
+.L890:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MPEG2DEC_GetImageBuffer
+.L891:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	DIVX3DEC_GetImageBuffer
+.L892:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	AVSDEC_GetImageBuffer
+.L893:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	REAL8DEC_GetImageBuffer
+.L894:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	REAL9DEC_GetImageBuffer
+.L895:
+	ldr	r2, .L907+4
+	ldr	r2, [r2, #-3180]
+	tst	r2, #1
+	ldmeqfd	sp, {fp, sp, pc}
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VP6DEC_GetImageBuffer
+.L896:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VP8DEC_GetImageBuffer
+.L897:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MVC_DEC_GetImageBuffer
+.L898:
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	HEVCDEC_GetImageBuffer
+.L900:
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L906:
+	ldr	r3, .L907+8
+	movw	r2, #4932
+	ldr	r1, .L907+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L904:
+	ldr	r3, .L907+16
+	movw	r2, #4930
+	ldr	r1, .L907+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L905:
+	mov	r0, r3
+	movw	r2, #4931
+	ldr	r3, .L907+20
+	ldr	r1, .L907+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L908:
+	.align	2
+.L907:
+	.word	.LANCHOR0
+	.word	.LANCHOR3
+	.word	.LC118
+	.word	.LC1
+	.word	.LC117
+	.word	.LC100
+	UNWIND(.fnend)
+	.size	VCTRL_GetImageBuffer, .-VCTRL_GetImageBuffer
+	.align	2
+	.global	VCTRL_ConfigFFFBSpeed
+	.type	VCTRL_ConfigFFFBSpeed, %function
+VCTRL_ConfigFFFBSpeed:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L915
+	ldr	r3, .L919
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L916
+	ldr	r2, [r3, #4]
+	cmp	r2, #1
+	bne	.L917
+	cmp	r1, #0
+	beq	.L918
+	ldr	r2, [r1]
+	mov	r0, #0
+	str	r2, [r3, #1156]
+	ldmfd	sp, {fp, sp, pc}
+.L917:
+	ldr	r3, .L919+4
+	movw	r2, #5055
+	ldr	r1, .L919+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L915:
+	ldr	r3, .L919+12
+	movw	r2, #5053
+	ldr	r1, .L919+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L916:
+	mov	r0, r3
+	movw	r2, #5054
+	ldr	r3, .L919+16
+	ldr	r1, .L919+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L918:
+	mov	r0, r1
+	ldr	r3, .L919+20
+	mov	r2, #5056
+	ldr	r1, .L919+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L920:
+	.align	2
+.L919:
+	.word	.LANCHOR0
+	.word	.LC123
+	.word	.LC1
+	.word	.LC71
+	.word	.LC122
+	.word	.LC124
+	UNWIND(.fnend)
+	.size	VCTRL_ConfigFFFBSpeed, .-VCTRL_ConfigFFFBSpeed
+	.align	2
+	.global	VCTRL_ConfigPVRInfo
+	.type	VCTRL_ConfigPVRInfo, %function
+VCTRL_ConfigPVRInfo:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L927
+	ldr	r3, .L931
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L928
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	bne	.L929
+	cmp	r1, #0
+	beq	.L930
+	ldr	r3, .L931+4
+	add	r0, r0, #1184
+	mov	r2, #20
+	add	r0, r0, #8
+	ldr	r3, [r3, #52]
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L929:
+	ldr	r3, .L931+8
+	movw	r2, #5068
+	ldr	r1, .L931+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L927:
+	ldr	r3, .L931+16
+	movw	r2, #5066
+	ldr	r1, .L931+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L930:
+	mov	r0, r1
+	ldr	r3, .L931+20
+	movw	r2, #5069
+	ldr	r1, .L931+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L928:
+	ldr	r3, .L931+24
+	movw	r2, #5067
+	ldr	r1, .L931+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L932:
+	.align	2
+.L931:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC123
+	.word	.LC1
+	.word	.LC71
+	.word	.LC124
+	.word	.LC122
+	UNWIND(.fnend)
+	.size	VCTRL_ConfigPVRInfo, .-VCTRL_ConfigPVRInfo
+	.align	2
+	.global	VCTRL_IsChanDecable
+	.type	VCTRL_IsChanDecable, %function
+VCTRL_IsChanDecable:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 24
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #24)
+	sub	sp, sp, #24
+	ldr	r5, .L939
+	mov	r4, r0
+	ldr	r3, [r5, r0, asl #2]
+	cmp	r3, #0
+	beq	.L936
+	sub	r1, fp, #44
+	bl	SM_GetInfo
+	cmp	r0, #0
+	bne	.L936
+	ldr	r3, [fp, #-36]
+	cmp	r3, #16
+	bgt	.L937
+	ldr	r3, [fp, #-28]
+	cmp	r3, #524288
+	ble	.L936
+.L937:
+	mov	r0, r4
+	bl	VCTRL_GetImageBuffer
+	subs	r0, r0, #1
+	mvnne	r0, #0
+	cmp	r0, #0
+	bne	.L935
+	ldr	r3, .L939+4
+	ldr	r3, [r3]
+	blx	r3
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r3, [r3, #40]
+	rsb	r0, r3, r0
+	cmp	r0, #50
+	movls	r0, #0
+	mvnhi	r0, #0
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L936:
+	mvn	r0, #0
+.L935:
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L940:
+	.align	2
+.L939:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_IsChanDecable, .-VCTRL_IsChanDecable
+	.align	2
+	.global	VCTRL_IsChanSegEnough
+	.type	VCTRL_IsChanSegEnough, %function
+VCTRL_IsChanSegEnough:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L942
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r0, [r3, #372]
+	subs	r0, r0, #1
+	movne	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+.L943:
+	.align	2
+.L942:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_IsChanSegEnough, .-VCTRL_IsChanSegEnough
+	.align	2
+	.global	VCTRL_IsChanActive
+	.type	VCTRL_IsChanActive, %function
+VCTRL_IsChanActive:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L950
+	ldr	r3, .L951
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L950
+	ldr	r2, [r3, #4]
+	cmp	r2, #0
+	beq	.L950
+	ldr	r2, [r3, #8]
+	cmp	r2, #0
+	beq	.L950
+	ldr	r2, [r3, #20]
+	cmp	r2, #0
+	beq	.L950
+	ldr	r0, [r3, #536]
+	cmp	r0, #21
+	movne	r0, #0
+	mvneq	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L950:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L952:
+	.align	2
+.L951:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_IsChanActive, .-VCTRL_IsChanActive
+	.align	2
+	.global	USERDEC_Init
+	.type	USERDEC_Init, %function
+USERDEC_Init:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L970
+	mov	r4, r0
+	ldr	r6, [r0, #352]
+	mov	r2, #368
+	mov	r5, r1
+	mov	r1, #0
+	ldr	r3, [r3, #48]
+	blx	r3
+	str	r6, [r4, #352]
+	add	r0, r4, #8
+	bl	ResetVoQueue
+	ldr	ip, .L970+4
+	mov	r2, #0
+	str	r5, [r4]
+	b	.L957
+.L954:
+	add	r2, r2, #1
+	cmp	r2, #32
+	beq	.L969
+.L957:
+	ldr	r1, [ip], #4
+	cmp	r1, #0
+	add	r3, r1, #294912
+	add	r3, r3, #888
+	beq	.L954
+	cmp	r4, r3
+	bne	.L954
+	cmn	r2, #1
+	str	r2, [r4, #360]
+	beq	.L955
+	mov	r0, #1
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L969:
+	mvn	r3, #0
+	str	r3, [r4, #360]
+.L955:
+	ldr	r1, .L970+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #19
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L971:
+	.align	2
+.L970:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC125
+	UNWIND(.fnend)
+	.size	USERDEC_Init, .-USERDEC_Init
+	.align	2
+	.global	USERDEC_RecycleImage
+	.type	USERDEC_RecycleImage, %function
+USERDEC_RecycleImage:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	subs	r4, r0, #0
+	mov	r5, r1
+	beq	.L974
+	mov	r2, #0
+	ldr	r0, [r4, #360]
+	bl	FSP_SetDisplay
+	mov	r1, r5
+	ldr	r0, [r4, #360]
+	bl	FSP_GetFsImagePtr
+	cmp	r0, #0
+	beq	.L975
+	add	r5, r0, #560
+	add	r8, r0, #544
+	ldr	r1, [r0, #544]
+	mov	r6, #0
+	ldr	r0, [r4, #360]
+	mov	r7, #0
+	bl	FreeUsdByDec
+	strd	r6, [r8]
+	ldr	r0, [r4, #360]
+	ldr	r1, [r5, #-8]
+	bl	FreeUsdByDec
+	strd	r6, [r5, #-8]
+	mov	r0, #1
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L975:
+	mov	r0, #1
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L974:
+	mvn	r0, #1
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+	UNWIND(.fnend)
+	.size	USERDEC_RecycleImage, .-USERDEC_RecycleImage
+	.align	2
+	.global	VCTRL_GetUsrdecFrame
+	.type	VCTRL_GetUsrdecFrame, %function
+VCTRL_GetUsrdecFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r7, .L995
+	mov	r6, r0
+	mov	r5, r1
+	ldr	r3, [r7, r0, asl #2]
+	cmp	r3, #0
+	beq	.L990
+	ldr	r2, [r3, #536]
+	cmp	r2, #20
+	bne	.L991
+	ldr	r3, [r3, #460]
+	cmp	r3, #2
+	ble	.L992
+	mov	r1, #1
+	bl	FSP_NewLogicFs
+	subs	r8, r0, #0
+	blt	.L993
+	mov	r1, r8
+	mov	r0, r6
+	bl	FSP_GetLogicFs
+	mov	r2, r8
+	ldr	r1, .L995+4
+	mov	r4, r0
+	mov	r0, #18
+	bl	dprint_vfmw
+	cmp	r4, #0
+	beq	.L994
+	ldr	r2, [r4, #28]
+	cmp	r2, #0
+	beq	.L983
+	ldr	r3, [r4, #32]
+	cmp	r3, #0
+	beq	.L983
+	ldr	r2, [r2, #8]
+	mov	r0, #18
+	ldr	r3, [r3, #8]
+	ldr	r1, .L995+8
+	bl	dprint_vfmw
+	ldr	r3, [r4, #28]
+	ldr	r3, [r3, #8]
+	str	r3, [r5, #40]
+	ldr	r3, [r7, r6, asl #2]
+	ldr	r3, [r3, #456]
+	str	r3, [r5, #20]
+	ldr	r3, [r4, #28]
+	ldr	r3, [r3, #20]
+	str	r3, [r5, #24]
+	ldr	r3, [r4, #28]
+	ldr	r0, [r3, #20]
+	bl	MEM_Phy2Vir
+	mov	r3, #0
+	mov	r2, r3
+	str	r3, [r5, #36]
+	str	r0, [r5, #32]
+.L978:
+	mov	r0, r2
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L991:
+	ldr	r1, .L995+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r2, #0
+	b	.L978
+.L992:
+	ldr	r1, .L995+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r2, #0
+	b	.L978
+.L983:
+	ldr	r1, .L995+20
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r2, #0
+	b	.L978
+.L993:
+	ldr	r1, .L995+24
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r2, #0
+	b	.L978
+.L990:
+	mov	r0, r3
+	movw	r2, #5343
+	ldr	r3, .L995+28
+	ldr	r1, .L995+32
+	bl	dprint_vfmw
+	mvn	r2, #0
+	b	.L978
+.L994:
+	movw	r2, #5373
+	ldr	r1, .L995+36
+	mov	r0, #22
+	bl	dprint_vfmw
+	mvn	r2, #0
+	b	.L978
+.L996:
+	.align	2
+.L995:
+	.word	.LANCHOR0
+	.word	.LC129
+	.word	.LC131
+	.word	.LC126
+	.word	.LC127
+	.word	.LC132
+	.word	.LC128
+	.word	.LC2
+	.word	.LC1
+	.word	.LC130
+	UNWIND(.fnend)
+	.size	VCTRL_GetUsrdecFrame, .-VCTRL_GetUsrdecFrame
+	.align	2
+	.global	InitSyntaxCtx
+	.type	InitSyntaxCtx, %function
+InitSyntaxCtx:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L1016
+	ldr	r1, [r3, r0, asl #2]
+	cmp	r1, #0
+	beq	.L1015
+	ldr	r3, [r1, #536]
+	cmp	r3, #20
+	ldrls	pc, [pc, r3, asl #2]
+	b	.L997
+.L1001:
+	.word	.L1000
+	.word	.L1002
+	.word	.L1003
+	.word	.L1004
+	.word	.L997
+	.word	.L1005
+	.word	.L1006
+	.word	.L997
+	.word	.L1007
+	.word	.L1008
+	.word	.L1009
+	.word	.L1009
+	.word	.L1009
+	.word	.L1010
+	.word	.L997
+	.word	.L1011
+	.word	.L1012
+	.word	.L1013
+	.word	.L997
+	.word	.L997
+	.word	.L1014
+.L1014:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	USERDEC_Init
+.L1000:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	H264DEC_Init
+.L1002:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VC1DEC_Init
+.L1003:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MPEG4DEC_Init
+.L1004:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MPEG2DEC_Init
+.L1005:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	DIVX3DEC_Init
+.L1006:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	AVSDEC_Init
+.L1007:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	REAL8DEC_Init
+.L1008:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	REAL9DEC_Init
+.L1009:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VP6DEC_Init
+.L1010:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VP8DEC_Init
+.L1011:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MVC_DEC_Init
+.L1012:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	HEVCDEC_Init
+.L1013:
+	add	r0, r1, #294912
+	add	r1, r1, #544
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VP9DEC_Init
+.L997:
+	ldmfd	sp, {fp, sp, pc}
+.L1015:
+	mov	r0, r1
+	ldr	r3, .L1016+4
+	movw	r2, #5428
+	ldr	r1, .L1016+8
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L1017:
+	.align	2
+.L1016:
+	.word	.LANCHOR0
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	InitSyntaxCtx, .-InitSyntaxCtx
+	.align	2
+	.global	VCTRL_VarifyOption
+	.type	VCTRL_VarifyOption, %function
+VCTRL_VarifyOption:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0, #36]
+	cmp	r3, #0
+	blt	.L1019
+	ldr	r3, [r0, #12]
+	cmp	r3, #31
+	ble	.L1019
+	ldr	r3, [r0, #16]
+	cmp	r3, #31
+	ble	.L1019
+	ldr	r3, [r0, #56]
+	cmp	r3, #262144
+	blt	.L1019
+	ldr	r3, [r0, #44]
+	cmp	r3, #1
+	beq	.L1025
+	cmp	r3, #2
+	bne	.L1023
+	ldr	r3, [r0, #20]
+	cmp	r3, #0
+	ble	.L1019
+	ldr	r3, [r0, #24]
+	cmp	r3, #0
+	ble	.L1019
+.L1024:
+	ldr	r3, [r0, #28]
+	cmp	r3, #0
+	ble	.L1019
+	ldr	r3, [r0, #32]
+	cmp	r3, #0
+	bgt	.L1023
+.L1019:
+	ldr	r1, .L1026
+	mov	r0, #32
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1023:
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1025:
+	ldr	r3, [r0, #20]
+	cmp	r3, #0
+	bgt	.L1024
+	b	.L1019
+.L1027:
+	.align	2
+.L1026:
+	.word	.LC133
+	UNWIND(.fnend)
+	.size	VCTRL_VarifyOption, .-VCTRL_VarifyOption
+	.align	2
+	.global	VCTRL_GetMemSize_onDecode
+	.type	VCTRL_GetMemSize_onDecode, %function
+VCTRL_GetMemSize_onDecode:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #28)
+	sub	sp, sp, #28
+	ldr	r3, [r1, #40]
+	mov	r4, r1
+	mov	r6, r0
+	cmp	r3, #0
+	mov	r5, r2
+	ldr	r1, [r1, #36]
+	moveq	r0, #1
+	beq	.L1030
+	add	r0, r1, #1
+	cmp	r0, #17
+	movge	r0, #17
+.L1030:
+	ldr	r3, .L1043
+	sub	r2, r6, #27
+	cmp	r2, #6
+	ldr	r2, [r4, #60]
+	ldr	ip, [r3, #64]
+	mvncc	lr, #1
+	mvncs	lr, #0
+	cmp	ip, #0
+	beq	.L1034
+	ldr	r8, .L1043+4
+	add	r1, r2, r1
+	ldr	r3, [r4, #16]
+	add	r1, r1, #2
+	ldr	r2, [r4, #12]
+	mov	r7, #0
+	str	r1, [sp, #4]
+	mvn	r1, #-2147483648
+	str	r0, [sp]
+	mov	r0, #1
+	str	lr, [sp, #12]
+	str	r8, [sp, #16]
+	str	r7, [sp, #8]
+	blx	ip
+	cmp	r0, r7
+	bne	.L1034
+	ldr	r3, .L1043+8
+	cmp	r6, #26
+	movwne	ip, #14152
+	movweq	ip, #62056
+	ldr	r2, [r3, #-2920]
+	movtne	ip, 12
+	movteq	ip, 177
+	add	r3, r2, #16
+	str	r3, [r5]
+	ldr	r3, [r4, #168]
+	cmp	r3, #1
+	addne	r2, r2, #307200
+	ldreq	r3, [r4, #56]
+	addne	r2, r2, #2576
+	strne	r2, [r5]
+	ldrne	r3, [r4, #56]
+	addeq	r3, r3, #339968
+	addeq	r3, r3, #2576
+	str	ip, [r5, #8]
+	addne	r3, r3, #32768
+	str	r3, [r5, #4]
+	ldr	r3, [r4, #44]
+	cmp	r3, #0
+	movweq	r3, #57056
+	movteq	r3, 9
+	beq	.L1038
+	ldr	r2, [r4, #20]
+	movw	r0, #4060
+	ldr	r7, [r4, #28]
+	mov	r3, #4000
+	ldr	lr, [r4, #32]
+	mov	r1, #2208
+	mul	r2, r0, r2
+	mla	r3, r3, r7, r2
+	mla	r3, r1, lr, r3
+	cmp	r3, #0
+	movcc	r3, #0
+	cmp	r6, #26
+	beq	.L1039
+	movw	r2, #57056
+	movt	r2, 9
+	cmp	r3, r2
+	movcc	r3, r2
+.L1038:
+	mov	r0, #0
+	add	r3, r3, ip
+	str	r3, [r5, #8]
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L1034:
+	movw	r2, #5591
+	ldr	r1, .L1043+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L1039:
+	movw	r1, #3992
+	mov	r0, #2240
+	mla	r2, r1, r7, r2
+	movw	r1, #57056
+	movt	r1, 9
+	mla	lr, r0, lr, r2
+	cmp	lr, r1
+	movcc	lr, r1
+	cmp	lr, r3
+	movcs	r3, lr
+	b	.L1038
+.L1044:
+	.align	2
+.L1043:
+	.word	g_vdm_hal_fun_ptr
+	.word	.LANCHOR3-2920
+	.word	.LANCHOR3
+	.word	.LC134
+	UNWIND(.fnend)
+	.size	VCTRL_GetMemSize_onDecode, .-VCTRL_GetMemSize_onDecode
+	.align	2
+	.global	VCTRL_GetChanMemSize
+	.type	VCTRL_GetChanMemSize, %function
+VCTRL_GetChanMemSize:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	cmp	r3, #2
+	mov	r5, r0
+	mov	r4, r1
+	mov	r6, r2
+	beq	.L1046
+	ldr	r1, .L1054
+	ldr	r2, [r4, #36]
+	ldr	r0, [r4, #60]
+	ldr	r3, [r1, #-1688]
+	ldr	lr, [r1, #-1684]
+	add	r1, r2, r3
+	cmp	r1, #16
+	add	ip, r0, lr
+	movge	r1, #16
+	orrs	r7, r1, ip
+	strpl	r1, [r4, #36]
+	strpl	ip, [r4, #60]
+	bmi	.L1053
+.L1046:
+	mov	r0, r4
+	bl	VCTRL_VarifyOption
+	cmp	r0, #0
+	bne	.L1048
+	mov	r2, r6
+	mov	r1, r4
+	mov	r0, r5
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	VCTRL_GetMemSize_onDecode
+.L1053:
+	stmia	sp, {r0, lr}
+	mov	r0, #32
+	ldr	r1, .L1054+4
+	bl	dprint_vfmw
+.L1048:
+	mvn	r0, #0
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1055:
+	.align	2
+.L1054:
+	.word	.LANCHOR3
+	.word	.LC135
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanMemSize, .-VCTRL_GetChanMemSize
+	.align	2
+	.global	CloseDrivers
+	.type	CloseDrivers, %function
+CloseDrivers:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, [r0, #72]
+	mov	r4, r0
+	cmp	r5, #0
+	beq	.L1057
+	ldr	r5, [r0, #88]
+	adds	r5, r5, #0
+	movne	r5, #1
+.L1057:
+	ldr	r6, [r4, #16]
+	ldr	r7, [r4, #8]
+	cmp	r6, #0
+	ldr	r8, [r4, #4]
+	beq	.L1058
+	ldr	r3, .L1113
+	ldr	r3, [r3, #60]
+	cmp	r3, #0
+	beq	.L1059
+	mov	r0, #0
+	blx	r3
+.L1060:
+	cmp	r5, #0
+	beq	.L1102
+.L1061:
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	mov	r0, r4
+	ldr	r3, [r3, #48]
+	blx	r3
+.L1058:
+	mov	r2, r6
+	mov	r1, r8
+	mov	r0, r7
+	bl	MEM_DelMemRecord
+	ldr	r6, [r4, #64]
+	ldr	r7, [r4, #56]
+	cmp	r6, #0
+	ldr	r8, [r4, #52]
+	beq	.L1062
+	ldr	r3, .L1113
+	ldr	r3, [r3, #60]
+	cmp	r3, #0
+	beq	.L1063
+	mov	r0, #0
+	blx	r3
+.L1064:
+	cmp	r5, #0
+	beq	.L1103
+.L1065:
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	add	r0, r4, #48
+	ldr	r3, [r3, #48]
+	blx	r3
+.L1062:
+	mov	r2, r6
+	mov	r1, r8
+	mov	r0, r7
+	bl	MEM_DelMemRecord
+	ldr	r6, [r4, #40]
+	ldr	r7, [r4, #32]
+	cmp	r6, #0
+	ldr	r8, [r4, #28]
+	bne	.L1104
+.L1066:
+	mov	r2, r6
+	mov	r1, r8
+	mov	r0, r7
+	bl	MEM_DelMemRecord
+	bl	SM_InstInit
+	ldr	r5, [r4, #112]
+	ldr	r6, [r4, #104]
+	cmp	r5, #0
+	ldr	r7, [r4, #100]
+	bne	.L1105
+.L1069:
+	mov	r2, r5
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_DelMemRecord
+	ldr	r5, [r4, #184]
+	ldr	r6, [r4, #176]
+	cmp	r5, #0
+	ldr	r7, [r4, #172]
+	bne	.L1106
+.L1070:
+	mov	r2, r5
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_DelMemRecord
+	ldr	r5, [r4, #160]
+	ldr	r6, [r4, #152]
+	cmp	r5, #0
+	ldr	r7, [r4, #148]
+	bne	.L1107
+.L1071:
+	mov	r2, r5
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_DelMemRecord
+	ldr	r5, [r4, #136]
+	ldr	r6, [r4, #128]
+	cmp	r5, #0
+	ldr	r7, [r4, #124]
+	bne	.L1108
+.L1072:
+	mov	r2, r5
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_DelMemRecord
+	ldr	r5, [r4, #208]
+	ldr	r6, [r4, #200]
+	cmp	r5, #0
+	ldr	r7, [r4, #196]
+	bne	.L1109
+.L1073:
+	ldr	r4, .L1113+8
+	mov	r2, r5
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_DelMemRecord
+	ldr	r3, [r4, #376]
+	cmp	r3, #1
+	beq	.L1110
+	ldr	r3, [r4, #380]
+	ldr	r5, .L1113+8
+	cmp	r3, #1
+	beq	.L1111
+.L1075:
+	ldr	r3, [r4, #384]
+	ldr	r4, .L1113+8
+	cmp	r3, #1
+	beq	.L1112
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1104:
+	mov	r0, #0
+	bl	SM_CloseSCDDrv
+	cmp	r5, #0
+	beq	.L1067
+.L1068:
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	add	r0, r4, r2
+	ldr	r3, [r3, #48]
+	blx	r3
+	b	.L1066
+.L1105:
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_UnmapRegisterAddr
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	add	r0, r4, #96
+	ldr	r3, [r3, #48]
+	blx	r3
+	b	.L1069
+.L1109:
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_UnmapRegisterAddr
+	ldr	r3, .L1113+4
+	add	r0, r4, #192
+	mov	r2, #24
+	mov	r1, #0
+	ldr	r3, [r3, #48]
+	blx	r3
+	b	.L1073
+.L1108:
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_UnmapRegisterAddr
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	add	r0, r4, #120
+	ldr	r3, [r3, #48]
+	blx	r3
+	b	.L1072
+.L1107:
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_UnmapRegisterAddr
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	add	r0, r4, #144
+	ldr	r3, [r3, #48]
+	blx	r3
+	b	.L1071
+.L1106:
+	mov	r1, r7
+	mov	r0, r6
+	bl	MEM_UnmapRegisterAddr
+	ldr	r3, .L1113+4
+	mov	r2, #24
+	mov	r1, #0
+	add	r0, r4, #168
+	ldr	r3, [r3, #48]
+	blx	r3
+	b	.L1070
+.L1059:
+	mov	r0, r3
+	movw	r2, #5935
+	ldr	r1, .L1113+12
+	bl	dprint_vfmw
+	b	.L1060
+.L1063:
+	mov	r0, r3
+	movw	r2, #5956
+	ldr	r1, .L1113+12
+	bl	dprint_vfmw
+	b	.L1064
+.L1112:
+	ldr	r3, .L1113+4
+	mov	r0, #13
+	ldr	r5, [r3, #200]
+	bl	VFMW_GetString
+	ldr	r2, .L1113+16
+	mov	r1, r0
+	mov	r0, #181
+	blx	r5
+	mov	r3, #0
+	mov	r0, #0
+	str	r3, [r4, #384]
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1103:
+	ldr	r1, [r4, #52]
+	ldr	r0, [r4, #56]
+	bl	MEM_ReleaseMemBlock
+	b	.L1065
+.L1102:
+	ldr	r1, [r4, #4]
+	ldr	r0, [r4, #8]
+	bl	MEM_ReleaseMemBlock
+	b	.L1061
+.L1110:
+	ldr	r3, .L1113+4
+	mov	r0, #0
+	ldr	r5, [r3, #200]
+	bl	VFMW_GetString
+	ldr	r2, .L1113+16
+	mov	r1, r0
+	mov	r0, #127
+	blx	r5
+	mov	r3, #0
+	str	r3, [r4, #376]
+	ldr	r3, [r4, #380]
+	ldr	r5, .L1113+8
+	cmp	r3, #1
+	bne	.L1075
+.L1111:
+	ldr	r3, .L1113+4
+	mov	r0, #4
+	ldr	r6, [r3, #200]
+	bl	VFMW_GetString
+	ldr	r2, .L1113+16
+	mov	r1, r0
+	mov	r0, #136
+	blx	r6
+	mov	r3, #0
+	str	r3, [r5, #380]
+	b	.L1075
+.L1067:
+	ldr	r1, [r4, #28]
+	ldr	r0, [r4, #32]
+	bl	MEM_ReleaseMemBlock
+	b	.L1068
+.L1114:
+	.align	2
+.L1113:
+	.word	g_vdm_hal_fun_ptr
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC44
+	.word	.LANCHOR3-1680
+	UNWIND(.fnend)
+	.size	CloseDrivers, .-CloseDrivers
+	.align	2
+	.global	OpenDrivers
+	.type	OpenDrivers, %function
+OpenDrivers:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 56
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #68)
+	sub	sp, sp, #68
+	add	r4, r0, #96
+	mov	r9, r0
+	mov	r0, #0
+	mov	r1, #65536
+	mov	r2, r4
+	movt	r0, 63683
+	bl	MEM_MapRegisterAddr
+	subs	r5, r0, #0
+	bne	.L1116
+	ldr	r2, [r9, #112]
+	add	r4, r9, #168
+	ldr	r1, [r9, #100]
+	ldr	r0, [r9, #104]
+	bl	MEM_AddMemRecord
+	mov	r0, #53248
+	mov	r2, r4
+	movt	r0, 63683
+	mov	r1, #4096
+	bl	MEM_MapRegisterAddr
+	subs	r6, r0, #0
+	beq	.L1145
+	mov	r2, #53248
+	ldr	r1, .L1150
+	movt	r2, 63683
+	mov	r0, r5
+	bl	dprint_vfmw
+	ldr	r3, .L1150+4
+	mov	r1, r5
+	mov	r0, r4
+.L1140:
+	mov	r2, #24
+.L1135:
+	ldr	r3, [r3, #48]
+	blx	r3
+	mov	r0, r9
+	bl	CloseDrivers
+	mvn	r0, #0
+.L1119:
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1145:
+	ldr	r2, [r9, #184]
+	add	r8, r9, #144
+	ldr	r1, [r9, #172]
+	ldr	r0, [r9, #176]
+	bl	MEM_AddMemRecord
+	mov	r0, #49152
+	mov	r2, r8
+	movt	r0, 63683
+	mov	r1, #4096
+	bl	MEM_MapRegisterAddr
+	subs	r5, r0, #0
+	bne	.L1120
+	ldr	r4, .L1150+4
+	ldr	r2, [r9, #160]
+	ldr	r1, [r9, #148]
+	ldr	r0, [r9, #152]
+	bl	MEM_AddMemRecord
+	mov	r0, #15
+	ldr	r6, [r4, #68]
+	bl	VFMW_GetString
+	ldr	r7, .L1150+8
+	mov	r3, r5
+	mov	r1, #20
+	mov	r2, r0
+	sub	r0, fp, #84
+	blx	r6
+	ldr	r3, [r7, #48]
+	cmp	r3, #0
+	beq	.L1122
+	blx	r3
+	subs	r2, r0, #0
+	ble	.L1122
+	str	r5, [sp]
+	mov	r6, #3
+	mov	r3, r9
+	str	r6, [r9, #20]
+	mov	r1, r5
+	sub	r0, fp, #84
+	bl	MEM_AllocMemBlock
+	subs	r8, r0, #0
+	bne	.L1146
+	ldr	r2, [r9, #16]
+	ldr	r1, [r9, #4]
+	ldr	r0, [r9, #8]
+	bl	MEM_AddMemRecord
+	ldr	r3, [r4, #48]
+	mov	r2, #20
+	mov	r1, r8
+	sub	r0, fp, #64
+	blx	r3
+	ldr	r3, [r7, #56]
+	ldr	r1, [r9, #8]
+	ldr	r2, [r9, #16]
+	cmp	r3, #0
+	str	r8, [fp, #-56]
+	str	r1, [fp, #-64]
+	str	r2, [fp, #-60]
+	beq	.L1125
+	sub	r0, fp, #64
+	blx	r3
+	subs	r7, r0, #0
+	bne	.L1125
+	str	r6, [r9, #68]
+	mov	r0, #16
+	ldr	r5, [r4, #68]
+	bl	VFMW_GetString
+	add	r8, r9, #48
+	mov	r3, r7
+	mov	r1, #20
+	mov	r2, r0
+	sub	r0, fp, #84
+	blx	r5
+	mov	r1, #1
+	mov	r3, r8
+	str	r1, [sp]
+	mov	r2, #16384
+	mov	r1, r7
+	sub	r0, fp, #84
+	bl	MEM_AllocMemBlock
+	subs	r5, r0, #0
+	bne	.L1147
+	add	r3, r9, #24
+	ldr	r1, [r9, #52]
+	ldr	r2, [r9, #64]
+	ldr	r0, [r9, #56]
+	mov	r8, r3
+	str	r3, [fp, #-92]
+	bl	MEM_AddMemRecord
+	ldr	r2, .L1150+12
+	mov	r0, r5
+	ldr	r3, [r9, #56]
+	str	r3, [r2, #1196]
+	ldr	r3, [r9, #56]
+	add	r3, r3, #5120
+	str	r3, [r2, #1200]
+	bl	VDMDRV_Init
+	mov	r0, #17
+	ldr	r7, [r4, #68]
+	bl	VFMW_GetString
+	mov	r3, r5
+	mov	r1, #20
+	mov	r2, r0
+	sub	r0, fp, #84
+	blx	r7
+	str	r6, [r9, #44]
+	mov	r1, r5
+	str	r5, [sp]
+	sub	r0, fp, #84
+	mov	r3, r8
+	mov	r2, #716800
+	bl	MEM_AllocMemBlock
+	cmp	r0, #0
+	bne	.L1127
+	ldr	r2, [r9, #40]
+	ldr	r1, [r9, #28]
+	ldr	r0, [r9, #32]
+	bl	MEM_AddMemRecord
+	mov	r2, #0
+	ldr	r1, [r9, #40]
+	ldr	r0, [r9, #32]
+	bl	SM_OpenSCDDrv
+	subs	r6, r0, #0
+	bne	.L1128
+	ldr	r5, .L1150+16
+	bl	SM_InstInit
+	mov	r0, r6
+	ldr	r7, [r4, #196]
+	ldr	r4, .L1150+20
+	ldr	r8, [r5, #88]
+	bl	VFMW_GetString
+	ldr	r1, .L1150+24
+	str	r4, [sp]
+	mov	r2, r8
+	ldr	r8, .L1150+4
+	mov	r3, r0
+	mov	r0, #127
+	blx	r7
+	subs	r3, r0, #0
+	str	r3, [fp, #-96]
+	bne	.L1148
+	ldr	r2, [r5, #88]
+	mov	r0, #4
+	ldr	r6, .L1150+28
+	mov	r7, #1
+	ldr	r10, [r8, #196]
+	str	r2, [fp, #-88]
+	str	r7, [r6, #376]
+	bl	VFMW_GetString
+	str	r4, [sp]
+	ldr	r2, [fp, #-88]
+	ldr	r1, .L1150+32
+	mov	r3, r0
+	mov	r0, #136
+	blx	r10
+	subs	r3, r0, #0
+	str	r3, [fp, #-88]
+	bne	.L1149
+	mov	r0, #13
+	ldr	r10, [r5, #88]
+	str	r7, [r6, #380]
+	ldr	r5, [r8, #196]
+	bl	VFMW_GetString
+	str	r4, [sp]
+	mov	r2, r10
+	ldr	r1, .L1150+36
+	mov	r3, r0
+	mov	r0, #181
+	blx	r5
+	cmp	r0, #0
+	streq	r7, [r6, #384]
+	beq	.L1119
+	ldr	r1, .L1150+40
+	mov	r2, #181
+	ldr	r4, [fp, #-88]
+.L1137:
+	mov	r0, r4
+	bl	dprint_vfmw
+	ldr	r3, [r8, #48]
+	mov	r1, r4
+.L1138:
+	ldr	r0, [fp, #-92]
+.L1141:
+	mov	r2, #24
+	blx	r3
+	mov	r0, r9
+	bl	CloseDrivers
+	mvn	r0, #0
+	b	.L1119
+.L1116:
+	mov	r2, #0
+	ldr	r1, .L1150
+	movt	r2, 63683
+	mov	r0, #0
+	bl	dprint_vfmw
+	ldr	r3, .L1150+4
+	mov	r0, r4
+	mov	r2, #24
+	mov	r1, #0
+	b	.L1135
+.L1122:
+	mov	r2, #0
+	ldr	r1, .L1150+44
+	mov	r0, r2
+	bl	dprint_vfmw
+	ldr	r3, [r4, #48]
+	mov	r0, r8
+.L1136:
+	mov	r2, #24
+	mov	r1, #0
+	blx	r3
+	mov	r0, r9
+	bl	CloseDrivers
+	mvn	r0, #0
+	b	.L1119
+.L1120:
+	mov	r2, #49152
+	ldr	r1, .L1150
+	movt	r2, 63683
+	mov	r0, r6
+	bl	dprint_vfmw
+	ldr	r3, .L1150+4
+	mov	r1, r6
+	mov	r0, r8
+	b	.L1140
+.L1148:
+	ldr	r1, .L1150+40
+	mov	r2, #127
+	mov	r0, r6
+	bl	dprint_vfmw
+	ldr	r3, [r8, #48]
+	mov	r1, r6
+	b	.L1138
+.L1125:
+	mov	r2, #0
+	ldr	r1, .L1150+48
+	mov	r0, r2
+	bl	dprint_vfmw
+	ldr	r3, [r4, #48]
+	mov	r2, #24
+	mov	r1, #0
+.L1142:
+	mov	r0, r9
+	blx	r3
+	mov	r0, r9
+	bl	CloseDrivers
+	mvn	r0, #0
+	b	.L1119
+.L1149:
+	mov	r2, #136
+	ldr	r1, .L1150+40
+	ldr	r4, [fp, #-96]
+	b	.L1137
+.L1128:
+	ldr	r1, .L1150+52
+	mov	r2, #0
+.L1139:
+	mov	r0, r2
+	bl	dprint_vfmw
+	ldr	r3, [r4, #48]
+	ldr	r0, [fp, #-92]
+	b	.L1136
+.L1127:
+	mov	r2, #0
+	ldr	r1, .L1150+56
+	b	.L1139
+.L1146:
+	mov	r2, r5
+	ldr	r1, .L1150+60
+	mov	r0, r5
+	bl	dprint_vfmw
+	ldr	r3, [r4, #48]
+	mov	r1, r5
+	mov	r2, #24
+	b	.L1142
+.L1147:
+	ldr	r1, .L1150+64
+	mov	r2, r7
+	mov	r0, r7
+	bl	dprint_vfmw
+	ldr	r3, [r4, #48]
+	mov	r1, r7
+	mov	r0, r8
+	b	.L1141
+.L1151:
+	.align	2
+.L1150:
+	.word	.LC136
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_vdm_hal_fun_ptr
+	.word	g_HwMem
+	.word	.LANCHOR2
+	.word	.LANCHOR3-1680
+	.word	VCTRL_Isr_0
+	.word	.LANCHOR0
+	.word	VCTRL_Scd_Isr
+	.word	VCTRL_MMU_ISR
+	.word	.LC143
+	.word	.LC137
+	.word	.LC139
+	.word	.LC142
+	.word	.LC141
+	.word	.LC138
+	.word	.LC140
+	UNWIND(.fnend)
+	.size	OpenDrivers, .-OpenDrivers
+	.align	2
+	.global	VCTRL_OpenVfmw
+	.type	VCTRL_OpenVfmw, %function
+VCTRL_OpenVfmw:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #20)
+	sub	sp, sp, #20
+	ldr	r4, .L1187
+	mov	r7, r0
+	mov	r2, #8
+	sub	r0, fp, #52
+	mov	r1, #0
+	ldr	r3, [r4, #48]
+	blx	r3
+	ldr	r3, .L1187+4
+	ldr	r5, [r3, #128]
+	cmp	r5, #0
+	bne	.L1182
+	mov	r1, #1024
+	ldr	r3, [r4, #80]
+	str	r5, [fp, #-56]
+	ldr	r0, .L1187+8
+	blx	r3
+	ldr	r3, [r4, #96]
+	ldr	r1, .L1187+12
+	ldr	r0, .L1187+8
+	blx	r3
+	ldr	r6, .L1187+16
+	cmp	r0, #0
+	str	r0, [fp, #-56]
+	beq	.L1155
+	ldr	r3, [r4, #92]
+	sub	r0, fp, #56
+	ldr	r1, .L1187+20
+	blx	r3
+	cmp	r0, #0
+	beq	.L1174
+	sub	r0, fp, #56
+	ldr	r3, [r4, #92]
+	ldr	r1, .L1187+24
+	blx	r3
+	cmp	r0, #0
+	beq	.L1183
+	mov	r2, r5
+	ldr	r3, [r4, #84]
+	mov	r1, r5
+	blx	r3
+	mov	r2, r0
+	str	r0, [r6, #-1688]
+.L1159:
+	add	r3, r2, #4992
+	movw	r1, #10000
+	add	r3, r3, #8
+	movw	r8, #5000
+	cmp	r3, r1
+	bhi	.L1160
+	cmp	r2, r8
+	movw	r3, #60536
+.L1181:
+	movt	r3, 65535
+	movge	r2, r8
+	cmp	r2, r3
+	movlt	r2, r3
+.L1156:
+	str	r2, [r6, #-1688]
+.L1158:
+	mov	r8, #0
+	ldr	r3, [r4, #80]
+	mov	r1, #1024
+	str	r8, [fp, #-56]
+	ldr	r0, .L1187+8
+	blx	r3
+	ldr	r3, [r4, #96]
+	ldr	r1, .L1187+28
+	ldr	r0, .L1187+8
+	blx	r3
+	ldr	r10, .L1187
+	ldr	r9, .L1187+16
+	cmp	r0, r8
+	str	r0, [fp, #-56]
+	beq	.L1161
+	ldr	r3, [r10, #92]
+	sub	r0, fp, #56
+	ldr	r1, .L1187+20
+	blx	r3
+	cmp	r0, r8
+	beq	.L1162
+	sub	r0, fp, #56
+	ldr	r3, [r10, #92]
+	ldr	r1, .L1187+24
+	blx	r3
+	cmp	r0, r8
+	beq	.L1184
+	mov	r2, r8
+	ldr	r3, [r10, #84]
+	mov	r1, r8
+	blx	r3
+	mov	r2, r0
+	str	r0, [r9, #-1684]
+.L1165:
+	add	r3, r2, #4992
+	movw	r1, #10000
+	add	r3, r3, #8
+	movw	r8, #5000
+	cmp	r3, r1
+	bhi	.L1166
+	cmp	r2, r8
+	movw	r3, #60536
+	movt	r3, 65535
+	movlt	r5, r2
+	movge	r5, r8
+	cmp	r5, r3
+	movlt	r5, r3
+.L1162:
+	str	r5, [r6, #-1684]
+.L1164:
+	ldr	r5, [r6, #-652]
+	mov	r3, #0
+	ldr	r8, .L1187+16
+	cmp	r5, r3
+	str	r3, [fp, #-56]
+	beq	.L1167
+	ldr	r2, .L1187+32
+	ubfx	r1, r5, #1, #1
+	and	r0, r5, #1
+	ubfx	r3, r5, #2, #1
+	strb	r0, [r8, #-648]
+	ubfx	r5, r5, #3, #1
+	strb	r1, [r2, #92]
+	strb	r3, [r8, #-647]
+	strb	r5, [r8, #-646]
+.L1168:
+	ldr	r5, .L1187+4
+	mov	r2, #264
+	ldr	r3, [r4, #48]
+	mov	r1, #0
+	add	r0, r5, #128
+	ldr	r8, .L1187
+	blx	r3
+	ldr	r3, [r4, #48]
+	mov	r2, #128
+	mov	r1, #0
+	mov	r0, r5
+	blx	r3
+	ldr	r2, .L1187+36
+	sub	r0, fp, #52
+	mov	r1, #134217728
+	mov	r3, #75497472
+	str	r1, [fp, #-52]
+	str	r2, [r6, #-644]
+	str	r3, [fp, #-48]
+	bl	MEM_InitMemManager
+	bl	FSP_Init
+	bl	ChanCtx_Init
+	ldr	r3, [r4, #48]
+	mov	r2, #128
+	mov	r1, #0
+	ldr	r0, .L1187+40
+	blx	r3
+	ldr	r3, [r4, #52]
+	add	r1, r7, #8
+	mov	r2, #24
+	add	r0, r5, #224
+	blx	r3
+	add	r0, r5, #152
+	bl	OpenDrivers
+	cmp	r0, #0
+	bne	.L1182
+	ldr	r3, [r8, #124]
+	mov	r1, #1
+	blx	r3
+	ldr	r3, [r8, #192]
+	ldr	r2, .L1187+44
+	add	r0, r5, #140
+	ldr	r1, .L1187+48
+	blx	r3
+	cmp	r0, #0
+	moveq	r3, #1
+	streq	r3, [r5, #128]
+	bne	.L1185
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1167:
+	ldr	r3, [r4, #80]
+	mov	r1, #1024
+	ldr	r0, .L1187+8
+	blx	r3
+	ldr	r3, [r4, #96]
+	ldr	r1, .L1187+52
+	ldr	r0, .L1187+8
+	blx	r3
+	ldr	r9, .L1187
+	cmp	r0, #0
+	str	r0, [fp, #-56]
+	beq	.L1168
+	ldr	r3, [r9, #92]
+	sub	r0, fp, #56
+	ldr	r1, .L1187+20
+	blx	r3
+	cmp	r0, #0
+	ldreq	r0, [r8, #-652]
+	beq	.L1170
+	sub	r0, fp, #56
+	ldr	r3, [r9, #92]
+	ldr	r1, .L1187+24
+	blx	r3
+	cmp	r0, #0
+	beq	.L1186
+	ldr	r3, [r9, #84]
+	mov	r2, r5
+	mov	r1, r5
+	blx	r3
+	str	r0, [r8, #-652]
+.L1170:
+	ldr	r2, .L1187+32
+	ubfx	r1, r0, #1, #1
+	and	ip, r0, #1
+	ubfx	r3, r0, #2, #1
+	strb	ip, [r6, #-648]
+	ubfx	r0, r0, #3, #1
+	strb	r1, [r2, #92]
+	strb	r3, [r6, #-647]
+	strb	r0, [r6, #-646]
+	b	.L1168
+.L1161:
+	ldr	r2, [r9, #-1684]
+	b	.L1165
+.L1155:
+	ldr	r2, [r6, #-1688]
+	b	.L1159
+.L1166:
+	ldr	r1, .L1187+56
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r5, [r6, #-1684]
+	movw	r3, #60536
+	cmp	r5, r8
+	movt	r3, 65535
+	movge	r5, r8
+	cmp	r5, r3
+	movlt	r5, r3
+	b	.L1162
+.L1160:
+	ldr	r1, .L1187+60
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r2, [r6, #-1688]
+	movw	r3, #60536
+	cmp	r2, r8
+	b	.L1181
+.L1174:
+	mov	r2, r5
+	b	.L1156
+.L1185:
+	add	r0, r5, #152
+	bl	CloseDrivers
+.L1182:
+	mvn	r0, #0
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1183:
+	movw	r3, #6800
+	ldr	r2, .L1187+64
+	ldr	r1, .L1187+68
+	mov	r0, #22
+	bl	dprint_vfmw
+	b	.L1158
+.L1184:
+	movw	r3, #6846
+	ldr	r2, .L1187+72
+	ldr	r1, .L1187+68
+	mov	r0, #22
+	bl	dprint_vfmw
+	b	.L1164
+.L1186:
+	movw	r3, #6902
+	ldr	r2, .L1187+76
+	ldr	r1, .L1187+68
+	mov	r0, #22
+	bl	dprint_vfmw
+	b	.L1168
+.L1188:
+	.align	2
+.L1187:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LANCHOR3-1676
+	.word	.LC144
+	.word	.LANCHOR3
+	.word	.LC145
+	.word	.LC146
+	.word	.LC149
+	.word	.LANCHOR2
+	.word	VCTRL_EventReport
+	.word	.LANCHOR3-640
+	.word	VFMW_CTRL_thread_proc
+	.word	.LC152
+	.word	.LC151
+	.word	.LC150
+	.word	.LC148
+	.word	.LANCHOR1+292
+	.word	.LC147
+	.word	.LANCHOR1+312
+	.word	.LANCHOR1+332
+	UNWIND(.fnend)
+	.size	VCTRL_OpenVfmw, .-VCTRL_OpenVfmw
+	.align	2
+	.global	GetNextDecodeMode
+	.type	GetNextDecodeMode, %function
+GetNextDecodeMode:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	movw	r6, #21846
+	mov	r3, r2, asl #1
+	cmp	r2, #0
+	movt	r6, 21845
+	add	r5, r2, #7
+	smull	r6, r7, r3, r6
+	movge	r5, r2
+	mov	r5, r5, asr #3
+	str	r2, [sp]
+	mov	r6, r0
+	str	r1, [sp, #4]
+	mov	r4, r2
+	mov	r8, r1
+	sub	r3, r7, r3, asr #31
+	ldr	r1, .L1197
+	mov	r2, r5
+	mov	r0, #30
+	bl	dprint_vfmw
+	cmp	r6, #3
+	beq	.L1195
+	cmp	r4, r8
+	movge	r4, r6
+	blt	.L1196
+.L1191:
+	mov	r2, r6
+	mov	r3, r4
+	ldr	r1, .L1197+4
+	mov	r0, #30
+	bl	dprint_vfmw
+	mov	r0, r4
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L1196:
+	ldr	r1, .L1197+8
+	mov	r0, #30
+	bl	dprint_vfmw
+.L1194:
+	mov	r4, #3
+	b	.L1191
+.L1195:
+	cmp	r5, r8
+	ble	.L1194
+	ldr	r1, .L1197+12
+	mov	r0, #30
+	bl	dprint_vfmw
+	mov	r4, #0
+	b	.L1191
+.L1198:
+	.align	2
+.L1197:
+	.word	.LC153
+	.word	.LC156
+	.word	.LC155
+	.word	.LC154
+	UNWIND(.fnend)
+	.size	GetNextDecodeMode, .-GetNextDecodeMode
+	.align	2
+	.global	VCTRL_GetChanIDByCtx
+	.type	VCTRL_GetChanIDByCtx, %function
+VCTRL_GetChanIDByCtx:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	ip, .L1209
+	mov	r2, #0
+	b	.L1202
+.L1200:
+	add	r2, r2, #1
+	cmp	r2, #32
+	beq	.L1208
+.L1202:
+	ldr	r1, [ip], #4
+	cmp	r1, #0
+	add	r3, r1, #294912
+	add	r3, r3, #888
+	beq	.L1200
+	cmp	r0, r3
+	bne	.L1200
+	mov	r0, r2
+	ldmfd	sp, {fp, sp, pc}
+.L1208:
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1210:
+	.align	2
+.L1209:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanIDByCtx, .-VCTRL_GetChanIDByCtx
+	.align	2
+	.global	VCTRL_GetChanIDByMemAddr
+	.type	VCTRL_GetChanIDByMemAddr, %function
+VCTRL_GetChanIDByMemAddr:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, .L1223
+	mov	lr, #0
+.L1216:
+	ldr	r1, [r4], #4
+	cmp	r1, #0
+	beq	.L1212
+	add	r1, r1, #290816
+	add	r3, r1, #832
+	add	r1, r1, #3136
+.L1215:
+	ldr	r2, [r3]
+	cmp	r2, r0
+	bhi	.L1213
+	ldr	ip, [r3, #-20]
+	add	r2, r2, ip
+	cmp	r0, r2
+	bcc	.L1217
+.L1213:
+	add	r3, r3, #72
+	cmp	r3, r1
+	bne	.L1215
+.L1212:
+	add	lr, lr, #1
+	cmp	lr, #32
+	bne	.L1216
+	mvn	r0, #0
+	ldmfd	sp, {r4, fp, sp, pc}
+.L1217:
+	mov	r0, lr
+	ldmfd	sp, {r4, fp, sp, pc}
+.L1224:
+	.align	2
+.L1223:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanIDByMemAddr, .-VCTRL_GetChanIDByMemAddr
+	.align	2
+	.global	DecChanProcessPts
+	.type	DecChanProcessPts, %function
+DecChanProcessPts:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	ldr	r6, .L1247
+	mov	r4, r1
+	mov	r5, r0
+	ldr	ip, [r6, r0, asl #2]
+	ldr	r1, [ip, #52]
+	cmp	r1, #1
+	beq	.L1242
+	sub	r3, r1, #2
+	cmp	r1, #6
+	cmpne	r3, #1
+	bls	.L1238
+.L1227:
+	ldrd	r2, [r4, #32]
+	mvn	r1, #0
+	mvn	r0, #0
+	cmp	r3, r1
+	cmpeq	r2, r0
+	beq	.L1243
+	add	r1, ip, #608
+	strd	r2, [r1, #-8]
+.L1237:
+	ldrd	r8, [r4, #48]
+	add	r5, ip, #624
+	add	lr, ip, #640
+	ldr	r1, .L1247+4
+	mov	r0, #29
+	strd	r8, [r5, #-8]
+	ldrd	r6, [r4, #56]
+	strd	r6, [lr, #-8]
+	ldr	lr, [r4, #64]
+	str	lr, [ip, #648]
+	ldr	lr, [r4, #68]
+	str	lr, [ip, #652]
+	ldr	lr, [r4, #72]
+	str	lr, [ip, #656]
+	ldr	lr, [r4, #76]
+	str	lr, [ip, #672]
+	strd	r8, [sp]
+	bl	dprint_vfmw
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1242:
+	add	r3, ip, #294912
+	ldr	r3, [r3, #888]
+	ldr	r1, [r3, #556]
+	sxtb	r1, r1
+	cmp	r1, #1
+	bne	.L1227
+.L1238:
+	add	r0, ip, #1088
+	add	r2, r4, #8
+	add	r0, r0, #8
+	bl	IsNewpicSeg
+	cmp	r0, #0
+	bne	.L1228
+	ldr	ip, [r6, r5, asl #2]
+	add	lr, ip, #608
+	ldr	r3, [ip, #52]
+	cmp	r3, #3
+	beq	.L1244
+	ldrd	r2, [lr]
+	mvn	r1, #0
+	mvn	r0, #0
+	cmp	r3, r1
+	cmpeq	r2, r0
+	beq	.L1245
+	strd	r2, [lr, #-8]
+.L1230:
+	add	r7, ip, #624
+	mvn	r0, #0
+	mvn	r1, #0
+	strd	r0, [lr]
+	ldrd	r0, [r7]
+	add	lr, ip, #640
+	strd	r0, [r7, #-8]
+	ldrd	r0, [lr]
+	orrs	r7, r0, r1
+	strd	r0, [lr, #-8]
+	ldreqd	r0, [r4, #56]
+	streqd	r0, [lr, #-8]
+.L1232:
+	ldr	r1, [ip, #676]
+	mov	r0, #29
+	ldr	r8, [ip, #660]
+	ldr	r7, [ip, #664]
+	ldr	lr, [ip, #668]
+	str	r1, [ip, #672]
+	str	r8, [ip, #648]
+	ldr	r1, .L1247+8
+	str	r7, [ip, #652]
+	str	lr, [ip, #656]
+	bl	dprint_vfmw
+	ldr	r1, [r6, r5, asl #2]
+	ldr	r3, [r1, #52]
+	cmp	r3, #3
+	beq	.L1246
+.L1233:
+	ldrd	r2, [r4, #32]
+	mvn	r7, #0
+	mvn	r6, #0
+	cmp	r3, r7
+	cmpeq	r2, r6
+	addne	r0, r1, #608
+	strned	r2, [r0]
+.L1235:
+	ldrd	r2, [r4, #48]
+	add	r0, r1, #624
+	add	ip, r1, #640
+	strd	r2, [r0]
+	ldrd	r2, [r4, #56]
+	strd	r2, [ip]
+	ldr	r3, [r4, #64]
+	str	r3, [r1, #660]
+	ldr	r3, [r4, #68]
+	str	r3, [r1, #664]
+	ldr	r3, [r4, #72]
+	str	r3, [r1, #668]
+	ldr	r3, [r4, #76]
+	str	r3, [r1, #676]
+.L1234:
+	ldrd	r2, [r0, #-8]
+	mov	r0, #29
+	ldr	r1, .L1247+12
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, lr}
+	b	dprint_vfmw
+.L1246:
+	ldrd	r2, [r4, #32]
+	add	lr, r1, #608
+	add	ip, r1, #624
+	add	r0, r1, #640
+	strd	r2, [lr]
+	ldrd	r2, [r4, #48]
+	strd	r2, [ip]
+	ldrd	r2, [r4, #56]
+	strd	r2, [r0]
+	ldr	r3, [r4, #64]
+	str	r3, [r1, #660]
+	ldr	r3, [r4, #68]
+	str	r3, [r1, #664]
+	ldr	r3, [r4, #72]
+	str	r3, [r1, #668]
+	ldr	r3, [r4, #76]
+	str	r3, [r1, #676]
+.L1228:
+	ldr	r1, [r6, r5, asl #2]
+	ldr	r3, [r1, #52]
+	cmp	r3, #3
+	addeq	r0, r1, #624
+	bne	.L1233
+	b	.L1234
+.L1243:
+	add	r3, ip, #608
+	ldrd	r2, [r3, #-8]
+	b	.L1237
+.L1244:
+	ldrd	r2, [lr]
+	strd	r2, [lr, #-8]
+	b	.L1230
+.L1245:
+	ldrd	r2, [lr, #-8]
+	b	.L1230
+.L1248:
+	.align	2
+.L1247:
+	.word	.LANCHOR0
+	.word	.LC159
+	.word	.LC157
+	.word	.LC158
+	UNWIND(.fnend)
+	.size	DecChanProcessPts, .-DecChanProcessPts
+	.align	2
+	.global	DecChanCheckDecParam
+	.type	DecChanCheckDecParam, %function
+DecChanCheckDecParam:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L1257
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r2, [r3, #536]
+	sub	r3, r2, #10
+	cmp	r3, #2
+	bhi	.L1250
+	ldr	r3, .L1257+4
+	ldr	r3, [r3, #-3180]
+	ands	r3, r3, #1
+	beq	.L1251
+.L1250:
+	bic	r3, r2, #16
+	cmp	r3, #4
+	cmpne	r2, #14
+	movne	r3, #1
+	moveq	r3, #0
+	beq	.L1251
+	bl	VCTRL_GetDecParam
+	cmp	r0, #0
+	mvnne	r3, #1
+	moveq	r3, #0
+.L1251:
+	mov	r0, r3
+	ldmfd	sp, {fp, sp, pc}
+.L1258:
+	.align	2
+.L1257:
+	.word	.LANCHOR0
+	.word	.LANCHOR3
+	UNWIND(.fnend)
+	.size	DecChanCheckDecParam, .-DecChanCheckDecParam
+	.align	2
+	.global	DecChanSyntax
+	.type	DecChanSyntax, %function
+DecChanSyntax:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 16
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #28)
+	sub	sp, sp, #28
+	cmp	r0, #31
+	mov	r4, r0
+	bhi	.L1298
+	ldr	r6, .L1308
+	ldr	r0, [r6, r0, asl #2]
+	cmp	r0, #0
+	beq	.L1299
+	ldr	r2, [r0, #8]
+	cmp	r2, #1
+	bne	.L1300
+	ldr	r5, [r0, #24]
+	cmp	r5, #0
+	bne	.L1301
+	ldr	r9, .L1308+4
+	mov	r8, r4, asl #2
+	str	r5, [r0, #372]
+	ldr	r7, .L1308+8
+	ldr	r3, [r9]
+	blx	r3
+	add	r2, r7, r8
+	ldr	r3, [r2, #-512]
+	mov	r1, r0
+	ldr	r0, .L1308+12
+	rsb	r3, r3, r1
+	ldr	r0, [r0]
+	cmp	r3, r0
+	mov	r0, r4
+	bls	.L1265
+	str	r1, [r2, #-512]
+	bl	DecChanCheckDecParam
+	cmn	r0, #2
+	mov	r10, r0
+	bne	.L1266
+	mov	r2, r4
+	ldr	r1, .L1308+16
+	mov	r0, #23
+	bl	dprint_vfmw
+.L1282:
+	mov	r0, r10
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1265:
+	bl	DecChanCheckDecParam
+	cmn	r0, #2
+	mov	r10, r0
+	beq	.L1282
+	mov	r0, r4
+	bl	VCTRL_GetImageBuffer
+	cmp	r0, #1
+	mvnne	r10, #2
+	bne	.L1282
+.L1276:
+	ldr	r2, [r6, r4, asl #2]
+	add	r3, r2, #262144
+	ldr	r3, [r3, #1936]
+	cmp	r3, #1
+	beq	.L1302
+	cmp	r3, #3
+	beq	.L1303
+	ldrb	r3, [r2, #681]	@ zero_extendqisi2
+	add	r10, r2, #680
+	cmp	r3, #0
+	addne	r2, r2, #688
+	bne	.L1269
+	ldr	r3, [r2, #1432]
+	add	r2, r2, #688
+	cmp	r3, #0
+	beq	.L1304
+.L1269:
+	ldrd	r0, [r2, #40]
+	ldrd	r2, [r2, #24]
+	strd	r0, [fp, #-60]
+	mov	r0, #29
+	strd	r2, [fp, #-52]
+	ldrd	r2, [fp, #-60]
+	ldr	r1, .L1308+20
+	strd	r2, [sp]
+	ldrd	r2, [fp, #-52]
+	bl	dprint_vfmw
+	mov	r1, r10
+	mov	r0, r4
+	bl	DecChanProcessPts
+	mov	r0, #3
+	bl	CHECK_REC_POS_ENABLE
+	adds	r0, r0, #0
+	movne	r0, #1
+	cmp	r5, #1
+	movne	r0, #0
+	cmp	r0, #0
+	bne	.L1305
+.L1271:
+	ldr	r3, [r6, r4, asl #2]
+	mov	r0, r10
+	add	r2, r3, #294912
+	add	r2, r2, #888
+	ldr	r1, [r3, #536]
+	bl	DecodeStream
+	mov	r0, #4
+	bl	CHECK_REC_POS_ENABLE
+	cmp	r0, #0
+	bne	.L1306
+.L1296:
+	mov	r10, #0
+	mov	r0, r10
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1266:
+	mov	r0, r4
+	bl	VCTRL_GetImageBuffer
+	cmp	r0, #1
+	moveq	r5, r0
+	beq	.L1276
+	mov	r2, r4
+	ldr	r1, .L1308+24
+	mov	r0, #23
+	mvn	r10, #2
+	bl	dprint_vfmw
+	b	.L1282
+.L1306:
+	ldr	r3, [r9]
+	add	r7, r7, r8
+	blx	r3
+	ldr	r1, .L1308+28
+	ldr	r3, [r7, #-384]
+	ldr	r1, [r1]
+	rsb	r3, r3, r0
+	mov	r2, r0
+	cmp	r3, r1
+	bls	.L1296
+	mov	r0, r4
+	str	r2, [r7, #-384]
+	bl	VCTRL_GetDecParam
+	cmp	r0, #0
+	beq	.L1296
+	mov	r2, r4, asl #24
+	movw	r1, #6550
+	add	r2, r2, #262144
+	ldr	r0, .L1308+32
+	bl	DBG_AddTrace
+	b	.L1296
+.L1300:
+	ldr	r3, .L1308+36
+	movw	r2, #6450
+	ldr	r1, .L1308+40
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r10, #0
+	b	.L1282
+.L1301:
+	ldr	r3, .L1308+44
+	movw	r2, #6451
+	ldr	r1, .L1308+40
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r10, #0
+	b	.L1282
+.L1304:
+	mov	r1, r2
+	mov	r0, r4
+	str	r2, [fp, #-52]
+	bl	SM_ReadSegStream
+	ldr	r2, [fp, #-52]
+	cmp	r0, #0
+	beq	.L1269
+	cmp	r5, #1
+	beq	.L1307
+.L1270:
+	ldr	r3, [r6, r4, asl #2]
+	mov	r2, #1
+	mvn	r10, #3
+	str	r2, [r3, #372]
+	b	.L1282
+.L1298:
+	ldr	r3, .L1308+48
+	movw	r2, #6448
+	ldr	r1, .L1308+40
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r10, #0
+	b	.L1282
+.L1305:
+	mov	r2, r4, asl #24
+	movw	r1, #6532
+	add	r2, r2, #196608
+	ldr	r0, .L1308+32
+	bl	DBG_AddTrace
+	b	.L1271
+.L1299:
+	ldr	r3, .L1308+52
+	movw	r2, #6449
+	ldr	r1, .L1308+40
+	mvn	r10, #0
+	bl	dprint_vfmw
+	b	.L1282
+.L1302:
+	ldr	r1, .L1308+56
+	mov	r0, #31
+	bl	dprint_vfmw
+	mvn	r10, #2
+	b	.L1282
+.L1303:
+	ldr	r2, [r2, #1384]
+	mov	r0, #31
+	ldr	r1, .L1308+60
+	mvn	r10, #0
+	bl	dprint_vfmw
+	b	.L1282
+.L1307:
+	mov	r2, r4
+	ldr	r1, .L1308+64
+	mov	r0, #23
+	bl	dprint_vfmw
+	b	.L1270
+.L1309:
+	.align	2
+.L1308:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3
+	.word	g_TraceBsPeriod
+	.word	.LC161
+	.word	.LC166
+	.word	.LC162
+	.word	g_TraceFramePeriod
+	.word	.LANCHOR1+348
+	.word	.LC118
+	.word	.LC1
+	.word	.LC160
+	.word	.LC71
+	.word	.LC100
+	.word	.LC163
+	.word	.LC164
+	.word	.LC165
+	UNWIND(.fnend)
+	.size	DecChanSyntax, .-DecChanSyntax
+	.align	2
+	.global	DecSyntax
+	.type	DecSyntax, %function
+DecSyntax:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 32
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #36)
+	sub	sp, sp, #36
+	ldr	r0, .L1339
+	ldr	r1, .L1339+4
+	sub	r3, r0, #128
+.L1313:
+	ldr	r2, [r1, #4]!
+	add	r3, r3, #4
+	cmp	r2, #0
+	ldrne	r2, [r2, #20]
+	str	r2, [r3, #-4]
+	cmp	r3, r0
+	bne	.L1313
+	ldr	r7, .L1339+8
+	mvn	ip, #0
+	ldr	r6, .L1339+12
+	mov	r8, #0
+	ldr	r10, .L1339+16
+	mov	r9, r7
+.L1314:
+	mov	r3, #0
+	ldr	r0, [r6, #-256]
+	mov	r4, r3
+	ldr	r1, .L1339+20
+	b	.L1315
+.L1317:
+	ldr	r2, [r1, #4]!
+	cmp	r0, r2
+	movlt	r0, r2
+	movlt	r4, r3
+.L1315:
+	add	r3, r3, #1
+	cmp	r3, #32
+	bne	.L1317
+	add	r3, r6, r4, lsl #2
+	cmp	r0, #0
+	add	r2, r4, #1
+	mov	r1, #0
+	str	r8, [r3, #-256]
+	str	r2, [r7, #148]
+	ldr	r3, .L1339+8
+	ble	.L1318
+	ldr	r3, [r9, r4, asl #2]
+	cmp	r3, r1
+	beq	.L1314
+	ldr	r2, [r3, #8]
+	cmp	r2, #1
+	bne	.L1314
+	ldr	r2, [r3, #76]
+	cmp	r2, r1
+	ble	.L1320
+	ldr	r5, [r3, #80]
+	cmp	r5, r1
+	beq	.L1337
+.L1320:
+	mov	r5, #500
+	b	.L1325
+.L1323:
+	cmp	r0, #0
+	bne	.L1314
+	subs	r5, r5, #1
+	beq	.L1314
+.L1325:
+	mov	r0, r4
+	bl	DecChanSyntax
+	cmn	r0, #1
+	mov	ip, r0
+	bne	.L1323
+	ldr	r5, [r6, #-644]
+	cmp	r5, #0
+	beq	.L1331
+	mov	r3, #0
+	str	r0, [fp, #-72]
+	mov	r2, r3
+	mov	r0, r4
+	mov	r1, #102
+	blx	r5
+	ldr	ip, [fp, #-72]
+.L1331:
+	mov	r0, ip
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1337:
+	mov	r0, r4
+	sub	r1, fp, #68
+	bl	SM_GetInfo
+	cmp	r0, #0
+	bne	.L1338
+.L1321:
+	ldr	r5, [r7, r4, asl #2]
+	ldr	r1, [fp, #-56]
+	ldr	r2, [r5, #76]
+	ldr	r0, [r5, #552]
+	bl	GetNextDecodeMode
+	ldr	r3, [r7, r4, asl #2]
+	str	r0, [r5, #552]
+	ldr	r2, [r3, #552]
+	cmp	r2, #0
+	strne	r8, [r3, #548]
+	strne	r8, [r3, #544]
+	ldreq	r2, [r3, #72]
+	streq	r2, [r3, #548]
+	streq	r2, [r3, #544]
+	b	.L1320
+.L1318:
+	mov	r0, ip
+	str	r1, [r3, #148]
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1338:
+	mov	r1, r5
+	sub	r0, fp, #68
+	ldr	r3, [r10, #48]
+	mov	r2, #24
+	blx	r3
+	b	.L1321
+.L1340:
+	.align	2
+.L1339:
+	.word	.LANCHOR3-128
+	.word	.LANCHOR0-4
+	.word	.LANCHOR0
+	.word	.LANCHOR3
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3-256
+	UNWIND(.fnend)
+	.size	DecSyntax, .-DecSyntax
+	.align	2
+	.global	VCTRL_RunProcess
+	.type	VCTRL_RunProcess, %function
+VCTRL_RunProcess:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L1352
+	mov	r0, #0
+	bl	VCTRL_RecordPosTime
+	ldrb	r3, [r5, #1792]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1350
+.L1342:
+	ldr	r0, [r5, #912]
+	mov	r3, #100
+	ldr	r6, .L1352+4
+	cmp	r0, #0
+	str	r3, [r5, #144]
+	ble	.L1343
+	ldr	r3, [r6, #120]
+	blx	r3
+.L1343:
+	ldr	r3, [r6, #12]
+	mov	r0, #0
+	blx	r3
+	bl	SM_Wakeup
+	ldr	r3, [r5, #908]
+	mov	r2, #101
+	str	r2, [r5, #144]
+	cmp	r3, #0
+	movne	r7, #0
+	beq	.L1351
+.L1344:
+	mov	r3, #102
+	str	r3, [r5, #144]
+	bl	VDMDRV_WakeUpVdm
+	mov	r4, #0
+.L1345:
+	mov	r0, r4
+	mov	r1, #0
+	add	r4, r4, #1
+	bl	DeleteRawPacketInBuffer
+	cmp	r4, #32
+	bne	.L1345
+	ldr	r3, [r6, #16]
+	mov	r0, #0
+	blx	r3
+	mov	r0, #1
+	mov	r3, #105
+	str	r3, [r5, #144]
+	bl	VCTRL_RecordPosTime
+	mov	r1, #0
+	ldr	r3, [r6, #132]
+	mov	r0, r1
+	mov	r2, #10
+	blx	r3
+	mov	r0, r7
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1351:
+	bl	DecSyntax
+	mov	r7, r0
+	b	.L1344
+.L1350:
+	mov	r0, #11
+	bl	VCTRL_RecordPosTime
+	mov	r3, #0
+	strb	r3, [r5, #1792]
+	b	.L1342
+.L1353:
+	.align	2
+.L1352:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VCTRL_RunProcess, .-VCTRL_RunProcess
+	.align	2
+	.global	VFMW_CTRL_thread_proc
+	.type	VFMW_CTRL_thread_proc, %function
+VFMW_CTRL_thread_proc:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, .L1381
+	ldr	r6, .L1381+4
+.L1355:
+.L1362:
+	ldr	r1, .L1381+8
+	mov	r0, #2
+	mov	r3, #0
+	str	r3, [r4, #144]
+	bl	dprint_vfmw
+	ldr	r3, [r4, #136]
+	mov	r5, #2
+	str	r5, [r4, #132]
+	cmp	r3, r5
+	bne	.L1377
+	b	.L1360
+.L1379:
+	str	r5, [r4, #144]
+	bl	VCTRL_RunProcess
+	ldr	r1, .L1381+12
+	mov	r0, #22
+	bl	dprint_vfmw
+	ldr	r3, [r4, #136]
+	cmp	r3, #2
+	beq	.L1360
+.L1377:
+	cmp	r3, #3
+	bne	.L1379
+.L1358:
+	ldr	r1, .L1381+16
+	mov	r0, #2
+	mov	r3, #6
+	str	r3, [r4, #144]
+	bl	dprint_vfmw
+	mov	r3, #0
+	mov	r0, r3
+	str	r3, [r4, #132]
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1360:
+	ldr	r1, .L1381+20
+	mov	r0, #2
+	mov	r3, #4
+	str	r3, [r4, #144]
+	bl	dprint_vfmw
+	mov	r3, #1
+	str	r3, [r4, #132]
+	b	.L1357
+.L1380:
+	ldr	r3, [r6, #120]
+	blx	r3
+.L1357:
+	ldr	r1, .L1381+24
+	mov	r0, #22
+	mov	r3, #5
+	str	r3, [r4, #144]
+	bl	dprint_vfmw
+	ldr	r3, [r4, #136]
+	mov	r0, #10
+	cmp	r3, #1
+	beq	.L1362
+	cmp	r3, #3
+	bne	.L1380
+	b	.L1358
+.L1382:
+	.align	2
+.L1381:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC167
+	.word	.LC169
+	.word	.LC171
+	.word	.LC168
+	.word	.LC170
+	UNWIND(.fnend)
+	.size	VFMW_CTRL_thread_proc, .-VFMW_CTRL_thread_proc
+	.align	2
+	.global	VCTRL_GetChanVoQue
+	.type	VCTRL_GetChanVoQue, %function
+VCTRL_GetChanVoQue:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L1402
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	beq	.L1400
+	ldr	r2, [r3, #536]
+	cmp	r2, #20
+	ldrls	pc, [pc, r2, asl #2]
+	b	.L1401
+.L1386:
+	.word	.L1399
+	.word	.L1387
+	.word	.L1388
+	.word	.L1389
+	.word	.L1401
+	.word	.L1390
+	.word	.L1391
+	.word	.L1401
+	.word	.L1392
+	.word	.L1393
+	.word	.L1394
+	.word	.L1394
+	.word	.L1394
+	.word	.L1395
+	.word	.L1401
+	.word	.L1396
+	.word	.L1397
+	.word	.L1398
+	.word	.L1401
+	.word	.L1401
+	.word	.L1399
+.L1399:
+	add	r0, r3, #294912
+	add	r0, r0, #896
+	ldmfd	sp, {fp, sp, pc}
+.L1387:
+	add	r0, r3, #344064
+	add	r0, r0, #1008
+	ldmfd	sp, {fp, sp, pc}
+.L1388:
+	movw	r0, #56280
+	movt	r0, 4
+	add	r0, r3, r0
+	ldmfd	sp, {fp, sp, pc}
+.L1389:
+	movw	r0, #56312
+	movt	r0, 5
+	add	r0, r3, r0
+	ldmfd	sp, {fp, sp, pc}
+.L1390:
+	movw	r0, #10136
+	movt	r0, 5
+	add	r0, r3, r0
+	ldmfd	sp, {fp, sp, pc}
+.L1391:
+	add	r0, r3, #311296
+	add	r0, r0, #696
+	ldmfd	sp, {fp, sp, pc}
+.L1392:
+	add	r0, r3, #348160
+	add	r0, r0, #1984
+	ldmfd	sp, {fp, sp, pc}
+.L1393:
+	movw	r0, #22456
+	movt	r0, 5
+	add	r0, r3, r0
+	ldmfd	sp, {fp, sp, pc}
+.L1394:
+	movw	r0, #46344
+	movt	r0, 4
+	add	r0, r3, r0
+	ldmfd	sp, {fp, sp, pc}
+.L1395:
+	add	r0, r3, #303104
+	add	r0, r0, #904
+	ldmfd	sp, {fp, sp, pc}
+.L1396:
+	add	r0, r3, #294912
+	add	r0, r0, #1472
+	ldmfd	sp, {fp, sp, pc}
+.L1397:
+	add	r0, r3, #299008
+	add	r0, r0, #2320
+	ldmfd	sp, {fp, sp, pc}
+.L1398:
+	add	r0, r3, #569344
+	add	r0, r0, #2288
+	ldmfd	sp, {fp, sp, pc}
+.L1401:
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1400:
+	mov	r0, r3
+	ldmfd	sp, {fp, sp, pc}
+.L1403:
+	.align	2
+.L1402:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanVoQue, .-VCTRL_GetChanVoQue
+	.align	2
+	.global	VCTRL_FindOccupiedFrame
+	.type	VCTRL_FindOccupiedFrame, %function
+VCTRL_FindOccupiedFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	cmp	r0, #31
+	mov	r6, r0
+	bhi	.L1420
+	bl	VCTRL_GetChanVoQue
+	subs	r7, r0, #0
+	beq	.L1415
+	sub	r2, fp, #36
+	mov	r3, #0
+	sub	r1, fp, #44
+	str	r3, [fp, #-44]
+	str	r3, [r2, #-4]!
+	bl	GetQueueImgNum
+	ldr	r2, [fp, #-44]
+	cmp	r2, #0
+	beq	.L1415
+	cmp	r2, #32
+	bhi	.L1408
+.L1411:
+	ldr	r3, .L1422
+	ldrh	r1, [r7, #4]
+	ldr	ip, [r3, r6, asl #2]
+	and	r1, r1, #63
+	add	lr, ip, #294912
+	add	r1, r7, r1, lsl #2
+	ldr	r3, [lr, #816]
+	ldr	r1, [r1, #12]
+	cmp	r3, #32
+	bhi	.L1409
+	add	ip, ip, r3, lsl #4
+	mov	r4, #0
+	add	ip, ip, #294912
+	mov	r5, #0
+	mov	r0, #1
+	add	ip, ip, #292
+	mov	r8, #0
+	b	.L1412
+.L1413:
+	ldrh	r1, [r7, #4]
+	cmp	r3, #33
+	add	r1, r1, r0
+	add	r0, r0, #1
+	and	r1, r1, #63
+	add	r1, r7, r1, lsl #2
+	ldr	r1, [r1, #12]
+	beq	.L1409
+.L1412:
+	ldr	r1, [r1, #20]
+	cmp	r0, r2
+	strd	r4, [ip, #4]
+	add	r3, r3, #1
+	str	r8, [ip, #-4]
+	add	ip, ip, #16
+	str	r1, [ip, #-16]
+	str	r3, [lr, #816]
+	bcc	.L1413
+.L1419:
+	mov	r0, #0
+.L1421:
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L1415:
+	mvn	r0, #0
+.L1406:
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L1409:
+	mov	r2, r6
+	ldr	r1, .L1422+4
+	mov	r0, #0
+	bl	dprint_vfmw
+	mov	r0, #0
+	b	.L1421
+.L1408:
+	mov	r3, #32
+	ldr	r1, .L1422+8
+	mov	r0, #1
+	bl	dprint_vfmw
+	ldr	r2, [fp, #-44]
+	cmp	r2, #0
+	bne	.L1411
+	b	.L1419
+.L1420:
+	ldr	r3, .L1422+12
+	movw	r2, #3489
+	ldr	r1, .L1422+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1406
+.L1423:
+	.align	2
+.L1422:
+	.word	.LANCHOR0
+	.word	.LC173
+	.word	.LC172
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_FindOccupiedFrame, .-VCTRL_FindOccupiedFrame
+	.align	2
+	.global	VCTRL_ReportOccupiedFrame
+	.type	VCTRL_ReportOccupiedFrame, %function
+VCTRL_ReportOccupiedFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	cmp	r0, #31
+	mov	r7, r0
+	mov	r4, r1
+	bhi	.L1441
+	cmp	r1, #0
+	beq	.L1442
+	bl	VCTRL_GetChanVoQue
+	subs	r5, r0, #0
+	mvneq	r0, #0
+	beq	.L1426
+	ldr	r6, .L1444
+	sub	r8, fp, #36
+	mov	r3, #0
+	mov	r0, #4
+	str	r3, [r8, #-4]!
+	ldr	r2, [r6, #12]
+	str	r3, [fp, #-44]
+	blx	r2
+	mov	r2, r8
+	sub	r1, fp, #44
+	mov	r0, r5
+	bl	GetQueueImgNum
+	ldr	r2, [fp, #-44]
+	cmp	r2, #0
+	beq	.L1428
+	cmp	r2, #32
+	bhi	.L1443
+.L1429:
+	mov	ip, #0
+	mov	r1, ip
+	mov	lr, ip
+.L1431:
+	ldrh	r3, [r5, #4]
+	add	r0, r4, r1, lsl #4
+	add	ip, ip, #1
+	mov	r7, #0
+	add	r3, r3, r1
+	and	r3, r3, #63
+	uxth	ip, ip
+	add	r3, r5, r3, lsl #2
+	ldr	r3, [r3, #12]
+	ldr	r8, [r3, #20]
+	str	r8, [r0, #4]
+	ldr	r3, [r3, #504]
+	str	r7, [r0, #12]
+	str	r3, [r0, #8]
+	str	lr, [r4, r1, asl #4]
+	sxth	r1, ip
+	cmp	r1, r2
+	bcc	.L1431
+	uxth	r3, r2
+.L1430:
+	ldrh	r1, [r5, #4]
+	add	r3, r3, r1
+	and	r3, r3, #63
+	strh	r3, [r5, #4]	@ movhi
+	str	r2, [r4, #528]
+.L1432:
+	ldr	r3, [r6, #16]
+	mov	r0, #4
+	blx	r3
+	mov	r0, #0
+.L1426:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1428:
+	ldr	ip, .L1444+4
+	ldr	r8, [ip, r7, asl #2]
+	add	r3, r8, #294912
+	ldr	r3, [r3, #816]
+	cmp	r3, #0
+	beq	.L1432
+	mov	r1, r2
+	mov	lr, r2
+.L1433:
+	add	r5, r1, #18432
+	mov	r9, r1, asl #4
+	add	r5, r5, #18
+	add	r0, r4, r9
+	add	r2, r2, #1
+	add	r5, r8, r5, lsl #4
+	uxth	r2, r2
+	ldr	r3, [r5, #4]
+	str	r3, [r0, #4]
+	ldr	r3, [ip, r7, asl #2]
+	add	r3, r3, r9
+	add	r3, r3, #294912
+	add	r3, r3, #296
+	ldrd	r8, [r3]
+	mov	r9, #0
+	strd	r8, [r0, #8]
+	str	lr, [r4, r1, asl #4]
+	sxth	r1, r2
+	ldr	r8, [ip, r7, asl #2]
+	add	r3, r8, #294912
+	ldr	r3, [r3, #816]
+	cmp	r1, r3
+	bcc	.L1433
+	str	r3, [r4, #528]
+	b	.L1432
+.L1443:
+	mov	r3, #32
+	ldr	r1, .L1444+8
+	mov	r0, #1
+	bl	dprint_vfmw
+	ldr	r2, [fp, #-44]
+	cmp	r2, #0
+	moveq	r3, r2
+	bne	.L1429
+	b	.L1430
+.L1441:
+	ldr	r3, .L1444+12
+	movw	r2, #3605
+	ldr	r1, .L1444+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1426
+.L1442:
+	mov	r0, r1
+	ldr	r3, .L1444+20
+	movw	r2, #3606
+	ldr	r1, .L1444+16
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1426
+.L1445:
+	.align	2
+.L1444:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC172
+	.word	.LC71
+	.word	.LC1
+	.word	.LC174
+	UNWIND(.fnend)
+	.size	VCTRL_ReportOccupiedFrame, .-VCTRL_ReportOccupiedFrame
+	.align	2
+	.global	VCTRL_GetChanImgNum
+	.type	VCTRL_GetChanImgNum, %function
+VCTRL_GetChanImgNum:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, .L1459
+	mov	r5, r0
+	mov	r6, r1
+	mov	r7, r2
+	mov	r8, r3
+	ldr	ip, [r4, r0, asl #2]
+	cmp	ip, #0
+	beq	.L1455
+	bl	VCTRL_GetChanVoQue
+	subs	r3, r0, #0
+	beq	.L1448
+	mov	r2, r8
+	mov	r1, r7
+	bl	GetQueueImgNum
+	ldr	r2, [r4, r5, asl #2]
+	ldr	r3, [r2, #536]
+	cmp	r3, #0
+	beq	.L1456
+	cmp	r3, #16
+	beq	.L1457
+	cmp	r3, #17
+	moveq	r3, #9
+	streq	r3, [r6]
+	ldmeqfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+	cmp	r3, #15
+	beq	.L1458
+	cmp	r3, #18
+	movne	r3, #2
+	strne	r3, [r6]
+	ldmnefd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+	ldr	r2, .L1459+4
+	mov	r0, #32
+	ldr	r1, .L1459+8
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, lr}
+	b	dprint_vfmw
+.L1456:
+	add	r2, r2, #319488
+	ldr	r3, [r2, #3024]
+	str	r3, [r6]
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1448:
+	str	r3, [r8]
+	str	r3, [r7]
+	str	r3, [r6]
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1457:
+	add	r2, r2, #294912
+	ldr	r3, [r2, #3440]
+	str	r3, [r6]
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1458:
+	add	r2, r2, #11403264
+	add	r2, r2, #12288
+	ldr	r3, [r2, #3776]
+	str	r3, [r6]
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1455:
+	mov	r0, ip
+	ldr	r3, .L1459+12
+	movw	r2, #6662
+	ldr	r1, .L1459+16
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, lr}
+	b	dprint_vfmw
+.L1460:
+	.align	2
+.L1459:
+	.word	.LANCHOR0
+	.word	.LANCHOR1+364
+	.word	.LC175
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanImgNum, .-VCTRL_GetChanImgNum
+	.align	2
+	.global	VCTRL_GetChanState
+	.type	VCTRL_GetChanState, %function
+VCTRL_GetChanState:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 40
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #40)
+	sub	sp, sp, #40
+	cmp	r0, #31
+	mov	r6, r0
+	mov	r4, r1
+	bhi	.L1471
+	cmp	r1, #0
+	beq	.L1472
+	ldr	r7, .L1474
+	ldr	r0, [r7, r0, asl #2]
+	cmp	r0, #0
+	beq	.L1473
+	ldr	r3, .L1474+4
+	mov	r5, #0
+	mov	r1, r5
+	mov	r2, #100
+	str	r5, [fp, #-56]
+	mov	r0, r4
+	ldr	r3, [r3, #48]
+	str	r5, [fp, #-60]
+	str	r5, [fp, #-64]
+	blx	r3
+	ldr	r2, [r7, r6, asl #2]
+	movw	r3, #1907
+	ldr	r2, [r2, #1112]
+	str	r2, [r4, #32]
+	ldr	r2, [r7, r6, asl #2]
+	ldr	r2, [r2, #1116]
+	str	r2, [r4, #36]
+	ldr	r2, [r7, r6, asl #2]
+	ldr	r2, [r2, #1120]
+	str	r2, [r4, #44]
+	ldr	r1, [r7, r6, asl #2]
+	add	r2, r1, #262144
+	ldrsb	r0, [r2, r3]
+	cmp	r0, r5
+	ble	.L1469
+	movw	r3, #23554
+	mov	r2, r5
+	movt	r3, 4
+	add	r3, r1, r3
+	mov	r1, r5
+.L1468:
+	ldrsb	ip, [r3]
+	add	r2, r2, #1
+	add	r3, r3, #88
+	cmp	ip, #3
+	addeq	r1, r1, #1
+	cmp	r2, r0
+	bne	.L1468
+.L1466:
+	str	r1, [r4, #84]
+	movw	lr, #1907
+	ldr	ip, [r7, r6, asl #2]
+	sub	r3, fp, #56
+	sub	r2, fp, #60
+	sub	r1, fp, #64
+	add	ip, ip, #262144
+	mov	r0, r6
+	ldrsb	ip, [ip, lr]
+	str	ip, [r4, #92]
+	bl	VCTRL_GetChanImgNum
+	ldr	ip, .L1474+8
+	mov	r3, #300
+	ldr	r0, [fp, #-56]
+	ldr	r2, [fp, #-60]
+	sub	r1, fp, #52
+	mla	r3, r3, r6, ip
+	add	r2, r2, r0
+	str	r2, [r4, #48]
+	mov	r0, r6
+	ldr	r2, [r3, #-108]
+	str	r2, [r4, #96]
+	ldr	r3, [r3, #-120]
+	str	r3, [r4, #20]
+	bl	SM_GetInfo
+	ldr	r3, [fp, #-32]
+	ldr	r1, [fp, #-36]
+	ldr	r2, [fp, #-44]
+	cmp	r3, #10
+	str	r1, [r4, #52]
+	movle	r3, #0
+	movgt	r3, #1
+	str	r2, [r4, #56]
+	str	r3, [r4, #80]
+	ldr	r3, [r7, r6, asl #2]
+	add	r3, r3, #311296
+	ldrb	r3, [r3, #376]	@ zero_extendqisi2
+	and	r3, r3, #1
+	str	r3, [r4, #88]
+.L1461:
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1471:
+	ldr	r3, .L1474+12
+	mov	r2, #1456
+	ldr	r1, .L1474+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1473:
+	ldr	r3, .L1474+20
+	movw	r2, #1459
+	ldr	r1, .L1474+16
+	bl	dprint_vfmw
+	b	.L1461
+.L1469:
+	mov	r1, r5
+	b	.L1466
+.L1472:
+	mov	r0, r1
+	ldr	r3, .L1474+24
+	movw	r2, #1458
+	ldr	r1, .L1474+16
+	bl	dprint_vfmw
+	b	.L1461
+.L1475:
+	.align	2
+.L1474:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3
+	.word	.LC176
+	.word	.LC1
+	.word	.LC178
+	.word	.LC177
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanState, .-VCTRL_GetChanState
+	.align	2
+	.global	VCTRL_GetChanWidth
+	.type	VCTRL_GetChanWidth, %function
+VCTRL_GetChanWidth:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L1480
+	ldr	r3, .L1482
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L1481
+	ldr	r0, [r0, #1228]
+	ldmfd	sp, {fp, sp, pc}
+.L1480:
+	ldr	r3, .L1482+4
+	movw	r2, #6726
+	ldr	r1, .L1482+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1481:
+	ldr	r3, .L1482+12
+	movw	r2, #6727
+	ldr	r1, .L1482+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1483:
+	.align	2
+.L1482:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	.word	.LC2
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanWidth, .-VCTRL_GetChanWidth
+	.align	2
+	.global	VCTRL_GetChanHeight
+	.type	VCTRL_GetChanHeight, %function
+VCTRL_GetChanHeight:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L1488
+	ldr	r3, .L1490
+	ldr	r0, [r3, r0, asl #2]
+	cmp	r0, #0
+	beq	.L1489
+	ldr	r0, [r0, #1232]
+	ldmfd	sp, {fp, sp, pc}
+.L1488:
+	ldr	r3, .L1490+4
+	movw	r2, #6734
+	ldr	r1, .L1490+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1489:
+	ldr	r3, .L1490+12
+	movw	r2, #6735
+	ldr	r1, .L1490+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1491:
+	.align	2
+.L1490:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	.word	.LC2
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanHeight, .-VCTRL_GetChanHeight
+	.align	2
+	.global	VCTRL_GetChanCapLevel
+	.type	VCTRL_GetChanCapLevel, %function
+VCTRL_GetChanCapLevel:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L1496
+	ldr	r3, .L1497
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	ldrne	r0, [r3, #36]
+	moveq	r0, #33
+	ldmfd	sp, {fp, sp, pc}
+.L1496:
+	ldr	r3, .L1497+4
+	movw	r2, #6742
+	ldr	r1, .L1497+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1498:
+	.align	2
+.L1497:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_GetChanCapLevel, .-VCTRL_GetChanCapLevel
+	.align	2
+	.global	VCTRL_SetVdecExtra
+	.type	VCTRL_SetVdecExtra, %function
+VCTRL_SetVdecExtra:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	add	r3, r0, #4992
+	ldr	r5, .L1506
+	add	r3, r3, #8
+	movw	r2, #10000
+	cmp	r3, r2
+	mov	r4, r1
+	str	r0, [r5, #-1688]
+	bhi	.L1504
+.L1500:
+	movw	r1, #5000
+	cmp	r0, r1
+	movw	r2, #60536
+	add	r3, r4, #4992
+	movge	r0, r1
+	movt	r2, 65535
+	cmp	r0, r2
+	add	r3, r3, #8
+	movw	r1, #10000
+	str	r4, [r5, #-1684]
+	movlt	r0, r2
+	cmp	r3, r1
+	str	r0, [r5, #-1688]
+	ldr	r6, .L1506
+	bhi	.L1505
+.L1501:
+	movw	r2, #5000
+	cmp	r4, r2
+	movw	r3, #60536
+	movge	r4, r2
+	movt	r3, 65535
+	cmp	r4, r3
+	movlt	r4, r3
+	str	r4, [r5, #-1684]
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1504:
+	mov	r2, r0
+	ldr	r1, .L1506+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r0, [r5, #-1688]
+	b	.L1500
+.L1505:
+	mov	r2, r4
+	ldr	r1, .L1506+8
+	mov	r0, #32
+	bl	dprint_vfmw
+	ldr	r4, [r6, #-1684]
+	b	.L1501
+.L1507:
+	.align	2
+.L1506:
+	.word	.LANCHOR3
+	.word	.LC179
+	.word	.LC180
+	UNWIND(.fnend)
+	.size	VCTRL_SetVdecExtra, .-VCTRL_SetVdecExtra
+	.align	2
+	.global	VfmwProcGetHandler
+	.type	VfmwProcGetHandler, %function
+VfmwProcGetHandler:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	subs	r1, r0, #0
+	ldrne	r3, .L1520
+	bne	.L1512
+	b	.L1518
+.L1513:
+	ldr	r2, [r3, #8]!
+	cmp	r2, r1
+	beq	.L1519
+.L1512:
+	ldr	r0, [r3, #12]
+	cmp	r0, #0
+	bne	.L1513
+	ldmfd	sp, {fp, sp, pc}
+.L1519:
+	ldmfd	sp, {fp, sp, pc}
+.L1518:
+	ldr	r0, .L1520+4
+	ldmfd	sp, {fp, sp, pc}
+.L1521:
+	.align	2
+.L1520:
+	.word	.LANCHOR1+384
+	.word	VfmwProc_SetPrintLevel
+	UNWIND(.fnend)
+	.size	VfmwProcGetHandler, .-VfmwProcGetHandler
+	.align	2
+	.global	VCTRL_SetDbgOption
+	.type	VCTRL_SetDbgOption, %function
+VCTRL_SetDbgOption:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r1, #0
+	beq	.L1529
+	cmp	r0, #0
+	ldrne	r3, .L1535
+	bne	.L1527
+	b	.L1534
+.L1528:
+	ldr	lr, [r3, #8]!
+	cmp	r0, lr
+	beq	.L1525
+.L1527:
+	ldr	ip, [r3, #12]
+	cmp	ip, #0
+	bne	.L1528
+	mov	r2, r0
+	ldr	r1, .L1535+4
+	mov	r0, #32
+	bl	dprint_vfmw
+	mvn	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+.L1534:
+	ldr	ip, .L1535+8
+.L1525:
+	mov	r0, r1
+	blx	ip
+	mov	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+.L1529:
+	mvn	r0, #1
+	ldmfd	sp, {fp, sp, pc}
+.L1536:
+	.align	2
+.L1535:
+	.word	.LANCHOR1+384
+	.word	.LC181
+	.word	VfmwProc_SetPrintLevel
+	UNWIND(.fnend)
+	.size	VCTRL_SetDbgOption, .-VCTRL_SetDbgOption
+	.align	2
+	.global	VCTRL_GetLastFrameIdPlus2
+	.type	VCTRL_GetLastFrameIdPlus2, %function
+VCTRL_GetLastFrameIdPlus2:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L1541
+	ldr	r3, .L1542
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	ldrne	r0, [r3, #376]
+	mvneq	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1541:
+	ldr	r3, .L1542+4
+	movw	r2, #7981
+	ldr	r1, .L1542+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L1543:
+	.align	2
+.L1542:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_GetLastFrameIdPlus2, .-VCTRL_GetLastFrameIdPlus2
+	.align	2
+	.global	VCTRL_SetLastFrameIdPlus2
+	.type	VCTRL_SetLastFrameIdPlus2, %function
+VCTRL_SetLastFrameIdPlus2:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L1550
+	ldr	r3, .L1551
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	strne	r1, [r3, #376]
+	ldmfd	sp, {fp, sp, pc}
+.L1550:
+	ldr	r3, .L1551+4
+	movw	r2, #7993
+	ldr	r1, .L1551+8
+	mov	r0, #0
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L1552:
+	.align	2
+.L1551:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_SetLastFrameIdPlus2, .-VCTRL_SetLastFrameIdPlus2
+	.align	2
+	.global	VCTRL_SetLastFrameState
+	.type	VCTRL_SetLastFrameState, %function
+VCTRL_SetLastFrameState:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	bhi	.L1559
+	ldr	r3, .L1560
+	ldr	r3, [r3, r0, asl #2]
+	cmp	r3, #0
+	strne	r1, [r3, #380]
+	ldmfd	sp, {fp, sp, pc}
+.L1559:
+	ldr	r3, .L1560+4
+	movw	r2, #8005
+	ldr	r1, .L1560+8
+	mov	r0, #0
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	dprint_vfmw
+.L1561:
+	.align	2
+.L1560:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_SetLastFrameState, .-VCTRL_SetLastFrameState
+	.align	2
+	.global	VCTRL_ReportLastFrame
+	.type	VCTRL_ReportLastFrame, %function
+VCTRL_ReportLastFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #20)
+	sub	sp, sp, #20
+	subs	r5, r1, #0
+	mov	r4, r0
+	moveq	r2, #2
+	beq	.L1564
+	cmp	r5, #1
+	moveq	r2, #3
+	movne	r2, #4
+.L1564:
+	cmp	r4, #31
+	bhi	.L1576
+	ldr	r6, .L1577
+	ldr	r3, [r6, r4, asl #2]
+	cmp	r3, #0
+	strne	r2, [r3, #380]
+.L1567:
+	ldr	r3, .L1577+4
+	ldr	ip, [r3, #-644]
+	cmp	ip, #0
+	beq	.L1568
+	sub	r2, fp, #28
+	mov	r3, #4
+	mov	r1, #115
+	mov	r0, r4
+	str	r5, [r2, #-4]!
+	blx	ip
+.L1568:
+	ldr	ip, [r6, r4, asl #2]
+	mov	r3, r5
+	mov	r2, r4
+	ldr	r1, .L1577+8
+	mov	r0, #1
+	ldr	ip, [ip, #380]
+	str	ip, [sp]
+	bl	dprint_vfmw
+	sub	sp, fp, #24
+	ldmfd	sp, {r4, r5, r6, fp, sp, pc}
+.L1576:
+	ldr	r3, .L1577+12
+	movw	r2, #8005
+	ldr	r1, .L1577+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	ldr	r6, .L1577
+	b	.L1567
+.L1578:
+	.align	2
+.L1577:
+	.word	.LANCHOR0
+	.word	.LANCHOR3
+	.word	.LC182
+	.word	.LC71
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_ReportLastFrame, .-VCTRL_ReportLastFrame
+	.align	2
+	.global	VCTRL_OutputLastFrame
+	.type	VCTRL_OutputLastFrame, %function
+VCTRL_OutputLastFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L1605
+	mov	r5, r0
+	ldr	r3, [r3, r0, asl #2]
+	add	r0, r3, #294912
+	ldr	r2, [r0, #880]
+	cmp	r2, #17
+	ldrls	pc, [pc, r2, asl #2]
+	b	.L1599
+.L1582:
+	.word	.L1581
+	.word	.L1583
+	.word	.L1584
+	.word	.L1585
+	.word	.L1599
+	.word	.L1586
+	.word	.L1587
+	.word	.L1599
+	.word	.L1588
+	.word	.L1589
+	.word	.L1590
+	.word	.L1590
+	.word	.L1590
+	.word	.L1591
+	.word	.L1599
+	.word	.L1592
+	.word	.L1593
+	.word	.L1594
+.L1594:
+	add	r0, r0, #888
+	bl	VP9DEC_GetRemainImg
+	mov	r4, r0
+.L1580:
+	cmn	r4, #1
+	beq	.L1596
+	cmp	r4, #0
+	bne	.L1604
+	mov	r0, r5
+	mov	r1, r4
+	bl	VCTRL_ReportLastFrame
+	ldr	r1, .L1605+4
+	mov	r0, #2
+	bl	dprint_vfmw
+	mov	r0, r4
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1581:
+	add	r0, r0, #888
+	bl	H264DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1583:
+	add	r0, r0, #888
+	bl	VC1DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1584:
+	add	r0, r0, #888
+	bl	MPEG4DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1585:
+	add	r0, r0, #888
+	bl	MPEG2DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1586:
+	add	r0, r0, #888
+	bl	DIVX3DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1587:
+	add	r0, r0, #888
+	bl	AVSDEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1588:
+	add	r0, r0, #888
+	bl	REAL8DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1589:
+	add	r0, r0, #888
+	bl	REAL9DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1590:
+	add	r0, r0, #888
+	bl	VP6DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1591:
+	add	r0, r0, #888
+	bl	VP8DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1592:
+	add	r0, r0, #888
+	bl	MVC_DEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1593:
+	add	r0, r0, #888
+	bl	HEVCDEC_GetRemainImg
+	mov	r4, r0
+	b	.L1580
+.L1604:
+	mov	r0, r5
+	mov	r1, r4
+	bl	VCTRL_ReportLastFrame
+	sub	r2, r4, #2
+	ldr	r1, .L1605+8
+	mov	r0, #2
+	bl	dprint_vfmw
+	mov	r0, r4
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1599:
+	mvn	r4, #0
+.L1596:
+	mov	r0, r5
+	mov	r1, #1
+	bl	VCTRL_ReportLastFrame
+	ldr	r1, .L1605+12
+	mov	r0, #2
+	bl	dprint_vfmw
+	mov	r0, r4
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1606:
+	.align	2
+.L1605:
+	.word	.LANCHOR0
+	.word	.LC184
+	.word	.LC185
+	.word	.LC183
+	UNWIND(.fnend)
+	.size	VCTRL_OutputLastFrame, .-VCTRL_OutputLastFrame
+	.align	2
+	.global	VCTRL_PostProc
+	.type	VCTRL_PostProc, %function
+VCTRL_PostProc:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #16)
+	sub	sp, sp, #16
+	ldr	r5, .L1647
+	mov	r4, r0
+	ldr	r0, [r5, r0, asl #2]
+	cmp	r0, #0
+	beq	.L1640
+	ldr	lr, [r0, #536]
+	ldr	r6, [r0, #1168]
+	cmp	lr, #17
+	ldrls	pc, [pc, lr, asl #2]
+	b	.L1607
+.L1611:
+	.word	.L1610
+	.word	.L1612
+	.word	.L1613
+	.word	.L1614
+	.word	.L1607
+	.word	.L1615
+	.word	.L1616
+	.word	.L1607
+	.word	.L1617
+	.word	.L1618
+	.word	.L1619
+	.word	.L1619
+	.word	.L1619
+	.word	.L1620
+	.word	.L1607
+	.word	.L1621
+	.word	.L1622
+	.word	.L1623
+.L1622:
+	add	r0, r0, #294912
+	str	r3, [sp, #4]
+	add	r0, r0, #888
+	mov	r3, r2
+	str	r6, [sp]
+	mov	r2, #1
+	bl	HEVCDEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r7, .L1647
+	add	r3, r3, #294912
+	ldrb	r3, [r3, #897]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1641
+.L1626:
+	cmp	r6, #1
+	ldrne	r3, [r5, r4, asl #2]
+	movne	r2, #0
+	addne	r3, r3, #294912
+	strne	r2, [r3, #3268]
+.L1607:
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1623:
+	add	r0, r0, #294912
+	mov	r2, r6
+	add	r0, r0, #888
+	bl	VP9DEC_VDMPostProc
+	cmp	r6, #1
+	bne	.L1639
+	b	.L1607
+.L1610:
+	add	r0, r0, #294912
+	str	r3, [sp, #4]
+	add	r0, r0, #888
+	mov	r3, r2
+	str	r6, [sp]
+	mov	r2, #1
+	bl	H264DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r7, .L1647
+	add	r3, r3, #307200
+	ldrb	r3, [r3, #2160]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1642
+.L1624:
+	cmp	r6, #1
+	ldrne	r3, [r5, r4, asl #2]
+	movne	r2, #0
+	addne	r3, r3, #294912
+	strne	r2, [r3, #1248]
+	b	.L1607
+.L1613:
+	add	r0, r0, #294912
+	add	r0, r0, #888
+	bl	MPEG4DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r5, .L1647
+	add	r2, r3, #315392
+	ldrb	r2, [r2, #3420]	@ zero_extendqisi2
+	cmp	r2, #1
+	beq	.L1643
+.L1629:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #1924]
+	b	.L1607
+.L1614:
+	add	r0, r0, #294912
+	ldr	r6, .L1647
+	add	r0, r0, #888
+	bl	MPEG2DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	add	r2, r3, #380928
+	ldrb	r2, [r2, #3434]	@ zero_extendqisi2
+	cmp	r2, #1
+	beq	.L1644
+.L1631:
+	add	r3, r3, #294912
+	mov	r2, #0
+	str	r2, [r3, #892]
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1612:
+	add	r0, r0, #294912
+	ldr	r6, .L1647
+	add	r0, r0, #888
+	bl	VC1DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	add	r2, r3, #307200
+	ldrb	r2, [r2, #1343]	@ zero_extendqisi2
+	cmp	r2, #1
+	bne	.L1631
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r3, [r6, r4, asl #2]
+	mov	r1, #0
+	add	r2, r3, #307200
+	strb	r1, [r2, #1343]
+	b	.L1631
+.L1615:
+	mov	r0, r3
+	str	r1, [fp, #-32]
+	bl	VDMDRV_GetSwitchRounding
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r1, [fp, #-32]
+	mov	r2, r0
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	bl	DIVX3DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #294912
+	str	r2, [r3, #892]
+	b	.L1607
+.L1616:
+	add	r0, r0, #294912
+	ldr	r6, .L1647
+	add	r0, r0, #888
+	bl	AVSDEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	add	r3, r3, #294912
+	ldrb	r2, [r3, #888]	@ zero_extendqisi2
+	cmp	r2, #1
+	beq	.L1645
+.L1630:
+	mov	r2, #0
+	str	r2, [r3, #904]
+	b	.L1607
+.L1617:
+	mov	r0, r3
+	str	r1, [fp, #-32]
+	bl	VDMDRV_GetMb0QpInCurrPic
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r1, [fp, #-32]
+	mov	r2, r0
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	bl	REAL8DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #294912
+	str	r2, [r3, #892]
+	b	.L1607
+.L1618:
+	mov	r0, r3
+	str	r1, [fp, #-32]
+	bl	VDMDRV_GetMb0QpInCurrPic
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r1, [fp, #-32]
+	mov	r2, r0
+	add	r0, r3, #294912
+	add	r0, r0, #888
+	bl	REAL9DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #294912
+	str	r2, [r3, #892]
+	b	.L1607
+.L1619:
+	add	r0, r0, #294912
+	add	r0, r0, #888
+	bl	VP6DEC_VDMPostProc
+.L1639:
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #294912
+	str	r2, [r3, #892]
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1621:
+	add	r0, r0, #294912
+	mov	r2, #1
+	add	r0, r0, #888
+	bl	MVC_DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r5, .L1647
+	add	r3, r3, #294912
+	ldrb	r2, [r3, #889]	@ zero_extendqisi2
+	cmp	r2, #1
+	beq	.L1646
+.L1632:
+	mov	r2, #0
+	str	r2, [r3, #1116]
+	b	.L1607
+.L1620:
+	add	r0, r0, #294912
+	add	r0, r0, #888
+	bl	VP8DEC_VDMPostProc
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #294912
+	str	r2, [r3, #892]
+	b	.L1607
+.L1640:
+	ldr	r3, .L1647+4
+	movw	r2, #4566
+	ldr	r1, .L1647+8
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	dprint_vfmw
+.L1643:
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r3, [r5, r4, asl #2]
+	mov	r1, #0
+	add	r2, r3, #315392
+	strb	r1, [r2, #3420]
+	b	.L1629
+.L1644:
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r3, [r6, r4, asl #2]
+	mov	r1, #0
+	add	r2, r3, #380928
+	strb	r1, [r2, #3434]
+	b	.L1631
+.L1646:
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r2, [r5, r4, asl #2]
+	mov	r1, #0
+	add	r2, r2, #294912
+	mov	r3, r2
+	strb	r1, [r2, #889]
+	b	.L1632
+.L1645:
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r2, [r6, r4, asl #2]
+	mov	r1, #0
+	add	r2, r2, #294912
+	mov	r3, r2
+	strb	r1, [r2, #888]
+	b	.L1630
+.L1642:
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r3, [r7, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #307200
+	strb	r2, [r3, #2160]
+	b	.L1624
+.L1641:
+	mov	r0, r4
+	bl	VCTRL_OutputLastFrame
+	ldr	r3, [r7, r4, asl #2]
+	mov	r2, #0
+	add	r3, r3, #294912
+	strb	r2, [r3, #897]
+	b	.L1626
+.L1648:
+	.align	2
+.L1647:
+	.word	.LANCHOR0
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_PostProc, .-VCTRL_PostProc
+	.align	2
+	.global	VCTRL_VdmPostProc
+	.type	VCTRL_VdmPostProc, %function
+VCTRL_VdmPostProc:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r6, r2
+	mov	r7, r3
+	mov	r4, r0
+	mov	r5, r1
+	ldrhi	r3, .L1656
+	movwhi	r2, #4755
+	bhi	.L1654
+	ldr	ip, .L1656+4
+	ldr	ip, [ip, r0, asl #2]
+	cmp	ip, #0
+	beq	.L1655
+	ldr	ip, [ip, #8]
+	cmp	ip, #1
+	beq	.L1652
+	ldr	r3, .L1656+8
+	movw	r2, #4757
+.L1654:
+	ldr	r1, .L1656+12
+	mov	r0, #0
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	dprint_vfmw
+.L1652:
+	bl	VCTRL_GetDecParam
+	cmp	r0, #0
+	ldmeqfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+	mov	r3, r7
+	mov	r2, r6
+	mov	r1, r5
+	mov	r0, r4
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	VCTRL_PostProc
+.L1655:
+	mov	r0, ip
+	ldr	r3, .L1656+16
+	movw	r2, #4756
+	ldr	r1, .L1656+12
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	dprint_vfmw
+.L1657:
+	.align	2
+.L1656:
+	.word	.LC117
+	.word	.LANCHOR0
+	.word	.LC118
+	.word	.LC1
+	.word	.LC100
+	UNWIND(.fnend)
+	.size	VCTRL_VdmPostProc, .-VCTRL_VdmPostProc
+	.align	2
+	.global	VCTRL_SvdecLastFrame
+	.type	VCTRL_SvdecLastFrame, %function
+VCTRL_SvdecLastFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	add	r1, r1, #2
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_ReportLastFrame
+	UNWIND(.fnend)
+	.size	VCTRL_SvdecLastFrame, .-VCTRL_SvdecLastFrame
+	.align	2
+	.global	Get_YuvFormat
+	.type	Get_YuvFormat, %function
+Get_YuvFormat:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r1, #6
+	ldrls	pc, [pc, r1, asl #2]
+	b	.L1660
+.L1662:
+	.word	.L1661
+	.word	.L1663
+	.word	.L1664
+	.word	.L1665
+	.word	.L1666
+	.word	.L1667
+	.word	.L1668
+.L1668:
+	cmp	r0, #1
+	moveq	r0, #1
+	movne	r0, #7
+	ldmfd	sp, {fp, sp, pc}
+.L1661:
+	cmp	r0, #1
+	moveq	r0, #0
+	movne	r0, #6
+	ldmfd	sp, {fp, sp, pc}
+.L1663:
+	cmp	r0, #1
+	moveq	r0, #2
+	movne	r0, #8
+	ldmfd	sp, {fp, sp, pc}
+.L1664:
+	cmp	r0, #1
+	moveq	r0, #4
+	movne	r0, #10
+	ldmfd	sp, {fp, sp, pc}
+.L1665:
+	cmp	r0, #1
+	moveq	r0, #3
+	movne	r0, #9
+	ldmfd	sp, {fp, sp, pc}
+.L1666:
+	cmp	r0, #1
+	moveq	r0, #5
+	movne	r0, #11
+	ldmfd	sp, {fp, sp, pc}
+.L1667:
+	cmp	r0, #1
+	moveq	r0, #13
+	movne	r0, #12
+	ldmfd	sp, {fp, sp, pc}
+.L1660:
+	mov	r3, r1
+	movw	r2, #8712
+	ldr	r1, .L1677
+	mov	r0, #1
+	bl	dprint_vfmw
+	mov	r0, #13
+	ldmfd	sp, {fp, sp, pc}
+.L1678:
+	.align	2
+.L1677:
+	.word	.LC186
+	UNWIND(.fnend)
+	.size	Get_YuvFormat, .-Get_YuvFormat
+	.align	2
+	.global	VDH_PutUsrdecFrame
+	.type	VDH_PutUsrdecFrame, %function
+VDH_PutUsrdecFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #20)
+	sub	sp, sp, #20
+	mov	r5, r1
+	ldr	r1, [r1, #40]
+	mov	r8, r0
+	bl	FSP_GetLogicIdByPhyAddr
+	cmn	r0, #1
+	mov	r7, r0
+	beq	.L1687
+	ldr	r3, [r5, #4]
+	cmp	r3, #1
+	beq	.L1682
+	mov	r1, r0
+	mov	r2, #0
+	mov	r0, r8
+	bl	FSP_ClearLogicFs
+	mov	r0, #0
+.L1681:
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1682:
+	ldr	r0, [r5, #48]
+	bl	MEM_Phy2Vir
+	cmp	r0, #0
+	beq	.L1688
+.L1683:
+	mov	r1, r7
+	mov	r0, r8
+	bl	FSP_GetFsImagePtr
+	subs	r4, r0, #0
+	beq	.L1689
+	str	r7, [r4, #148]
+	add	ip, r4, #576
+	ldrd	r2, [r5, #64]
+	add	r0, r4, #592
+	add	r1, r4, #608
+	mov	r6, #0
+	mov	r9, #1
+	strd	r2, [ip]
+	ldrd	r2, [r5, #64]
+	strd	r2, [r0, #-8]
+	ldrd	r2, [r5, #64]
+	strd	r2, [r0]
+	ldrd	r2, [r5, #64]
+	strd	r2, [r1, #-8]
+	str	r9, [r4]
+	str	r6, [r4, #4]
+	str	r6, [r4, #8]
+	str	r6, [r4, #12]
+	ldr	r3, [r5, #40]
+	str	r3, [r4, #20]
+	mov	r0, r3
+	str	r3, [r4, #36]
+	ldr	r3, [r5, #48]
+	str	r3, [r4, #24]
+	str	r3, [r4, #40]
+	bl	MEM_Phy2Vir
+	str	r6, [r4, #508]
+	str	r0, [r4, #504]
+	ldr	r0, [r4, #24]
+	bl	MEM_Phy2Vir
+	str	r6, [r4, #516]
+	ldr	lr, [r4, #20]
+	mov	r1, r6
+	ldr	r10, [r4, #24]
+	mov	r2, #4
+	ldr	ip, .L1691
+	str	r0, [r4, #512]
+	add	r0, r4, #64
+	ldr	r3, [r5, #44]
+	add	lr, r3, lr
+	str	lr, [r4, #28]
+	ldr	r3, [r5, #44]
+	str	r6, [r4, #52]
+	add	r3, r3, r10
+	str	r3, [r4, #32]
+	ldr	r3, [r5, #12]
+	ldr	ip, [ip, #48]
+	str	r3, [r4, #68]
+	ldr	r3, [r5, #16]
+	str	r3, [r4, #72]
+	ldr	r3, [r5, #12]
+	mov	lr, r3, lsr r9
+	str	r3, [r4, #76]
+	ldr	r3, [r5, #16]
+	str	lr, [r4, #84]
+	str	r3, [r4, #80]
+	mov	r3, r3, lsr r9
+	str	r3, [r4, #88]
+	ldr	r3, [r5, #44]
+	str	r6, [r4, #108]
+	str	r6, [r4, #152]
+	str	r3, [r4, #112]
+	mov	r3, r3, lsr r9
+	str	r9, [r4, #164]
+	str	r3, [r4, #116]
+	blx	ip
+	ldrb	r3, [r4, #65]	@ zero_extendqisi2
+	ldrb	r2, [r4, #64]	@ zero_extendqisi2
+	and	r3, r3, #252
+	orr	r3, r3, #12
+	and	r2, r2, #224
+	bfi	r3, r9, #4, #2
+	bfi	r2, r9, #5, #3
+	strb	r3, [r4, #65]
+	strb	r2, [r4, #64]
+	ldr	r0, [r5, #24]
+	str	r0, [r4, #212]
+	bl	MEM_Phy2Vir
+	str	r6, [r4, #524]
+	str	r0, [r4, #520]
+	ldr	r1, [r5]
+	ldr	r0, [r5, #8]
+	bl	Get_YuvFormat
+	cmp	r0, #13
+	beq	.L1690
+	str	r0, [r4, #388]
+	mov	r2, r9
+	ldr	r3, [r5, #56]
+	mov	r9, #20
+	mov	r1, r7
+	mov	r0, r8
+	str	r3, [r4, #364]
+	ldr	r3, [r5, #60]
+	str	r3, [r4, #360]
+	ldr	r3, [r5, #52]
+	str	r9, [r4, #296]
+	str	r3, [r4, #368]
+	bl	FSP_SetDisplay
+	ldr	r3, .L1691+4
+	str	r4, [sp]
+	mov	r1, r9
+	mov	r0, r8
+	ldr	r2, [r3, r8, asl #2]
+	add	r2, r2, #294912
+	add	r3, r2, #896
+	add	r2, r2, #888
+	bl	InsertImgToVoQueue
+	cmp	r0, #1
+	moveq	r0, r6
+	beq	.L1681
+	add	r9, r4, #544
+	ldr	r1, [r4, #544]
+	mov	r0, r8
+	add	r5, r4, #560
+	bl	FreeUsdByDec
+	mov	r2, #0
+	mov	r3, #0
+	mov	r0, r8
+	strd	r2, [r9]
+	ldr	r1, [r4, #552]
+	strd	r2, [fp, #-52]
+	bl	FreeUsdByDec
+	ldrd	r2, [fp, #-52]
+	mov	r0, r8
+	mov	r1, r7
+	strd	r2, [r5, #-8]
+	mov	r2, r6
+	bl	FSP_SetDisplay
+	mvn	r0, #0
+	b	.L1681
+.L1688:
+	ldr	r3, [r5, #4]
+	cmp	r3, #1
+	bne	.L1683
+	ldr	r2, [r5, #48]
+	ldr	r1, .L1691+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1681
+.L1687:
+	ldr	r2, [r5, #40]
+	mov	r0, #0
+	ldr	r1, .L1691+12
+	bl	dprint_vfmw
+	mov	r0, r7
+	b	.L1681
+.L1690:
+	mov	r2, r0
+	ldr	r1, .L1691+16
+	mov	r0, r9
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1681
+.L1689:
+	movw	r2, #5249
+	ldr	r1, .L1691+20
+	mov	r0, #22
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1681
+.L1692:
+	.align	2
+.L1691:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC188
+	.word	.LC187
+	.word	.LC190
+	.word	.LC189
+	UNWIND(.fnend)
+	.size	VDH_PutUsrdecFrame, .-VDH_PutUsrdecFrame
+	.align	2
+	.global	VCTRL_PutUsrdecFrame
+	.type	VCTRL_PutUsrdecFrame, %function
+VCTRL_PutUsrdecFrame:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L1704
+	mov	r4, r0
+	mov	r0, r1
+	ldr	r3, [r5, r4, asl #2]
+	cmp	r3, #0
+	beq	.L1701
+	cmp	r1, #0
+	beq	.L1702
+	ldr	r2, [r3, #536]
+	cmp	r2, #20
+	bne	.L1703
+	ldr	ip, .L1704+4
+	add	r0, r3, #464
+	mov	r2, #72
+	ldr	r3, [ip, #52]
+	blx	r3
+	ldr	r1, [r5, r4, asl #2]
+	mov	r0, r4
+	add	r1, r1, #464
+	bl	VDH_PutUsrdecFrame
+	cmp	r0, #0
+	ldmeqfd	sp, {r4, r5, fp, sp, pc}
+	ldr	r1, .L1704+8
+	mov	r0, #1
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1703:
+	ldr	r1, .L1704+12
+	mov	r0, #1
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1702:
+	ldr	r3, .L1704+16
+	movw	r2, #5402
+	ldr	r1, .L1704+20
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1701:
+	mov	r0, r3
+	movw	r2, #5401
+	ldr	r3, .L1704+24
+	ldr	r1, .L1704+20
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L1705:
+	.align	2
+.L1704:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC193
+	.word	.LC192
+	.word	.LC191
+	.word	.LC1
+	.word	.LC2
+	UNWIND(.fnend)
+	.size	VCTRL_PutUsrdecFrame, .-VCTRL_PutUsrdecFrame
+	.align	2
+	.global	VCTRL_ResetHardware
+	.type	VCTRL_ResetHardware, %function
+VCTRL_ResetHardware:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	mov	r4, r0
+	bl	SCDDRV_ResetSCD
+	mov	r0, r4
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	VDMDRV_ResetVDH
+	UNWIND(.fnend)
+	.size	VCTRL_ResetHardware, .-VCTRL_ResetHardware
+	.align	2
+	.global	VCTRL_CanBeDecodedByHardWare
+	.type	VCTRL_CanBeDecodedByHardWare, %function
+VCTRL_CanBeDecodedByHardWare:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #4
+	cmpne	r0, #7
+	beq	.L1708
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	VCTRL_CanBeDecodedByHardWare.part.19
+.L1708:
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_CanBeDecodedByHardWare, .-VCTRL_CanBeDecodedByHardWare
+	.align	2
+	.global	VCTRL_IsChanOpenAndRun
+	.type	VCTRL_IsChanOpenAndRun, %function
+VCTRL_IsChanOpenAndRun:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	ldreq	r0, [r0, #8]
+	subeq	r0, r0, #1
+	clzeq	r0, r0
+	moveq	r0, r0, lsr #5
+	movne	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+	UNWIND(.fnend)
+	.size	VCTRL_IsChanOpenAndRun, .-VCTRL_IsChanOpenAndRun
+	.align	2
+	.global	VCTRL_OpenHardware
+	.type	VCTRL_OpenHardware, %function
+VCTRL_OpenHardware:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r6, r0
+	movwhi	r2, #8769
+	ldrhi	r1, .L1758
+	bhi	.L1748
+	ldr	r5, .L1758+4
+	ldr	r0, [r5, r0, asl #2]
+	cmp	r0, #0
+	beq	.L1749
+	ldr	r3, [r0, #4]
+	cmp	r3, #1
+	bne	.L1715
+	ldr	r0, [r0, #536]
+	cmp	r0, #21
+	beq	.L1715
+	cmp	r0, #4
+	cmpne	r0, #7
+	moveq	r7, #1
+	movne	r7, #0
+	ldmeqfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+	bl	VCTRL_CanBeDecodedByHardWare.part.19
+	cmp	r0, #0
+	ldmeqfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+	mov	r4, r7
+.L1721:
+	mov	r0, r4
+	bl	VCTRL_IsChanActive
+	cmp	r0, #0
+	bne	.L1720
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r0, [r3, #536]
+	cmp	r0, #4
+	cmpne	r0, #7
+	beq	.L1720
+	bl	VCTRL_CanBeDecodedByHardWare.part.19
+	cmp	r0, #0
+	addne	r7, r7, #1
+.L1720:
+	add	r4, r4, #1
+	cmp	r4, #32
+	bne	.L1721
+	cmp	r7, #1
+	beq	.L1750
+.L1722:
+	ldr	r3, .L1758+8
+	mov	r1, #0
+	add	r0, r3, #128
+.L1729:
+	ldr	r2, [r3, #4]!
+	cmp	r2, #0
+	beq	.L1728
+	ldr	r2, [r2, #536]
+	cmp	r2, #6
+	moveq	r1, #1
+.L1728:
+	cmp	r3, r0
+	bne	.L1729
+	cmp	r1, #1
+	beq	.L1751
+.L1730:
+	ldr	r3, [r5, r6, asl #2]
+	ldr	r3, [r3, #536]
+	cmp	r3, #1
+	ldmnefd	sp, {r4, r5, r6, r7, fp, sp, pc}
+	ldr	r3, .L1758+12
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	bne	.L1752
+	ldr	r3, .L1758+16
+	ldr	r3, [r3, #28]
+	cmp	r3, #0
+	ldmeqfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+	mov	r0, #0
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	bx	r3	@ indirect register sibling call
+.L1715:
+	ldr	r1, .L1758+20
+	movw	r2, #8781
+.L1748:
+	mov	r0, #0
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	dprint_vfmw
+.L1750:
+	ldr	r4, .L1758+12
+	ldrb	r3, [r4]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1753
+	mov	r0, r7
+	mov	r1, #0
+	bl	VDH_Need_Module
+.L1725:
+	ldrb	r3, [r4]	@ zero_extendqisi2
+	cmp	r3, #1
+	bne	.L1726
+	ldr	r3, .L1758+16
+	ldr	r3, [r3, #20]
+	cmp	r3, #0
+	beq	.L1754
+	mov	r0, #0
+	blx	r3
+	b	.L1722
+.L1751:
+	ldr	r3, .L1758+12
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1755
+	mov	r1, #0
+	mov	r0, #3
+	bl	VDH_Need_Module
+	b	.L1730
+.L1755:
+	ldr	r3, .L1758+16
+	ldr	r3, [r3, #12]
+	cmp	r3, #0
+	beq	.L1756
+	mov	r0, #0
+	blx	r3
+	b	.L1730
+.L1753:
+	ldr	r3, .L1758+16
+	ldr	r3, [r3, #4]
+	cmp	r3, #0
+	beq	.L1757
+	mov	r0, #0
+	blx	r3
+	b	.L1725
+.L1749:
+	movw	r2, #8775
+	ldr	r1, .L1758+24
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	dprint_vfmw
+.L1752:
+	mov	r1, #0
+	mov	r0, #2
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	VDH_Need_Module
+.L1726:
+	mov	r1, #0
+	mov	r0, r1
+	bl	VDH_Need_Module
+	b	.L1722
+.L1754:
+	mov	r0, r3
+	movw	r2, #8830
+	ldr	r1, .L1758+28
+	bl	dprint_vfmw
+	b	.L1722
+.L1756:
+	mov	r0, r3
+	movw	r2, #8861
+	ldr	r1, .L1758+28
+	bl	dprint_vfmw
+	b	.L1730
+.L1757:
+	mov	r0, r3
+	movw	r2, #8816
+	ldr	r1, .L1758+28
+	bl	dprint_vfmw
+	b	.L1725
+.L1759:
+	.align	2
+.L1758:
+	.word	.LC194
+	.word	.LANCHOR0
+	.word	.LANCHOR0-4
+	.word	g_HalDisable
+	.word	g_vdm_hal_fun_ptr
+	.word	.LC196
+	.word	.LC195
+	.word	.LC44
+	UNWIND(.fnend)
+	.size	VCTRL_OpenHardware, .-VCTRL_OpenHardware
+	.align	2
+	.global	VCTRL_StartChan
+	.type	VCTRL_StartChan, %function
+VCTRL_StartChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r5, r0
+	bhi	.L1771
+	ldr	r4, .L1775
+	ldr	r3, [r4, r0, asl #2]
+	cmp	r3, #0
+	beq	.L1772
+	ldr	r6, [r3, #4]
+	cmp	r6, #1
+	bne	.L1773
+	ldr	r3, [r3, #536]
+	cmp	r3, #21
+	beq	.L1774
+	bl	SM_Start
+	ldr	r3, [r4, r5, asl #2]
+	mov	r2, #0
+	str	r6, [r3, #8]
+	ldr	r3, [r4, r5, asl #2]
+	str	r6, [r3, #12]
+	ldr	r3, [r4, r5, asl #2]
+	str	r2, [r3, #24]
+	ldr	r3, [r4, r5, asl #2]
+	str	r6, [r3, #16]
+	ldr	r2, [r4, r5, asl #2]
+	ldr	r3, [r2, #20]
+	cmp	r3, #0
+	bne	.L1766
+	ldr	r3, .L1775+4
+	sub	ip, r4, #4
+	ldr	r1, .L1775+8
+	add	r4, r3, #128
+	str	r6, [r2, #20]
+.L1769:
+	ldr	r2, [ip, #4]!
+	add	r3, r3, #4
+	add	r1, r1, #4
+	cmp	r2, #0
+	streq	r2, [r3, #-4]
+	ldrne	lr, [r2, #20]
+	strne	lr, [r3, #-4]
+	ldrne	r2, [r2, #20]
+	cmp	r3, r4
+	str	r2, [r1, #-4]
+	bne	.L1769
+	ldr	r0, .L1775+4
+	bl	VDMDRV_SetPriority
+	mov	r0, r5
+	bl	VDMDRV_ClearChanIsDec
+.L1766:
+	ldr	r4, .L1775+12
+	mov	r0, r5
+	bl	VDMDRV_ClearChanIsDec
+	mov	r0, r5
+	bl	VCTRL_OpenHardware
+	mov	r2, #12
+	ldr	r3, [r4, #48]
+	mov	r1, #0
+	ldr	r0, .L1775+16
+	blx	r3
+	ldr	r3, [r4, #48]
+	mov	r2, #720
+	mov	r1, #0
+	ldr	r0, .L1775+20
+	blx	r3
+	ldr	r3, [r4, #48]
+	mov	r2, #2
+	mov	r1, #0
+	ldr	r0, .L1775+24
+	blx	r3
+	ldr	r3, [r4, #48]
+	mov	r2, #120
+	mov	r1, #0
+	ldr	r0, .L1775+28
+	blx	r3
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1773:
+	ldr	r3, .L1775+32
+	movw	r2, #2509
+	ldr	r1, .L1775+36
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1771:
+	ldr	r3, .L1775+40
+	movw	r2, #2507
+	ldr	r1, .L1775+36
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1774:
+	ldr	r3, .L1775+44
+	movw	r2, #2510
+	ldr	r1, .L1775+36
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1772:
+	mov	r0, r3
+	movw	r2, #2508
+	ldr	r3, .L1775+48
+	ldr	r1, .L1775+36
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1776:
+	.align	2
+.L1775:
+	.word	.LANCHOR0
+	.word	.LANCHOR4+1288
+	.word	g_ChanCtx
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_TimeRecId
+	.word	g_TimeRecTable
+	.word	g_DataRecId
+	.word	g_DataTable
+	.word	.LC123
+	.word	.LC1
+	.word	.LC71
+	.word	.LC197
+	.word	.LC78
+	UNWIND(.fnend)
+	.size	VCTRL_StartChan, .-VCTRL_StartChan
+	.align	2
+	.type	VfmwProc_TestStartChan, %function
+VfmwProc_TestStartChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, [r0]
+	mov	r0, r4
+	bl	VCTRL_StartChan
+	mov	r2, r4
+	ldr	r1, .L1778
+	mov	r3, r0
+	mov	r0, #32
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	dprint_vfmw
+.L1779:
+	.align	2
+.L1778:
+	.word	.LC198
+	UNWIND(.fnend)
+	.size	VfmwProc_TestStartChan, .-VfmwProc_TestStartChan
+	.align	2
+	.global	VCTRL_CloseHardware
+	.type	VCTRL_CloseHardware, %function
+VCTRL_CloseHardware:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	ldr	r5, .L1841
+	mov	r8, #0
+	mov	r10, r0
+	mov	r7, r8
+	add	r9, r5, #128
+	mov	r1, r8
+	b	.L1790
+.L1831:
+	ldr	r3, [r4, #4]
+	cmp	r3, #1
+	beq	.L1829
+.L1786:
+	cmp	r8, #0
+	cmpeq	r6, #6
+	bne	.L1781
+	ldr	r3, [r4, #4]
+	cmp	r3, #1
+	beq	.L1810
+.L1781:
+	cmp	r5, r9
+	beq	.L1830
+.L1790:
+	ldr	r4, [r5, #4]!
+	cmp	r4, #0
+	beq	.L1781
+	cmp	r1, #0
+	ldr	r6, [r4, #536]
+	beq	.L1831
+	cmp	r7, #0
+	cmpeq	r6, #1
+	bne	.L1786
+	ldr	r3, [r4, #4]
+	cmp	r3, #1
+	bne	.L1781
+.L1809:
+	ldr	r3, [r4, #8]
+	cmp	r3, #1
+	moveq	r7, #1
+	cmp	r8, #0
+	cmpeq	r6, #6
+	bne	.L1781
+.L1810:
+	ldr	r3, [r4, #8]
+	cmp	r3, #1
+	moveq	r8, #1
+	cmp	r5, r9
+	bne	.L1790
+.L1830:
+	cmp	r1, #0
+	beq	.L1832
+.L1791:
+	cmp	r8, #0
+	bne	.L1803
+	ldr	r3, .L1841+4
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1833
+	mov	r1, r8
+	mov	r0, #3
+	bl	VDH_UnNeed_Module
+.L1803:
+	cmp	r7, #0
+	bne	.L1780
+.L1838:
+	ldr	r3, .L1841+4
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	bne	.L1834
+	ldr	r3, .L1841+8
+	ldr	r3, [r3, #32]
+	cmp	r3, #0
+	beq	.L1780
+	mov	r0, r7
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, lr}
+	bx	r3	@ indirect register sibling call
+.L1829:
+	ldr	r3, [r4, #8]
+	cmp	r3, #1
+	beq	.L1835
+.L1785:
+	cmp	r7, #0
+	cmpeq	r6, #1
+	beq	.L1809
+	b	.L1786
+.L1835:
+	cmp	r6, #7
+	cmpne	r6, #4
+	beq	.L1785
+	mov	r0, r6
+	bl	VCTRL_CanBeDecodedByHardWare.part.19
+	adds	r1, r0, #0
+	movne	r1, #1
+	b	.L1785
+.L1832:
+	ldr	r4, .L1841+4
+	ldrb	r3, [r4]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1796
+	mov	r0, r10
+	str	r1, [fp, #-48]
+	bl	SCDDRV_ResetSCD
+	mov	r0, r10
+	bl	VDMDRV_ResetVDH
+	ldrb	r3, [r4]	@ zero_extendqisi2
+	ldr	r1, [fp, #-48]
+	cmp	r3, #1
+	beq	.L1796
+	mov	r0, #1
+	bl	VDH_UnNeed_Module
+	ldrb	r3, [r4]	@ zero_extendqisi2
+	cmp	r3, #1
+	bne	.L1799
+.L1840:
+	ldr	r3, .L1841+8
+	ldr	r3, [r3, #24]
+	cmp	r3, #0
+	beq	.L1836
+	mov	r0, #0
+	blx	r3
+.L1802:
+	mov	r0, #0
+	bl	SCDDRV_SetStateIdle
+	b	.L1791
+.L1833:
+	ldr	r3, .L1841+8
+	mov	r0, r8
+	ldr	r3, [r3, #16]
+	cmp	r3, #0
+	beq	.L1837
+	blx	r3
+	cmp	r7, #0
+	beq	.L1838
+.L1780:
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1834:
+	mov	r1, r7
+	mov	r0, #2
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, lr}
+	b	VDH_UnNeed_Module
+.L1796:
+	ldr	r3, .L1841+8
+	ldr	r3, [r3, #8]
+	cmp	r3, #0
+	beq	.L1839
+	mov	r0, #0
+	blx	r3
+.L1798:
+	mov	r0, #0
+	bl	VDMDRV_SetStateIdle
+	ldrb	r3, [r4]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L1840
+.L1799:
+	mov	r1, #0
+	mov	r0, r1
+	bl	VDH_UnNeed_Module
+	b	.L1791
+.L1836:
+	mov	r0, r3
+	movw	r2, #8959
+	ldr	r1, .L1841+12
+	bl	dprint_vfmw
+	b	.L1802
+.L1837:
+	movw	r2, #8977
+	ldr	r1, .L1841+12
+	bl	dprint_vfmw
+	b	.L1803
+.L1839:
+	mov	r0, r3
+	movw	r2, #8944
+	ldr	r1, .L1841+12
+	bl	dprint_vfmw
+	b	.L1798
+.L1842:
+	.align	2
+.L1841:
+	.word	.LANCHOR0-4
+	.word	g_HalDisable
+	.word	g_vdm_hal_fun_ptr
+	.word	.LC44
+	UNWIND(.fnend)
+	.size	VCTRL_CloseHardware, .-VCTRL_CloseHardware
+	.align	2
+	.global	VCTRL_StopChan
+	.type	VCTRL_StopChan, %function
+VCTRL_StopChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r0, #31
+	mov	r4, r0
+	bhi	.L1849
+	ldr	r6, .L1851
+	ldr	r3, [r6, r0, asl #2]
+	cmp	r3, #0
+	beq	.L1850
+	ldr	r2, [r3, #4]
+	cmp	r2, #1
+	bne	.L1848
+	str	r2, [r3, #24]
+	mov	r3, #0
+	ldr	r2, [r6, r0, asl #2]
+	str	r3, [r2, #12]
+	ldr	r2, [r6, r0, asl #2]
+	str	r3, [r2, #8]
+	bl	SM_Stop
+	subs	r5, r0, #0
+	bne	.L1848
+	mov	r1, r5
+	mov	r0, r4
+	bl	DeleteRawPacketInBuffer
+	mov	r0, r4
+	bl	VDMDRV_ClearChanIsDec
+	ldr	r3, [r6, r4, asl #2]
+	mov	r0, r4
+	str	r5, [r3, #24]
+	bl	VCTRL_CloseHardware
+	mov	r0, r5
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1848:
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1849:
+	ldr	r3, .L1851+4
+	movw	r2, #2601
+	ldr	r1, .L1851+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1850:
+	mov	r0, r3
+	movw	r2, #2602
+	ldr	r3, .L1851+12
+	ldr	r1, .L1851+8
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L1852:
+	.align	2
+.L1851:
+	.word	.LANCHOR0
+	.word	.LC71
+	.word	.LC1
+	.word	.LC199
+	UNWIND(.fnend)
+	.size	VCTRL_StopChan, .-VCTRL_StopChan
+	.align	2
+	.global	VCTRL_StopChanWithCheck
+	.type	VCTRL_StopChanWithCheck, %function
+VCTRL_StopChanWithCheck:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r5, .L1860
+	mov	r7, r0
+	mov	r4, #0
+	mov	r8, r5
+	b	.L1855
+.L1859:
+	add	r4, r4, #1
+	ldr	r3, [r8, #120]
+	blx	r3
+	cmp	r4, #50
+	beq	.L1857
+.L1855:
+	ldr	r3, [r5, #12]
+	mov	r0, #0
+	blx	r3
+	mov	r0, r7
+	bl	VCTRL_StopChan
+	ldr	r3, [r5, #16]
+	mov	r6, r0
+	mov	r0, #0
+	blx	r3
+	cmp	r6, #0
+	mov	r0, #10
+	bne	.L1859
+	cmp	r4, #49
+	bgt	.L1857
+	mov	r0, r6
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1857:
+	ldr	r1, .L1860+4
+	mvn	r6, #0
+	mov	r0, #0
+	bl	dprint_vfmw
+	mov	r0, r6
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1861:
+	.align	2
+.L1860:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC200
+	UNWIND(.fnend)
+	.size	VCTRL_StopChanWithCheck, .-VCTRL_StopChanWithCheck
+	.align	2
+	.global	VCTRL_ResetChanWithOption
+	.type	VCTRL_ResetChanWithOption, %function
+VCTRL_ResetChanWithOption:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	ldr	r5, .L1895
+	mov	r4, r0
+	mov	r6, r1
+	ldr	r3, [r5, r0, asl #2]
+	cmp	r3, #0
+	beq	.L1889
+	ldr	r2, [r1]
+	cmp	r2, #1
+	bhi	.L1890
+	ldr	r9, [r3, #8]
+	bl	VCTRL_StopChan
+	ldr	r7, .L1895+4
+	mov	r8, #0
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #300
+	ldr	r0, .L1895+8
+	mov	r1, r8
+	ldr	ip, [r7, #48]
+	str	r8, [r3, #384]
+	str	r8, [r3, #388]
+	mla	r0, r2, r4, r0
+	blx	ip
+	ldr	r3, [r5, r4, asl #2]
+	cmp	r3, r8
+	addne	r3, r3, #290816
+	strne	r8, [r3, #796]
+	beq	.L1891
+.L1867:
+	ldr	r3, [r7, #12]
+	mov	r0, #4
+	blx	r3
+	mov	r0, r4
+	bl	VCTRL_FindOccupiedFrame
+	ldr	r3, [r7, #16]
+	mov	r0, #4
+	blx	r3
+	ldr	r2, [r6, #4]
+	ldr	r3, [r5, r4, asl #2]
+	mov	r0, r4
+	str	r2, [r3, #1160]
+	bl	InitSyntaxCtx
+	ldr	r3, [r5, r4, asl #2]
+	add	r1, r3, #294912
+	ldr	r0, [r3, #536]
+	add	r1, r1, #888
+	bl	ReleaseCurPic
+	ldr	r0, [r5, r4, asl #2]
+	ldr	r3, [r7, #48]
+	mov	r2, #416
+	mov	r1, #0
+	add	r0, r0, #680
+	blx	r3
+	ldr	r3, [r5, r4, asl #2]
+	mvn	r0, #0
+	mvn	r1, #0
+	add	r2, r3, #608
+	mov	ip, #0
+	strd	r0, [r2, #-8]
+	strd	r0, [r2]
+	mov	r0, r4
+	ldr	r2, [r3, #1384]
+	str	ip, [r3, #1096]
+	cmp	r2, #1
+	streq	ip, [r3, #1432]
+	addeq	r2, r3, #294912
+	streq	ip, [r2, #820]
+	ldr	r3, [r3, #536]
+	cmp	r3, #20
+	beq	.L1869
+	ldr	r3, [r6, #8]
+	cmp	r3, #0
+	beq	.L1892
+.L1869:
+	bl	FSP_EmptyInstance
+.L1870:
+	mov	r0, r4
+	bl	InitUsdPool
+	ldr	r3, [r6]
+	cmp	r3, #0
+	beq	.L1893
+.L1871:
+	ldr	r2, [r5, #1056]
+	ldr	r3, .L1895
+	cmp	r2, #0
+	beq	.L1872
+	add	r5, r3, r4, lsl #2
+	str	r4, [fp, #-40]
+	ldr	r3, [r5, #1468]
+	cmp	r3, #0
+	beq	.L1874
+	mov	r0, #512
+	sub	r1, fp, #40
+	bl	VCTRL_SetDbgOption
+	ldr	r3, [r5, #1468]
+	cmp	r3, #0
+	beq	.L1874
+	sub	r1, fp, #40
+	mov	r0, #512
+	bl	VCTRL_SetDbgOption
+.L1874:
+	ldr	r1, .L1895+12
+	mov	r0, #32
+	bl	dprint_vfmw
+.L1872:
+	cmp	r9, #0
+	bne	.L1894
+.L1876:
+	mov	r0, r4
+	bl	VDMDRV_ClearChanIsDec
+	mov	r0, #0
+.L1864:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1893:
+	mov	r0, r4
+	bl	SM_Reset
+	b	.L1871
+.L1894:
+	mov	r0, r4
+	bl	VCTRL_StartChan
+	b	.L1876
+.L1892:
+	bl	FSP_ResetInstance
+	b	.L1870
+.L1890:
+	movw	r2, #3362
+	ldr	r1, .L1895+16
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L1891:
+	bl	VCTRL_SetSendStreamAgainFlag.part.11
+	b	.L1867
+.L1889:
+	mov	r0, r3
+	movw	r2, #3358
+	ldr	r3, .L1895+20
+	ldr	r1, .L1895+24
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1864
+.L1896:
+	.align	2
+.L1895:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3-128
+	.word	.LC202
+	.word	.LC201
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_ResetChanWithOption, .-VCTRL_ResetChanWithOption
+	.align	2
+	.global	VCTRL_ResetChan
+	.type	VCTRL_ResetChan, %function
+VCTRL_ResetChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 8
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #12)
+	sub	sp, sp, #12
+	ldr	r5, .L1924
+	mov	r4, r0
+	ldr	r3, [r5, r0, asl #2]
+	cmp	r3, #0
+	beq	.L1920
+	ldr	r8, [r3, #8]
+	bl	VCTRL_StopChan
+	ldr	r7, .L1924+4
+	mov	r6, #0
+	ldr	r3, [r5, r4, asl #2]
+	mov	r0, #4
+	ldr	r2, [r7, #12]
+	str	r6, [r3, #384]
+	str	r6, [r3, #388]
+	blx	r2
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r2, [r3, #1384]
+	cmp	r2, #1
+	beq	.L1921
+.L1900:
+	ldr	r0, .L1924+8
+	mov	r2, #300
+	ldr	r3, [r7, #48]
+	mov	r1, #0
+	mla	r0, r2, r4, r0
+	blx	r3
+	ldr	r3, [r5, r4, asl #2]
+	cmp	r3, #0
+	addne	r3, r3, #290816
+	movne	r2, #0
+	strne	r2, [r3, #796]
+	beq	.L1922
+.L1902:
+	ldr	r3, [r5, r4, asl #2]
+	mov	r6, #0
+	mov	r0, r4
+	str	r6, [r3, #1160]
+	bl	InitSyntaxCtx
+	ldr	r0, [r5, r4, asl #2]
+	mov	r1, r6
+	ldr	r3, [r7, #48]
+	mov	r2, #416
+	add	r0, r0, #680
+	blx	r3
+	ldr	r1, [r5, r4, asl #2]
+	mvn	r3, #0
+	mvn	r2, #0
+	add	r0, r1, #294912
+	add	ip, r1, #608
+	strd	r2, [ip, #-8]
+	strd	r2, [ip]
+	str	r6, [r1, #1096]
+	str	r6, [r0, #848]
+	str	r6, [r0, #840]
+	str	r6, [r0, #844]
+	ldr	r3, [r1, #1384]
+	cmp	r3, #1
+	streq	r6, [r1, #1432]
+	streq	r6, [r0, #820]
+	mov	r0, r4
+	ldr	r3, [r1, #536]
+	cmp	r3, #20
+	beq	.L1904
+	bl	FSP_ResetInstance
+.L1905:
+	ldr	r3, [r7, #16]
+	mov	r0, #4
+	blx	r3
+	mov	r0, r4
+	bl	InitUsdPool
+	mov	r0, r4
+	bl	SM_Reset
+	ldr	r2, [r5, #1056]
+	ldr	r3, .L1924
+	cmp	r2, #0
+	beq	.L1906
+	add	r5, r3, r4, lsl #2
+	str	r4, [fp, #-40]
+	ldr	r3, [r5, #1468]
+	cmp	r3, #0
+	beq	.L1908
+	mov	r0, #512
+	sub	r1, fp, #40
+	bl	VCTRL_SetDbgOption
+	ldr	r3, [r5, #1468]
+	cmp	r3, #0
+	beq	.L1908
+	sub	r1, fp, #40
+	mov	r0, #512
+	bl	VCTRL_SetDbgOption
+.L1908:
+	ldr	r1, .L1924+12
+	mov	r0, #32
+	bl	dprint_vfmw
+.L1906:
+	cmp	r8, #0
+	bne	.L1923
+.L1910:
+	mov	r0, r4
+	bl	VDMDRV_ClearChanIsDec
+	mov	r0, #0
+.L1899:
+	sub	sp, fp, #32
+	ldmfd	sp, {r4, r5, r6, r7, r8, fp, sp, pc}
+.L1923:
+	mov	r0, r4
+	bl	VCTRL_StartChan
+	b	.L1910
+.L1904:
+	bl	FSP_EmptyInstance
+	b	.L1905
+.L1921:
+	add	r2, r3, #294912
+	ldr	r1, [r3, #536]
+	ldr	r2, [r2, #880]
+	cmp	r2, r1
+	bne	.L1900
+	str	r6, [r3, #12]
+	mov	r0, r4
+	bl	VCTRL_FindOccupiedFrame
+	b	.L1900
+.L1922:
+	bl	VCTRL_SetSendStreamAgainFlag.part.11
+	b	.L1902
+.L1920:
+	mov	r0, r3
+	movw	r2, #3758
+	ldr	r3, .L1924+16
+	ldr	r1, .L1924+20
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L1899
+.L1925:
+	.align	2
+.L1924:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3-128
+	.word	.LC202
+	.word	.LC2
+	.word	.LC1
+	UNWIND(.fnend)
+	.size	VCTRL_ResetChan, .-VCTRL_ResetChan
+	.align	2
+	.global	VCTRL_CreateChan
+	.type	VCTRL_CreateChan, %function
+VCTRL_CreateChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 192
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #204)
+	sub	sp, sp, #204
+	ldr	r6, .L2015
+	mov	r7, r1
+	mov	r8, r0
+	mov	r1, #0
+	mov	r4, r2
+	ldr	r3, [r6, #48]
+	mov	r2, #36
+	sub	r0, fp, #176
+	ldr	r9, .L2015+4
+	blx	r3
+	ldr	r3, [r6, #48]
+	mov	r2, #96
+	mov	r1, #0
+	sub	r0, fp, #140
+	blx	r3
+	ldr	r3, [r6, #48]
+	mov	r2, #16
+	mov	r1, #0
+	sub	r0, fp, #216
+	blx	r3
+	ldr	ip, [r6, #48]
+	sub	r0, fp, #228
+	mov	r2, #12
+	mov	r1, #0
+	blx	ip
+	cmp	r7, #0
+	str	r7, [r9, #1416]
+	beq	.L1998
+	ldr	r1, [r7, #36]
+	cmp	r1, #0
+	blt	.L1929
+	ldr	r3, [r7, #12]
+	cmp	r3, #31
+	ble	.L1929
+	ldr	r3, [r7, #16]
+	cmp	r3, #31
+	ble	.L1929
+	ldr	r3, [r7, #56]
+	cmp	r3, #262144
+	blt	.L1929
+	ldr	r1, [r7, #44]
+	cmp	r1, #1
+	beq	.L1999
+	cmp	r1, #2
+	bne	.L1931
+	ldr	r3, [r7, #20]
+	cmp	r3, #0
+	ble	.L1929
+	ldr	r3, [r7, #24]
+	cmp	r3, #0
+	ble	.L1929
+.L1995:
+	ldr	r3, [r7, #28]
+	cmp	r3, #0
+	ble	.L1929
+	ldr	r3, [r7, #32]
+	cmp	r3, #0
+	bgt	.L1931
+.L1929:
+	ldr	r1, .L2015+8
+	mov	r0, #0
+	bl	dprint_vfmw
+.L1969:
+	mvn	r10, #0
+	mov	r0, r10
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L1931:
+	ldr	r3, [r7, #168]
+	movw	ip, #14152
+	movt	ip, 12
+	sub	r2, fp, #228
+	cmp	r3, #1
+	movw	lr, #62056
+	mov	r1, r7
+	mov	r0, r8
+	movhi	r3, #0
+	strhi	r3, [r7, #168]
+	cmp	r8, #26
+	mov	r3, r4
+	mov	r4, #1
+	str	r4, [r7, #192]
+	str	r4, [r7, #196]
+	movt	lr, 177
+	movne	lr, ip
+	str	lr, [fp, #-232]
+	bl	VCTRL_GetChanMemSize
+	subs	r10, r0, #0
+	bne	.L2000
+	ldr	r3, [r6, #48]
+	mov	r2, #24
+	mov	r1, r10
+	sub	r0, fp, #200
+	blx	r3
+	ldrd	r2, [r7, #128]
+	ldr	r5, .L2015
+	orrs	r3, r2, r3
+	beq	.L1937
+	ldr	r3, [r7, #136]
+	cmp	r3, #0
+	bne	.L1938
+.L1937:
+	mov	r0, #7
+	mov	r3, #3
+	mov	r4, #1
+	str	r3, [fp, #-180]
+	bl	VFMW_GetString
+	ldr	r2, [fp, #-220]
+	sub	r3, fp, #200
+	str	r4, [sp]
+	mov	r1, #0
+	bl	MEM_AllocMemBlock
+	subs	r5, r0, #0
+	bne	.L2001
+	ldr	r2, [fp, #-184]
+	ldr	r1, [fp, #-196]
+	ldr	r0, [fp, #-192]
+	bl	MEM_AddMemRecord
+	ldr	r1, [fp, #-192]
+	ldr	r2, [fp, #-196]
+	ldr	r3, [fp, #-184]
+	str	r5, [fp, #-80]
+	str	r4, [fp, #-208]
+	str	r1, [fp, #-92]
+	str	r2, [fp, #-84]
+	str	r3, [fp, #-76]
+.L1941:
+	ldr	r3, [r6, #48]
+	mov	r2, #24
+	mov	r1, #0
+	sub	r0, fp, #200
+	blx	r3
+	ldrd	r2, [r7, #80]
+	ldr	r1, .L2015
+	orrs	r3, r2, r3
+	bne	.L2002
+.L1970:
+	ldr	r3, [r7, #168]
+	cmp	r3, #1
+	beq	.L1944
+	mov	r0, #8
+	mov	r3, #3
+	str	r3, [fp, #-180]
+	bl	VFMW_GetString
+	mov	r3, #0
+	ldr	r2, [fp, #-228]
+	mov	r1, r3
+	str	r3, [sp]
+	sub	r3, fp, #200
+	bl	MEM_AllocMemBlock
+	subs	r4, r0, #0
+	bne	.L2003
+	ldr	r2, [fp, #-184]
+	ldr	r1, [fp, #-196]
+	ldr	r0, [fp, #-192]
+	bl	MEM_AddMemRecord
+	ldr	r0, [fp, #-192]
+	ldr	r1, [fp, #-196]
+	mov	r3, #1
+	ldr	r2, [fp, #-184]
+	str	r4, [fp, #-128]
+	str	r0, [fp, #-140]
+	str	r1, [fp, #-132]
+	str	r2, [fp, #-124]
+	str	r3, [fp, #-216]
+.L1948:
+	ldr	r3, [r6, #48]
+	mov	r2, #24
+	mov	r1, #0
+	sub	r0, fp, #200
+	blx	r3
+	ldrd	r2, [r7, #104]
+	ldr	r1, .L2015
+	orrs	r3, r2, r3
+	beq	.L1972
+	ldr	r3, [r7, #112]
+	cmp	r3, #0
+	bne	.L1952
+.L1972:
+	mov	r0, #9
+	mov	r3, #3
+	str	r3, [fp, #-180]
+	bl	VFMW_GetString
+	mov	r1, #0
+	ldr	r2, [fp, #-224]
+	sub	r3, fp, #200
+	str	r1, [sp]
+	bl	MEM_AllocMemBlock
+	subs	r10, r0, #0
+	bne	.L2004
+	ldr	r2, [fp, #-184]
+	ldr	r1, [fp, #-196]
+	ldr	r0, [fp, #-192]
+	bl	MEM_AddMemRecord
+	ldr	ip, [fp, #-192]
+	ldr	r0, [fp, #-196]
+	mov	r2, #1
+	ldr	r1, [fp, #-184]
+	str	r10, [fp, #-104]
+	str	ip, [fp, #-116]
+	str	r0, [fp, #-108]
+	str	r1, [fp, #-100]
+	str	r2, [fp, #-212]
+.L1992:
+	ldr	r5, .L2015+12
+	mov	r0, #0
+	ldr	r3, [r6, #12]
+	blx	r3
+	ldr	r4, [r5]
+	cmp	r4, #0
+	beq	.L1961
+	mov	r3, r5
+	mov	r4, #1
+	b	.L1963
+.L2005:
+	add	r4, r4, #1
+	cmp	r4, #32
+	beq	.L1964
+.L1963:
+	ldr	r2, [r3, #4]!
+	cmp	r2, #0
+	bne	.L2005
+	cmp	r4, #31
+	bhi	.L1964
+.L1961:
+	ldr	r10, [fp, #-232]
+	mov	r1, #0
+	ldr	r0, [fp, #-84]
+	sub	r2, r10, #205824
+	ldr	r3, [r6, #48]
+	sub	r2, r2, #520
+	str	r0, [r5, r4, asl #2]
+	blx	r3
+	ldr	r0, [r5, r4, asl #2]
+	ldr	r3, [r6, #52]
+	mov	r2, #208
+	mov	r1, r7
+	add	r0, r0, #1216
+	blx	r3
+	ldr	lr, [r5, r4, asl #2]
+	mov	ip, #21
+	ldr	r2, .L2015+16
+	mov	r1, #30
+	mov	r0, r4
+	str	r8, [lr, #36]
+	ldr	r3, [r5, r4, asl #2]
+	str	r10, [lr, #1124]
+	mov	lr, #0
+	str	r4, [r3]
+	str	r8, [r3, #572]
+	str	lr, [r3, #1152]
+	ldr	r3, [r5, r4, asl #2]
+	ldr	lr, [r7]
+	ldr	r8, .L2015
+	str	lr, [r3, #32]
+	ldr	r3, [r5, r4, asl #2]
+	add	lr, r3, #294912
+	str	ip, [r3, #536]
+	str	ip, [lr, #880]
+	mov	ip, #0
+	str	ip, [r3, #28]
+	ldr	r3, [r5, r4, asl #2]
+	ldr	lr, [r7, #200]
+	add	ip, r3, #294912
+	str	lr, [ip, #864]
+	add	ip, r3, #1472
+	str	r1, [r3, #1464]
+	add	r1, r3, #262144
+	str	ip, [r2, r4, asl #3]
+	add	r1, r1, #1904
+	ldr	r2, [r7, #192]
+	str	r2, [r3, #1536]
+	ldr	r2, [r7, #196]
+	str	r2, [r3, #1540]
+	bl	FSP_EnableInstance
+	subs	r10, r0, #0
+	bne	.L2006
+	mov	r0, r4
+	mov	r8, r10
+	bl	VCTRL_ResetChan
+	ldr	r3, .L2015+12
+	ldr	lr, [fp, #-216]
+	ldr	ip, [fp, #-212]
+	ldr	r1, [r3, r4, asl #2]
+	ldr	r3, [fp, #-208]
+	add	r2, r1, #290816
+	add	r0, r1, #294912
+	str	lr, [r1, #300]
+	str	ip, [r1, #304]
+	str	r3, [r1, #308]
+	str	r10, [r2, #772]
+	str	r10, [r2, #776]
+	str	r10, [r2, #784]
+	str	r10, [r2, #788]
+	str	r10, [r2, #780]
+	str	r10, [r2, #792]
+	ldr	r2, [r7, #168]
+	str	r10, [r0, #820]
+	str	r2, [r0, #828]
+.L1966:
+	mov	r7, r8, asl #6
+	ldr	r0, [r5, r4, asl #2]
+	add	r7, r7, r8, lsl #3
+	mov	r2, #72
+	add	r3, r7, #290816
+	ldr	ip, [r6, #48]
+	add	r3, r3, #800
+	mov	r1, #0
+	add	r0, r0, r3
+	add	r8, r8, #1
+	blx	ip
+	ldr	r0, [r5, r4, asl #2]
+	cmp	r8, #32
+	mov	r2, #255
+	add	r3, r0, r7
+	ldr	r10, .L2015+12
+	add	r3, r3, #290816
+	ldr	r7, .L2015
+	str	r2, [r3, #800]
+	str	r2, [r3, #804]
+	str	r2, [r3, #808]
+	bne	.L1966
+	add	r0, r0, #290816
+	ldr	r3, [r7, #48]
+	mov	r2, #1248
+	mov	r1, #0
+	add	r0, r0, #3104
+	add	r9, r9, r4, lsl #2
+	blx	r3
+	ldr	r0, [r10, r4, asl #2]
+	ldr	r3, [r7, #48]
+	mov	r2, #24
+	add	r0, r0, #294912
+	mov	r1, #0
+	add	r0, r0, #256
+	blx	r3
+	ldr	r3, [r10, r4, asl #2]
+	ldr	r8, [fp, #-132]
+	mov	r0, #0
+	ldr	r7, [fp, #-108]
+	add	ip, r3, #262144
+	ldr	lr, [fp, #-92]
+	ldr	r2, [fp, #-140]
+	ldr	r1, [fp, #-124]
+	str	r8, [r3, #232]
+	str	r7, [r3, #256]
+	str	lr, [r3, #284]
+	ldr	r10, [fp, #-84]
+	ldr	r8, [fp, #-116]
+	ldr	r7, [fp, #-100]
+	ldr	lr, [fp, #-76]
+	str	r10, [r3, #280]
+	str	r2, [r3, #236]
+	str	lr, [r3, #292]
+	str	r2, [r3, #328]
+	str	r1, [r3, #244]
+	str	r1, [r3, #332]
+	str	r8, [r3, #260]
+	str	r7, [r3, #268]
+	str	r0, [ip, #1936]
+	ldr	ip, [r3, #1384]
+	str	r0, [r9, #1420]
+	cmp	ip, #1
+	beq	.L1967
+	sub	r1, r1, #307200
+	str	r2, [r3, #316]
+	sub	r1, r1, #2576
+	str	r1, [r3, #320]
+	add	r2, r1, r2
+	str	r8, [r3, #324]
+	add	r0, r2, #14848
+	add	r1, r2, #47616
+	add	r0, r0, #15
+	add	r1, r1, #15
+	add	r2, r2, #15
+	str	r7, [r3, #336]
+.L1996:
+	bic	r2, r2, #15
+	str	r2, [r3, #340]
+	mov	r2, #262144
+	str	r2, [r3, #360]
+	ldr	r2, [r5, r4, asl #2]
+	bic	r0, r0, #15
+	bic	r1, r1, #15
+	str	r0, [r3, #348]
+	str	r1, [r3, #356]
+	mov	r0, #14848
+	mov	r1, #32768
+	str	r0, [r3, #344]
+	str	r1, [r3, #352]
+	mov	r0, r4
+	str	r4, [r2]
+	mov	r10, r4
+	ldr	r2, [r5, r4, asl #2]
+	add	r1, r2, #262144
+	str	r4, [r2, #220]
+	str	r4, [r2, #224]
+	str	r4, [r1, #1676]
+	bl	SM_ClearInst
+	ldr	r2, [r5, r4, asl #2]
+	ldr	r3, [fp, #-232]
+	mov	r0, r4
+	sub	r1, r3, #203776
+	ldr	r2, [r2, #280]
+	sub	r1, r1, #520
+	add	r1, r2, r1
+	bl	OpenUsdPool_WithMem
+	ldr	r2, [r5, r4, asl #2]
+	mov	r1, #1
+	mov	r0, r4
+	str	r1, [r2, #4]
+	bl	VDMDRV_ClearChanIsDec
+	bl	VDMDRV_ParamInit
+	ldr	r2, [r6]
+	ldr	r4, [r5, r4, asl #2]
+	blx	r2
+	ldr	r2, [r6, #16]
+	add	r4, r4, #294912
+	str	r0, [r4, #836]
+	mov	r0, #0
+	blx	r2
+.L1991:
+	mov	r0, r10
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L2002:
+	ldr	r3, [r7, #88]
+	cmp	r3, #0
+	beq	.L1970
+	ldr	r3, [r1, #52]
+	mov	r2, #24
+	sub	r0, fp, #140
+	add	r1, r7, #72
+	blx	r3
+	ldr	r3, [r7, #168]
+	ldr	r2, [fp, #-124]
+	cmp	r3, #1
+	beq	.L1950
+	ldr	r3, [fp, #-228]
+	cmp	r2, r3
+	blt	.L2007
+.L1950:
+	ldr	r1, [fp, #-132]
+	ldr	r0, [fp, #-140]
+	bl	MEM_AddMemRecord
+	b	.L1948
+.L1944:
+	mov	r3, #0
+	mov	r0, #0
+	mov	r1, #0
+	str	r3, [fp, #-140]
+	str	r3, [fp, #-124]
+	str	r3, [fp, #-216]
+	strd	r0, [fp, #-132]
+	b	.L1948
+.L1999:
+	ldr	r3, [r7, #20]
+	cmp	r3, #0
+	bgt	.L1995
+	b	.L1929
+.L1967:
+	sub	r7, r7, #307200
+	str	r0, [r3, #316]
+	sub	r7, r7, #2576
+	str	r0, [r3, #320]
+	add	r2, r7, r8
+	str	r7, [r3, #336]
+	add	r0, r2, #14848
+	add	r1, r2, #47616
+	add	r0, r0, #15
+	add	r1, r1, #15
+	add	r2, r2, #15
+	str	r8, [r3, #324]
+	b	.L1996
+.L1938:
+	ldr	r3, [r5, #52]
+	mov	r2, #24
+	add	r1, r7, #120
+	sub	r0, fp, #92
+	blx	r3
+	ldr	r2, [fp, #-76]
+	ldr	r3, [fp, #-220]
+	cmp	r2, r3
+	blt	.L2008
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_AddMemRecord
+	b	.L1941
+.L1952:
+	ldr	r3, [r1, #52]
+	mov	r2, #24
+	add	r1, r7, #96
+	sub	r0, fp, #116
+	blx	r3
+	ldrd	r0, [fp, #-108]
+	orrs	r3, r0, r1
+	beq	.L1957
+	ldr	r2, [fp, #-100]
+	ldr	r3, [fp, #-224]
+	cmp	r2, r3
+	blt	.L1957
+	mov	r1, r0
+	ldr	r0, [fp, #-116]
+	bl	MEM_AddMemRecord
+	b	.L1992
+.L2004:
+	ldr	r3, [fp, #-208]
+	cmp	r3, #1
+	beq	.L2009
+.L1954:
+	ldr	r3, [fp, #-216]
+	cmp	r3, #1
+	beq	.L2010
+.L1955:
+	movw	r2, #1909
+	ldr	r1, .L2015+20
+	mov	r0, #1
+	mvn	r10, #0
+	bl	dprint_vfmw
+	b	.L1991
+.L2003:
+	ldr	r3, [fp, #-208]
+	cmp	r3, #1
+	beq	.L2011
+.L1946:
+	movw	r2, #1975
+	ldr	r1, .L2015+24
+	mov	r0, #1
+	bl	dprint_vfmw
+	b	.L1969
+.L2000:
+	movw	r2, #2132
+	ldr	r1, .L2015+28
+	mov	r0, #0
+	mvn	r10, #0
+	bl	dprint_vfmw
+	b	.L1991
+.L1964:
+	mov	r2, #32
+	ldr	r1, .L2015+32
+	mov	r0, #1
+	mvn	r10, #0
+	bl	dprint_vfmw
+	ldr	r2, [r6, #16]
+	mov	r0, #0
+	blx	r2
+	b	.L1991
+.L2006:
+	mov	r2, r4
+	ldr	r1, .L2015+36
+	mov	r0, #1
+	mvn	r10, #0
+	bl	dprint_vfmw
+	mov	r0, r4
+	bl	FSP_DisableInstance
+	mov	r0, r4
+	bl	CloseUsdPool_WithMem
+	ldr	r3, .L2015+12
+	mov	r0, r4
+	mov	r1, #0
+	ldr	r2, [r3, r4, asl #2]
+	str	r1, [r3, r4, asl #2]
+	add	ip, r2, #294912
+	add	r1, r2, #290816
+	ldr	r7, [r2, #308]
+	add	lr, r2, #228
+	ldr	r6, [r2, #300]
+	add	r1, r1, #800
+	ldr	r5, [r2, #304]
+	ldr	r9, [ip, #828]
+	add	ip, r2, #252
+	str	r1, [fp, #-164]
+	add	r2, r2, #276
+	str	lr, [fp, #-176]
+	str	ip, [fp, #-172]
+	str	r2, [fp, #-168]
+	str	r9, [fp, #-160]
+	str	r7, [fp, #-148]
+	str	r6, [fp, #-156]
+	str	r5, [fp, #-152]
+	bl	VDMDRV_ClearChanIsDec
+	ldr	r2, [r8, #16]
+	mov	r0, #0
+	blx	r2
+	sub	r1, fp, #176
+	mov	r0, r4
+	bl	VCTRL_FreeChanResource
+	b	.L1991
+.L2001:
+	mov	r0, r4
+	movw	r2, #2033
+	ldr	r1, .L2015+40
+	bl	dprint_vfmw
+	b	.L1969
+.L1957:
+	ldr	r3, [fp, #-208]
+	cmp	r3, #1
+	beq	.L2012
+.L1959:
+	ldr	r3, [fp, #-216]
+	cmp	r3, #1
+	beq	.L2013
+.L1960:
+	movw	r2, #1938
+	ldr	r1, .L2015+44
+	mov	r0, #1
+	mvn	r10, #0
+	bl	dprint_vfmw
+	b	.L1991
+.L2010:
+	ldr	r1, [fp, #-132]
+	ldr	r0, [fp, #-140]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [fp, #-124]
+	ldr	r1, [fp, #-132]
+	ldr	r0, [fp, #-140]
+	bl	MEM_DelMemRecord
+	b	.L1955
+.L2009:
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [fp, #-76]
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_DelMemRecord
+	b	.L1954
+.L2011:
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [fp, #-76]
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_DelMemRecord
+	b	.L1946
+.L2008:
+	mov	r0, r4
+	movw	r2, #2049
+	ldr	r1, .L2015+48
+	bl	dprint_vfmw
+	b	.L1969
+.L2007:
+	ldr	r1, [fp, #-208]
+	cmp	r1, #1
+	beq	.L2014
+.L1951:
+	str	r3, [sp]
+	mov	r0, #1
+	mov	r3, r2
+	ldr	r1, .L2015+52
+	movw	r2, #2007
+	bl	dprint_vfmw
+	b	.L1969
+.L2013:
+	ldr	r1, [fp, #-132]
+	ldr	r0, [fp, #-140]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [fp, #-124]
+	ldr	r1, [fp, #-132]
+	ldr	r0, [fp, #-140]
+	bl	MEM_DelMemRecord
+	b	.L1960
+.L1998:
+	mov	r0, r7
+	ldr	r1, .L2015+56
+	bl	dprint_vfmw
+	b	.L1969
+.L2012:
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [fp, #-76]
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_DelMemRecord
+	b	.L1959
+.L2014:
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_ReleaseMemBlock
+	ldr	r2, [fp, #-76]
+	ldr	r1, [fp, #-84]
+	ldr	r0, [fp, #-92]
+	bl	MEM_DelMemRecord
+	ldr	r2, [fp, #-124]
+	ldr	r3, [fp, #-228]
+	b	.L1951
+.L2016:
+	.align	2
+.L2015:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR4
+	.word	.LC133
+	.word	.LANCHOR0
+	.word	s_SmIIS
+	.word	.LC209
+	.word	.LC207
+	.word	.LC204
+	.word	.LC211
+	.word	.LC212
+	.word	.LC205
+	.word	.LC210
+	.word	.LC206
+	.word	.LC208
+	.word	.LC203
+	UNWIND(.fnend)
+	.size	VCTRL_CreateChan, .-VCTRL_CreateChan
+	.align	2
+	.global	VCTRL_ConfigChan
+	.type	VCTRL_ConfigChan, %function
+VCTRL_ConfigChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 72
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #84)
+	sub	sp, sp, #84
+	cmp	r0, #31
+	mov	r4, r0
+	mov	r10, r1
+	bhi	.L2048
+	ldr	r5, .L2056
+	ldr	r3, [r5, r0, asl #2]
+	cmp	r3, #0
+	beq	.L2049
+	ldr	r3, [r3, #4]
+	cmp	r3, #1
+	bne	.L2050
+	bl	VCTRL_CheckChanWH
+	subs	r6, r0, #0
+	bne	.L2051
+	ldr	r7, .L2056+4
+	ldr	r1, .L2056+8
+	bl	PDT_GetAttribute
+	ldr	r2, [r10, #8]
+	ldr	r3, [r7, #1568]
+	cmp	r3, #20
+	bhi	.L2024
+	cmp	r3, r2
+	beq	.L2025
+	ldr	r0, .L2056+12
+	add	r3, r7, #1568
+.L2027:
+	ldr	r1, [r3, #4]!
+	cmp	r1, #20
+	bhi	.L2024
+	cmp	r1, r2
+	beq	.L2025
+	cmp	r3, r0
+	bne	.L2027
+.L2025:
+	cmp	r2, #8
+	mov	r3, #0
+	str	r3, [fp, #-112]
+	beq	.L2052
+.L2028:
+	cmp	r2, #9
+	beq	.L2053
+.L2042:
+	mov	r1, r10
+	mov	r0, r4
+	bl	VCTRL_CmpConfigParameter
+	subs	r3, r0, #0
+	beq	.L2054
+	ldr	r7, .L2056+16
+	mov	r2, #140
+	ldr	r0, [r5, r4, asl #2]
+	mov	r1, r10
+	add	r9, r10, #12
+	mov	r8, #0
+	ldr	r3, [r7, #52]
+	add	r0, r0, #44
+	blx	r3
+	ldr	ip, [r10, #24]
+	ldr	r3, [r5, r4, asl #2]
+	mov	r2, #68
+	mov	r1, #0
+	sub	r0, fp, #112
+	str	ip, [r3, #20]
+	ldr	r3, [r5, r4, asl #2]
+	ldr	lr, [r10, #8]
+	ldr	ip, [r7, #48]
+	str	lr, [r3, #536]
+	ldr	lr, [r10, #96]
+	str	lr, [r3, #1392]
+	blx	ip
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r3, [r3, #324]
+	mov	r0, r3
+	str	r3, [fp, #-100]
+	bl	MEM_Phy2Vir
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r1, [r10, #84]
+	mov	r2, #49152
+	ldr	ip, [r10, #8]
+	movt	r2, 63683
+	cmp	r1, #1
+	ldr	lr, [r10, #24]
+	str	r0, [fp, #-112]
+	ldr	r0, [r3, #336]
+	addeq	r3, r3, #294912
+	str	r2, [fp, #-92]
+	addne	r3, r3, #294912
+	ldreq	r2, [r10, #132]
+	movne	r2, #0
+	str	ip, [fp, #-104]
+	str	r0, [fp, #-96]
+	ldreq	ip, [r10, #88]
+	ldreq	r0, [r10, #92]
+	streq	r1, [fp, #-64]
+	mov	r1, r9
+	streq	ip, [fp, #-60]
+	streq	r0, [fp, #-56]
+	sub	r0, fp, #88
+	strb	lr, [fp, #-108]
+	str	r2, [r3, #876]
+	ldr	r2, [r10, #80]
+	ldr	r3, [r7, #52]
+	str	r8, [fp, #-76]
+	str	r2, [fp, #-68]
+	mov	r2, #12
+	str	r8, [fp, #-72]
+	blx	r3
+	sub	r1, fp, #112
+	mov	r0, r4
+	bl	SM_Config
+	ldr	r3, [r7, #48]
+	mov	r1, r8
+	sub	r0, fp, #116
+	mov	r2, #1
+	blx	r3
+	ldr	r3, [r10, #84]
+	cmp	r3, #1
+	beq	.L2055
+.L2034:
+	ldr	r3, [r5, r4, asl #2]
+	ldr	r2, .L2056+20
+	ldr	r1, [r3, #340]
+	ldr	r8, [r3, #284]
+	ldr	lr, [r3, #292]
+	str	r1, [r3, #576]
+	ldr	ip, [r3, #316]
+	ldr	r1, [r3, #344]
+	str	r8, [r3, #1128]
+	str	lr, [r3, #1132]
+	str	ip, [r3, #560]
+	str	r1, [r3, #580]
+	ldr	r0, [r3, #320]
+	ldr	r8, [r3, #352]
+	ldr	lr, [r3, #356]
+	ldr	ip, [r3, #360]
+	ldr	r1, [r3, #348]
+	str	r0, [r3, #564]
+	mov	r0, r4
+	str	r8, [r3, #588]
+	mov	r8, #1
+	str	lr, [r3, #592]
+	add	lr, r3, #294912
+	str	ip, [r3, #596]
+	mov	ip, #0
+	str	r1, [r3, #584]
+	ldr	r1, [r10, #28]
+	ldr	r2, [r2, #72]
+	str	r1, [r3, #548]
+	cmp	r2, #7
+	ldr	r1, [r10, #28]
+	str	r1, [r3, #544]
+	ldr	r1, [r10, #36]
+	str	r1, [r3, #552]
+	mov	r1, r10
+	ldreq	r2, [r10, #40]
+	str	r2, [r3, #568]
+	ldr	r2, [r10, #44]
+	str	r2, [r3, #556]
+	ldr	r2, [r10, #128]
+	str	r2, [r3, #1180]
+	ldr	r2, [r10, #136]
+	str	r8, [r3, #1184]
+	str	r8, [r3, #1188]
+	str	r2, [r3, #1460]
+	ldr	r2, [r10, #72]
+	rsb	r2, r8, r2
+	clz	r2, r2
+	mov	r2, r2, lsr #5
+	str	r2, [r3, #1164]
+	ldr	r2, [r10, #76]
+	str	r2, [r3, #1168]
+	ldr	r2, [r10, #48]
+	str	r2, [r3, #1172]
+	ldr	r2, [fp, #-72]
+	str	ip, [r3, #1432]
+	str	ip, [r3, #1452]
+	str	r2, [r3, #1176]
+	ldrb	r3, [r10, #1]	@ zero_extendqisi2
+	strb	r3, [lr, #824]
+	bl	VCTRL_ConfigChanCompress
+	ldr	r0, [r5, r4, asl #2]
+	mov	r2, #12
+	ldr	r3, [r7, #52]
+	add	r0, r0, #1088
+	mov	r1, r9
+	add	r0, r0, r2
+	blx	r3
+	ldr	ip, [r5, r4, asl #2]
+	add	r3, ip, #294912
+	ldr	r5, [ip, #536]
+	ldr	r2, [r3, #880]
+	cmp	r2, r5
+	beq	.L2036
+	mov	r0, r4
+	bl	VCTRL_ResetChan
+	ldr	r3, [r10, #8]
+	ldr	r2, .L2056
+	cmp	r3, #20
+	ldr	ip, [r2, r4, asl #2]
+	beq	.L2037
+	ldr	r5, [ip, #536]
+	add	r3, ip, #294912
+.L2036:
+	ldr	r2, .L2056+24
+	ldr	r0, .L2056+28
+	ldr	r1, .L2056+32
+	add	lr, r2, #128
+	str	r5, [r3, #880]
+.L2041:
+	ldr	r3, [r2, #4]!
+	add	r0, r0, #4
+	add	r1, r1, #4
+	cmp	r3, #0
+	streq	r3, [r0, #-4]
+	ldrne	ip, [r3, #20]
+	strne	ip, [r0, #-4]
+	ldrne	r3, [r3, #20]
+	cmp	r2, lr
+	str	r3, [r1, #-4]
+	bne	.L2041
+	ldr	r0, .L2056+28
+	bl	VDMDRV_SetPriority
+	mov	r0, r4
+	bl	VDMDRV_ClearChanIsDec
+	mov	r0, r6
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L2054:
+	ldr	r1, .L2056+36
+	mov	r6, r3
+	bl	dprint_vfmw
+.L2046:
+	mov	r0, r6
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L2024:
+	ldr	r1, .L2056+40
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r6, #0
+	mov	r0, r6
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L2053:
+	sub	r0, fp, #112
+	bl	REAL9DEC_Support
+	ldr	r3, [fp, #-112]
+	cmp	r3, #0
+	bne	.L2042
+.L2029:
+	mvn	r6, #0
+	b	.L2046
+.L2052:
+	sub	r0, fp, #112
+	bl	REAL8DEC_Support
+	ldr	r3, [fp, #-112]
+	cmp	r3, #0
+	beq	.L2029
+	ldr	r2, [r10, #8]
+	b	.L2028
+.L2050:
+	ldr	r3, .L2056+44
+	movw	r2, #2969
+	ldr	r1, .L2056+48
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r6, #0
+	b	.L2046
+.L2055:
+	sub	r1, fp, #116
+	mov	r0, r4
+	strb	r3, [fp, #-116]
+	bl	FSP_ConfigAttribute
+	b	.L2034
+.L2051:
+	ldr	r1, .L2056+52
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r6, #0
+	b	.L2046
+.L2037:
+	ldr	r3, [ip, #328]
+	mov	r0, r4
+	ldr	r2, [ip, #1232]
+	ldr	r1, [ip, #1228]
+	ldr	ip, [ip, #332]
+	str	ip, [sp]
+	bl	VCTRL_PartitionMemForStdUser
+	cmp	r0, #0
+	bne	.L2038
+	ldr	r3, .L2056
+	ldr	ip, [r3, r4, asl #2]
+	add	r3, ip, #294912
+	ldr	r5, [ip, #536]
+	b	.L2036
+.L2048:
+	ldr	r3, .L2056+56
+	movw	r2, #2967
+	ldr	r1, .L2056+48
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r6, #0
+	b	.L2046
+.L2049:
+	mov	r0, r3
+	movw	r2, #2968
+	ldr	r3, .L2056+60
+	mvn	r6, #0
+	ldr	r1, .L2056+48
+	bl	dprint_vfmw
+	b	.L2046
+.L2038:
+	mov	r0, r8
+	ldr	r1, .L2056+64
+	bl	dprint_vfmw
+	mvn	r6, #0
+	b	.L2046
+.L2057:
+	.align	2
+.L2056:
+	.word	.LANCHOR0
+	.word	.LANCHOR4
+	.word	.LANCHOR4+1548
+	.word	.LANCHOR4+1692
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR2
+	.word	.LANCHOR0-4
+	.word	.LANCHOR4+1696
+	.word	g_ChanCtx
+	.word	.LC215
+	.word	.LC214
+	.word	.LC72
+	.word	.LC1
+	.word	.LC213
+	.word	.LC71
+	.word	.LC2
+	.word	.LC216
+	UNWIND(.fnend)
+	.size	VCTRL_ConfigChan, .-VCTRL_ConfigChan
+	.align	2
+	.type	VfmwProc_SetDropStreamThread, %function
+VfmwProc_SetDropStreamThread:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 144
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #144)
+	sub	sp, sp, #144
+	ldr	r4, [r0]
+	ldr	r1, .L2060
+	mov	r0, #32
+	bic	r5, r4, #-16777216
+	mov	r4, r4, lsr #24
+	mov	r3, r5
+	mov	r2, r4
+	bl	dprint_vfmw
+	ldr	r3, .L2060+4
+	mov	r2, #140
+	mov	r1, #0
+	sub	r0, fp, #160
+	ldr	r3, [r3, #48]
+	blx	r3
+	sub	r1, fp, #160
+	mov	r0, r4
+	bl	VCTRL_GetChanCfg
+	cmp	r0, #0
+	bne	.L2058
+	sub	r1, fp, #160
+	mov	r0, r4
+	str	r5, [fp, #-128]
+	bl	VCTRL_ConfigChan
+.L2058:
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L2061:
+	.align	2
+.L2060:
+	.word	.LC217
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VfmwProc_SetDropStreamThread, .-VfmwProc_SetDropStreamThread
+	.align	2
+	.type	VfmwProc_SetDecMode, %function
+VfmwProc_SetDecMode:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 144
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #144)
+	sub	sp, sp, #144
+	ldr	r4, [r0]
+	ldr	r1, .L2066
+	mov	r0, #32
+	and	r5, r4, #7
+	mov	r4, r4, lsr #24
+	mov	r3, r5
+	mov	r2, r4
+	bl	dprint_vfmw
+	ldr	r3, .L2066+4
+	mov	r2, #140
+	mov	r1, #0
+	sub	r0, fp, #160
+	ldr	r3, [r3, #48]
+	blx	r3
+	sub	r1, fp, #160
+	mov	r0, r4
+	bl	VCTRL_GetChanCfg
+	cmp	r0, #0
+	beq	.L2065
+	mov	r2, r4
+	ldr	r1, .L2066+8
+	mov	r0, #32
+	bl	dprint_vfmw
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L2065:
+	sub	r1, fp, #160
+	mov	r0, r4
+	str	r5, [fp, #-124]
+	bl	VCTRL_ConfigChan
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L2067:
+	.align	2
+.L2066:
+	.word	.LC218
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC219
+	UNWIND(.fnend)
+	.size	VfmwProc_SetDecMode, .-VfmwProc_SetDecMode
+	.align	2
+	.type	VfmwProc_SetDecOrderOutput, %function
+VfmwProc_SetDecOrderOutput:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 144
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #144)
+	sub	sp, sp, #144
+	ldr	r4, [r0]
+	ldr	r1, .L2070
+	mov	r0, #32
+	and	r5, r4, #3
+	mov	r4, r4, lsr #24
+	mov	r3, r5
+	mov	r2, r4
+	bl	dprint_vfmw
+	ldr	r3, .L2070+4
+	mov	r2, #140
+	mov	r1, #0
+	sub	r0, fp, #160
+	ldr	r3, [r3, #48]
+	blx	r3
+	sub	r1, fp, #160
+	mov	r0, r4
+	bl	VCTRL_GetChanCfg
+	cmp	r0, #0
+	bne	.L2068
+	sub	r1, fp, #160
+	mov	r0, r4
+	str	r5, [fp, #-120]
+	bl	VCTRL_ConfigChan
+.L2068:
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L2071:
+	.align	2
+.L2070:
+	.word	.LC220
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VfmwProc_SetDecOrderOutput, .-VfmwProc_SetDecOrderOutput
+	.align	2
+	.type	VfmwProc_SetErrorThread, %function
+VfmwProc_SetErrorThread:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 144
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #144)
+	sub	sp, sp, #144
+	ldr	r4, [r0]
+	ldr	r1, .L2074
+	mov	r0, #32
+	bic	r5, r4, #-16777216
+	mov	r4, r4, lsr #24
+	mov	r3, r5
+	mov	r2, r4
+	bl	dprint_vfmw
+	ldr	r3, .L2074+4
+	mov	r2, #140
+	mov	r1, #0
+	sub	r0, fp, #160
+	ldr	r3, [r3, #48]
+	blx	r3
+	sub	r1, fp, #160
+	mov	r0, r4
+	bl	VCTRL_GetChanCfg
+	cmp	r0, #0
+	bne	.L2072
+	sub	r1, fp, #160
+	mov	r0, r4
+	str	r5, [fp, #-132]
+	bl	VCTRL_ConfigChan
+.L2072:
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, pc}
+.L2075:
+	.align	2
+.L2074:
+	.word	.LC221
+	.word	vfmw_Osal_Func_Ptr_S
+	UNWIND(.fnend)
+	.size	VfmwProc_SetErrorThread, .-VfmwProc_SetErrorThread
+	.align	2
+	.type	VfmwProc_TestResetChan, %function
+VfmwProc_TestResetChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, [r0]
+	mov	r0, r4
+	bl	VCTRL_ResetChan
+	mov	r2, r4
+	ldr	r1, .L2077
+	mov	r3, r0
+	mov	r0, #32
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	dprint_vfmw
+.L2078:
+	.align	2
+.L2077:
+	.word	.LC222
+	UNWIND(.fnend)
+	.size	VfmwProc_TestResetChan, .-VfmwProc_TestResetChan
+	.align	2
+	.global	VCTRL_DestroyChan
+	.type	VCTRL_DestroyChan, %function
+VCTRL_DestroyChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 40
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, r10, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #52)
+	sub	sp, sp, #52
+	ldr	r5, .L2094
+	mov	r4, r0
+	mov	r0, #0
+	ldr	r3, [r5, #12]
+	blx	r3
+	cmp	r4, #31
+	ldrhi	ip, .L2094+4
+	movwhi	r3, #2389
+	bhi	.L2089
+	ldr	r6, .L2094+8
+	ldr	r7, [r6, r4, asl #2]
+	cmp	r7, #0
+	beq	.L2090
+	ldr	r8, [r7, #4]
+	cmp	r8, #1
+	bne	.L2091
+	mov	r0, #0
+	str	r0, [r7, #8]
+	ldr	r3, [r5, #16]
+	blx	r3
+	mov	r0, r4
+	bl	SCDDRV_IsChanDec
+	cmp	r0, #0
+	bne	.L2092
+.L2084:
+	ldr	r3, [r5, #12]
+	mov	r0, #0
+	blx	r3
+	ldr	r2, .L2094+12
+	ldr	r3, [r5, #12]
+	mov	r8, #0
+	mov	r0, #4
+	ldr	r7, .L2094
+	str	r8, [r2, r4, asl #2]
+	blx	r3
+	mov	r0, r4
+	bl	VCTRL_StopChan
+	ldr	r3, [r7, #16]
+	subs	r5, r0, #0
+	mov	r0, #4
+	bne	.L2093
+	blx	r3
+	mov	r0, r4
+	bl	VCTRL_ResetChan
+	bl	VDMDRV_ParamInit
+	ldr	r3, .L2094+16
+	ldr	r2, [r7, #12]
+	mov	r0, #4
+	add	r3, r3, r4, lsl #2
+	str	r5, [r3, #-640]
+	blx	r2
+	mov	r0, r4
+	bl	FSP_DisableInstance
+	mov	r0, r4
+	bl	CloseUsdPool_WithMem
+	ldr	r3, [r6, r4, asl #2]
+	mov	r0, r4
+	str	r5, [r6, r4, asl #2]
+	add	ip, r3, #294912
+	add	lr, r3, #228
+	ldr	r1, [r3, #304]
+	add	r2, r3, #290816
+	ldr	r9, [r3, #308]
+	add	r2, r2, #800
+	ldr	r8, [r3, #300]
+	add	r6, r6, r4, lsl #4
+	ldr	r10, [ip, #828]
+	add	ip, r3, #252
+	add	r3, r3, #276
+	str	r3, [fp, #-72]
+	ldr	r3, .L2094+20
+	str	lr, [fp, #-80]
+	str	ip, [fp, #-76]
+	str	r5, [r3, r4, asl #3]
+	str	r1, [fp, #-56]
+	str	r2, [fp, #-68]
+	str	r10, [fp, #-64]
+	str	r9, [fp, #-52]
+	str	r8, [fp, #-60]
+	bl	VDMDRV_ClearChanIsDec
+	mov	r0, r4
+	bl	SCDDRV_ResetSCD
+	mov	r0, r4
+	bl	VDMDRV_ResetVDH
+	ldr	r2, [r7, #16]
+	mvn	r3, #0
+	str	r5, [r6, #396]
+	str	r3, [r6, #408]
+	mov	r0, #4
+	str	r3, [r6, #404]
+	str	r5, [r6, #400]
+	blx	r2
+	ldr	r3, [r7, #16]
+	mov	r0, r5
+	blx	r3
+	ldr	r3, [r7, #24]
+	mov	r1, r4
+	mov	r0, #1
+	blx	r3
+	sub	r1, fp, #80
+	mov	r0, r4
+	bl	VCTRL_FreeChanResource
+	mov	r0, #1
+	ldr	r3, [r7, #28]
+	mov	r1, r4
+	blx	r3
+	mov	r0, r5
+.L2081:
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L2092:
+	mov	r0, r4
+	ldr	r7, [r5, #132]
+	bl	SCDDRV_IsChanDec
+	mov	r2, #500
+	clz	r1, r0
+	mov	r0, r8
+	mov	r1, r1, lsr #5
+	blx	r7
+	b	.L2084
+.L2091:
+	ldr	ip, .L2094+24
+	movw	r3, #2410
+.L2089:
+	ldr	r2, .L2094+28
+	mov	r0, #0
+	ldr	r1, .L2094+32
+	str	ip, [sp]
+	bl	dprint_vfmw
+	ldr	r3, [r5, #16]
+	mov	r0, #0
+	blx	r3
+	mvn	r0, #0
+	sub	sp, fp, #40
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, r10, fp, sp, pc}
+.L2093:
+	blx	r3
+	ldr	r3, [r7, #16]
+	mov	r0, r8
+	blx	r3
+	mvn	r0, #0
+	b	.L2081
+.L2090:
+	ldr	ip, .L2094+36
+	movw	r3, #2398
+	ldr	r2, .L2094+28
+	mov	r0, r7
+	ldr	r1, .L2094+32
+	str	ip, [sp]
+	bl	dprint_vfmw
+	ldr	r3, [r5, #16]
+	mov	r0, r7
+	blx	r3
+	mvn	r0, #0
+	b	.L2081
+.L2095:
+	.align	2
+.L2094:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LC71
+	.word	.LANCHOR0
+	.word	g_LowDelaySeqIndex
+	.word	.LANCHOR3
+	.word	s_SmIIS
+	.word	.LC225
+	.word	.LANCHOR1+728
+	.word	.LC223
+	.word	.LC224
+	UNWIND(.fnend)
+	.size	VCTRL_DestroyChan, .-VCTRL_DestroyChan
+	.align	2
+	.global	VCTRL_CloseVfmw
+	.type	VCTRL_CloseVfmw, %function
+VCTRL_CloseVfmw:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r6, .L2114
+	ldr	r3, [r6, #128]
+	cmp	r3, #1
+	bne	.L2103
+	sub	r5, r6, #4
+	mov	r4, #0
+.L2099:
+	ldr	r3, [r5, #4]!
+	mov	r0, r4
+	add	r4, r4, #1
+	cmp	r3, #0
+	beq	.L2098
+	bl	VCTRL_DestroyChan
+.L2098:
+	cmp	r4, #32
+	bne	.L2099
+	bl	FSP_Exit
+	ldr	r3, [r6, #132]
+	mov	r2, #3
+	ldr	r5, .L2114+4
+	cmp	r3, #0
+	str	r2, [r6, #136]
+	beq	.L2101
+	mov	r0, #10
+	ldr	r3, [r5, #120]
+	mov	r4, #49
+	blx	r3
+	b	.L2102
+.L2113:
+	ldr	r3, [r5, #120]
+	blx	r3
+	subs	r4, r4, #1
+	beq	.L2101
+.L2102:
+	ldr	r3, [r6, #132]
+	mov	r0, #10
+	cmp	r3, #0
+	bne	.L2113
+.L2101:
+	ldr	r3, [r5, #48]
+	mov	r2, #128
+	mov	r1, #0
+	ldr	r0, .L2114+8
+	blx	r3
+	ldr	r0, .L2114+12
+	bl	CloseDrivers
+	mov	r3, #0
+	mov	r0, r3
+	str	r3, [r6, #128]
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2103:
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2115:
+	.align	2
+.L2114:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR3-640
+	.word	.LANCHOR0+152
+	UNWIND(.fnend)
+	.size	VCTRL_CloseVfmw, .-VCTRL_CloseVfmw
+	.align	2
+	.type	VfmwProc_TestRestartChan, %function
+VfmwProc_TestRestartChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, [r0]
+	mov	r0, r4
+	bl	VCTRL_StopChan
+	mov	r2, r4
+	ldr	r1, .L2117
+	mov	r3, r0
+	mov	r0, #32
+	bl	dprint_vfmw
+	mov	r0, r4
+	bl	VCTRL_ResetChan
+	mov	r2, r4
+	ldr	r1, .L2117+4
+	mov	r3, r0
+	mov	r0, #32
+	bl	dprint_vfmw
+	mov	r0, r4
+	bl	VCTRL_StartChan
+	mov	r2, r4
+	ldr	r1, .L2117+8
+	mov	r3, r0
+	mov	r0, #32
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	dprint_vfmw
+.L2118:
+	.align	2
+.L2117:
+	.word	.LC226
+	.word	.LC222
+	.word	.LC198
+	UNWIND(.fnend)
+	.size	VfmwProc_TestRestartChan, .-VfmwProc_TestRestartChan
+	.align	2
+	.type	VfmwProc_TestStopChan, %function
+VfmwProc_TestStopChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r4, [r0]
+	mov	r0, r4
+	bl	VCTRL_StopChan
+	mov	r2, r4
+	ldr	r1, .L2120
+	mov	r3, r0
+	mov	r0, #32
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	dprint_vfmw
+.L2121:
+	.align	2
+.L2120:
+	.word	.LC226
+	UNWIND(.fnend)
+	.size	VfmwProc_TestStopChan, .-VfmwProc_TestStopChan
+	.align	2
+	.global	VCTRL_InitDspCode
+	.type	VCTRL_InitDspCode, %function
+VCTRL_InitDspCode:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r1, #6
+	mov	r5, r0
+	moveq	r4, #1
+	beq	.L2123
+	cmp	r1, #0
+	moveq	r4, #2
+	movne	r4, #0
+.L2123:
+	ldr	r3, .L2137
+	ldrb	r3, [r3]	@ zero_extendqisi2
+	cmp	r3, #1
+	beq	.L2133
+	mov	r1, r4
+	mov	r0, #0
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	VDH_Require_DspCode
+.L2133:
+	ldr	r6, .L2137+4
+	ldr	r3, [r6, #4]
+	cmp	r3, #0
+	beq	.L2134
+	mov	r0, #0
+	blx	r3
+.L2126:
+	ldr	r3, [r6, #20]
+	cmp	r3, #0
+	beq	.L2135
+	mov	r0, #0
+	blx	r3
+.L2128:
+	ldr	r3, [r6, #12]
+	cmp	r3, #0
+	beq	.L2136
+	mov	r0, #0
+	blx	r3
+.L2130:
+	mov	r1, r4
+	mov	r0, #0
+	bl	SCDDRV_LoadDspCode
+	mov	r0, r5
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, lr}
+	b	VCTRL_CloseHardware
+.L2134:
+	mov	r0, r3
+	mov	r2, #3264
+	ldr	r1, .L2137+8
+	bl	dprint_vfmw
+	b	.L2126
+.L2135:
+	mov	r0, r3
+	movw	r2, #3265
+	ldr	r1, .L2137+8
+	bl	dprint_vfmw
+	b	.L2128
+.L2136:
+	mov	r0, r3
+	movw	r2, #3266
+	ldr	r1, .L2137+8
+	bl	dprint_vfmw
+	b	.L2130
+.L2138:
+	.align	2
+.L2137:
+	.word	g_HalDisable
+	.word	g_vdm_hal_fun_ptr
+	.word	.LC44
+	UNWIND(.fnend)
+	.size	VCTRL_InitDspCode, .-VCTRL_InitDspCode
+	.align	2
+	.global	VCTRL_LoadDspCode
+	.type	VCTRL_LoadDspCode, %function
+VCTRL_LoadDspCode:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2165
+	mov	r5, r0
+	ldr	r3, [r3, r0, asl #2]
+	ldr	r1, [r3, #536]
+	cmp	r1, #0
+	movne	r3, #1
+	movne	r6, #0
+	ldreq	r6, [r3, #1172]
+	clzeq	r3, r6
+	moveq	r3, r3, lsr #5
+.L2140:
+	cmp	r1, #6
+	moveq	r3, #0
+	andne	r3, r3, #1
+	cmp	r3, #0
+	beq	.L2161
+.L2152:
+	mov	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2161:
+	ldr	r7, .L2165+4
+	ldr	r4, [r7, #-640]
+	cmp	r4, #0
+	bne	.L2141
+	sub	r3, r7, #640
+	sub	r2, r7, #516
+	b	.L2142
+.L2163:
+	cmp	r3, r2
+	beq	.L2162
+.L2142:
+	ldr	r4, [r3, #4]!
+	cmp	r4, #0
+	beq	.L2163
+.L2141:
+	cmp	r4, #1
+	beq	.L2164
+	cmp	r1, #6
+	beq	.L2152
+	ldr	r1, .L2165+8
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2162:
+	mov	r0, r5
+	add	r5, r7, r5, lsl #2
+	bl	VCTRL_InitDspCode
+	cmp	r6, #1
+	mov	r0, r4
+	streq	r6, [r5, #-640]
+	movne	r3, #2
+	strne	r3, [r5, #-640]
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2164:
+	cmp	r6, #1
+	beq	.L2152
+	ldr	r1, .L2165+12
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2166:
+	.align	2
+.L2165:
+	.word	.LANCHOR0
+	.word	.LANCHOR3
+	.word	.LC228
+	.word	.LC227
+	UNWIND(.fnend)
+	.size	VCTRL_LoadDspCode, .-VCTRL_LoadDspCode
+	.align	2
+	.global	VCTRL_SetChanFsPartitionState
+	.type	VCTRL_SetChanFsPartitionState, %function
+VCTRL_SetChanFsPartitionState:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2168
+	ldr	r3, [r3, r0, asl #2]
+	add	r3, r3, #262144
+	str	r1, [r3, #1936]
+	ldmfd	sp, {fp, sp, pc}
+.L2169:
+	.align	2
+.L2168:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_SetChanFsPartitionState, .-VCTRL_SetChanFsPartitionState
+	.align	2
+	.global	VCTRL_GetCurChanFsSize
+	.type	VCTRL_GetCurChanFsSize, %function
+VCTRL_GetCurChanFsSize:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2171
+	ldr	r3, [r3, r0, asl #2]
+	add	r3, r3, #290816
+	ldr	r0, [r3, #772]
+	ldmfd	sp, {fp, sp, pc}
+.L2172:
+	.align	2
+.L2171:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetCurChanFsSize, .-VCTRL_GetCurChanFsSize
+	.align	2
+	.global	VCTRT_SetChanCtrlState
+	.type	VCTRT_SetChanCtrlState, %function
+VCTRT_SetChanCtrlState:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	cmp	r1, #1
+	beq	.L2175
+	bcc	.L2176
+	cmp	r1, #2
+	bne	.L2183
+	ldr	r3, .L2184
+	add	r0, r3, r0, lsl #2
+	ldr	r3, [r0, #1420]
+	cmp	r3, #1
+	beq	.L2180
+	mov	r3, #0
+	str	r1, [r0, #1420]
+	mov	r0, r3
+	ldmfd	sp, {fp, sp, pc}
+.L2183:
+	mov	r3, #0
+.L2174:
+	mov	r0, r3
+	ldmfd	sp, {fp, sp, pc}
+.L2176:
+	ldr	r2, .L2184
+	mov	r1, #0
+	mov	r3, r1
+	add	r0, r2, r0, lsl #2
+	str	r1, [r0, #1420]
+	mov	r0, r3
+	ldmfd	sp, {fp, sp, pc}
+.L2175:
+	ldr	r3, .L2184
+	add	r0, r3, r0, lsl #2
+	ldr	r3, [r0, #1420]
+	cmp	r3, #0
+	bne	.L2180
+	str	r1, [r0, #1420]
+	mov	r0, r3
+	ldmfd	sp, {fp, sp, pc}
+.L2180:
+	mvn	r3, #0
+	b	.L2174
+.L2185:
+	.align	2
+.L2184:
+	.word	.LANCHOR4
+	UNWIND(.fnend)
+	.size	VCTRT_SetChanCtrlState, .-VCTRT_SetChanCtrlState
+	.align	2
+	.global	VCTRL_AddFrameBufMemoryRecord
+	.type	VCTRL_AddFrameBufMemoryRecord, %function
+VCTRL_AddFrameBufMemoryRecord:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, [r0]
+	mov	r4, r0
+	cmp	r3, #255
+	beq	.L2187
+	ldr	r2, [r0, #12]
+	ldr	r1, [r0, #24]
+	ldr	r0, [r0, #32]
+	bl	MEM_AddMemRecord
+.L2187:
+	ldr	r3, [r4, #4]
+	cmp	r3, #255
+	beq	.L2188
+	ldr	r2, [r4, #16]
+	ldr	r1, [r4, #40]
+	ldr	r0, [r4, #48]
+	bl	MEM_AddMemRecord
+.L2188:
+	ldr	r3, [r4, #8]
+	cmp	r3, #255
+	ldmeqfd	sp, {r4, r5, fp, sp, pc}
+	ldr	r2, [r4, #20]
+	ldr	r1, [r4, #56]
+	ldr	r0, [r4, #64]
+	sub	sp, fp, #20
+	ldmfd	sp, {r4, r5, fp, sp, lr}
+	b	MEM_AddMemRecord
+	UNWIND(.fnend)
+	.size	VCTRL_AddFrameBufMemoryRecord, .-VCTRL_AddFrameBufMemoryRecord
+	.align	2
+	.global	VCTRL_SetSingleFrameBufToChan
+	.type	VCTRL_SetSingleFrameBufToChan, %function
+VCTRL_SetSingleFrameBufToChan:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #8)
+	sub	sp, sp, #8
+	ldr	r6, .L2230
+	mov	r5, r0
+	mov	r4, r1
+	ldr	r1, [r1, #12]
+	ldr	r2, [r6, r0, asl #2]
+	add	r3, r2, #294912
+	add	r2, r2, #290816
+	ldr	r0, [r3, #248]
+	cmp	r0, r1
+	beq	.L2197
+	ldr	ip, [r2, #768]
+	cmp	ip, #0
+	beq	.L2225
+.L2197:
+	ldr	r2, [r2, #3160]
+	cmp	r2, #0
+	beq	.L2199
+	ldr	r2, [r3, #280]
+	cmp	r2, #0
+	beq	.L2226
+.L2199:
+	ldr	r7, .L2230+4
+	mov	r0, #8
+	ldr	r3, [r7, #12]
+	blx	r3
+	ldr	r0, [r6, r5, asl #2]
+	add	r2, r0, #290816
+	ldr	r3, [r2, #800]
+	cmp	r3, #255
+	beq	.L2207
+	add	r2, r2, #872
+	mov	ip, #1
+	b	.L2201
+.L2228:
+	add	ip, ip, #1
+	cmp	ip, #32
+	beq	.L2227
+.L2201:
+	ldr	lr, [r2]
+	add	r2, r2, #72
+	cmp	lr, #255
+	bne	.L2228
+.L2200:
+	mov	r2, ip, asl #6
+	ldr	r3, [r7, #52]
+	add	ip, r2, ip, lsl #3
+	mov	r1, r4
+	add	ip, ip, #290816
+	mov	r2, #72
+	add	ip, ip, #800
+	add	r0, r0, ip
+	blx	r3
+	ldr	r3, [r6, r5, asl #2]
+	mov	r0, r4
+	add	r3, r3, #294912
+	ldr	r2, [r3, #280]
+	add	r2, r2, #1
+	str	r2, [r3, #280]
+	bl	VCTRL_AddFrameBufMemoryRecord
+	ldr	r3, [r6, r5, asl #2]
+	add	r3, r3, #294912
+	ldr	r3, [r3, #284]
+	cmp	r3, #0
+	bne	.L2229
+.L2205:
+	mov	r4, #0
+.L2204:
+	ldr	r3, [r7, #16]
+	mov	r0, #8
+	blx	r3
+	mov	r0, r4
+.L2220:
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2226:
+	ldr	r3, [r4, #8]
+	cmp	r3, #255
+	bne	.L2199
+	str	r3, [sp, #4]
+	mov	r0, #1
+	str	r2, [sp]
+	movw	r3, #9091
+	ldr	r2, .L2230+8
+	ldr	r1, .L2230+12
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L2220
+.L2227:
+	mov	r3, r5
+	ldr	r2, .L2230+8
+	ldr	r1, .L2230+16
+	mov	r0, #1
+	bl	dprint_vfmw
+	mvn	r4, #0
+	b	.L2204
+.L2229:
+	mov	r1, r4
+	mov	r0, r5
+	bl	FSP_SetSingleFrameBuf
+	cmp	r0, #0
+	beq	.L2205
+	mov	r3, r5
+	ldr	r2, .L2230+8
+	ldr	r1, .L2230+20
+	mov	r0, #1
+	bl	dprint_vfmw
+	mvn	r4, #0
+	b	.L2204
+.L2207:
+	mov	ip, #0
+	b	.L2200
+.L2225:
+	str	r0, [sp, #4]
+	movw	r3, #9081
+	str	r1, [sp]
+	mov	r0, #1
+	ldr	r2, .L2230+8
+	ldr	r1, .L2230+24
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L2220
+.L2231:
+	.align	2
+.L2230:
+	.word	.LANCHOR0
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR1+748
+	.word	.LC230
+	.word	.LC232
+	.word	.LC231
+	.word	.LC229
+	UNWIND(.fnend)
+	.size	VCTRL_SetSingleFrameBufToChan, .-VCTRL_SetSingleFrameBufToChan
+	.align	2
+	.global	VCTRL_AllocMemToDecoder
+	.type	VCTRL_AllocMemToDecoder, %function
+VCTRL_AllocMemToDecoder:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 72
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, r8, r9, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, r8, r9, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #72)
+	sub	sp, sp, #72
+	ldr	r4, .L2241
+	mov	r7, r0, asl #2
+	mov	r5, r0
+	add	r3, r4, r7
+	ldr	r8, [r3, #1420]
+	cmp	r8, #0
+	bne	.L2233
+	ldr	ip, .L2241+4
+	mov	lr, #1
+	mov	r2, #72
+	str	lr, [r3, #1420]
+	sub	r0, fp, #108
+	ldr	r3, [ip, #52]
+	blx	r3
+	sub	r1, fp, #108
+	mov	r0, r5
+	bl	VCTRL_SetSingleFrameBufToChan
+	subs	r6, r0, #0
+	bne	.L2234
+	ldr	r3, .L2241+8
+	ldr	r1, [r3, r5, asl #2]
+.L2235:
+	add	r3, r1, #262144
+	mov	r2, #2
+	ldr	r1, .L2241+12
+	mov	r0, #31
+	str	r2, [r3, #1936]
+	add	r4, r4, r7
+	bl	dprint_vfmw
+	mov	r0, r6
+	mov	r3, #0
+	str	r3, [r4, #1420]
+.L2240:
+	sub	sp, fp, #36
+	ldmfd	sp, {r4, r5, r6, r7, r8, r9, fp, sp, pc}
+.L2234:
+	ldr	r9, .L2241+8
+	ldr	r1, [r9, r5, asl #2]
+	add	r3, r1, #290816
+	ldr	r3, [r3, #772]
+	cmp	r3, #0
+	beq	.L2235
+	mov	r2, r5
+	ldr	r1, .L2241+16
+	mov	r0, r8
+	bl	dprint_vfmw
+	ldr	r1, [r9, r5, asl #2]
+	mov	r2, #3
+	add	r3, r1, #262144
+	str	r2, [r3, #1936]
+	b	.L2235
+.L2233:
+	mov	r3, r0
+	ldr	r2, .L2241+20
+	ldr	r1, .L2241+24
+	mov	r0, #0
+	bl	dprint_vfmw
+	mvn	r0, #0
+	b	.L2240
+.L2242:
+	.align	2
+.L2241:
+	.word	.LANCHOR4
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	.LANCHOR0
+	.word	.LC234
+	.word	.LC233
+	.word	.LANCHOR1+780
+	.word	.LC235
+	UNWIND(.fnend)
+	.size	VCTRL_AllocMemToDecoder, .-VCTRL_AllocMemToDecoder
+	.align	2
+	.global	VCTRL_GetImageWidth
+	.type	VCTRL_GetImageWidth, %function
+VCTRL_GetImageWidth:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2251
+	ldr	r0, [r3, r0, asl #2]
+	add	r0, r0, #294912
+	ldr	r3, [r0, #880]
+	cmp	r3, #2
+	beq	.L2245
+	cmp	r3, #16
+	beq	.L2246
+	cmp	r3, #0
+	beq	.L2250
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L2250:
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	H264DEC_GetImageWidth
+.L2246:
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	HEVCDEC_GetImageWidth
+.L2245:
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MPEG4DEC_GetImageWidth
+.L2252:
+	.align	2
+.L2251:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetImageWidth, .-VCTRL_GetImageWidth
+	.align	2
+	.global	VCTRL_GetImageHeight
+	.type	VCTRL_GetImageHeight, %function
+VCTRL_GetImageHeight:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2261
+	ldr	r0, [r3, r0, asl #2]
+	add	r0, r0, #294912
+	ldr	r3, [r0, #880]
+	cmp	r3, #2
+	beq	.L2255
+	cmp	r3, #16
+	beq	.L2256
+	cmp	r3, #0
+	beq	.L2260
+	mov	r0, #0
+	ldmfd	sp, {fp, sp, pc}
+.L2260:
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	H264DEC_GetImageHeight
+.L2256:
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	HEVCDEC_GetImageHeight
+.L2255:
+	add	r0, r0, #888
+	sub	sp, fp, #12
+	ldmia	sp, {fp, sp, lr}
+	b	MPEG4DEC_GetImageHeight
+.L2262:
+	.align	2
+.L2261:
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetImageHeight, .-VCTRL_GetImageHeight
+	.align	2
+	.global	VCTRL_GetFsSize
+	.type	VCTRL_GetFsSize, %function
+VCTRL_GetFsSize:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 24
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {r4, r5, r6, r7, fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {r4, r5, r6, r7, fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	UNWIND(.pad #32)
+	sub	sp, sp, #32
+	ldr	r3, .L2268
+	mov	r5, r0
+	mov	r6, r1
+	mov	r7, r2
+	sub	r0, fp, #52
+	ldr	r3, [r3, #48]
+	mov	r2, #24
+	mov	r1, #0
+	blx	r3
+	ldr	r3, .L2268+4
+	ldr	r4, [r3, #52]
+	cmp	r4, #0
+	beq	.L2264
+	ldr	ip, .L2268+8
+	sub	r3, fp, #52
+	str	r3, [sp, #4]
+	mov	r2, r7
+	mov	r1, r6
+	mov	r0, r5
+	ldr	ip, [ip, r5, asl #2]
+	mov	r3, #0
+	add	ip, ip, #294912
+	ldr	ip, [ip, #880]
+	str	ip, [sp]
+	blx	r4
+.L2264:
+	ldr	r0, [fp, #-48]
+	sub	sp, fp, #28
+	ldmfd	sp, {r4, r5, r6, r7, fp, sp, pc}
+.L2269:
+	.align	2
+.L2268:
+	.word	vfmw_Osal_Func_Ptr_S
+	.word	g_vdm_hal_fun_ptr
+	.word	.LANCHOR0
+	UNWIND(.fnend)
+	.size	VCTRL_GetFsSize, .-VCTRL_GetFsSize
+	.align	2
+	.global	VCTRL_EnableEsBuf
+	.type	VCTRL_EnableEsBuf, %function
+VCTRL_EnableEsBuf:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2271
+	mov	r2, #1
+	add	r0, r3, r0, lsl #2
+	str	r2, [r0, #1824]
+	ldmfd	sp, {fp, sp, pc}
+.L2272:
+	.align	2
+.L2271:
+	.word	.LANCHOR4
+	UNWIND(.fnend)
+	.size	VCTRL_EnableEsBuf, .-VCTRL_EnableEsBuf
+	.align	2
+	.global	VCTRL_DisableEsBuf
+	.type	VCTRL_DisableEsBuf, %function
+VCTRL_DisableEsBuf:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2274
+	mov	r2, #0
+	add	r0, r3, r0, lsl #2
+	str	r2, [r0, #1824]
+	ldmfd	sp, {fp, sp, pc}
+.L2275:
+	.align	2
+.L2274:
+	.word	.LANCHOR4
+	UNWIND(.fnend)
+	.size	VCTRL_DisableEsBuf, .-VCTRL_DisableEsBuf
+	.align	2
+	.global	VCTRL_IfEsBufEnable
+	.type	VCTRL_IfEsBufEnable, %function
+VCTRL_IfEsBufEnable:
+	UNWIND(.fnstart)
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	UNWIND(.movsp ip)
+	mov	ip, sp
+	stmfd	sp!, {fp, ip, lr, pc}
+	UNWIND(.pad #4)
+	UNWIND(.save {fp, ip, lr})
+	UNWIND(.setfp fp, ip, #-4)
+	sub	fp, ip, #4
+	ldr	r3, .L2277
+	add	r0, r3, r0, lsl #2
+	ldr	r0, [r0, #1824]
+	ldmfd	sp, {fp, sp, pc}
+.L2278:
+	.align	2
+.L2277:
+	.word	.LANCHOR4
+	UNWIND(.fnend)
+	.size	VCTRL_IfEsBufEnable, .-VCTRL_IfEsBufEnable
+	.global	g_EsBufValidFlag
+	.global	g_StopDec
+	.global	g_SleepTime
+	.global	s_VfmwSavePath
+	.global	MemRecord_YUV
+	.global	pPixelArray
+	.global	pVl_2bit
+	.global	pUl_2bit
+	.global	pY_2bit
+	.global	pVl
+	.global	pUl
+	.global	pY
+	.global	pOption
+	.global	g_eVdmVersion
+	.global	g_VdmCharacter
+	.global	g_StandardObedience
+	.global	g_CurProcChan
+	.global	g_ResetCreateNewSave
+	.global	g_SaveYUVBitWidth
+	.global	save_yuv_with_crop
+	.global	save_el_chan_num
+	.global	vfmw_save_el_file
+	.global	save_metadata_reorder_chan_num
+	.global	vfmw_save_metadata_reorder_file
+	.global	save_metadata_chan_num
+	.global	vfmw_save_metadata_file
+	.global	save_yuv_chan_num
+	.global	vfmw_save_yuv_file
+	.global	save_seg_chan_num
+	.global	vfmw_save_seg_file
+	.global	save_str_chan_num
+	.global	vfmw_save_str_file
+	.global	g_not_allow_H264FullPictureRepair_flag
+	.global	g_not_direct_8x8_inference_flag
+	.global	g_allow_B_before_P
+	.global	extra_cmd
+	.global	extra_disp
+	.global	extra_ref
+	.global	g_VfmwGlobalStat
+	.global	g_VfmwChanStat
+	.global	s_pstVfmwChan
+	.global	AcceleratorCharacter
+	.global	g_event_report
+	.global	g_IsrFlag
+	.global	g_VfmwCompressPara
+	.global	g_DSPState
+	.global	g_ClkSelect
+	.global	mask_mmu_err_int
+	.global	g_apple_airplay_mirrorinig_flag
+	.global	g_IRQ_FLAG
+	.global	g_SedOnlyEnable
+	.section	.rodata
+	.align	2
+.LANCHOR1 = . + 0
+	.type	__func__.54617, %object
+	.size	__func__.54617, 18
+__func__.54617:
+	.ascii	"VCTRL_EventReport\000"
+	.space	2
+	.type	__func__.54553, %object
+	.size	__func__.54553, 20
+__func__.54553:
+	.ascii	"VCTRL_RecordPosTime\000"
+	.type	__func__.54558, %object
+	.size	__func__.54558, 17
+__func__.54558:
+	.ascii	"VCTRL_RecordData\000"
+	.space	3
+	.type	__func__.54629, %object
+	.size	__func__.54629, 18
+__func__.54629:
+	.ascii	"VCTRL_SetCallBack\000"
+	.space	2
+	.type	__FUNCTION__.54735, %object
+	.size	__FUNCTION__.54735, 29
+__FUNCTION__.54735:
+	.ascii	"VCTRL_PartitionMemForStdUser\000"
+	.space	3
+	.type	__func__.54759, %object
+	.size	__func__.54759, 23
+__func__.54759:
+	.ascii	"VCTRL_FreeChanResource\000"
+	.space	1
+	.type	__func__.55013, %object
+	.size	__func__.55013, 25
+__func__.55013:
+	.ascii	"VCTRL_TryToRelSpecialFrm\000"
+	.space	3
+	.type	__func__.55030, %object
+	.size	__func__.55030, 19
+__func__.55030:
+	.ascii	"VCTRL_GetChanImage\000"
+	.space	1
+	.type	__FUNCTION__.55038, %object
+	.size	__FUNCTION__.55038, 19
+__FUNCTION__.55038:
+	.ascii	"VCTRL_GetChanImage\000"
+	.space	1
+	.type	__FUNCTION__.55048, %object
+	.size	__FUNCTION__.55048, 23
+__FUNCTION__.55048:
+	.ascii	"VCTRL_ReleaseChanImage\000"
+	.space	1
+	.type	__func__.55049, %object
+	.size	__func__.55049, 23
+__func__.55049:
+	.ascii	"VCTRL_ReleaseChanImage\000"
+	.space	1
+	.type	__func__.55082, %object
+	.size	__func__.55082, 18
+__func__.55082:
+	.ascii	"VCTRL_GetDecParam\000"
+	.space	2
+	.type	__FUNCTION__.55207, %object
+	.size	__FUNCTION__.55207, 19
+__FUNCTION__.55207:
+	.ascii	"VCTRL_FlushDecoder\000"
+	.space	1
+	.type	__FUNCTION__.55497, %object
+	.size	__FUNCTION__.55497, 18
+__FUNCTION__.55497:
+	.ascii	"GetExtraRefFrmNum\000"
+	.space	2
+	.type	__FUNCTION__.55503, %object
+	.size	__FUNCTION__.55503, 19
+__FUNCTION__.55503:
+	.ascii	"GetExtraDispFrmNum\000"
+	.space	1
+	.type	__FUNCTION__.55509, %object
+	.size	__FUNCTION__.55509, 16
+__FUNCTION__.55509:
+	.ascii	"GetExtraCtrlCmd\000"
+	.type	__FUNCTION__.55447, %object
+	.size	__FUNCTION__.55447, 14
+__FUNCTION__.55447:
+	.ascii	"DecChanSyntax\000"
+	.space	2
+	.type	__func__.55477, %object
+	.size	__func__.55477, 20
+__func__.55477:
+	.ascii	"VCTRL_GetChanImgNum\000"
+	.type	g_ProcCommandTable, %object
+	.size	g_ProcCommandTable, 344
+g_ProcCommandTable:
+	.word	0
+	.word	VfmwProc_SetPrintLevel
+	.word	2
+	.word	VfmwProc_SetErrorThread
+	.word	3
+	.word	VfmwProc_SetDefaultOutputOrder
+	.word	4
+	.word	VfmwProc_SetDecOrderOutput
+	.word	5
+	.word	VfmwProc_SetDecMode
+	.word	7
+	.word	VfmwProc_SetDropStreamThread
+	.word	8
+	.word	VfmwProc_SetVp9DecFrameNum
+	.word	11
+	.word	VfmwProc_SetUSE_FF_APT_EN
+	.word	12
+	.word	VfmwProc_SetSaveFileAfterReset
+	.word	13
+	.word	VfmwProc_SetCurProcChan
+	.word	256
+	.word	VfmwProc_PrintTracer
+	.word	257
+	.word	VfmwProc_SetScdPrint
+	.word	512
+	.word	VfmwProc_Savestream
+	.word	513
+	.word	VfmwProc_SaveSeg
+	.word	514
+	.word	VfmwProc_SaveYUV
+	.word	516
+	.word	VfmwProc_Save1DYUV
+	.word	528
+	.word	VfmwProc_SaveMetadata
+	.word	544
+	.word	VfmwProc_SaveReorderMetadata
+	.word	560
+	.word	VfmwProc_SaveEL
+	.word	768
+	.word	VfmwProc_TestSuspend
+	.word	769
+	.word	VfmwProc_TestResume
+	.word	896
+	.word	VfmwProc_TestStopChan
+	.word	897
+	.word	VfmwProc_TestResetChan
+	.word	898
+	.word	VfmwProc_TestStartChan
+	.word	899
+	.word	VfmwProc_TestRestartChan
+	.word	1024
+	.word	VfmwProc_TestTimeSequence
+	.word	1026
+	.word	VfmwProc_TestStopDec
+	.word	1280
+	.word	VfmwProc_SetTraceCtrl
+	.word	1281
+	.word	VfmwProc_SetTraceBSPeriod
+	.word	1282
+	.word	VfmwProc_SetTraceFramePeriod
+	.word	1283
+	.word	VfmwProc_SetTraceImgPeriod
+	.word	1285
+	.word	VfmwProc_SetSaveYuvBitWidth
+	.word	1536
+	.word	VfmwProc_OpenModuleLowly
+	.word	1537
+	.word	VfmwProc_CloseModuleLowly
+	.word	1538
+	.word	VfmwProc_SetTunnelLineNumber
+	.word	1539
+	.word	VfmwProc_OpenScdLowdly
+	.word	1540
+	.word	VfmwProc_CloseScdLowdly
+	.word	1541
+	.word	VfmwProc_SetSedOnlyEnable
+	.word	1792
+	.word	VfmwProc_SetSmmuIrqEnable
+	.word	2048
+	.word	VfmwProc_SetCompressPara
+	.word	2304
+	.word	VfmwProc_SetClkSelect
+	.word	2305
+	.word	VfmwProc_SetStandardObedience
+	.word	65535
+	.word	0
+	.type	__func__.54843, %object
+	.size	__func__.54843, 18
+__func__.54843:
+	.ascii	"VCTRL_DestroyChan\000"
+	.space	2
+	.type	__func__.55896, %object
+	.size	__func__.55896, 30
+__func__.55896:
+	.ascii	"VCTRL_SetSingleFrameBufToChan\000"
+	.space	2
+	.type	__func__.55908, %object
+	.size	__func__.55908, 24
+__func__.55908:
+	.ascii	"VCTRL_AllocMemToDecoder\000"
+	.data
+	.align	2
+.LANCHOR2 = . + 0
+	.type	g_ClkSelect, %object
+	.size	g_ClkSelect, 4
+g_ClkSelect:
+	.word	-1
+	.type	g_SaveYUVBitWidth, %object
+	.size	g_SaveYUVBitWidth, 4
+g_SaveYUVBitWidth:
+	.word	8
+	.type	s_VfmwSavePath, %object
+	.size	s_VfmwSavePath, 64
+s_VfmwSavePath:
+	.byte	47
+	.byte	109
+	.byte	110
+	.byte	116
+	.byte	0
+	.space	59
+	.type	g_DefaultOutputOrder, %object
+	.size	g_DefaultOutputOrder, 4
+g_DefaultOutputOrder:
+	.word	7
+	.type	save_yuv_chan_num, %object
+	.size	save_yuv_chan_num, 4
+save_yuv_chan_num:
+	.word	-1
+	.type	mask_mmu_err_int, %object
+	.size	mask_mmu_err_int, 4
+mask_mmu_err_int:
+	.word	1
+	.type	g_SedOnlyEnable, %object
+	.size	g_SedOnlyEnable, 4
+g_SedOnlyEnable:
+	.word	1
+	.type	g_IRQ_FLAG, %object
+	.size	g_IRQ_FLAG, 4
+g_IRQ_FLAG:
+	.word	128
+	.type	g_not_direct_8x8_inference_flag, %object
+	.size	g_not_direct_8x8_inference_flag, 1
+g_not_direct_8x8_inference_flag:
+	.byte	1
+	.section	.rodata.str1.4,"aMS",%progbits,1
+	.align	2
+.LC0:
+	ASCII(.ascii	"InstID out of range\000" )
+.LC1:
+	ASCII(.ascii	"vfmw_ctrl.c,L%d: %s\012\000" )
+	.space	3
+.LC2:
+	ASCII(.ascii	"Chan inactive\000" )
+	.space	2
+.LC3:
+	ASCII(.ascii	"s_VfmwCTrl.event_report_vdec = NULL\012\000" )
+	.space	3
+.LC4:
+	ASCII(.ascii	"s_VfmwCTrl.event_report_omxvdec = NULL\012\000" )
+.LC5:
+	ASCII(.ascii	"%s Unkown Adapter Type: %d, Len: %d\012\000" )
+	.space	3
+.LC6:
+	ASCII(.ascii	"Set standard obedience: %d\012\000" )
+.LC7:
+	ASCII(.ascii	"g_ClkSelect(%d) set error! dat = %d not support\012" )
+	ASCII(.ascii	"\000" )
+	.space	3
+.LC8:
+	ASCII(.ascii	"ChanID: %d, VcmpEn: %d, LossCmpEN: %d, YRatio: 0.%d" )
+	ASCII(.ascii	", UVRatio: 0.%d\012\000" )
+.LC9:
+	ASCII(.ascii	"ChanID: %d, VcmpEn: %d, LossCmpEN: %d\012\000" )
+	.space	1
+.LC10:
+	ASCII(.ascii	"ChanID:%d, Compress Disable!\000" )
+	.space	3
+.LC11:
+	ASCII(.ascii	"ChanID:%d; \000" )
+.LC12:
+	ASCII(.ascii	"VCmpEnable:%d; \000" )
+.LC13:
+	ASCII(.ascii	"LossCmpEnable:%d; \000" )
+	.space	1
+.LC14:
+	ASCII(.ascii	"YCmpRatio:%d, YCmpRatio:%d\012\000" )
+.LC15:
+	ASCII(.ascii	"ChanID %d Already Create! Can not be set!!\012\000" )
+.LC16:
+	ASCII(.ascii	"------ s_pstVfmwChan[%d]->stSynExtraData.s32ModuleL" )
+	ASCII(.ascii	"owlyEnable = 1 ------\012\000" )
+	.space	2
+.LC17:
+	ASCII(.ascii	"ERROR: g_SaveYUVBitWidth should be 8 or 10! (not to" )
+	ASCII(.ascii	" be %d)\012\000" )
+.LC18:
+	ASCII(.ascii	"------ g_SaveYUVBitWidth = %d ------\012\000" )
+	.space	2
+.LC19:
+	ASCII(.ascii	"------ g_TraceImgPeriod = %x ------\012\000" )
+	.space	3
+.LC20:
+	ASCII(.ascii	"------ g_TraceFramePeriod = %x ------\012\000" )
+	.space	1
+.LC21:
+	ASCII(.ascii	"------ g_TraceBsPeriod = %x ------\012\000" )
+.LC22:
+	ASCII(.ascii	"------ g_TraceCtrl = %x ------\012\000" )
+.LC23:
+	ASCII(.ascii	"------ dec stop = %d ------\012\000" )
+	.space	3
+.LC24:
+	ASCII(.ascii	"------ dec task delay %d ms ------\012\000" )
+.LC25:
+	ASCII(.ascii	"%s/vfmw_el_save_%d.dat\000" )
+	.space	1
+.LC26:
+	ASCII(.ascii	"OK create file '%s' for channel %d el stream save\012" )
+	ASCII(.ascii	"\000" )
+	.space	1
+.LC27:
+	ASCII(.ascii	"failed create file '%s' for el stream save!\012\000" )
+	.space	3
+.LC28:
+	ASCII(.ascii	">>>> close el stream saving >>>>\012\000" )
+	.space	2
+.LC29:
+	ASCII(.ascii	"NO SUCH CHANNEL : %d\012\000" )
+	.space	2
+.LC30:
+	ASCII(.ascii	"Pay attention to  CHANNEL : %d\012\000" )
+.LC31:
+	ASCII(.ascii	"ResetCreateNewSave = %d\012\000" )
+	.space	3
+.LC32:
+	ASCII(.ascii	"ResetCreateNewSave can NOT be set to %d, must be 0 " )
+	ASCII(.ascii	"or 1\012\000" )
+	.space	3
+.LC33:
+	ASCII(.ascii	"USE_FF_APT_EN = %d\012\000" )
+.LC34:
+	ASCII(.ascii	"USE_FF_APT_EN can NOT be set to %d, must be 0 or 1\012" )
+	ASCII(.ascii	"\000" )
+.LC35:
+	ASCII(.ascii	"g_CfgVp9FrmNum = %d\012\000" )
+	.space	3
+.LC36:
+	ASCII(.ascii	"Invalid output order %d\012\000" )
+	.space	3
+.LC37:
+	ASCII(.ascii	"set default output order %d\012\000" )
+	.space	3
+.LC38:
+	ASCII(.ascii	"OK create file '%s' for channel %d metadata_reorder" )
+	ASCII(.ascii	" stream save\012\000" )
+	.space	3
+.LC39:
+	ASCII(.ascii	"failed create file '%s' for metadata_reorder stream" )
+	ASCII(.ascii	" save!\012\000" )
+	.space	1
+.LC40:
+	ASCII(.ascii	">>>> close metadata stream saving >>>>\012\000" )
+.LC41:
+	ASCII(.ascii	"OK create file '%s' for channel %d metadata stream " )
+	ASCII(.ascii	"save\012\000" )
+	.space	3
+.LC42:
+	ASCII(.ascii	"failed create file '%s' for metadata stream save!\012" )
+	ASCII(.ascii	"\000" )
+	.space	1
+.LC43:
+	ASCII(.ascii	"address '0x%x' is not valid!\012\000" )
+	.space	2
+.LC44:
+	ASCII(.ascii	"VDMHAL_NULL_FUN_PRINT,L%d\012\000" )
+	.space	1
+.LC45:
+	ASCII(.ascii	"1d image has been saved to '%s'\012\000" )
+	.space	3
+.LC46:
+	ASCII(.ascii	"open file '%s' fail!\012\000" )
+	.space	2
+.LC47:
+	ASCII(.ascii	"OK create file '%s' for channel %d seg stream save\012" )
+	ASCII(.ascii	"\000" )
+.LC48:
+	ASCII(.ascii	"failed create file '%s' for seg stream save!\012\000" )
+	.space	2
+.LC49:
+	ASCII(.ascii	">>>> close seg stream saving >>>>\012\000" )
+	.space	1
+.LC50:
+	ASCII(.ascii	"OK create file '%s' for channel %d raw stream save\012" )
+	ASCII(.ascii	"\000" )
+.LC51:
+	ASCII(.ascii	"failed create file '%s' for raw stream save!\012\000" )
+	.space	2
+.LC52:
+	ASCII(.ascii	">>>> close raw stream saving >>>>\012\000" )
+	.space	1
+.LC53:
+	ASCII(.ascii	"Failed to alloc VFMW_DumpImageTmp size %d!\012\000" )
+.LC54:
+	ASCII(.ascii	"OK create file '%s' for chan %d yuv save.(crop %d)\012" )
+	ASCII(.ascii	"\000" )
+.LC55:
+	ASCII(.ascii	"failed create file '%s' for yuv save!\012\000" )
+	.space	1
+.LC56:
+	ASCII(.ascii	"OK close yuv save.\012\000" )
+.LC57:
+	ASCII(.ascii	"print memory tracer...\012\000" )
+.LC58:
+	ASCII(.ascii	"unmask vfmw mmu err int!\012\000" )
+	.space	2
+.LC59:
+	ASCII(.ascii	"mask vfmw mmu err int!\012\000" )
+.LC60:
+	ASCII(.ascii	"Disable SedOnly Func\012\000" )
+	.space	2
+.LC61:
+	ASCII(.ascii	"Enable SedOnly Func\012\000" )
+	.space	3
+.LC62:
+	ASCII(.ascii	"The channel number is to Large.\012\000" )
+	.space	3
+.LC63:
+	ASCII(.ascii	"Force vdm %d sleep.\012\000" )
+	.space	3
+.LC64:
+	ASCII(.ascii	"Vfmw suspend totally take %d ms\012\000" )
+	.space	3
+.LC65:
+	ASCII(.ascii	"Wait sleep time out %d ms (isScdSleep=%d, isVdmSlee" )
+	ASCII(.ascii	"p=%d)!\012\000" )
+	.space	1
+.LC66:
+	ASCII(.ascii	"Force scd %d sleep.\012\000" )
+	.space	3
+.LC67:
+	ASCII(.ascii	"proc cmd need no param:%p\012\000" )
+	.space	1
+.LC68:
+	ASCII(.ascii	"Vfmw resume totally take %d ms\012\000" )
+.LC69:
+	ASCII(.ascii	"%s,%d,pos(%d) error!\012\000" )
+	.space	2
+.LC70:
+	ASCII(.ascii	"%s, %d, pos(%d) error!\012\000" )
+.LC71:
+	ASCII(.ascii	"ChanID out of range\000" )
+.LC72:
+	ASCII(.ascii	"can NOT config a not-opened Chan\000" )
+	.space	3
+.LC73:
+	ASCII(.ascii	"event_report null!\000" )
+	.space	1
+.LC74:
+	ASCII(.ascii	"%s Unkown Adapter Type: %d\012\000" )
+.LC75:
+	ASCII(.ascii	"pstStreamParam is NULL\000" )
+	.space	1
+.LC76:
+	ASCII(.ascii	"L: %d, Stream Interface Error!!, ChanID: %d\012\000" )
+	.space	3
+.LC77:
+	ASCII(.ascii	"pstStreamIntf is NULL\000" )
+	.space	2
+.LC78:
+	ASCII(.ascii	"This Chan has not been created!!!\000" )
+	.space	2
+.LC79:
+	ASCII(.ascii	"can NOT get a not-opened Chan's information of bits" )
+	ASCII(.ascii	"tream\000" )
+	.space	3
+.LC80:
+	ASCII(.ascii	"Raw FreshNum=%d, FreshSize=%d\012\000" )
+	.space	1
+.LC81:
+	ASCII(.ascii	"Seg FreshNum=%d, FreshSize=%d\012\000" )
+	.space	1
+.LC82:
+	ASCII(.ascii	"pArgs is null\000" )
+	.space	2
+.LC83:
+	ASCII(.ascii	"image size abnormal(%dx%d)\012\000" )
+.LC84:
+	ASCII(.ascii	"no mem to arrange for soft dec\012\000" )
+.LC85:
+	ASCII(.ascii	"partition fs memory fail!\012\000" )
+	.space	1
+.LC86:
+	ASCII(.ascii	"%s: L%d : vdm chan memory is too small to support u" )
+	ASCII(.ascii	"ser decoder\012\000" )
+.LC87:
+	ASCII(.ascii	"FSP_ConfigInstance fail!\012\000" )
+	.space	2
+.LC88:
+	ASCII(.ascii	"parameter err, null pointer!!!\000" )
+	.space	1
+.LC89:
+	ASCII(.ascii	"%s FATAL: pstChan = NULL!\012\000" )
+	.space	1
+.LC90:
+	ASCII(.ascii	"%s FATAL: pChanMem_vdh = NULL!\012\000" )
+.LC91:
+	ASCII(.ascii	"%s FATAL: pChanMem_frm = NULL!\012\000" )
+.LC92:
+	ASCII(.ascii	"DelAllFrameMemRecord err in VCTRL_FreeChanResource " )
+	ASCII(.ascii	"!\012\000" )
+	.space	2
+.LC93:
+	ASCII(.ascii	"%s FATAL: pChanMem_scd = NULL!\012\000" )
+.LC94:
+	ASCII(.ascii	"%s FATAL: pChanMem_ctx = NULL!\012\000" )
+.LC95:
+	ASCII(.ascii	"pstCfg is null\000" )
+	.space	1
+.LC96:
+	ASCII(.ascii	"Chip not support beyond %dx%d when Std != H264/VP8/" )
+	ASCII(.ascii	"MVC/USER.\012\000" )
+	.space	2
+.LC97:
+	ASCII(.ascii	"%s,%d,s_pstVfmwChan[chanID]->FspInst.stDecFsRec[i]." )
+	ASCII(.ascii	"PhyFS.PhyAddr = 0x%x\012\000" )
+	.space	3
+.LC98:
+	ASCII(.ascii	"%s,%d,can't find special frame match DecFs Num = %d" )
+	ASCII(.ascii	"\012\000" )
+	.space	3
+.LC99:
+	ASCII(.ascii	"call VCTRL_GetChanImage, ChanID = %d,\012\000" )
+	.space	1
+.LC100:
+	ASCII(.ascii	"This channel is not opened\000" )
+	.space	1
+.LC101:
+	ASCII(.ascii	"%s cannot output!\012\000" )
+	.space	1
+.LC102:
+	ASCII(.ascii	"%s: view_0 id(%d) > view_1 id(%d), error!\012\000" )
+	.space	1
+.LC103:
+	ASCII(.ascii	"%s: continuous view0 id(%d)!\012\000" )
+	.space	2
+.LC104:
+	ASCII(.ascii	"%s: continuous view1 id(%d)!\012\000" )
+	.space	2
+.LC105:
+	ASCII(.ascii	"pImage is NULL\000" )
+	.space	1
+.LC106:
+	ASCII(.ascii	"call VCTRL_ReleaseChanImage, ChanID, ImgID = %d,%d\012" )
+	ASCII(.ascii	"\000" )
+.LC107:
+	ASCII(.ascii	"vdm_ctrl.c,L%d: Chan inactive\012\000" )
+	.space	1
+.LC108:
+	ASCII(.ascii	"vdm_ctrl.c,L%d: This channel is not opened\012\000" )
+.LC109:
+	ASCII(.ascii	"vdm_ctrl.c,L%d: VCTRL_TryToRelSpecialFrm success!\012" )
+	ASCII(.ascii	"\000" )
+	.space	1
+.LC110:
+	ASCII(.ascii	"%s call SYNTAX_ReleaseImage failed\012\000" )
+.LC111:
+	ASCII(.ascii	"vfmw_ctrl.c, line %d: ChanID out of range\012\000" )
+	.space	1
+.LC112:
+	ASCII(.ascii	"vfmw_ctrl.c, line %d: Chan %d is not open or not ru" )
+	ASCII(.ascii	"nning\012\000" )
+	.space	2
+.LC113:
+	ASCII(.ascii	"%s VidStd=%d Error!\012\000" )
+	.space	3
+.LC114:
+	ASCII(.ascii	"Get DecParam Type Failure!\012\000" )
+.LC115:
+	ASCII(.ascii	"vfmw_ctrl.c, line %d: ChanID out of range is %d\012" )
+	ASCII(.ascii	"\000" )
+	.space	3
+.LC116:
+	ASCII(.ascii	"Chan %d is not open or not running\012\000" )
+.LC117:
+	ASCII(.ascii	"ChanId out of range\000" )
+.LC118:
+	ASCII(.ascii	"This channel is not running\000" )
+.LC119:
+	ASCII(.ascii	"line: %d Flush DPB failed!\012\000" )
+.LC120:
+	ASCII(.ascii	"VCTRL_FlushDecoder\012\000" )
+.LC121:
+	ASCII(.ascii	"fuction return value is null,%s %d MVC_OK != MVC_Fl" )
+	ASCII(.ascii	"ushDPB!!\012\000" )
+	.space	3
+.LC122:
+	ASCII(.ascii	"chan not create\000" )
+.LC123:
+	ASCII(.ascii	"can NOT start a not-opened Chan\000" )
+.LC124:
+	ASCII(.ascii	"NULL == pArgs\000" )
+	.space	2
+.LC125:
+	ASCII(.ascii	"-1 == VCTRL_GetChanIDByCtx() Err! \012\000" )
+.LC126:
+	ASCII(.ascii	"VCTRL_GetUsrdecFrame but VFMW_USER != s_pstVfmwChan" )
+	ASCII(.ascii	"[ChanID]->eVidStd!\012\000" )
+	.space	1
+.LC127:
+	ASCII(.ascii	"VCTRL_GetUsrdecFrame but s_pstVfmwChan[ChanID]->s32" )
+	ASCII(.ascii	"UsrdecFrameNum < MIN_USERDEC_FRAME_NUM!\012\000" )
+.LC128:
+	ASCII(.ascii	"get frame store fail!\012\000" )
+	.space	1
+.LC129:
+	ASCII(.ascii	"get image buffer ok: LogicFsID = %d\012\000" )
+	.space	3
+.LC130:
+	ASCII(.ascii	"line: %d, pLf is NULL!\012\000" )
+.LC131:
+	ASCII(.ascii	"decode %p, disp %p, tf %p\012\000" )
+	.space	1
+.LC132:
+	ASCII(.ascii	"VCTRL_GetUsrdecFrame get LogicFs fail!\012\000" )
+.LC133:
+	ASCII(.ascii	"CAP_LEVEL_USER_DEFINE_WITH_OPTION option is illegal" )
+	ASCII(.ascii	".\012\000" )
+	.space	2
+.LC134:
+	ASCII(.ascii	"VCTRL_GetChanMemSizeByOption L%d: arrange return fa" )
+	ASCII(.ascii	"ilure\012\000" )
+	.space	2
+.LC135:
+	ASCII(.ascii	"ERROR: s32MaxRefFrameNum(%d), extra_ref(%d), s32Dis" )
+	ASCII(.ascii	"playFrameNum(%d), extra_disp(%d)\012\000" )
+	.space	3
+.LC136:
+	ASCII(.ascii	"MEM_MapRegisterAddr reg 0x%x failed!\012\000" )
+	.space	2
+.LC137:
+	ASCII(.ascii	"VDMHAL_GetHalMemSize Vdh %d failed!\012\000" )
+	.space	3
+.LC138:
+	ASCII(.ascii	"MEM_AllocMemBlock Vdh %d failed!\012\000" )
+	.space	2
+.LC139:
+	ASCII(.ascii	"VDMHAL_OpenHAL Vdh %d failed!\012\000" )
+	.space	1
+.LC140:
+	ASCII(.ascii	"MEM_AllocMemBlock VFMW_VP9Prob %d failed!\012\000" )
+	.space	1
+.LC141:
+	ASCII(.ascii	"MEM_AllocMemBlock Scd %d failed!\012\000" )
+	.space	2
+.LC142:
+	ASCII(.ascii	"SM_OpenSCDDrv Scd %d failed!\012\000" )
+	.space	2
+.LC143:
+	ASCII(.ascii	"Register irq %d failed!\012\000" )
+	.space	3
+.LC144:
+	ASCII(.ascii	"extra_ref=\000" )
+	.space	1
+.LC145:
+	ASCII(.ascii	"=\000" )
+	.space	2
+.LC146:
+	ASCII(.ascii	" \000" )
+	.space	2
+.LC147:
+	ASCII(.ascii	"fuction return value is null,%s %d unknow error!!\012" )
+	ASCII(.ascii	"\000" )
+	.space	1
+.LC148:
+	ASCII(.ascii	"ERROR: extra_ref = %d is out of [ -5000, 5000 ]!\012" )
+	ASCII(.ascii	"\000" )
+	.space	2
+.LC149:
+	ASCII(.ascii	"extra_disp=\000" )
+.LC150:
+	ASCII(.ascii	"ERROR: extra_disp = %d is out of [ -5000, 5000 ]!\012" )
+	ASCII(.ascii	"\000" )
+	.space	1
+.LC151:
+	ASCII(.ascii	"extra_cmd=\000" )
+	.space	1
+.LC152:
+	ASCII(.ascii	"HI_VFMW_VideoDecode\000" )
+.LC153:
+	ASCII(.ascii	"(safe,warn,danger) :amount = %d,%d,%d,%d\012\000" )
+	.space	2
+.LC154:
+	ASCII(.ascii	"strm_ctrl: I->IPB\012\000" )
+	.space	1
+.LC155:
+	ASCII(.ascii	"strm_ctrl: IPB->I\012\000" )
+	.space	1
+.LC156:
+	ASCII(.ascii	"(CurrMode,NextMode) = %d,%d\012\000" )
+	.space	3
+.LC157:
+	ASCII(.ascii	"pic_pts: %lld\012\000" )
+	.space	1
+.LC158:
+	ASCII(.ascii	"pic_usertag: %lld\012\000" )
+	.space	1
+.LC159:
+	ASCII(.ascii	"pic_pts: %lld pic_usertag = %lld\012\000" )
+	.space	2
+.LC160:
+	ASCII(.ascii	"Syntax is stopped from This channel\000" )
+.LC161:
+	ASCII(.ascii	"[%d] vdm busy\012\000" )
+	.space	1
+.LC162:
+	ASCII(.ascii	"[%d] no frame\012\000" )
+	.space	1
+.LC163:
+	ASCII(.ascii	"DFS, Wait Partition\012\000" )
+	.space	3
+.LC164:
+	ASCII(.ascii	"DFS, Partition fail, u32DynamicFrameStoreAllocEn: %" )
+	ASCII(.ascii	"d, eFspPartitionState: %d\012\000" )
+	.space	2
+.LC165:
+	ASCII(.ascii	"[%d] no stream\012\000" )
+.LC166:
+	ASCII(.ascii	"seg_pts: %lld, seg_usertag = %lld\012\000" )
+	.space	1
+.LC167:
+	ASCII(.ascii	"Thread running...\012\000" )
+	.space	1
+.LC168:
+	ASCII(.ascii	"Thread stopped!\012\000" )
+	.space	3
+.LC169:
+	ASCII(.ascii	"thread running...\012\000" )
+	.space	1
+.LC170:
+	ASCII(.ascii	"thread stopped...\012\000" )
+	.space	1
+.LC171:
+	ASCII(.ascii	"Thread killed!\012\000" )
+.LC172:
+	ASCII(.ascii	"ERROR:ReadNum = %d larger than VFMW_MAX_RESERVE_NUM" )
+	ASCII(.ascii	"(%d)\012\000" )
+	.space	3
+.LC173:
+	ASCII(.ascii	"The array of occupied frames is overflow, s_pstVfmw" )
+	ASCII(.ascii	"Chan[%d]->specialFrameNum = %d\000" )
+	.space	2
+.LC174:
+	ASCII(.ascii	"pSpecialFrmInfo = null!!!\000" )
+	.space	2
+.LC175:
+	ASCII(.ascii	"%s not support std %d\012\000" )
+	.space	1
+.LC176:
+	ASCII(.ascii	"ChanID out of range!\000" )
+	.space	3
+.LC177:
+	ASCII(.ascii	"pstChanState = NULL\000" )
+.LC178:
+	ASCII(.ascii	"s_pstVfmwChan = NULL\000" )
+	.space	3
+.LC179:
+	ASCII(.ascii	"SetVdecExtra ERROR: extra_ref = %d is out of [ -500" )
+	ASCII(.ascii	"0, 5000 ]!\012\000" )
+	.space	1
+.LC180:
+	ASCII(.ascii	"SetVdecExtra ERROR: extra_disp = %d is out of [ -50" )
+	ASCII(.ascii	"00, 5000 ]!\012\000" )
+.LC181:
+	ASCII(.ascii	"Command \"%d\" not registerd!\012\000" )
+	.space	3
+.LC182:
+	ASCII(.ascii	"Chan %d Report Last Frame, Value=%d, LastFrameState" )
+	ASCII(.ascii	"=%d\012\000" )
+.LC183:
+	ASCII(.ascii	"Last frame output failed!\012\000" )
+	.space	1
+.LC184:
+	ASCII(.ascii	"Last frame output successed!\012\000" )
+	.space	2
+.LC185:
+	ASCII(.ascii	"Last frame already output, image id: %d!\012\000" )
+	.space	2
+.LC186:
+	ASCII(.ascii	"line %d can not know YuvFormat = %d\012\000" )
+	.space	3
+.LC187:
+	ASCII(.ascii	"userdec frame(phy=%#x) address error!\012\000" )
+	.space	1
+.LC188:
+	ASCII(.ascii	"can not map vir addr for usrdat frame(cbphy=%#x)\012" )
+	ASCII(.ascii	"\000" )
+	.space	2
+.LC189:
+	ASCII(.ascii	"line: %d, pLogic is Null!\012\000" )
+	.space	1
+.LC190:
+	ASCII(.ascii	"eYuvFormat %d is not support!!\012\000" )
+.LC191:
+	ASCII(.ascii	"pUsrdecFrame == NULL\000" )
+	.space	3
+.LC192:
+	ASCII(.ascii	"VCTRL_PutUsrdecFrame: VidStd is %d\012\000" )
+.LC193:
+	ASCII(.ascii	"VCTRL_PutUsrdecFrame return err\012\000" )
+	.space	3
+.LC194:
+	ASCII(.ascii	"L:%d ChanID out of range\012\000" )
+	.space	2
+.LC195:
+	ASCII(.ascii	"L:%d This Chan has not been created!!!\012\000" )
+.LC196:
+	ASCII(.ascii	"L:%d WARNING: vidio std not setted!\012\000" )
+	.space	3
+.LC197:
+	ASCII(.ascii	"WARNING: vidio std not setted!\000" )
+	.space	1
+.LC198:
+	ASCII(.ascii	"start chan %d: VCTRL_StartChan return %d\012\000" )
+	.space	2
+.LC199:
+	ASCII(.ascii	"This Chan has not been created or has been destroye" )
+	ASCII(.ascii	"d !\000" )
+	.space	1
+.LC200:
+	ASCII(.ascii	"VCTRL_StopChanWithCheck fail!\012\000" )
+	.space	1
+.LC201:
+	ASCII(.ascii	"vdm_ctrl.c,L%d: pOption->s32KeepBS error\012\000" )
+	.space	2
+.LC202:
+	ASCII(.ascii	"---------------------------------------------------" )
+	ASCII(.ascii	"----------------------\012\000" )
+	.space	1
+.LC203:
+	ASCII(.ascii	"Param Invalid of PChanOption is NULL\012\000" )
+	.space	2
+.LC204:
+	ASCII(.ascii	"line %d VCTRL_GetChanMemSize failed!\012\000" )
+	.space	2
+.LC205:
+	ASCII(.ascii	"L: %d : part we can NOT alloc buffer for channel co" )
+	ASCII(.ascii	"ntext\012\000" )
+	.space	2
+.LC206:
+	ASCII(.ascii	"L: %d : can NOT alloc buffer for channel context\012" )
+	ASCII(.ascii	"\000" )
+	.space	2
+.LC207:
+	ASCII(.ascii	"L: %d : can NOT alloc buffer for channel vdh\012\000" )
+	.space	2
+.LC208:
+	ASCII(.ascii	"L: %d : can NOT alloc buffer for channel vdh, %#x <" )
+	ASCII(.ascii	" %#x\012\000" )
+	.space	3
+.LC209:
+	ASCII(.ascii	"L: %d : can NOT alloc buffer for channel scd\012\000" )
+	.space	2
+.LC210:
+	ASCII(.ascii	"L: %d : can NOT alloc buffer for SCD\012\000" )
+	.space	2
+.LC211:
+	ASCII(.ascii	"vfmw have max(%d) channels opened, can NOT create m" )
+	ASCII(.ascii	"ore channels\012\000" )
+	.space	3
+.LC212:
+	ASCII(.ascii	"Chan:%d can NOT enable FSP instance\012\000" )
+	.space	3
+.LC213:
+	ASCII(.ascii	"VCTRL_CheckChanWH return err.\012\000" )
+	.space	1
+.LC214:
+	ASCII(.ascii	"VFMW didn't support std %d.\012\000" )
+	.space	3
+.LC215:
+	ASCII(.ascii	"VCTRL_ConfigChan with same config paramater.\012\000" )
+	.space	2
+.LC216:
+	ASCII(.ascii	"can NOT VCTRL_PartitionMemForStdUser\012\000" )
+	.space	2
+.LC217:
+	ASCII(.ascii	"chan %d: new StrmOFThr = %d\012\000" )
+	.space	3
+.LC218:
+	ASCII(.ascii	"chan %d: new DecMode = %d\012\000" )
+	.space	1
+.LC219:
+	ASCII(.ascii	"chan %d: GetChanCfg failed!\012\000" )
+	.space	3
+.LC220:
+	ASCII(.ascii	"chan %d: new DecOrderOutput = %d\012\000" )
+	.space	2
+.LC221:
+	ASCII(.ascii	"chan %d: new ChanErrThr = %d\012\000" )
+	.space	2
+.LC222:
+	ASCII(.ascii	"reset chan %d: VCTRL_ResetChan return %d\012\000" )
+	.space	2
+.LC223:
+	ASCII(.ascii	"%s:L%d: %s\012\000" )
+.LC224:
+	ASCII(.ascii	"This Chan has not been created or has been destroye" )
+	ASCII(.ascii	"d !!!\000" )
+	.space	3
+.LC225:
+	ASCII(.ascii	"can NOT stop a not-opened Chan\000" )
+	.space	1
+.LC226:
+	ASCII(.ascii	"stop chan %d: VCTRL_StopChan return %d\012\000" )
+.LC227:
+	ASCII(.ascii	"WARNNING: dsp in lowdelay state, we can not support" )
+	ASCII(.ascii	"ed  avs in the same time!!!\012\000" )
+.LC228:
+	ASCII(.ascii	"WARNNING: dsp in avs state, we can not supported  l" )
+	ASCII(.ascii	"owdelay in the same time!!!\012\000" )
+.LC229:
+	ASCII(.ascii	"%s, %d, actul size = 0x%x, except size= 0x%x\012\000" )
+	.space	2
+.LC230:
+	ASCII(.ascii	"%s, %d, CfgFrameNum = %x, PmvNodeStatus= 0x%x\012\000" )
+	.space	1
+.LC231:
+	ASCII(.ascii	"%s: Chan %d set single frame failed!\012\000" )
+	.space	2
+.LC232:
+	ASCII(.ascii	"%s: Chan %d no frame buffer store!\012\000" )
+.LC233:
+	ASCII(.ascii	"DFS, request frame store fail!, chanid: %d\012\000" )
+.LC234:
+	ASCII(.ascii	"DFS, set decoding thread state to success!\012 \000" )
+	.space	3
+.LC235:
+	ASCII(.ascii	"%s set chan %d ctrl state CHAN_FRAME_STORE_ALLOC fa" )
+	ASCII(.ascii	"iled!\012\000" )
+	.bss
+	.align	3
+.LANCHOR0 = . + 0
+.LANCHOR3 = . + 8184
+.LANCHOR4 = . + 16368
+	.type	s_pstVfmwChan, %object
+	.size	s_pstVfmwChan, 128
+s_pstVfmwChan:
+	.space	128
+	.type	s_VfmwCTrl, %object
+	.size	s_VfmwCTrl, 264
+s_VfmwCTrl:
+	.space	264
+	.type	g_StandardObedience, %object
+	.size	g_StandardObedience, 4
+g_StandardObedience:
+	.space	4
+	.type	g_VfmwCompressPara, %object
+	.size	g_VfmwCompressPara, 512
+g_VfmwCompressPara:
+	.space	512
+	.type	g_StopDec, %object
+	.size	g_StopDec, 4
+g_StopDec:
+	.space	4
+	.type	g_SleepTime, %object
+	.size	g_SleepTime, 4
+g_SleepTime:
+	.space	4
+	.type	vfmw_save_el_file, %object
+	.size	vfmw_save_el_file, 128
+vfmw_save_el_file:
+	.space	128
+	.type	save_file_cnt.55638, %object
+	.size	save_file_cnt.55638, 4
+save_file_cnt.55638:
+	.space	4
+	.type	save_el_chan_num, %object
+	.size	save_el_chan_num, 4
+save_el_chan_num:
+	.space	4
+	.type	g_CurProcChan, %object
+	.size	g_CurProcChan, 4
+g_CurProcChan:
+	.space	4
+	.type	g_ResetCreateNewSave, %object
+	.size	g_ResetCreateNewSave, 4
+g_ResetCreateNewSave:
+	.space	4
+	.type	vfmw_save_metadata_reorder_file, %object
+	.size	vfmw_save_metadata_reorder_file, 128
+vfmw_save_metadata_reorder_file:
+	.space	128
+	.type	save_file_cnt.55632, %object
+	.size	save_file_cnt.55632, 4
+save_file_cnt.55632:
+	.space	4
+	.type	save_metadata_reorder_chan_num, %object
+	.size	save_metadata_reorder_chan_num, 4
+save_metadata_reorder_chan_num:
+	.space	4
+	.type	vfmw_save_metadata_file, %object
+	.size	vfmw_save_metadata_file, 128
+vfmw_save_metadata_file:
+	.space	128
+	.type	save_file_cnt.55626, %object
+	.size	save_file_cnt.55626, 4
+save_file_cnt.55626:
+	.space	4
+	.type	save_metadata_chan_num, %object
+	.size	save_metadata_chan_num, 4
+save_metadata_chan_num:
+	.space	4
+	.type	vfmw_save_seg_file, %object
+	.size	vfmw_save_seg_file, 128
+vfmw_save_seg_file:
+	.space	128
+	.type	save_file_cnt.55604, %object
+	.size	save_file_cnt.55604, 4
+save_file_cnt.55604:
+	.space	4
+	.type	save_seg_chan_num, %object
+	.size	save_seg_chan_num, 4
+save_seg_chan_num:
+	.space	4
+	.type	vfmw_save_str_file, %object
+	.size	vfmw_save_str_file, 128
+vfmw_save_str_file:
+	.space	128
+	.type	save_file_cnt.55598, %object
+	.size	save_file_cnt.55598, 4
+save_file_cnt.55598:
+	.space	4
+	.type	save_str_chan_num, %object
+	.size	save_str_chan_num, 4
+save_str_chan_num:
+	.space	4
+	.type	vfmw_save_yuv_file, %object
+	.size	vfmw_save_yuv_file, 128
+vfmw_save_yuv_file:
+	.space	128
+	.type	save_file_cnt.55611, %object
+	.size	save_file_cnt.55611, 4
+save_file_cnt.55611:
+	.space	4
+	.type	MemRecord_YUV, %object
+	.size	MemRecord_YUV, 24
+MemRecord_YUV:
+	.space	24
+	.type	pVl, %object
+	.size	pVl, 4
+pVl:
+	.space	4
+	.type	pUl, %object
+	.size	pUl, 4
+pUl:
+	.space	4
+	.type	pY, %object
+	.size	pY, 4
+pY:
+	.space	4
+	.type	pVl_2bit, %object
+	.size	pVl_2bit, 4
+pVl_2bit:
+	.space	4
+	.type	pUl_2bit, %object
+	.size	pUl_2bit, 4
+pUl_2bit:
+	.space	4
+	.type	pY_2bit, %object
+	.size	pY_2bit, 4
+pY_2bit:
+	.space	4
+	.type	save_yuv_with_crop, %object
+	.size	save_yuv_with_crop, 4
+save_yuv_with_crop:
+	.space	4
+	.type	pPixelArray, %object
+	.size	pPixelArray, 4
+pPixelArray:
+	.space	4
+	.type	g_IsrFlag, %object
+	.size	g_IsrFlag, 1
+g_IsrFlag:
+	.space	1
+	.space	3
+	.type	s_StreamIntf, %object
+	.size	s_StreamIntf, 384
+s_StreamIntf:
+	.space	384
+	.type	FspInstInfo.54731, %object
+	.size	FspInstInfo.54731, 2824
+FspInstInfo.54731:
+	.space	2824
+	.type	g_VdmCharacter, %object
+	.size	g_VdmCharacter, 4
+g_VdmCharacter:
+	.space	4
+	.type	last_rec_pos_time.55035, %object
+	.size	last_rec_pos_time.55035, 128
+last_rec_pos_time.55035:
+	.space	128
+	.type	last_rec_pos_time.55045, %object
+	.size	last_rec_pos_time.55045, 128
+last_rec_pos_time.55045:
+	.space	128
+	.type	MemArrange.55324, %object
+	.size	MemArrange.55324, 1232
+MemArrange.55324:
+	.space	1232
+	.type	extra_ref, %object
+	.size	extra_ref, 4
+extra_ref:
+	.space	4
+	.type	extra_disp, %object
+	.size	extra_disp, 4
+extra_disp:
+	.space	4
+	.type	g_VfmwIrqHandle, %object
+	.size	g_VfmwIrqHandle, 4
+g_VfmwIrqHandle:
+	.space	4
+	.type	cmdline, %object
+	.size	cmdline, 1024
+cmdline:
+	.space	1024
+	.type	extra_cmd, %object
+	.size	extra_cmd, 4
+extra_cmd:
+	.space	4
+	.type	g_allow_B_before_P, %object
+	.size	g_allow_B_before_P, 1
+g_allow_B_before_P:
+	.space	1
+	.type	g_not_allow_H264FullPictureRepair_flag, %object
+	.size	g_not_allow_H264FullPictureRepair_flag, 1
+g_not_allow_H264FullPictureRepair_flag:
+	.space	1
+	.type	g_apple_airplay_mirrorinig_flag, %object
+	.size	g_apple_airplay_mirrorinig_flag, 1
+g_apple_airplay_mirrorinig_flag:
+	.space	1
+	.space	1
+	.type	g_event_report, %object
+	.size	g_event_report, 4
+g_event_report:
+	.space	4
+	.type	g_DSPState, %object
+	.size	g_DSPState, 128
+g_DSPState:
+	.space	128
+	.type	last_rec_pos_time.55442, %object
+	.size	last_rec_pos_time.55442, 128
+last_rec_pos_time.55442:
+	.space	128
+	.type	last_rec_pos_decparam_time.55443, %object
+	.size	last_rec_pos_decparam_time.55443, 128
+last_rec_pos_decparam_time.55443:
+	.space	128
+	.type	ChanPriTab.55392, %object
+	.size	ChanPriTab.55392, 128
+ChanPriTab.55392:
+	.space	128
+	.type	g_VfmwChanStat, %object
+	.size	g_VfmwChanStat, 9600
+g_VfmwChanStat:
+	.space	9600
+	.type	PrioArray.54848, %object
+	.size	PrioArray.54848, 128
+PrioArray.54848:
+	.space	128
+	.type	pOption, %object
+	.size	pOption, 4
+pOption:
+	.space	4
+	.type	s_ChanControlState, %object
+	.size	s_ChanControlState, 128
+s_ChanControlState:
+	.space	128
+	.type	Capability.54904, %object
+	.size	Capability.54904, 148
+Capability.54904:
+	.space	148
+	.type	PrioArray.54903, %object
+	.size	PrioArray.54903, 128
+PrioArray.54903:
+	.space	128
+	.type	g_EsBufValidFlag, %object
+	.size	g_EsBufValidFlag, 128
+g_EsBufValidFlag:
+	.space	128
+	.type	g_eVdmVersion, %object
+	.size	g_eVdmVersion, 4
+g_eVdmVersion:
+	.space	4
+	.type	g_VfmwGlobalStat, %object
+	.size	g_VfmwGlobalStat, 64
+g_VfmwGlobalStat:
+	.space	64
+	.type	AcceleratorCharacter, %object
+	.size	AcceleratorCharacter, 4
+AcceleratorCharacter:
+	.space	4
+	.ident	"GCC: (gcc-linaro-4.9-2014.09 + glibc-2.24 (Build by czyong) Wed Dec 21 10:39:16 CST 2016) 4.9.2 20140904 (prerelease)"
+	.section	.note.GNU-stack,"",%progbits

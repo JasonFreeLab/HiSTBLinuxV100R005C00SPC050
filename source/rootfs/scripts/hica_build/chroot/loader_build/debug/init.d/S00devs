@@ -1,0 +1,8 @@
+#!/bin/sh
+
+mknod /dev/ttyAMA0 c 204 64
+mknod /dev/ttyAMA1 c 204 65
+
+mknod /dev/ttyS000 c 204 64
+mknod /dev/null    c 1   3
+

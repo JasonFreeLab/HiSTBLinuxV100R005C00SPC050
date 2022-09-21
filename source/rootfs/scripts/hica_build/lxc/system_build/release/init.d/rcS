@@ -1,0 +1,8 @@
+#! /bin/sh
+
+mount -a
+/etc/init.d/S00devs
+/etc/init.d/S01udev
+/etc/init.d/S89remount-root
+/etc/init.d/S90modules
+/etc/init.d/S99lxc

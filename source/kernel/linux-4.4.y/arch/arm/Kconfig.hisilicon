@@ -1,0 +1,162 @@
+config ARCH_S40
+	bool "Hisilicon S40 family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select HAVE_ARM_SCU
+	select MIGHT_HAVE_CACHE_L2X0
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select PM_OPP
+	help
+	  This enables support for Hisilicon S40 platform.
+	  With the advanced ARM Cortex A9 processor,
+	  S40 serial provides high-speed processing capability.
+	  And S40 serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers, PCI-Express
+	  controller and many peripheral equipments.
+
+config ARCH_HI3716MV420N
+	bool "Hisilicon HI3716MV420N family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select HAVE_ARM_SCU
+	select MIGHT_HAVE_CACHE_L2X0
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select PM_OPP
+	help
+	  This enables support for Hisilicon HI3716MV420N platform.
+	  With the advanced ARM Cortex A9 processor,
+	  HI3716MV420N serial provides high-speed processing capability.
+	  And HI3716MV420N serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers, PCI-Express
+	  controller and many peripheral equipments.
+
+config ARCH_HI3798MX
+	bool "Hisilicon HI3798MX family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select ARM_HAS_SG_CHAIN
+	select PM_OPP
+	help
+	  This enables support for Hisilicon HI3798MX platform.
+	  With the advanced ARM Cortex A7 processor,
+	  HI3798MX serial provides high-speed processing capability.
+	  And HI3798MX serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers, PCI-Express
+	  controller and many peripheral equipments.
+
+config ARCH_HI3798CV2X
+	bool "Hisilicon HI3798CV2X family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select ARM_HAS_SG_CHAIN
+	select PM_OPP
+	help
+	  This enables support for Hisilicon HI3798CV2X platform.
+	  With the advanced ARM Cortex A17 processor,
+	  HI3798CV2X serial provides high-speed processing capability.
+	  And HI3798CV2X serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers and
+	  many peripheral equipments.
+
+config ARCH_HI3798MV2X
+	bool "Hisilicon HI3798MV2X family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select ARM_HAS_SG_CHAIN
+	select PM_OPP
+	help
+	  This enables support for Hisilicon HI3798MV2X platform.
+	  With the advanced ARM Cortex A53 processor,
+	  HI3798MV2X serial provides high-speed processing capability.
+	  And HI3798MV2X serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers and
+	  many peripheral equipments.
+
+config ARCH_HI3796MV2X
+	bool "Hisilicon HI3796MV2X family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select ARM_HAS_SG_CHAIN
+	select PM_OPP
+	help
+	  This enables support for Hisilicon HI3796MV2X platform.
+	  With the advanced ARM Cortex A53 processor,
+	  HI3798MV2X serial provides high-speed processing capability.
+	  And HI3796MV2X serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers and

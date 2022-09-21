@@ -1,0 +1,55 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+ cExt (*.c)
+ aExt (*.a*; *.src)
+ oExt (*.obj)
+ lExt (*.lib)
+ tExt (*.txt)
+ pExt (*.plm)
+ CppX (*.cpp)
+ DaveTm { 0,0,0,0,0,0,0,0 }
+
+Target (Target 1), 0x0000 // Tools: 'MCS-51'
+GRPOPT 1,(Source Group 1),1,0,0
+
+OPTFFF 1,1,1,0,0,0,0,0,<.\src\base.c><base.c> 
+OPTFFF 1,2,1,0,0,0,0,0,<.\src\gpio.c><gpio.c> 
+OPTFFF 1,3,1,318767104,0,0,0,0,<.\src\timer.c><timer.c> 
+OPTFFF 1,4,1,0,0,0,0,0,<.\src\ir.c><ir.c> 
+OPTFFF 1,5,1,0,0,0,0,0,<.\src\keyled.c><keyled.c> 
+OPTFFF 1,6,1,0,0,0,0,0,<.\src\keyled_std.c><keyled_std.c> 
+OPTFFF 1,7,1,218103810,0,275,307,0,<.\src\main.c><main.c> { 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,248,255,255,255,226,255,255,255,88,0,0,0,116,0,0,0,133,4,0,0,155,1,0,0 }
+OPTFFF 1,8,1,0,0,0,0,0,<.\src\keyled_ct1642.c><keyled_ct1642.c> 
+OPTFFF 1,9,1,0,0,0,0,0,<.\src\keyled_pt6961.c><keyled_pt6961.c> 
+OPTFFF 1,10,1,0,0,0,0,0,<.\src\keyled_pt6964.c><keyled_pt6964.c> 
+OPTFFF 1,11,1,0,0,0,0,0,<.\src\keyled_ct1642_inner.c><keyled_ct1642_inner.c> 
+OPTFFF 1,12,1,0,0,0,0,0,<.\src\keyled_fd650.c><keyled_fd650.c> 
+OPTFFF 1,13,2,0,0,0,0,0,<.\src\STARTUP.A51><STARTUP.A51> 
+OPTFFF 1,14,1,0,0,0,0,0,<.\src\keyled_ANSG08.c><keyled_ANSG08.c> 
+OPTFFF 1,15,1,0,0,0,0,0,<.\src\hdmi\hdmi_mcu_cec.c><hdmi_mcu_cec.c> 
+OPTFFF 1,16,1,0,0,0,0,0,<.\src\hdmi\hdmi_mcu_com.c><hdmi_mcu_com.c> 
+OPTFFF 1,17,1,0,0,0,0,0,<.\src\hdmi\hdmi_mcu_ddc_edid.c><hdmi_mcu_ddc_edid.c> 
+OPTFFF 1,18,1,0,0,0,0,0,<.\src\hdmi\hdmi_mcu_task.c><hdmi_mcu_task.c> 
+
+
+TARGOPT 1, (Target 1)
+ CLK51=12000000
+  OPTTT 1,1,1,0
+  OPTHX 0,65535,0,0,0
+  OPTLX 120,65,8,<.\>
+  OPTOX 16
+  OPTLT 1,1,1,0,1,1,0,1,1,0,1,0
+  OPTXL 1,1,1,1,1,1,1,0,0
+  OPTFL 1,0,1
+  OPTBL 0,(Add on databooks)<DATASHTS\ADDBOOKS.PDF>
+  OPTBL 1,(MCS 51 Instruction Set)<DATASHTS\INTEL\ISM51.PDF>
+  OPTDL (S8051.DLL)()(DP51.DLL)(-p52)(S8051.DLL)()(TP51.DLL)(-p52)
+  OPTDBG 509,-1,()()()()()()()()()() (BIN\MON51.DLL)()()()
+  OPTKEY 0,(DLGDP51)((98=-1,-1,-1,-1,0)(82=-1,-1,-1,-1,0)(83=-1,-1,-1,-1,0)(84=-1,-1,-1,-1,0)(85=-1,-1,-1,-1,0)(99=-1,-1,-1,-1,0)(91=-1,-1,-1,-1,0)(92=-1,-1,-1,-1,0)(93=-1,-1,-1,-1,0))
+  OPTBB 0,0,59,0,0,0,0,0,0,0,<main.c>()()
+  OPTDF 0x84
+  OPTLE <>
+  OPTLC <>
+EndOpt
+

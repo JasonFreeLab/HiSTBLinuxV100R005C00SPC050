@@ -1,0 +1,123 @@
+/*
+ * Copyright (c) 2013 Linaro Ltd.
+ * Copyright (c) 2013 Hisilicon Limited.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * publishhed by the Free Software Foundation.
+ */
+
+#include "skeleton.dtsi"
+#include <dt-bindings/clock/hi3798cv200-clock.h>
+
+/ {
+	aliases {
+		serial0 = &uart0;
+	};
+
+	gic: interrupt-controller@0xf1001000 {
+		compatible = "arm,cortex-a9-gic"; /* TODO: maybe cortex-a53-gic in new kernel version */
+		#interrupt-cells = <3>;
+		#address-cells = <0>;
+		interrupt-controller;
+		/* gic dist base, gic cpu base */
+		reg = <0x0 0xf1001000 0x1000>, <0x0 0xf1002000 0x100>;
+	};
+
+	clocks {
+		xtal_clk: xtal_clk {
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <24000000>;
+			clock-output-names = "clk24M";
+		};
+
+		clk_54m: clk_54m {
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <54000000>;
+			clock-output-names = "clk54M";
+		};
+
+		clk_83p3m: clk_83p3m {
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <83300000>;
+			clock-output-names = "clk83.3M";
+		};
+
+		clk_3m: clk_3m{
+			compatible = "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <3000000>;
+			clock-output-names = "clk3M";
+		};
+	};
+
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "simple-bus";
+		device_type = "soc";
+		interrupt-parent = <&gic>;
+		ranges = <0x0 0x00000000 0x0 0xffffffff>;
+
+		amba {
+			#address-cells = <1>;
+			#size-cells = <1>;
+			compatible = "arm,amba-bus";
+			ranges;
+#if 0
+			timer {
+				compatible = "arm,armv8-timer";
+				interrupts = <1 13 0xff04>,
+					     <1 14 0xff04>,
+					     <1 11 0xff04>,
+					     <1 10 0xff04>;
+				clock-frequency = <24000000>;
+			};
+#endif
+#if 1
+                        /*
+                         * Used for clocksource and local timer
+                         */
+                        timer@0xf8a29000 {
+                                compatible = "hisilicon,timer";
+                                reg = <0xf8a29000 0x20>, /* clocksource */
+                                      <0xf8a2a000 0x20>, /* local timer for each cpu */
+                                      <0xf8a2a020 0x20>,
+                                      <0xf8a2b000 0x20>,
+                                      <0xf8a2b020 0x20>;
+                                interrupts = <0 26 4>, /* irq of local timer */
+                                             <0 59 4>,
+                                             <0 27 4>,
+                                             <0 60 4>;
+                                clocks = <&xtal_clk>;
+                                clock-names = "apb_pclk";
+                        };
+#endif
+			uart0: uart@f8b00000 {
+				compatible = "arm,pl011", "arm,primecell";
+				reg = <0xf8b00000 0x1000>;
+				interrupts = <0 49 4>;
+				clocks = <&clk_54m>;
+				clock-names = "apb_pclk";
+				status = "disabled";
+			};
+
+		};
+
+		local_timer@f8a00600 {
+			compatible = "arm,cortex-a9-twd-timer";
+			reg = <0xf8a00600 0x20>;
+			interrupts = <1 13 0xf01>;
+		};
+
+		hisilicon_clock: hisilicon_clock {
+			compatible = "hi3798cv200.clock","hisilicon,clock-reset";
+			reg = <0xF8A22000 0x200>, <0xF8A20000 0x0848>;
+			#clock-cells = <1>;
+			#reset-cells = <2>;
+		};
+	};
+};

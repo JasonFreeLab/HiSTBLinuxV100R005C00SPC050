@@ -1,0 +1,26 @@
+menuconfig PCIE_RESET
+    bool "PCIE RESET CONFIG"
+    default n
+
+config  GPIO_PCIE_RESET
+    hex "PCIE RESET Gpio Number"
+    default 0xff
+    help
+      pcie reset gpio
+      gpio_pin (gpio_pin = gpio_group * 8 + gpio_num)
+      0x3D is for GPIO7_5
+	depends on PCIE_RESET 
+
+config  GPIO_PCIE_POWER_EN_SUPPORT
+    bool "Config Gpio for PCIE POWER EN"
+    default n
+	depends on PCIE_RESET 
+
+config  GPIO_PCIE_POWER_EN
+    depends on GPIO_PCIE_POWER_EN_SUPPORT
+    hex "PCIE POWER EN Gpio Number"
+    default 0xff
+    help
+      pcie power en gpio
+      gpio_pin (gpio_pin = gpio_group * 8 + gpio_num)
+      0x2E is for GPIO5_6
