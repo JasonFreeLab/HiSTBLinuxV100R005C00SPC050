@@ -1,0 +1,66 @@
+#
+# Copyright (C) 2010 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+ifeq ($(BOARD_WIDEVINE_OEMCRYPTO_LEVEL),1)
+LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+include $(SDK_DIR)/Android.def
+
+LOCAL_SRC_FILES := sample_keybox.cpp
+LOCAL_CFLAGS += -Wall
+LOCAL_CFLAGS := $(CFG_HI_CFLAGS) $(CFG_HI_BOARD_CONFIGS)
+LOCAL_C_INCLUDES := system/core/include/
+LOCAL_C_INCLUDES += $(COMMON_UNF_INCLUDE)
+LOCAL_C_INCLUDES += $(COMMON_DRV_INCLUDE)
+LOCAL_C_INCLUDES += $(COMMON_API_INCLUDE)
+LOCAL_C_INCLUDES += $(COMMON_API_INCLUDE)/../flash/include
+LOCAL_C_INCLUDES += $(MSP_UNF_INCLUDE)
+LOCAL_C_INCLUDES += $(MSP_DRV_INCLUDE)
+LOCAL_C_INCLUDES += $(MSP_API_INCLUDE)
+LOCAL_C_INCLUDES += $(MSP_API_INCLUDE)/../higo/include
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../liboemcrypto
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../liboemcrypto/teec
+
+LOCAL_MODULE := sample_keybox
+LOCAL_MULTILIB := 32
+LOCAL_MODULE_TAGS := optional
+LOCAL_SHARED_LIBRARIES += liblog libcutils libutils libdl libm libhi_common libteec libhi_msp libhisysmanagerclient
+LOCAL_STATIC_LIBRARIES += libcwvoemcrypto
+include $(BUILD_EXECUTABLE)
+include $(CLEAR_VARS)
+include $(SDK_DIR)/Android.def
+
+LOCAL_SRC_FILES := sample_check.cpp
+LOCAL_CFLAGS += -Wall
+LOCAL_CFLAGS := $(CFG_HI_CFLAGS) $(CFG_HI_BOARD_CONFIGS)
+LOCAL_C_INCLUDES += $(COMMON_UNF_INCLUDE)
+LOCAL_C_INCLUDES += $(COMMON_DRV_INCLUDE)
+LOCAL_C_INCLUDES += $(COMMON_API_INCLUDE)
+LOCAL_C_INCLUDES += $(COMMON_API_INCLUDE)/../flash/include
+LOCAL_C_INCLUDES += $(MSP_UNF_INCLUDE)
+LOCAL_C_INCLUDES += $(MSP_DRV_INCLUDE)
+LOCAL_C_INCLUDES += $(MSP_API_INCLUDE)
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../liboemcrypto
+LOCAL_C_INCLUDES += external/boringssl/include
+LOCAL_MODULE := sample_checkkeybox
+LOCAL_MULTILIB := 32
+LOCAL_MODULE_TAGS := optional
+LOCAL_SHARED_LIBRARIES += liblog libcutils libutils libdl libm libhi_common libteec libhi_msp libhisysmanagerclient
+LOCAL_SHARED_LIBRARIES += libcrypto
+#LOCAL_SHARED_LIBRARIES += libdrmdecrypt
+LOCAL_STATIC_LIBRARIES += libcwvoemcrypto
+include $(BUILD_EXECUTABLE)
+
+endif
