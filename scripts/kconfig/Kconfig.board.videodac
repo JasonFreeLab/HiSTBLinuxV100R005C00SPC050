@@ -1,0 +1,63 @@
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+menu "Video DAC Config"
+
+config HI_DAC_CVBS
+    int "CVBS"
+    range 0 5
+    depends on !HI_NVR_SUPPORT
+    help
+        DAC number used as CVBS.
+
+choice
+    prompt "CVBS Circuit Type"
+    default HI_VO_VDAC_VIDEO_BUFFER
+
+config  HI_VO_VDAC_LC_CIRCUIT
+    bool "LC"
+
+config  HI_VO_VDAC_VIDEO_BUFFER
+    bool "Video Buffer"
+
+endchoice
+
+config HI_YPBPR_SUPPORT
+	bool "YPBPR Support"
+    depends on HI3716MV410 || HI3716MV420 || HI3796MV200
+	default y
+
+config HI_DAC_YPBPR_Y
+    int "YPBPR_Y"
+    range 0 5
+    depends on HI_YPBPR_SUPPORT
+    help
+        DAC number used as YPBPR_Y.
+
+config HI_DAC_YPBPR_PB
+    int "YPBPR_PB"
+    range 0 5
+    depends on HI_YPBPR_SUPPORT
+    help
+        DAC number used as YPBPR_PB.
+
+config HI_DAC_YPBPR_PR
+    int "YPBPR_PR"
+    range 0 5
+    depends on HI_YPBPR_SUPPORT
+    help
+        DAC number used as YPBPR_PR.
+
+choice
+    prompt "YPBPR Circuit Type"
+    depends on HI_YPBPR_SUPPORT
+    default HI_VO_YPBPR_VDAC_VIDEO_BUFFER
+
+config  HI_VO_YPBPR_VDAC_LC_CIRCUIT
+    bool "LC"
+
+config  HI_VO_YPBPR_VDAC_VIDEO_BUFFER
+    bool "Video Buffer"
+
+endchoice
+
+endmenu
+#+++++++++++++++++++++++++++++++++++++++++++++++++++

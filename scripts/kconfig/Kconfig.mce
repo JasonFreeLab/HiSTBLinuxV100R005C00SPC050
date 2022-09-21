@@ -1,0 +1,10 @@
+config  HI_MCE_SUPPORT
+    bool "MCE Support"
+    depends on HI_MSP_BUILDIN
+    default n
+
+config  HI_GRADUAL_VOLUME_SUPPORT
+    bool "Gradual Volume Support"
+    depends on  HI_MCE_SUPPORT && (HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200)
+    default n
+

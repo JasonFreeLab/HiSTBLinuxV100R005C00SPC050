@@ -1,0 +1,48 @@
+
+config HI_QT_SUPPORT
+	bool "Qt Support"
+    depends on HI_32BIT_SYSTEM
+	default n
+	help
+      If you want to compile Qt in SDK, Select this option.
+      Attention: You need to download Qt sourcecode and it's dependend softwares first. they are not included in SDK package default.
+                 Please read relative document for more details.
+
+#------------------------------------------------
+choice
+
+    prompt "Qt Version"
+    depends on HI_QT_SUPPORT
+    default HI_QT_5.5.0_SUPPORT
+
+config  HI_QT_VERSION_5.5.1
+    bool "Qt Version 5.5.1"
+    help 
+       If you want to choose Qt 5.5.1 version support, Select this option.
+
+config  HI_QT_VERSION_5.7.0
+    bool "Qt Version 5.7.0"
+    help 
+       If you want to choose Qt 5.7.0 version support, Select this option.
+
+endchoice
+
+choice
+
+    prompt "Graphic Device"
+    depends on HI_QT_SUPPORT
+    default HI_QT_LINUXFB_SUPPORT
+
+config  HI_QT_LINUXFB_SUPPORT
+    bool "LinuxFB"
+    help 
+       If you want to choose LinuxFB as graphic device, Select this option.
+
+config  HI_QT_EGL_SUPPORT
+    depends on HI_GPU_SUPPORT
+    bool "EGL"
+    help 
+       If you want to choose EGL as graphic device, Select this option.
+       It depends on GPU support.
+
+endchoice

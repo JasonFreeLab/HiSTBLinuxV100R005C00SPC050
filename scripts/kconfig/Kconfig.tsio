@@ -1,0 +1,148 @@
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+menuconfig HI_TSIO_SUPPORT
+	bool "TSIO Support"
+	depends on HI3796MV200
+	default n
+
+menu "TSIO PHY support"
+	depends on HI_TSIO_SUPPORT
+
+choice
+	prompt "mode"
+	default HI_TSIO_PHY_NORMAL_SUPPORT
+
+config HI_TSIO_PHY_NORMAL_SUPPORT
+	bool "normal"
+	help
+	  The optimal phy configuration value may change for different chip and board.
+
+config HI_TSIO_PHY_LOOPBACK_SUPPORT
+	bool "loopback"
+
+endchoice
+
+menu "12.5MHz"
+	depends on HI_TSIO_PHY_NORMAL_SUPPORT
+
+config HI_TSIO_PHY_12MHZ_OFFSET
+	prompt "offset"
+	int
+	default 110
+
+config HI_TSIO_PHY_12MHZ_SWING
+	prompt "swing"
+	int
+	default 100
+
+config HI_TSIO_PHY_12MHZ_PRE_EMPHASIS
+	prompt "pre-emphasis"
+	int
+	default 0
+
+config HI_TSIO_PHY_12MHZ_SLEW
+	prompt "slew"
+	int
+	default 3
+
+config HI_TSIO_PHY_12MHZ_SKEW
+	prompt "skew"
+	int
+	default 0
+
+endmenu
+
+menu "25MHz"
+	depends on HI_TSIO_PHY_NORMAL_SUPPORT
+
+config HI_TSIO_PHY_25MHZ_OFFSET
+	prompt "offset"
+	int
+	default 110
+
+config HI_TSIO_PHY_25MHZ_SWING
+	prompt "swing"
+	int
+	default 100
+
+config HI_TSIO_PHY_25MHZ_PRE_EMPHASIS
+	prompt "pre-emphasis"
+	int
+	default 0
+
+config HI_TSIO_PHY_25MHZ_SLEW
+	prompt "slew"
+	int
+	default 3
+
+config HI_TSIO_PHY_25MHZ_SKEW
+	prompt "skew"
+	int
+	default 0
+
+endmenu
+
+menu "50MHz"
+	depends on HI_TSIO_PHY_NORMAL_SUPPORT
+
+config HI_TSIO_PHY_50MHZ_OFFSET
+	prompt "offset"
+	int
+	default 110
+
+config HI_TSIO_PHY_50MHZ_SWING
+	prompt "swing"
+	int
+	default 100
+
+config HI_TSIO_PHY_50MHZ_PRE_EMPHASIS
+	prompt "pre-emphasis"
+	int
+	default 0
+
+config HI_TSIO_PHY_50MHZ_SLEW
+	prompt "slew"
+	int
+	default 3
+
+config HI_TSIO_PHY_50MHZ_SKEW
+	prompt "skew"
+	int
+	default 0
+
+endmenu
+
+menu "100MHz"
+	depends on HI_TSIO_PHY_NORMAL_SUPPORT
+
+config HI_TSIO_PHY_100MHZ_OFFSET
+	prompt "offset"
+	int
+	default 110
+
+config HI_TSIO_PHY_100MHZ_SWING
+	prompt "swing"
+	int
+	default 100
+
+config HI_TSIO_PHY_100MHZ_PRE_EMPHASIS
+	prompt "pre-emphasis"
+	int
+	default 0
+
+config HI_TSIO_PHY_100MHZ_SLEW
+	prompt "slew"
+	int
+	default 2
+
+config HI_TSIO_PHY_100MHZ_SKEW
+	prompt "skew"
+	int
+	default 0
+
+endmenu
+
+endmenu
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+

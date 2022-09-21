@@ -1,0 +1,20 @@
+config HI_RECOVERY_GPIO
+    hex  "Recovery Control Gpio"
+    depends on ANDROID_PRODUCT
+    default 0x10
+    help
+      LongPressing recovery buttom will into recovery system.
+      the list of chip recovery control gpio as follow:
+      Hi3798MV100
+        recovery buttom is gpio2_0
+
+      Hi3798CV200
+        DMB  recovery buttom is gpio7_1
+        DMC  recovery buttom is gpio6_5
+        DMD  recovery buttom is gpio6_5
+
+      Hi3798MV200
+        recovery buttom is gpio8_6
+
+      Hi3796mv200
+        recovery bottom is gpio13_7

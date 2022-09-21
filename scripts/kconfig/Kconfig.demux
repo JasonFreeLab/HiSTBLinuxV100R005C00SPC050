@@ -1,0 +1,19 @@
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+menu "DEMUX Config"
+	depends on !HI_NVR_SUPPORT
+
+config HI_DEMUX_SUPPORT
+	bool
+	default y
+
+config HI_DEMUX_POOLBUF_SIZE
+	hex "DEMUX Poolbuf Size"
+	depends on HI_DEMUX_SUPPORT
+	default 0x200000
+	help
+	    Configure section, pes and post channel memory.
+
+
+endmenu
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+

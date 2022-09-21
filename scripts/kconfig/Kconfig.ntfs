@@ -1,0 +1,9 @@
+menuconfig HI_NTFS_SUPPORT
+	bool "NTFS Support"
+	default n
+
+config  HI_NTFS_TOOLS_SUPPORT
+	bool "NTFS Tools Support"
+	depends on HI_NTFS_SUPPORT
+	default y
+

@@ -1,0 +1,9 @@
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+#menu "PLCIPHER Config"
+config HI_PLCIPHER_SUPPORT
+	bool "PLCipher support"
+	depends on HI3796MV200  || ((HI3716MV410 || HI3716MV420) && ADVCA_NAGRA )
+	default y
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++
+
