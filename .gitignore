@@ -1,0 +1,8 @@
+# config
+cfg.mak.old
+
+# VS Code Settings
+.vscode/
+
+# out
+out/*
