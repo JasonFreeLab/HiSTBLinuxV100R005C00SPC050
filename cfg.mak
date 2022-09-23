@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # SDK version: KERNELVERSION
-# Wed Sep 21 23:13:08 2022
+# Fri Sep 23 08:13:37 2022
 #
 
 #
@@ -39,9 +39,9 @@ CFG_HI_CPU_ARCH=arm
 # Toolchains Config
 #
 # CFG_ARM_HISTBV300_LINUX is not set
-CFG_ARM_HISTBV310_LINUX=y
-# CFG_ARM_HISTBV320_LINUX is not set
-CFG_HI_ARM_TOOLCHAINS_NAME=arm-histbv310-linux
+# CFG_ARM_HISTBV310_LINUX is not set
+CFG_ARM_HISTBV320_LINUX=y
+CFG_HI_ARM_TOOLCHAINS_NAME=arm-histbv320-linux
 CFG_HI_OUT_DIR=hi3798mv3dmo
 CFG_HI_SMMU_SUPPORT=y
 CFG_HI_HDR_SUPPORT=y

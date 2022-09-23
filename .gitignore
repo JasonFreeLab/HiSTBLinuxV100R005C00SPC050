@@ -5,4 +5,4 @@ cfg.mak.old
 .vscode/
 
 # out
-out/*
+out/
