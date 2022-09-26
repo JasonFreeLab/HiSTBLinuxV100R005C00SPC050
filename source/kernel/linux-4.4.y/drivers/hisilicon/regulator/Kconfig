@@ -39,6 +39,8 @@ config REGULATOR_HI3798MV200
           Hi3798MV200.
 endif
 
+if REGULATOR
+
 config REGULATOR_HI3798MV300
         tristate "Hisilicon Hi3798MV300 regulators"
         help
