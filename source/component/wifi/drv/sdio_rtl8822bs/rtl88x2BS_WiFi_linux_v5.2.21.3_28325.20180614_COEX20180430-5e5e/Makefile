@@ -32,7 +32,7 @@ ifeq ($(GCC_VER_49),1)
 EXTRA_CFLAGS += -Wno-date-time	# Fix compile error && warning on gcc 4.9 and later
 endif
 
-RTL_8822_SRC=$(COMPONENT_DIR)/wifi/drv/_rtl8822bs/rtl88x2BS_WiFi_linux_v5.2.21.3_28325.20180614_COEX20180430-5e5e
+RTL_8822_SRC=$(COMPONENT_DIR)/wifi/drv/sdio_rtl8822bs/rtl88x2BS_WiFi_linux_v5.2.21.3_28325.20180614_COEX20180430-5e5e
 
 EXTRA_CFLAGS += -I$(RTL_8822_SRC)/include
 
