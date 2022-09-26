@@ -50,6 +50,10 @@ ifeq ($(CFG_HI_WIFI_DEVICE_RTL8822BU),y)
 objects += usb_rtl8822bu
 endif
 
+ifeq ($(CFG_HI_WIFI_DEVICE_RTL8822BS),y)
+objects += sdio_rtl8822bs
+endif
+
 ifeq ($(CFG_HI_WIFI_DEVICE_RTL8723BU),y)
 objects += usb_rtl8723bu
 endif
