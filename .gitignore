@@ -6,3 +6,9 @@ cfg.mak.old
 
 # out
 out/
+
+# auto create link
+source/kernel/linux-4.4.y/drivers/bluetooth_usb
+source/kernel/linux-4.4.y/drivers/common
+source/kernel/linux-4.4.y/drivers/msp
+source/kernel/linux-4.4.y/drivers/wifi
