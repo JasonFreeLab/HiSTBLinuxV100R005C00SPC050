@@ -39,7 +39,7 @@ make xxx:
 	The xxx can be hiboot, linux, rootfs, common, msp, component or sample,
 	make them respectively.
 
-make xxx:
+make xxx_clean:
 	The xxx can be hiboot, linux, rootfs, common, msp, component or sample,
 	clean them respectively.
 
