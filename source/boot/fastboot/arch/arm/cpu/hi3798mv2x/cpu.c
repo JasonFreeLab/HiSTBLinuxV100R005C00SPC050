@@ -140,7 +140,7 @@ struct cpu_info_t cpu_info[] = {
 	{
 		.name   = "Hi3798Mv200",
 		.chipid = _HI3798M_V200,
-		.chipid_mask = _HI3798C_V200_MASK,
+		.chipid_mask = _HI3798M_V200_MASK,
 		.devs = DEV_NOR_HIFMC100 | DEV_HIFMC100 | DEV_EMMCV200,
 #ifdef CONFIG_HI3798MV2X_FPGA
 		.max_ddr_size = SZ_1G,
@@ -155,7 +155,7 @@ struct cpu_info_t cpu_info[] = {
 	{
 		.name   = "Hi3798Mv300",
 		.chipid = _HI3798M_V300,
-		.chipid_mask = _HI3798C_V200_MASK,
+		.chipid_mask = _HI3798M_V300_MASK,
 		.devs = DEV_NOR_HIFMC100 | DEV_HIFMC100 | DEV_EMMCV200,
 #ifdef CONFIG_HI3798MV2X_FPGA
 		.max_ddr_size = SZ_1G,

@@ -16,8 +16,8 @@
  * Create By Cai Zhiyong 2015.6.4
  *
 ******************************************************************************/
-#ifndef __DT_BINDINGS_CLOCK_HI3798CV200_H
-#define __DT_BINDINGS_CLOCK_HI3798CV200_H
+#ifndef __DT_BINDINGS_CLOCK_HI3798MV200_H
+#define __DT_BINDINGS_CLOCK_HI3798MV200_H
 
 #define PERI_CRG0_APLL_1                        0x0000
 #define PERI_CRG1_APLL_2                        0x0004
@@ -127,4 +127,4 @@
 #define HIGMAC_MACIF0_RST_BIT                   2
 #define HIGMAC_PHY0_RST_BIT                     5 
 
-#endif /* __DT_BINDINGS_CLOCK_HI3798CV200_H */
+#endif /* __DT_BINDINGS_CLOCK_HI3798MV200_H */

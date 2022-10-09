@@ -134,7 +134,7 @@ static struct cpu_info_t cpu_info[] = {
 	{
 		.name   = "Hi3798Mv300",
 		.chipid = _HI3798M_V300,
-		.chipid_mask = _HI3798M_V200_MASK,
+		.chipid_mask = _HI3798M_V300_MASK,
 #ifdef CONFIG_HI3798MV2X_FPGA
 		.max_ddr_size = _1G,
 #else

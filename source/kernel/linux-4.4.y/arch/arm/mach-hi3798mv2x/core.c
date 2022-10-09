@@ -162,6 +162,7 @@ static void hi3798mv2x_restart(enum reboot_mode mode, const char *cmd)
 
 static const char * const hi3798mv2x_dt_board_compat[] = {
 	"hi3798mv200-series",
+	"hi3798mv300-series",
 	NULL
 };
 

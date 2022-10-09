@@ -24,3 +24,10 @@ config  GPIO_PCIE_POWER_EN
       pcie power en gpio
       gpio_pin (gpio_pin = gpio_group * 8 + gpio_num)
       0x2E is for GPIO5_6
+
+config CLK_HI3798MV300
+        bool "Hisilicon Hi3798MV300 CLK"
+        default y
+        help
+          This driver provides support for the CLK on the
+          Hi3798MV300.
