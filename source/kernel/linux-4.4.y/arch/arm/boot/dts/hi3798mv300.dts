@@ -1,10 +1,10 @@
 /dts-v1/;
 
-#include <dt-bindings/clock/hi3798mv300-clock.h>
+#include <dt-bindings/clock/hi3798mv200-clock.h>
 
 / {
 	model = "Hisilicon";
-	compatible = "hi3798mv300-series";
+	compatible = "hi3798mv200-series";
 	#address-cells = <1>;
 	#size-cells = <1>;
 	interrupt-parent = <&gic>;
@@ -524,7 +524,7 @@
 		};
 
 		hisilicon_clock: hisilicon_clock {
-			compatible = "hi3798mv300.clock","hisilicon,clock-reset";
+			compatible = "hi3798mv200.clock","hisilicon,clock-reset";
 			reg = <0xF8A22000 0x400>, <0xF8A20000 0x0848>;
 			#clock-cells = <1>;
 			#reset-cells = <2>;
@@ -644,7 +644,7 @@
 		};
 
 		vddgpu: regulator@0xf8a23020 {
-			compatible = "hisilicon,hi3798mv300-volt";
+			compatible = "hisilicon,hi3798mv200-volt";
 			reg = <0xf8a23020 0x4>;
 			reg-names = "Hisilicon GPU Regulator";
 			regulator-name = "vdd-gpu";

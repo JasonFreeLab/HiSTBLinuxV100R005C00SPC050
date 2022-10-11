@@ -614,7 +614,7 @@
 			status = "okay";
 		};
 
-		otg:hi3798cv200.hiusbotg {
+		otg:hi3798mv200.hiusbotg {
 			compatible = "hiusbotg";
 			reg = <0xf9880000 0x10000>,<0xf9890000 0x10000>,<0xf8a2012c 0x4>;
 			host_time = <1500 4>;
