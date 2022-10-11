@@ -65,8 +65,10 @@
 #define _HI3798MV200_MASK           (0xFFFFFFFFFFULL)
 
 #define _HI3798MV200_A              (0x0037988200ULL)
+#define _HI3798MV200_A_MASK           (0xFFFFFFFFFFULL)
 
 #define _HI3798MV300                (0x0037980210ULL)
+#define _HI3798MV300_MASK           (0xFFFFFFFFFFULL)
 
 #define _HI3796MV200_21X21          (0x0037960200ULL)
 #define _HI3796MV200_15X15          (0x0137960200ULL)
