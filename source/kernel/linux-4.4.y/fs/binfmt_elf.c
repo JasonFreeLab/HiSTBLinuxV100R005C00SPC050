@@ -944,8 +944,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
 			 */
 			if (elf_interpreter) {
 				load_bias = ELF_ET_DYN_BASE;
-			if (current->flags & PF_RANDOMIZE)
-				load_bias += arch_mmap_rnd();
+				if (current->flags & PF_RANDOMIZE)
+					load_bias += arch_mmap_rnd();
 				elf_flags |= MAP_FIXED;
 			} else
 				load_bias = 0;

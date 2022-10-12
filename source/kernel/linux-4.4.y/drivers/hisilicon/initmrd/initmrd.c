@@ -64,30 +64,30 @@ int parse_initmrd_bootargs(char *bootargs)
 	p = bootargs;
 	for (ix = 0; ix < CONFIG_BLK_DEV_RAM_COUNT; ix++) {
 		p = strstr(p, "initmrd=");
-	if (!p) {
-		pr_notice("found no initmrd.\n");
-		return 0;
-	}
+		if (!p) {
+			pr_notice("found no initmrd.\n");
+			return 0;
+		}
 
-	p += strlen("initmrd=");
-	index = memparse(p, &endp);
-	if (*endp != ',')
-		return 0;
+		p += strlen("initmrd=");
+		index = memparse(p, &endp);
+		if (*endp != ',')
+			return 0;
 
-	if (index >= CONFIG_BLK_DEV_RAM_COUNT) {
-		pr_notice("index %d out of range, CONFIG_BLK_DEV_RAM_COUNT is %d.\n", index, CONFIG_BLK_DEV_RAM_COUNT);
-		return 0;
-	}
+		if (index >= CONFIG_BLK_DEV_RAM_COUNT) {
+			pr_notice("index %d out of range, CONFIG_BLK_DEV_RAM_COUNT is %d.\n", index, CONFIG_BLK_DEV_RAM_COUNT);
+			return 0;
+		}
 
-	rd = &ramdisks[index];
+		rd = &ramdisks[index];
 
-	rd->start = memparse(endp + 1, &endp);
-	if (*endp != ',')
-		return 0;
+		rd->start = memparse(endp + 1, &endp);
+		if (*endp != ',')
+			return 0;
 
-	rd->size = memparse(endp + 1, NULL);
+		rd->size = memparse(endp + 1, NULL);
 		if (rd->size) {
-		rd->status = RD_STATUS_SETUP;
+			rd->status = RD_STATUS_SETUP;
 		}
 	}
 

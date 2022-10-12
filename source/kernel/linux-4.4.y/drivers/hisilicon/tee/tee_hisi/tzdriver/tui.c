@@ -1064,9 +1064,9 @@ static ssize_t tui_dbg_state_read(struct file *filp, char __user *ubuf,
 	mutex_lock(&tui_drv_lock);
 	list_for_each_entry(pos, &tui_drv_head, list) {
 		ret = snprintf_s(buf + r, READ_BUF - r, READ_BUF - r, "%s-%s,", pos->name,
-			1 == pos->state ? "ok" : "no ok");/* [false alarm]:buffer足够大不会越界  */
+				1 == pos->state ? "ok" : "no ok");/* [false alarm]:buffer足够大不会越界  */
 		if (ret < 0) {
-	mutex_unlock(&tui_drv_lock);
+			mutex_unlock(&tui_drv_lock);
 			return -EINVAL;
 		}
 		r += (unsigned int)ret;

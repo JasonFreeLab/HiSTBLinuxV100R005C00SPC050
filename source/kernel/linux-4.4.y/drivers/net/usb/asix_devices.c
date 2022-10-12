@@ -376,14 +376,14 @@ static int ax88772_hw_reset(struct usbnet *dev, int in_pm)
 
 	if (embd_phy) {
 		ret = asix_sw_reset(dev, AX_SWRESET_IPPD, in_pm);
-	if (ret < 0)
-		goto out;
+		if (ret < 0)
+			goto out;
 
 		usleep_range(10000, 11000);
 
 		ret = asix_sw_reset(dev, AX_SWRESET_CLEAR, in_pm);
-	if (ret < 0)
-		goto out;
+		if (ret < 0)
+			goto out;
 
 		msleep(60);
 

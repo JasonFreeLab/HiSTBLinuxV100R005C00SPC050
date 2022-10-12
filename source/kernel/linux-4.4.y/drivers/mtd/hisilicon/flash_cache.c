@@ -503,16 +503,16 @@ static bool flash_cache_try_enable(struct cache_ctrl *ctrl)
 		ctrl->status_change_request = false;
 
 		if (!ctrl->cache.enable) {
-		ctrl->pages = kzalloc(
-			ctrl->max_pages * sizeof(ctrl->pages),
-			GFP_KERNEL);
-		if (!ctrl->pages) {
-			pr_err("failed to allocate memory.\n");
-		} else {
-			ctrl->cache.enable = true;
-			start_read_ahead_thread(ctrl);
+			ctrl->pages = kzalloc(
+				ctrl->max_pages * sizeof(ctrl->pages),
+				GFP_KERNEL);
+			if (!ctrl->pages) {
+				pr_err("failed to allocate memory.\n");
+			} else {
+				ctrl->cache.enable = true;
+				start_read_ahead_thread(ctrl);
+			}
 		}
-	}
 	}
 
 	mutex_unlock(&ctrl->mutex);

@@ -80,7 +80,7 @@ void s40_cpu_die(unsigned int cpu)
 
 	flush_cache_all();
 
-		s40_scu_power_off(cpu);
+	s40_scu_power_off(cpu);
 }
 /*****************************************************************************/
 /*

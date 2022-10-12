@@ -1270,13 +1270,13 @@ static void himciv300_set_crgclk(struct himciv300_host * host, u8 timing)
 		} else if (timing == MMC_TIMING_UHS_SDR50) {
 			host->mmc->f_max = 100000000;
 		} else if (timing == MMC_TIMING_UHS_SDR104) {
-				if (strncmp(dev_name(host->dev), himci_sdio1_name, sizeof(himci_sdio1_name)) == 0)
-					host->mmc->f_max = SDR104_CLK_187M;
-				else
-					host->mmc->f_max = SDR104_CLK_150M;
-			}
+			if (strncmp(dev_name(host->dev), himci_sdio1_name, sizeof(himci_sdio1_name)) == 0)
+				host->mmc->f_max = SDR104_CLK_187M;
+			else
+				host->mmc->f_max = SDR104_CLK_150M;
+		}
 
-		clk_set_rate(host->clk,	(unsigned long)host->mmc->f_max);
+		clk_set_rate(host->clk, (unsigned long)host->mmc->f_max);
 	}
 }
 /******************************************************************************/
@@ -1288,10 +1288,10 @@ static void himciv300_emmc_set_phase(struct himciv300_host * host, u8 timing)
 	regval = regval << SDIO_SAP_PS_SHIFT_BIT;
 	if (timing == MMC_TIMING_LEGACY) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-			regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
+		regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
 	} else if (timing == MMC_TIMING_MMC_HS) {
 		regval &= ~(SDIO_SAP_PS_MASK| SDIO_DRV_PS_MASK);
-			regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
+		regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
 	} else if (timing == MMC_TIMING_MMC_DDR52) {
 		regval &= ~(SDIO_SAP_PS_MASK| SDIO_DRV_PS_MASK);
 		regval |= SDIO_DRV_PS_67DOT5;
@@ -1301,11 +1301,11 @@ static void himciv300_emmc_set_phase(struct himciv300_host * host, u8 timing)
 			regval |= SDIO_SAP_PS_45;
 	} else if (timing == MMC_TIMING_MMC_HS200) {
 		regval &= ~(SDIO_DRV_PS_MASK);
-			regval |= SDIO_DRV_PS_112DOT5;
+		regval |= SDIO_DRV_PS_112DOT5;
 	} else if(timing == MMC_TIMING_MMC_HS400) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-			regval |= (emmc_boot_tuning_phase << SDIO_SAP_PS_OFFSET) | SDIO_DRV_PS_90;
-		}
+		regval |= (emmc_boot_tuning_phase << SDIO_SAP_PS_OFFSET) | SDIO_DRV_PS_90;
+	}
 	/* clk_set_phase has  regval%360, so shifit 12bit */
 	regval = regval >> SDIO_SAP_PS_SHIFT_BIT;
 	clk_set_phase(host->clk, (int)regval);
@@ -1431,7 +1431,7 @@ static int himciv300_prepare_hs400(struct mmc_host * mmc, struct mmc_ios * ios)
 		regval = (u32)clk_get_phase(host->clk);
 		regval = regval << SDIO_SAP_PS_SHIFT_BIT;
 		regval &= ~(SDIO_DRV_PS_MASK);
-			regval |= SDIO_DRV_PS_90;
+		regval |= SDIO_DRV_PS_90;
 		regval = regval >> SDIO_SAP_PS_SHIFT_BIT;
 		clk_set_phase(host->clk, (int)regval);
 	}

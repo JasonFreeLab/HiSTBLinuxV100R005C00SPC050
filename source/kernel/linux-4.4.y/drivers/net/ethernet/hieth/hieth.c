@@ -358,7 +358,7 @@ static int hieth_feed_hw(struct hieth_netdev_priv *priv)
 			break;
 
 		addr = dma_map_single(priv->dev, skb->data, HIETH_MAX_FRAME_SIZE,
-			       DMA_FROM_DEVICE);
+				DMA_FROM_DEVICE);
 		if (dma_mapping_error(priv->dev, addr)) {
 			dev_kfree_skb_any(skb);
 			break;

@@ -412,8 +412,8 @@ static int fib_nl_newrule(struct sk_buff *skb, struct nlmsghdr* nlh)
 	if (tb[FRA_UID_RANGE]) {
 		if (current_user_ns() != net->user_ns) {
 			err = -EPERM;
-		goto errout_free;
-	}
+			goto errout_free;
+		}
 
 		rule->uid_range = nla_get_kuid_range(tb);
 

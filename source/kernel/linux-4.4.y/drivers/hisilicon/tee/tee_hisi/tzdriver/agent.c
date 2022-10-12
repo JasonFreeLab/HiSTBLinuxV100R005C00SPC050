@@ -101,7 +101,7 @@ int TC_NS_set_nativeCA_hash(unsigned long arg)
 	}
 
 	mb_pack->operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT |
-			       (TEE_PARAM_TYPE_VALUE_INPUT << 4);
+				(TEE_PARAM_TYPE_VALUE_INPUT << 4);
 	mb_pack->operation.params[0].value.a = (unsigned int)virt_to_phys(buftotee);
 	mb_pack->operation.params[0].value.b = (unsigned int)(virt_to_phys(buftotee) >> 32); /*lint !e572*/
 	mb_pack->operation.params[1].value.a = buflen;

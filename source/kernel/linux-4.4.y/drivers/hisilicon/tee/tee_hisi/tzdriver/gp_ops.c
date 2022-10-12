@@ -178,7 +178,7 @@ static inline int copy_to_client(void __user *dest, void *src, size_t size,
 }
 
 static int alloc_operation(TC_NS_DEV_File *dev_file,
-		TC_NS_Operation *operation,
+					TC_NS_Operation *operation,
 					TC_NS_ClientContext *client_context,
 					TC_NS_Temp_Buf local_temp_buffer[4],
 					uint8_t flags)
@@ -326,7 +326,7 @@ static int alloc_operation(TC_NS_DEV_File *dev_file,
 					if (((shared_mem->len - client_param->memref.offset) >= buffer_size)
 					    && (shared_mem->len > client_param->memref.offset)) {
 						void *buffer_addr = (void *)((unsigned long)shared_mem->kernel_addr
-								     + client_param->memref.offset);
+							+ client_param->memref.offset);
 
 						if (!shared_mem->from_mailbox) {
 							buffer_addr = mailbox_copy_alloc(buffer_addr, buffer_size);
@@ -550,9 +550,9 @@ static int update_client_operation(TC_NS_DEV_File *dev_file,
 			}
 
 			if (copy_to_client
-			    ((void *)client_param->memref.size_addr,
-			     &buffer_size, sizeof(buffer_size),
-			     dev_file->kernel_api)) {
+				((void *)client_param->memref.size_addr,
+				 &buffer_size, sizeof(buffer_size),
+				 dev_file->kernel_api)) {
 				tloge("copy buf size failed\n");
 				ret = -EFAULT;
 				break;

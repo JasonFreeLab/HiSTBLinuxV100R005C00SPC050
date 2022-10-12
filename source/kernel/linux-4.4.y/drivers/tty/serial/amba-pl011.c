@@ -1191,8 +1191,8 @@ static bool pl011_tx_chars(struct uart_amba_port *uap, bool from_irq);
 static void pl011_start_tx_pio(struct uart_amba_port *uap)
 {
 	if (pl011_tx_chars(uap, false)) {
-	uap->im |= UART011_TXIM;
-	writew(uap->im, uap->port.membase + UART011_IMSC);
+		uap->im |= UART011_TXIM;
+		writew(uap->im, uap->port.membase + UART011_IMSC);
 	}
 }
 

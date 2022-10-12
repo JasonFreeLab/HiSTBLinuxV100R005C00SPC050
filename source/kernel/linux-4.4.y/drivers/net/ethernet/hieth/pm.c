@@ -141,13 +141,13 @@ int hieth_pmt_config(struct net_device *ndev, struct hieth_pm_config *config)
 		init = 1;
 	}
 
-			ret = hieth_pmt_config_eth(config, priv);
-			if (ret)
-				return ret;
+	ret = hieth_pmt_config_eth(config, priv);
+	if (ret)
+		return ret;
 
 	priv->pm_state_set = true;
-				device_set_wakeup_enable(priv->dev, 1);
-				priv->mac_wol_enabled = true;
+	device_set_wakeup_enable(priv->dev, 1);
+	priv->mac_wol_enabled = true;
 
 	return ret;
 }

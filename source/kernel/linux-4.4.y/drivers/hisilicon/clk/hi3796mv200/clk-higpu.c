@@ -180,7 +180,7 @@ static void hisi_gpu_pmc_node_create(void)
 	if (NULL == pmc_base) {
 		CLOCK_ERROR_INFO();
 		of_node_put(pmc_node);
-	return;
+		return;
 	}
 
 	if (CLOCK_DEBUG)
@@ -232,7 +232,7 @@ static int hisi_gpu_clk_prepare(struct clk_hw *hw)
 	if (CLOCK_DEBUG)
 		printk("hisi_gpu_clk_prepare@\n");
 
-			return 0;
+	return 0;
 }
 
 
@@ -289,7 +289,7 @@ static int hisi_gpu_clk_set_rate(struct clk_hw *hw, unsigned long rate, unsigned
 		pmc_value |= PMC_REG_MASK_FREQ_SW_TREND;
 	} else {
 		pmc_value &= ~PMC_REG_MASK_FREQ_SW_TREND;
-		}
+	}
 
 	writel(pmc_value, pmc_base + PMC_REG_ADDR_FREQ);
 

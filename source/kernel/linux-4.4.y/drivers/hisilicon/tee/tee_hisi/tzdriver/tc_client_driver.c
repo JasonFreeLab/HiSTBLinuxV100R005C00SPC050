@@ -2122,9 +2122,9 @@ int TC_NS_ClientClose(TC_NS_DEV_File *dev, int flag)
 	if (!flag)
 		TC_NS_unregister_agent_client(dev);
 
-		ret = TEEC_SUCCESS;
-		/*del dev from the list */
-		list_del(&dev->head);
+	ret = TEEC_SUCCESS;
+	/*del dev from the list */
+	list_del(&dev->head);
 
 	kfree(dev);
 

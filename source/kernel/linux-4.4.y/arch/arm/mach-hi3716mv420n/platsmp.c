@@ -72,7 +72,7 @@ static int s40_boot_secondary(unsigned int cpu,
 	 */
 	spin_lock(&boot_lock);
 
-		s40_scu_power_up(cpu);
+	s40_scu_power_up(cpu);
 	/*
 	 * The secondary processor is waiting to be released from
 	 * the holding pen - release it, then wait for it to flag

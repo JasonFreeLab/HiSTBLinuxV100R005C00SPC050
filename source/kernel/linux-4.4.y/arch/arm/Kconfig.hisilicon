@@ -134,7 +134,7 @@ config ARCH_HI3798MV2X
 	  And HI3798MV2X serial constains a very powerfull media process engine,
 	  two ethernet interface, EHCI and OHCI controllers and
 	  many peripheral equipments.
-
+      
 config ARCH_HI3798MV310
 	bool "Hisilicon HI3798MV310 family"
 	select ARM_AMBA

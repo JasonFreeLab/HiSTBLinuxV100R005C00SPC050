@@ -207,7 +207,7 @@ void multicast_dump_macaddr(u32 nr, char *macaddr, struct hieth_platdrv_data *pd
 
 	ptr = pdata->mcdump.mac + nr*ETH_ALEN;
 	spin_lock(&pdata->mcdump.lock);
-		memcpy(ptr, macaddr, ETH_ALEN);
+	memcpy(ptr, macaddr, ETH_ALEN);
 	pdata->mcdump.mac_nr = nr+1;
 	spin_unlock(&pdata->mcdump.lock);
 }

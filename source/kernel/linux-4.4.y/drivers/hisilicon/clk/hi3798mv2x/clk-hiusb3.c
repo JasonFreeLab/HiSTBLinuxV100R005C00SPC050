@@ -342,7 +342,7 @@ static void hiclk_disable_usb3_host0(struct clk_hw *hw)
 	struct hiclk_hw *clk = to_hiclk_hw(hw);
 	const char * clkname = CLK_NAME(PERI_CRG46_USB2CTRL);
 	struct clk * usb2clk =__clk_lookup(clkname);
-
+	
 	mdelay(100);
 
 	reg = readl(clk->peri_crg_base + PERI_CRG44_USB3CTRL);

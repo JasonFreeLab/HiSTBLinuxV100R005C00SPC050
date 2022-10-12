@@ -72,7 +72,7 @@
 #define REG_A9_PERI_GIC_CPU                             0x0100
 #define REG_A9_PERI_GLOBAL_TIMER                        0x0200
 #define REG_A9_PERI_PRI_TIMER_WDT                       0x0600
-#define REG_A9_PERI_GIC_DIST                            0x1000 
+#define REG_A9_PERI_GIC_DIST                            0x1000
 
 
 /* CA clock and reset register */

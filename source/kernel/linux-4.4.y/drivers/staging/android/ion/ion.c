@@ -491,7 +491,7 @@ static int ion_handle_add(struct ion_client *client, struct ion_handle *handle)
 		} else {
 			isb();
 			WARN(1, "%s: buffer already found.", __func__);
-	}
+		}
 	}
 
 	rb_link_node(&handle->node, parent, p);

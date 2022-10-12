@@ -455,7 +455,7 @@ static int __init hipcie_pltm_probe(struct platform_device *pdev)
 	}
 
 	if ((!pcie_read_ctrl.size) && (!pcie_write_ctrl.size)) {
-	get_mem_size(&size,  HIKAPI_GET_RAM_SIZE);
+		get_mem_size(&size,  HIKAPI_GET_RAM_SIZE);
 		pcie_write_ctrl.size = size<<20;
 		pcie_read_ctrl.size = size<<20;
 	}

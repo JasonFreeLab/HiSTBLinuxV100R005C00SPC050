@@ -1,0 +1,1 @@
+obj-$(CONFIG_MT76X2U) += JEDI.MP2.mt76x2u.wifi.v3.3.2/os/linux/

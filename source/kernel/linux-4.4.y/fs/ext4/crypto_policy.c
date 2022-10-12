@@ -211,7 +211,7 @@ int ext4_is_child_context_consistent_with_parent(struct inode *parent,
 
 	return memcmp(parent_ctx.master_key_descriptor,
 		      child_ctx.master_key_descriptor,
-		       EXT4_KEY_DESCRIPTOR_SIZE) == 0 &&
+		      EXT4_KEY_DESCRIPTOR_SIZE) == 0 &&
 		(parent_ctx.contents_encryption_mode ==
 		 child_ctx.contents_encryption_mode) &&
 		(parent_ctx.filenames_encryption_mode ==

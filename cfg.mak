@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # SDK version: KERNELVERSION
-# Sun Oct  9 15:14:57 2022
+# Wed Oct 12 22:50:25 2022
 #
 
 #
@@ -661,8 +661,7 @@ CFG_HI_WIFI_DEVICE_RTL8822BS=y
 #
 CFG_HI_WIFI_MODE_STA=y
 # CFG_HI_WIFI_MODE_AP is not set
-CFG_HI_NTFS_SUPPORT=y
-CFG_HI_NTFS_TOOLS_SUPPORT=y
+# CFG_HI_NTFS_SUPPORT is not set
 CFG_HI_EXFAT_SUPPORT=y
 # CFG_HI_3G_SUPPORT is not set
 CFG_HI_ALSA_SUPPORT=y

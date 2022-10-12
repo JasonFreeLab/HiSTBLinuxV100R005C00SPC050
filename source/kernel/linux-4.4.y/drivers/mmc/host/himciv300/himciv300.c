@@ -930,24 +930,24 @@ static void himciv300_set_ldo(struct himciv300_host *host, u8 volt)
 	u32 regval;
 
 	if (host->ldoaddr) {
-	if (volt == MMC_SIGNAL_VOLTAGE_330) {
-		regval = readl(host->ldoaddr);
-		regval &= ~(SD_LDO_MASK<<host->ldo_shift);
-		regval |= (SD_LDO_BYPASS | SD_LDO_ENABLE)<<host->ldo_shift;
-		writel(regval, host->ldoaddr);
-	} else if (volt == MMC_SIGNAL_VOLTAGE_180)  {
-		regval = readl(host->ldoaddr);
-		regval &= ~(SD_LDO_MASK<<host->ldo_shift);
-		regval |= SD_LDO_ENABLE<<host->ldo_shift;
-		writel(regval, host->ldoaddr);
-	} else if (volt == MMC_SIGNAL_VOLTAGE_120) {
-		regval = readl(host->ldoaddr);
-		regval &= ~(SD_LDO_MASK<<host->ldo_shift);
-		regval |= (SD_LDO_ENABLE | SD_LDO_VOLTAGE)<<host->ldo_shift;
-		writel(regval, host->ldoaddr);
-	} else {
-		himci_error("NO Support this voltage\n", host->devid);
-	}
+		if (volt == MMC_SIGNAL_VOLTAGE_330) {
+			regval = readl(host->ldoaddr);
+			regval &= ~(SD_LDO_MASK<<host->ldo_shift);
+			regval |= (SD_LDO_BYPASS | SD_LDO_ENABLE)<<host->ldo_shift;
+			writel(regval, host->ldoaddr);
+		} else if (volt == MMC_SIGNAL_VOLTAGE_180)  {
+			regval = readl(host->ldoaddr);
+			regval &= ~(SD_LDO_MASK<<host->ldo_shift);
+			regval |= SD_LDO_ENABLE<<host->ldo_shift;
+			writel(regval, host->ldoaddr);
+		} else if (volt == MMC_SIGNAL_VOLTAGE_120) {
+			regval = readl(host->ldoaddr);
+			regval &= ~(SD_LDO_MASK<<host->ldo_shift);
+			regval |= (SD_LDO_ENABLE | SD_LDO_VOLTAGE)<<host->ldo_shift;
+			writel(regval, host->ldoaddr);
+		} else {
+			himci_error("NO Support this voltage\n", host->devid);
+		}
 	}
 }
 /******************************************************************************/
@@ -1098,7 +1098,7 @@ static void himciv300_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	else
 		regval &= ~ENABLE_HS400_MODE;
 	mci_writel(host, MCI_DDR_REG, regval);
-
+	
 	/*logic:fix bug*/
 #ifdef CONFIG_ARCH_HI3798MV310
 	regval = mci_readl(host, MCI_GPIO);
@@ -1343,7 +1343,7 @@ static int __init himciv300_pltm_probe(struct platform_device *pdev)
 		if ((regval) &&(strcmp(dev_name(&pdev->dev), "f9820000.himciv200.SD") == 0)) {
 			mmc->caps &= ~(MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 |
 					MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR104);
-	}
+		}
 	}
 #endif
 

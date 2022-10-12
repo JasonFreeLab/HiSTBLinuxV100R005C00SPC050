@@ -789,10 +789,10 @@ void phy_start(struct phy_device *phydev)
 		phydev->state = PHY_RESUMING;
 		/* make sure interrupts are re-enabled for the PHY */
 		if (phydev->irq != PHY_POLL) {
-		err = phy_enable_interrupts(phydev);
+			err = phy_enable_interrupts(phydev);
 			if (err < 0){
 				phydev->state = PHY_HALTED;
-			break;
+				break;
 			}
 		}
 

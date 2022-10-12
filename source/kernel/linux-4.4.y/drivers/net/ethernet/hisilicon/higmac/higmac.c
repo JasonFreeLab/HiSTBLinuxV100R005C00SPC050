@@ -1455,7 +1455,7 @@ static netdev_tx_t higmac_sw_gso(struct higmac_netdev_local *ld,
 		netif_wake_queue(ld->netdev);
 	}
 
-	segs = skb_gso_segment(skb, ld->netdev->features & ~(NETIF_F_ALL_CSUM | 
+	segs = skb_gso_segment(skb, ld->netdev->features & ~(NETIF_F_ALL_CSUM |
 					NETIF_F_SG | NETIF_F_GSO_SOFTWARE));
 
 	if (IS_ERR_OR_NULL(segs))
@@ -2208,21 +2208,21 @@ static int higmac_of_get_param(struct higmac_netdev_local *ld,
 	child = of_get_next_available_child(node, NULL);
 	WARN_ON(child == NULL);
 	if (!of_phy_is_fixed_link(node)) {
-	/* get phy-addr */
-	if (of_property_read_u32(child, "reg", &data)) {
-		pr_info("%s has not config PHY address\n",
-		       child->full_name);
+		/* get phy-addr */
+		if (of_property_read_u32(child, "reg", &data)) {
+			pr_info("%s has not config PHY address\n",
+			       child->full_name);
 			of_node_put(child);
 			return -ENODEV;
-	}
-	if ((data < 0) || (data >= PHY_MAX_ADDR)) {
-		pr_info("%s has invalid PHY address=%d\n",
-		       child->full_name, data);
+		}
+		if ((data < 0) || (data >= PHY_MAX_ADDR)) {
+			pr_info("%s has invalid PHY address=%d\n",
+			       child->full_name, data);
 			of_node_put(child);
 			return -ENODEV;
-	}
+		}
 
-	ld->phy_addr = data;
+		ld->phy_addr = data;
 	}
 	child = of_get_next_available_child(node, child);
 	WARN_ON(child != NULL);
@@ -2523,28 +2523,28 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	 */
 	higmac_hw_phy_reset(priv);
 	if (!of_phy_is_fixed_link(node)){
-	bus = mdiobus_alloc();
-	if (bus == NULL) {
-		ret = -ENOMEM;
-		goto out_mac_clk_disable;
-	}
+		bus = mdiobus_alloc();
+		if (bus == NULL) {
+			ret = -ENOMEM;
+			goto out_mac_clk_disable;
+		}
 
-	bus->priv = priv;
-	bus->name = "higmac_mii_bus";
-	bus->read = higmac_mdio_read;
-	bus->write = higmac_mdio_write;
-	bus->parent = &pdev->dev;
-	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mii", dev_name(&pdev->dev));
-	priv->bus = bus;
+		bus->priv = priv;
+		bus->name = "higmac_mii_bus";
+		bus->read = higmac_mdio_read;
+		bus->write = higmac_mdio_write;
+		bus->parent = &pdev->dev;
+		snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mii", dev_name(&pdev->dev));
+		priv->bus = bus;
 
-	if (priv->internal_phy) {
-		usleep_range(5000, 8000);
-		higmac_internal_fephy_trim(bus, priv->phy_addr, priv->trim_params);
-	}
+		if (priv->internal_phy) {
+			usleep_range(5000, 8000);
+			higmac_internal_fephy_trim(bus, priv->phy_addr, priv->trim_params);
+		}
 
-	ret = of_mdiobus_register(bus, node);
-	if (ret)
-		goto err_free_mdio;
+		ret = of_mdiobus_register(bus, node);
+		if (ret)
+			goto err_free_mdio;
 	}
 	priv->phy_mode = of_get_phy_mode(node);
 	if (priv->phy_mode < 0) {
@@ -2569,10 +2569,10 @@ static int higmac_dev_probe(struct platform_device *pdev)
 			priv->phy_node = of_node_get(node);
 			fixed_link = true;
 		} else {
-		dev_err(dev, "not find phy-handle\n");
-		ret = -EINVAL;
-		goto err_mdiobus;
-	}
+			dev_err(dev, "not find phy-handle\n");
+			ret = -EINVAL;
+			goto err_mdiobus;
+		}
 	}
 
 	mac_addr = of_get_mac_address(node);
@@ -2745,10 +2745,10 @@ out_phy_node:
 	of_node_put(priv->phy_node);
 err_mdiobus:
 	if (bus)
-	mdiobus_unregister(bus);
+		mdiobus_unregister(bus);
 err_free_mdio:
 	if (bus)
-	mdiobus_free(bus);
+		mdiobus_free(bus);
 out_mac_clk_disable:
 	clk_disable_unprepare(priv->clk);
 out_macif_clk_disable:
@@ -2787,8 +2787,8 @@ static int higmac_dev_remove(struct platform_device *pdev)
 	phy_disconnect(priv->phy);
 	of_node_put(priv->phy_node);
 	if (priv->bus) {
-	mdiobus_unregister(priv->bus);
-	mdiobus_free(priv->bus);
+		mdiobus_unregister(priv->bus);
+		mdiobus_free(priv->bus);
 	}
 	clk_disable_unprepare(priv->pub_clk);
 	free_netdev(ndev);

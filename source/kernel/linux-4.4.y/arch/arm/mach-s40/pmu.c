@@ -58,7 +58,7 @@ static struct platform_device A9_pmu_device_s5 = {
 
 static int __init pmu_init(void)
 {
-		platform_device_register(&A9_pmu_device_s40);
+	platform_device_register(&A9_pmu_device_s40);
 
 	return 0;
 };

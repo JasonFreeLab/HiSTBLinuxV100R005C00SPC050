@@ -11,7 +11,7 @@
 #define SDIO_DRV_PS_315_167DOT5            (0b111 << 16)
 
 #define SDIO_SAP_PS_SHIFT_BIT              (12)
-#define EMMC_CLK_MODE                	   (0x1 << 19)
+#define EMMC_CLK_MODE                      (0x1 << 19)
 #define SDIO_SAP_PS_NUM                    (8)
 #define SDIO_SAP_PS_MASK                   (0x7 << 12)
 #define SDIO_SAP_PS_OFFSET                 (12)
@@ -1211,10 +1211,10 @@ static void himciv300_set_driver_hi3798mv200(struct himciv300_host * host, u8 ti
 			for (ix = 0; iohs[ix] != 0xff; ix += 2) {
 				regval = readl( host->ioshare_addr + iohs[ix]);
 				if (DRV_IOSHARE_EMMC == (regval&DRV_IOSHARE_MASK)) {
-				regval &= ~(DRV_CAPS_MASK);
-				regval |= (DRV_SLEV_RATE | iohs[ix+1]);
-				writel(regval, host->ioshare_addr + iohs[ix]);
-			}
+					regval &= ~(DRV_CAPS_MASK);
+					regval |= (DRV_SLEV_RATE | iohs[ix+1]);
+					writel(regval, host->ioshare_addr + iohs[ix]);
+				}
 			}
 		} else if (timing == MMC_TIMING_MMC_HS200) {
 
@@ -1263,7 +1263,7 @@ static void himciv300_set_driver_hi3798mv200(struct himciv300_host * host, u8 ti
 					writel(regval, host->ioshare_addr + io_sdhs_dms_sdio0[ix]);
 				}
 			} else if ((timing == MMC_TIMING_UHS_DDR50)||
-		           (timing == MMC_TIMING_UHS_SDR25)) {
+					(timing == MMC_TIMING_UHS_SDR25)) {
 				for (ix = 0; io_uhs_sdr25_dms_sdio0[ix] != 0xff; ix += 2) {
 					regval = readl( host->ioshare_addr + io_uhs_sdr25_dms_sdio0[ix]);
 					regval &= ~(DRV_CAPS_MASK);
@@ -1567,10 +1567,10 @@ static void himciv300_set_driver_hi3798mv300(struct himciv300_host * host, u8 ti
 			for (ix = 0; iohs_hi3798mv300[ix] != 0xff; ix += 2) {
 				regval = readl( host->ioshare_addr + iohs_hi3798mv300[ix]);
 				if (DRV_IOSHARE_EMMC == (regval&DRV_IOSHARE_MASK)) {
-				regval &= ~(DRV_CAPS_MASK);
-				regval |= (DRV_SLEV_RATE | iohs_hi3798mv300[ix+1]);
-				writel(regval, host->ioshare_addr + iohs_hi3798mv300[ix]);
-			}
+					regval &= ~(DRV_CAPS_MASK);
+					regval |= (DRV_SLEV_RATE | iohs_hi3798mv300[ix+1]);
+					writel(regval, host->ioshare_addr + iohs_hi3798mv300[ix]);
+				}
 			}
 		} else if (timing == MMC_TIMING_MMC_HS200) {
 
@@ -1721,7 +1721,7 @@ static void himciv300_set_crgclk(struct himciv300_host * host, u8 timing)
 			if (strncmp(dev_name(host->dev), himci_sdio1_name, sizeof(himci_sdio1_name)) == 0)
 				host->mmc->f_max = 200000000;
 			else
-			host->mmc->f_max = 150000000;
+				host->mmc->f_max = 150000000;
 		}
 
 		clk_set_rate(host->clk,	(unsigned long)host->mmc->f_max);
@@ -1976,14 +1976,14 @@ static int himciv300_check_tuning(struct mmc_host * mmc, u32 opcode)
 {
 	int err;
 	struct himciv300_host *host = mmc_priv(mmc);
-	
+
 	host->tunning = 1;
 	err = himciv300_send_tuning(mmc,opcode);
 	host->tunning = 0;
 
 	return 	err;
 }
-	
+
 /******************************************************************************/
 
 static int himciv300_execute_tuning(struct mmc_host * mmc, u32 opcode)

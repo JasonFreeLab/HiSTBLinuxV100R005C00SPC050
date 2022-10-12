@@ -1755,20 +1755,20 @@ static int hifmc100_xnand_probe_device(struct platform_device *pdev,
 	} else
 		nand_id_table = spinand_flash_ids_hisi;
 
-        for (nand_dev = nand_id_table; nand_dev->name; nand_dev++) {
-                if (nand_dev->id_len) {
-                        if (memcmp(xnand->id, nand_dev->id, nand_dev->id_len))
-                                continue;
-                } else {
-                        if (nand_dev->ids.dev_id != devid)
-                                continue;
-                }
+	for (nand_dev = nand_id_table; nand_dev->name; nand_dev++) {
+		if (nand_dev->id_len) {
+			if (memcmp(xnand->id, nand_dev->id, nand_dev->id_len))
+				continue;
+		} else {
+			if (nand_dev->ids.dev_id != devid)
+				continue;
+		}
 
-                break;
-        }
+		break;
+	}
 
-        if (!nand_dev->name)
-                return -ENODEV;
+	if (!nand_dev->name)
+		return -ENODEV;
 
 	ret = nand_scan_ident(mtd, HIFMC100_OP_CFG_NUM_CS, nand_id_table);
 	if (ret)
@@ -2202,10 +2202,10 @@ int hifmc100_xnand_probe(struct platform_device *pdev, struct hifmc_host *host,
 
 	strncpy(regop_intf->name, xnand->name, sizeof(regop_intf->name) - 1);
 
-	regop_intf->sz_buf = host->sz_iobase;
-	regop_intf->args = xnand;
-	regop_intf->regop = xnand->regop;
-	regop_intf->open = hifmc100_xnand_regop_open;
+	regop_intf->sz_buf  = host->sz_iobase;
+	regop_intf->args    = xnand;
+	regop_intf->regop   = xnand->regop;
+	regop_intf->open    = hifmc100_xnand_regop_open;
 	regop_intf->release = hifmc100_xnand_regop_release;
 	regop_intf_create(regop_intf);
 

@@ -60,7 +60,7 @@ static int __init pmu_init(void)
 {
 	u64 chipid = get_chipid(0ULL);
 
-		platform_device_register(&A9_pmu_device_s40);
+	platform_device_register(&A9_pmu_device_s40);
 
 	return 0;
 };

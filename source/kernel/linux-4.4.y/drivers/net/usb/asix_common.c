@@ -35,7 +35,7 @@ int asix_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
 		fn = usbnet_read_cmd_nopm;
 
 	ret = fn(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-			       value, index, data, size);
+		 value, index, data, size);
 
 	if (unlikely(ret < 0))
 		netdev_warn(dev->net, "Failed to read reg index 0x%04x: %d\n",
@@ -58,7 +58,7 @@ int asix_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
 		fn = usbnet_write_cmd_nopm;
 
 	ret = fn(dev, cmd, USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-				value, index, data, size);
+		 value, index, data, size);
 
 	if (unlikely(ret < 0))
 		netdev_warn(dev->net, "Failed to write reg index 0x%04x: %d\n",
@@ -442,7 +442,7 @@ int asix_mdio_read(struct net_device *netdev, int phy_id, int loc)
 	mutex_unlock(&dev->phy_mutex);
 
 	netdev_dbg(dev->net, "asix_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
-		   phy_id, loc, le16_to_cpu(res));
+			phy_id, loc, le16_to_cpu(res));
 
 	return le16_to_cpu(res);
 }
@@ -455,7 +455,7 @@ void asix_mdio_write(struct net_device *netdev, int phy_id, int loc, int val)
 	int i = 0;
 
 	netdev_dbg(dev->net, "asix_mdio_write() phy_id=0x%02x, loc=0x%02x, val=0x%04x\n",
-		   phy_id, loc, val);
+			phy_id, loc, val);
 
 	mutex_lock(&dev->phy_mutex);
 	do {

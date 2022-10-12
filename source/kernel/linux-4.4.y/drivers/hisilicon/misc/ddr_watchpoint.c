@@ -353,12 +353,12 @@ static int hiwp_clock_config(struct hiwp_host *host, bool enable)
 
 	if (enable) {
 		regval = hiwp_read(host, WADDR_TRAMPLE_CLKGCFG);
-		regval |= (WADDR_TRAMPLE_CLKGCFG_ACLK_GT_EN 
+		regval |= (WADDR_TRAMPLE_CLKGCFG_ACLK_GT_EN
 			   | WADDR_TRAMPLE_CLKGCFG_CFGCLK_GT_EN);
 		hiwp_write(host, regval, WADDR_TRAMPLE_CLKGCFG);
 	} else {
 		regval = hiwp_read(host, WADDR_TRAMPLE_CLKGCFG);
-		regval &= ~(WADDR_TRAMPLE_CLKGCFG_ACLK_GT_EN 
+		regval &= ~(WADDR_TRAMPLE_CLKGCFG_ACLK_GT_EN
 			    | WADDR_TRAMPLE_CLKGCFG_CFGCLK_GT_EN);
 		hiwp_write(host, regval, WADDR_TRAMPLE_CLKGCFG);
 	}

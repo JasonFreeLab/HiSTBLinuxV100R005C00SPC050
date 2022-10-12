@@ -68,12 +68,12 @@ TC_NS_Shared_MEM *tc_mem_allocate(TC_NS_DEV_File *dev, size_t len, bool from_mai
 		addr = (void *)__get_free_pages(
 				GFP_KERNEL | __GFP_ZERO,
 				get_order(ALIGN(len, SZ_4K))); /*lint !e516*/
-		}
-		if (!addr) {
+	}
+	if (!addr) {
 		tloge("alloc maibox failed\n");
-			kfree(shared_mem);
-			return ERR_PTR(-ENOMEM);
-		}
+		kfree(shared_mem);
+		return ERR_PTR(-ENOMEM);
+	}
 
 	shared_mem->from_mailbox = from_mailbox;
 	shared_mem->kernel_addr = addr;

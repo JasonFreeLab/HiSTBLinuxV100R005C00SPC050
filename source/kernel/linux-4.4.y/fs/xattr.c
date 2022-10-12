@@ -858,7 +858,7 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
 			} else {
 				isb();
 				memcpy(buffer, xattr->value, xattr->size);
-		}
+			}
 		}
 		break;
 	}

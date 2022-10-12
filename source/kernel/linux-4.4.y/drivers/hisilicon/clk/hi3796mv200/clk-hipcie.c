@@ -68,7 +68,7 @@ static u32 gpio_regbase[14] = {
 
  /******************************************************************************/
 
-static void nano_register_write(struct hiclk_hw *clk, u32 addr, 
+static void nano_register_write(struct hiclk_hw *clk, u32 addr,
 				u32 offset, u32 value)
 {
 	u32 reg;

@@ -1,0 +1,6 @@
+config MT76X2U
+	tristate "MediaTek MT76X2U (USB) support"
+	depends on MAC80211
+	depends on USB
+	---help---
+	  This adds support for MT76X2U-based wireless modules.

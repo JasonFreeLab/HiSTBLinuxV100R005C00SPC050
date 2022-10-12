@@ -1277,7 +1277,7 @@ static int ext4_journalled_write_end(struct file *file,
 
 	if (ext4_has_inline_data(inode)) {
 		ret = ext4_write_inline_data_end(inode, pos, len,
-						    copied, page);
+						 copied, page);
 		if (ret < 0) {
 			unlock_page(page);
 			put_page(page);
