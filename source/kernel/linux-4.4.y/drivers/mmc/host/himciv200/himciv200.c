@@ -1058,16 +1058,23 @@ static void himciv200_enable_sdio_irq(struct mmc_host *mmc, int enable)
 {
 	struct himciv200_host *host = mmc_priv(mmc);
 	u32 regval;
+	unsigned long flags;
 
 	himci_trace(2, "begin");
+
+	if (!in_interrupt())
+		spin_lock_irqsave(&host->lock, flags);
 
 	regval = mci_readl(host, MCI_INTMASK);
 	if (enable) {
 		regval |= SDIO_INT_MASK;
 	} else {
-		regval &= ~SDIO_INT_MASK;
+		regval &= (~SDIO_INT_MASK);
 	}
 	mci_writel(host, MCI_INTMASK, regval);
+
+	if (!in_interrupt())
+		spin_unlock_irqrestore(&host->lock, flags);
 }
 /******************************************************************************/
 
@@ -1145,6 +1152,10 @@ static irqreturn_t himciv200_irq(int irq, void *dev_id)
 	}
 
 	if (state & SDIO_INT_STATUS) {
+		regval = mci_readl(host, MCI_INTMASK);
+		regval &= ~SDIO_INT_MASK;
+		mci_writel(host, MCI_INTMASK, regval);
+
 		mci_writel(host, MCI_RINTSTS, SDIO_INT_STATUS);
 		mmc_signal_sdio_irq(host->mmc);
 	}
@@ -1444,7 +1455,6 @@ himciv200_match[] __maybe_unused = {
 	{ .compatible = "hi3798mv100,himciv200", },
 	{ .compatible = "hi3798cv200,himciv200", },
 	{ .compatible = "hi3798mv200,himciv200", },
-	{ .compatible = "hi3798mv300,himciv200", },
 	{ .compatible = "hi3796mv200,himciv200", },
 	{},
 };

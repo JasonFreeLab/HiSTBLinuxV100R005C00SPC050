@@ -26,7 +26,7 @@ ENTRY(s40_secondary_startup)
 	msr	cpsr, r0
 
 	/* secure os enable in slave_bootup.S */
-#ifndef CONFIG_SECURE_EXTENSION
+#ifndef CONFIG_TEE
 	/* CPUCTLR.SMPEN */
 	mrrc	p15,1,r0,r1,c15
 	orr	r0, r0, #0x40           @ enable data coherency with other cores in the cluster

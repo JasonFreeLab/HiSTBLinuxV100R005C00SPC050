@@ -66,6 +66,7 @@ static int __init hisi_mmz_parse_cmdline(char *s)
 			hisi_zone[num_zones].gfp = memparse(argv[2], NULL);
 			hisi_zone[num_zones].phys_start = memparse(argv[2], NULL);
 			hisi_zone[num_zones].nbytes = memparse(argv[3], NULL);
+			hisi_zone[num_zones].nbytes = 100663296;  //zhaobaoren
 		}
 
 		else if (i == 6) {
@@ -75,6 +76,7 @@ static int __init hisi_mmz_parse_cmdline(char *s)
 			hisi_zone[num_zones].nbytes = memparse(argv[3], NULL);
 			hisi_zone[num_zones].alloc_type = memparse(argv[4], NULL);
 			hisi_zone[num_zones].block_align = memparse(argv[5], NULL);
+			hisi_zone[num_zones].nbytes = 100663296; //zhaobaoren
 		} else {
 			pr_err("hisi ion parameter is not correct\n");
 			continue;

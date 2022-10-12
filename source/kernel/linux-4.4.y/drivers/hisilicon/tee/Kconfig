@@ -41,6 +41,13 @@ config TEE_RESERVED_MEM_SIZE
 	help
 	 Reserve memory size for TEE
 
+config ARM32_ATF_SUPPORT
+	bool "Support 32bits kernel to send smc to ATF "
+	default n
+	depends on TEE && (ARCH_HI3798MV310 || ARCH_HI3798CV2X || ARCH_HI3798MV2X)
+	help
+	 When startup using ATF+32bits Kernel,select this.
+
 if TEE_HISI
 source drivers/hisilicon/tee/tee_hisi/tzdriver/Kconfig
 endif

@@ -27,9 +27,10 @@ static u32 gpio_regbase[14] = {
 	0xf8b20000, 0xf8b21000, 0xf8b22000, 0xf8b23000,
 	0xf8b24000, 0xf8004000, 0xf8b26000, 0xf8b27000,
 	0xf8b28000, 0xf8b29000, 0xf8b2a000, 0xf8b2b000,
-	0x8fb2c000, 0x8fb2d000
+	0xf8b2c000, 0xf8b2d000
 };
 
+#define PCIE_GPIO_MAX                    (0x0C)
 #define PCIE_GPIO_NUM_MASK               (0x07)
 
 #define PERI_CTRL                        (0x0008)
@@ -121,6 +122,8 @@ static int hipcie_config_power_on(u32 gpio_value)
 	void __iomem *pcie_reg_addr0 = NULL;
 	void __iomem *pcie_reg_addr1 = NULL;
 
+	if ((gpio_value >> 3) > PCIE_GPIO_MAX)
+		return -1;
 	temp_addr = gpio_regbase[gpio_value >> 3] + 0x400;
 	ret = hipcie_ioremap(temp_addr, &pcie_reg_addr0);
 	if (ret == -1)
@@ -154,6 +157,8 @@ static int hipcie_config_reset(u32 gpio_value)
 	void __iomem *pcie_reg_addr0 = NULL;
 	void __iomem *pcie_reg_addr1 = NULL;
 
+	if ((gpio_value >> 3) > PCIE_GPIO_MAX)
+		return -1;
 	temp_addr = gpio_regbase[gpio_value >> 3] + 0x400;
 	ret = hipcie_ioremap(temp_addr, &pcie_reg_addr0);
 	if (ret == -1)
@@ -169,13 +174,19 @@ static int hipcie_config_reset(u32 gpio_value)
 	ret = hipcie_ioremap(temp_addr, &pcie_reg_addr1);
 	if (ret == -1)
 		return -1;
+
+	reg = readl(pcie_reg_addr1);
+
 	/* Set GPIO output low to reset PCIE */
-	writel(0x00, pcie_reg_addr1);
+	reg &= ~(1<<(gpio_value & PCIE_GPIO_NUM_MASK));
+	writel(reg, pcie_reg_addr1);
 	mdelay(10);
+
 	/* Set GPIO output High to release reset */
-	ret = 0x1 << (gpio_value & PCIE_GPIO_NUM_MASK);
+	reg |= (1<<(gpio_value & PCIE_GPIO_NUM_MASK));
 	writel(reg, pcie_reg_addr1);
 	udelay(20);
+
 	hipcie_iounmap(&pcie_reg_addr1);
 
 	return 0;
@@ -257,13 +268,14 @@ static int hiclk_enable_pcie(struct clk_hw *hw)
 	reg |= CLKREF_OUT_OEN;
 	writel(reg, clk->peri_ctrl_base + PERI_COMBPHY1_CFG);
 	mdelay(5);//need to wait for EP clk  stable
-
+#ifdef CONFIG_PCIE_RESET
 	/* PCIe reset and release*/
 	if (CONFIG_GPIO_PCIE_RESET != 0xff) {
 		ret = hipcie_config_reset(CONFIG_GPIO_PCIE_RESET);
 		if (ret == -1)
 			return -1;
 	}
+#endif
 	/* SSC on */
 //	nano_register_write(clk, PERI_COMBPHY1_CFG, 0x2, 0x8);
 
@@ -278,6 +290,11 @@ static int hiclk_enable_pcie(struct clk_hw *hw)
 
 	/* PLL 3rd filter bypass */
 	nano_register_write(clk, PERI_COMBPHY1_CFG, 0x1a, 0x4);
+
+	/* PWON Manual */
+	nano_register_write(clk, PERI_COMBPHY1_CFG, 0x4, 0x7);
+	nano_register_write(clk, PERI_COMBPHY1_CFG, 0x5, 0x3);
+	nano_register_write(clk, PERI_COMBPHY1_CFG, 0x3, 0x3);
 
 	/* Open Pcie0 Controller clk */
 	reg = readl(clk->peri_crg_base + PERI_CRG99_PCIECTRL);

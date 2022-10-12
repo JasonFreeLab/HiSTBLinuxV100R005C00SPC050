@@ -145,6 +145,28 @@ static struct spinor_driver spinor_drv_mxic = {
 	.quad_enable = spinor_quad_enable_mxic,
 	.quad_disable = spinor_quad_disable_mxic,
 };
+
+/******************************************************************************/
+
+static int spinor_entry_4addr_4byte(struct flash_regop *regop)
+{
+	return 0;
+}
+/******************************************************************************/
+
+static int spinor_exit_4addr_4byte(struct flash_regop *regop)
+{
+	return 0;
+}
+
+/******************************************************************************/
+
+static struct spinor_driver spinor_drv_mxic_4byte = {
+	.quad_enable = spinor_quad_enable_mxic,
+	.quad_disable = spinor_quad_disable_mxic,
+	.entry_4addr = spinor_entry_4addr_4byte,
+	.exit_4addr = spinor_exit_4addr_4byte,
+};
 /******************************************************************************/
 
 static int spinor_quad_enable_spansion(struct flash_regop *regop)
@@ -212,10 +234,12 @@ static struct spinor_driver spinor_drv_spansion = {
 static struct spinor_drvier_table spinor_drv_table[] = {
 	/* MXIC */
 	{{ 0xc2, 0x20, 0x18 }, 3, &spinor_drv_mxic },
+	{{ 0xc2, 0x20, 0x19 }, 3, &spinor_drv_mxic_4byte },
 	{{ 0xc2, 0x26 }, 2, &spinor_drv_mxic },
 	/* Spansion */
 	{{ 0x01, 0x02 }, 2, &spinor_drv_spansion },
 	{{ 0x01, 0x20 }, 2, &spinor_drv_spansion },
+	{{ 0x01, 0x60, 0x18 }, 3, &spinor_drv_spansion },
 	/* GigaDevice */
 	{{ 0xC8, 0x40 }, 2, &spinor_drv_spansion },
 	/* Winbond */

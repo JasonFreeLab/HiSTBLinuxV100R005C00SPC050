@@ -21,6 +21,15 @@
 
 #include <linux/types.h>
 
+
+
+struct pcie_alloc_ctrl_t {
+	struct gen_pool *pool;
+	char *viraddr; /* virtual address */
+	u32  phyaddr; /* phy address */
+	unsigned int size;
+};
+
 #define HIKAPI_GET_RAM_SIZE       1
 #define HIKAPI_GET_CMA_SIZE       2
 #define HIKAPI_GET_MMZ_SIZE       3
@@ -66,6 +75,18 @@ void sram_resume(void);
 #  define sram_free(_addr, _len)
 #  define sram_suspend()   do { } while (0)
 #  define sram_resume()    do { } while (0)
+#endif
+
+#ifdef CONFIG_PCIE_HISILICON
+void *pice_read_alloc(size_t len, dma_addr_t *dma);
+void pice_read_free(void *vaddr, size_t len);
+void *pice_write_alloc(size_t len, dma_addr_t *dma);
+void pice_write_free(void *vaddr, size_t len);
+#else
+#  define pice_read_alloc(_len, _dma)   NULL
+#  define pice_read_free(_addr, _len)    NULL
+#  define pice_write_alloc(_len, _dma)   NULL
+#  define pice_write_free(_addr, _len)    NULL
 #endif
 
 /*

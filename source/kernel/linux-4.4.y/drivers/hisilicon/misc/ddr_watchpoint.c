@@ -559,8 +559,6 @@ static int lock_addrnull(void)
 {
 	u32 midmask = 0;
 
-	midmask |= get_fs_midmask(MASTER_MID_CPU);
-
 	pr_info("lock physical address 0x%08x-0x%08lx\n", 0, PAGE_SIZE);
 
 	return fs_wp_insert(0UL, 0UL, 1, midmask, WP_ADDRNULL);
@@ -574,7 +572,6 @@ static int lock_kerneltext(void)
 	ulong viraddr;
 	ulong nr_pages;
 
-	midmask |= get_fs_midmask(MASTER_MID_CPU);
 	viraddr = (unsigned long)_stext;
 	phyaddr = __virt_to_phys(viraddr);
 	nr_pages = (((unsigned long)_etext + PAGE_SIZE - 1) >> PAGE_SHIFT)
@@ -585,7 +582,6 @@ static int lock_kerneltext(void)
 
 	fs_wp_insert(phyaddr, viraddr, nr_pages, midmask, WP_KERNELTEXT);
 
-	midmask |= get_fs_midmask(MASTER_MID_CPU);
 	viraddr = (unsigned long)__start_rodata;
 	phyaddr = __virt_to_phys(viraddr);
 	nr_pages = (((unsigned long)__end_rodata + PAGE_SIZE - 1) >> PAGE_SHIFT)
@@ -1063,7 +1059,7 @@ void dbg_lock_page(struct page *page, void *virtaddr)
 
 	if (delta >= SZ_8K)
 		fs_wp_insert((ulong)virt_to_phys(virtaddr), (ulong)virtaddr, 1,
-			get_fs_midmask(MASTER_MID_CPU), WP_PAGEPOISON);
+			0, WP_PAGEPOISON);
 
 	prev_virtaddr = (ulong)virtaddr;
 }
@@ -1080,7 +1076,7 @@ void dbg_unlock_page(struct page *page, void *virtaddr)
 		return;
 
 	fs_wp_remove((ulong)virt_to_phys(virtaddr), 1,
-		get_fs_midmask(MASTER_MID_CPU), WP_PAGEPOISON);
+		0, WP_PAGEPOISON);
 }
 #endif
 /******************************************************************************/

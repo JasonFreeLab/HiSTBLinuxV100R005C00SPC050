@@ -29,11 +29,6 @@
 #define USB2_2P_SS_WORD_IF_I            BIT(0)
 #define USB2_2P_SS_ENA_INCR16_I         BIT(9)
 
-#define TEST_WRDATA                     (0xc)
-#define TEST_ADDR                       (0x6 << 8)
-#define TEST_WREN                       BIT(13)
-#define TEST_CLK                        BIT(14)
-#define TEST_RSTN                       BIT(15)
 
 #define USB2_BUS_CKEN                   BIT(0)
 #define USB2_OHCI48M_CKEN               BIT(1)
@@ -42,8 +37,6 @@
 #define USB2_HST_PHY_CKEN               BIT(4)
 #define USB2_UTMI0_CKEN                 BIT(5)
 #define USB2_UTMI1_CKEN                 BIT(6)
-#define USB2_PHY0_SRST_TREQ             BIT(8)
-#define USB2_PHY1_SRST_TREQ             BIT(9)
 #define USB2_BUS_SRST_REQ               BIT(12)
 #define USB2_UTMI0_SRST_REQ             BIT(13)
 #define USB2_UTMI1_SRST_REQ             BIT(14)
@@ -52,16 +45,11 @@
 #define USB2_CLK48_SEL                  BIT(20)
 
 #define USB2_PHY01_REF_CKEN             BIT(0)
-#define USB2_PHY2_REF_CKEN              BIT(2)
 #define USB2_PHY01_SRST_REQ             BIT(4)
-#define USB2_PHY2_SRST_REQ              BIT(6)
 #define USB2_PHY0_SRST_TREQ             BIT(8)
 #define USB2_PHY1_SRST_TREQ             BIT(9)
-#define USB2_PHY2_SRST_TREQ             BIT(10)
-#define USB2_PHY01_REFCLK_SEL           BIT(12)
-#define USB2_PHY2_REFCLK_SEL            BIT(14)
-#define USB2_PHY2_TEST_SRST_REQ         BIT(15)
-#define USB2_PHY01_TEST_SRST_REQ        BIT(16)
+#define USB2_PHY01_TEST_SRST_REQ        BIT(15)
+
 
 #define USB2_PHY01_REGBASE              0xf9865000
 #define USB2_PORT1_REGBASE              0x400
@@ -87,24 +75,7 @@ static void inno_phy_config_2p(struct hiclk_hw *clk)
 	writel(0x4, regbase + 0x18);
 	mdelay(2);
 
-	if (chipid == _HI3798MV200_A) {
-		writel(0x1c, regbase);
-		udelay(20);
-		writel(0x6, regbase + 0x18);
-		udelay(20);
-		writel(0x1b, regbase + 0x28);
-		udelay(20);
-		writel(0x6, regbase + 0x78);
-		udelay(20);
-		writel(0x41, regbase + 0x44);
-		udelay(20);
-		writel(0x1c, regbase + USB2_PORT1_REGBASE);
-		udelay(20);
-		writel(0x1b, regbase + USB2_PORT1_REGBASE + 0x28);
-		udelay(20);
-		writel(0x41, regbase + USB2_PORT1_REGBASE + 0x44);
-		udelay(200);
-	} else if (chipid == _HI3798MV200) {
+	if (chipid == _HI3798MV200) {
 		writel(0x1c, regbase);
 		udelay(20);
 		writel(0x14, regbase + 0x78);
@@ -142,8 +113,8 @@ static void inno_phy_config_2p(struct hiclk_hw *clk)
 		udelay(20);
 
 		/* Second handshake */
-		writel(0x0e, regbase + 0x7c);
-		writel(0x0e, regbase + USB2_PORT1_REGBASE + 0x7c);
+		writel(0x6e, regbase + 0x7c);
+		writel(0x6e, regbase + USB2_PORT1_REGBASE + 0x7c);
 		udelay(20);
 	}
 	
@@ -195,7 +166,7 @@ static int hiclk_enable_usb2(struct clk_hw *hw)
 		writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		udelay(300);
 		reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
-		reg &= ~(USB2_PHY01_TEST_SRST_REQ | USB2_PHY2_TEST_SRST_REQ);
+		reg &= ~(USB2_PHY01_TEST_SRST_REQ);
 		writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		udelay(200);
 
@@ -249,13 +220,13 @@ static void hiclk_disable_usb2(struct clk_hw *hw)
 	if (atomic_sub_return(1, &dev_open_cnt) == 0) {
 
 		reg = readl(clk->peri_crg_base + PERI_CRG46_USB2CTRL);
-		reg |= (USB2_BUS_SRST_REQ
-			| USB2_UTMI0_SRST_REQ
-			| USB2_UTMI1_SRST_REQ
-			| USB2_HST_PHY_SYST_REQ);
+		reg &= ~(USB2_BUS_CKEN
+			| USB2_OTG_UTMI_CKEN
+			| USB2_HST_PHY_CKEN
+			| USB2_UTMI0_CKEN
+			| USB2_UTMI1_CKEN);
 		writel(reg, clk->peri_crg_base + PERI_CRG46_USB2CTRL);
 		udelay(200);
-		printk("%s->%d: CRG47=0x%x\n", __func__, __LINE__, readl(clk->peri_crg_base + PERI_CRG47_USB2PHY));
 
 		reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		reg |= (USB2_PHY01_SRST_REQ
@@ -263,7 +234,6 @@ static void hiclk_disable_usb2(struct clk_hw *hw)
 			| USB2_PHY1_SRST_TREQ);
 		writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		udelay(100);
-		printk("%s->%d: CRG47=0x%x\n", __func__, __LINE__, readl(clk->peri_crg_base + PERI_CRG47_USB2PHY));
 	}
 }
 /******************************************************************************/

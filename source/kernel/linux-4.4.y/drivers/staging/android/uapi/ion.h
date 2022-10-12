@@ -46,6 +46,7 @@ enum ion_heap_type {
 	/* backwards compatible with v3.4 ion */
 	ION_HEAP_ID_CMA = 15, /* cma: ddr */
 	ION_HEAP_ID_TEE_SEC_MEM, /* secure mem in TEE */
+	ION_HEAP_ID_MULTI_CMA, /* support multi cma   */
 	ION_HEAP_TYPE_CUSTOM, /*
 			       * must be last so device specific heaps always
 			       * are at the end of this enum
@@ -167,6 +168,16 @@ struct ion_map_iommu_data {
 	struct iommu_map_format format;
 };
 
+/*
+ * struct ion_ref - get the buffer reference count(such as iommu map)
+ * @handle:	the handle of buffer
+ * @ref:	the a kind of attr's ref of buffer
+ */
+struct ion_ref {
+	ion_user_handle_t handle;
+	unsigned int ref;
+};
+
 #define ION_IOC_MAGIC		'I'
 
 /**
@@ -261,5 +272,9 @@ struct ion_map_iommu_data {
  */
 #define ION_IOC_UNMAP_SEC_IOMMU     _IOWR(ION_IOC_MAGIC, 12, struct ion_map_iommu_data)
 
+/*
+ * DOC: ION_IOC_IOMMU_REF_CNT - get iommu ref cnt
+ */
+#define ION_IOC_IOMMU_REF_CNT	_IOWR(ION_IOC_MAGIC, 13, struct ion_ref)
 
 #endif /* _UAPI_LINUX_ION_H */

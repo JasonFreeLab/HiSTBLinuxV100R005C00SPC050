@@ -93,7 +93,7 @@ void hi3798mv2x_cpu_die(unsigned int cpu)
 void set_scu_boot_addr(unsigned int start_addr, unsigned int jump_addr)
 {
 	unsigned int *virtaddr;
-#ifdef CONFIG_SECURE_EXTENSION
+#ifdef CONFIG_TEE
 
 	virtaddr = ioremap(REG_BASE_SCTL + REG_SC_GEN1, PAGE_SIZE);
 

@@ -1349,7 +1349,7 @@ config DEBUG_LL_INCLUDE
 	default "debug/zynq.S" if DEBUG_ZYNQ_UART0 || DEBUG_ZYNQ_UART1
 	default "debug/bcm63xx.S" if DEBUG_BCM63XX_UART
 	default "debug/digicolor.S" if DEBUG_DIGICOLOR_UA0
-	default "mach/debug-macro.S"
+	default "mach/debug-macro.S" if !CA_SUPPORT_ADVCA
 
 # Compatibility options for PL01x
 config DEBUG_UART_PL01X

@@ -63,7 +63,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(mmc_blk_rw_end);
  */
 #define MMC_BKOPS_MAX_TIMEOUT	(4 * 60 * 1000) /* max time to wait in ms */
 
-static struct workqueue_struct *workqueue;
+struct workqueue_struct *workqueue;
 static const unsigned freqs[] = { 400000, 300000, 200000, 100000 };
 
 /*

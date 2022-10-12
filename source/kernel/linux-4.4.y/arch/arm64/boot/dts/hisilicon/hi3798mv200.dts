@@ -152,6 +152,13 @@
 		interrupts = <0 64 4>;
 	};
 
+	firmware {
+		optee {
+		compatible = "linaro,optee-tz";
+		method = "smc";
+		};
+	};
+
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -775,6 +782,7 @@
 		virtdev {
 			compatible = "virt-device";
 			interrupts = <0 36 4>,  /* "sci0"          */
+						 <0 37 4>,  /* "sci1"          */
 						 <0 47 4>,  /* "ir_std"        */
 						 <0 47 4>,  /* "ir_s2"         */
 						 <0 48 4>,  /* "keyled_ct1642" */
@@ -804,6 +812,7 @@
 						 <0 149 4>, /* "mmu_vdh"       */
 						 <0 150 4>; /* "pastc"         */
 			interrupt-names = /* 36  */ "sci0",
+							  /* 37  */ "sci1",
 							  /* 47  */ "ir_std",
 							  /* 47  */ "ir_s2",
 							  /* 48  */ "keyled_ct1642",

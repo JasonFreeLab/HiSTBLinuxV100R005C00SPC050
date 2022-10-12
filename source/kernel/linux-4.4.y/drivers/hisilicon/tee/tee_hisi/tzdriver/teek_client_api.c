@@ -410,6 +410,7 @@ void TEEK_FinalizeContext(TEEC_Context *context)
 
 	tlogd("close device\n");
 	TC_NS_ClientClose(context->dev, 0);
+	context->dev = NULL;
 }
 EXPORT_SYMBOL(TEEK_FinalizeContext);
 
@@ -693,7 +694,7 @@ TEEC_Result TEEK_InvokeCommand(TEEC_Session *session,
 			teec_ret = (TEEC_Result) TEEC_ERROR_GENERIC;
 		origin = TEEC_ORIGIN_COMMS;
 	} else {
-		tloge("invoke cmd failed, code=0x%x, origin=%d\n",
+		tlogd("invoke cmd failed, code=0x%x, origin=%d\n",
 			   cli_context.returns.code,
 			   cli_context.returns.origin);
 		teec_ret = (TEEC_Result) cli_context.returns.code;

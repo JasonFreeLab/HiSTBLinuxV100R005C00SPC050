@@ -25,6 +25,8 @@
 #include <flash_cache.h>
 #include <linux/hisilicon/flash_stats.h>
 
+#include "../syncnand/nand_sync.h"
+
 struct hifmc_host;
 
 struct hifmc_reg {
@@ -143,6 +145,7 @@ struct hifmc_spinor {
 	struct flash_regop_intf regop_intf;
 };
 /******************************************************************************/
+#define NAND_MODE_SYNC		(1 << 0)
 
 struct hifmc_host {
 	void __iomem *regbase;
@@ -166,6 +169,11 @@ struct hifmc_host {
 	int (*wait_host_ready)(struct hifmc_host *host);
 	int chipselect;
 
+	/* for sync nand only. */
+	int flags;
+
+	int caps;
+
 	struct {
 		u32 fmc_cfg_ecc_type;
 		u32 fmc_cfg_page_size;
@@ -175,6 +183,8 @@ struct hifmc_host {
 	struct hifmc_xnand *spinand;
 	struct hifmc_spinor *spinor;
 };
+
+/******************************************************************************/
 
 #define HIFMC_IFMODE_INVALID         0
 #define HIFMC_IFMODE_SPINOR          1
@@ -190,11 +200,16 @@ int hifmc100_spinor_probe(struct platform_device *pdev, struct hifmc_host *host)
 int hifmc100_xnand_probe(struct platform_device *pdev, struct hifmc_host *host,
 			 int ifmode);
 
+u32 hifmc100_syncmode_reg(u32 value, u32 _to_reg);
+
+void hifmc100_set_sync_timing(struct nand_sync_timing *nand_sync_timing);
+
 extern struct nand_chip_clock hifmc100_nand_rwlatch[];
 
 extern struct spinand_chip_xfer hifmc100_spinand_chip_xfer[];
 
 extern struct spinor_chip_xfer hifmc100_spinor_chip_xfer[];
 
+extern struct nand_sync_timing hifmc100_nand_sync_timing[];
 /******************************************************************************/
 #endif /* HIFMC100_HOSTH */

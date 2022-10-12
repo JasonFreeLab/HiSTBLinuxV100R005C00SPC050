@@ -114,6 +114,33 @@ error_exit:
 	return ret;
 }
 
+int hieth_mdiobus_write_nodelay(struct mii_bus *bus, int phy_addr, int regnum,
+				u16 val)
+{
+	int ret = 0;
+	struct hieth_netdev_priv *priv = bus->priv;
+
+	hieth_mdio_lock(priv);
+
+	if (!hieth_wait_mdio_ready(priv)) {
+		pr_err("%s,%d:mdio busy\n", __func__, __LINE__);
+		ret = -ETIMEDOUT;
+		goto error_exit;
+	}
+
+	mdio_phywrite(priv, phy_addr, regnum, val);
+
+	if (!hieth_wait_mdio_ready(priv)) {
+		pr_err("%s,%d:mdio busy\n", __func__, __LINE__);
+		ret = -ETIMEDOUT;
+	}
+
+error_exit:
+	hieth_mdio_unlock(priv);
+
+	return ret;
+}
+
 static int hieth_mdiobus_reset(struct mii_bus *bus)
 {
 	struct hieth_netdev_priv *priv = bus->priv;
@@ -129,6 +156,7 @@ int hieth_mdiobus_driver_init(struct platform_device *pdev,
 	struct mii_bus *bus;
 	struct device *dev = &pdev->dev;
 	struct device_node *node = dev->of_node;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
 	hieth_mdio_init(priv);
 
@@ -142,7 +170,7 @@ int hieth_mdiobus_driver_init(struct platform_device *pdev,
 
 	bus->name = HIETH_MIIBUS_NAME;
 
-	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", bus->name);
+	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", pdev->name);
 	bus->read = hieth_mdiobus_read;
 	bus->write = hieth_mdiobus_write;
 	bus->reset = hieth_mdiobus_reset;
@@ -159,7 +187,7 @@ int hieth_mdiobus_driver_init(struct platform_device *pdev,
 	for (phy = 0; phy < PHY_MAX_ADDR; phy++)
 		bus->irq[phy] = PHY_POLL;
 
-	hieth_fix_festa_phy_trim(bus);
+	hieth_fix_festa_phy_trim(bus, pdata);
 
 	ret = of_mdiobus_register(bus, node);
 	if (ret) {

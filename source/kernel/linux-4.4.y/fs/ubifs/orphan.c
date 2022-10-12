@@ -121,11 +121,14 @@ void ubifs_delete_orphan(struct ubifs_info *c, ino_t inum)
 	p = c->orph_tree.rb_node;
 	while (p) {
 		o = rb_entry(p, struct ubifs_orphan, rb);
-		if (inum < o->inum)
+		if (inum < o->inum) {
+			isb();
 			p = p->rb_left;
-		else if (inum > o->inum)
+		} else if (inum > o->inum) {
+			isb();
 			p = p->rb_right;
-		else {
+		} else {
+			isb();
 			if (o->del) {
 				spin_unlock(&c->orphan_lock);
 				dbg_gen("deleted twice ino %lu",

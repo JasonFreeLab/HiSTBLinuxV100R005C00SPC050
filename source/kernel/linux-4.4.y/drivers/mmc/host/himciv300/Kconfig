@@ -4,7 +4,7 @@
 
 config HIMCIV300_SDIO_SYNOPSYS
 	tristate "Himciv300 SDIO/MMC device support"
-	depends on ARCH_HI3798MV2X || ARCH_HI3796MV2X
+	depends on ARCH_HI3798MV2X || ARCH_HI3796MV2X || ARCH_HI3798MV310
 	default n
 	select MMC_UNSAFE_RESUME
 	select MMC_EMBEDDED_SDIO

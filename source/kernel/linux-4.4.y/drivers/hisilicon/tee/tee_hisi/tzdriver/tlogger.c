@@ -176,10 +176,12 @@ start:
 		prepare_to_wait(&log->wq, &wait, TASK_INTERRUPTIBLE);
 		if(memcpy_s(&real_addr, sizeof(real_addr), m_log_buffer, 4)) {
 			ret = -EAGAIN;
+			mutex_unlock(&log->mutex);
 			break;
 		}
 		if(memcpy_s(&ring_flag, sizeof(ring_flag), m_log_buffer + 4, 4)) {
 			ret = -EAGAIN;
+			mutex_unlock(&log->mutex);
 			break;
 		}
 		tlogd(" real_addr=0x%x ring_flag=%d\n", real_addr, ring_flag);
@@ -292,9 +294,10 @@ static struct logger_log *get_log_from_minor(int minor)
 {
 	struct logger_log *log;
 
-	list_for_each_entry(log, &m_log_list, logs)
+	list_for_each_entry(log, &m_log_list, logs) {
 	if (log->misc.minor == minor)
 		return log;
+	}
 	return NULL;
 }
 
@@ -337,7 +340,8 @@ static int tlogger_open(struct inode *inode, struct file *file)
 		if (ret) {
 			kfree(reader);
 			return ret;
-		}		tlogd(" real_addr=0x%x ring_flag=%d\n", real_addr, ring_flag);
+		}
+		tlogd(" real_addr=0x%x ring_flag=%d\n", real_addr, ring_flag);
 		reader->r_ver = ring_flag;
 		reader->r_all = true;
 

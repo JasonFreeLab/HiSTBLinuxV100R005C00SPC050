@@ -42,6 +42,7 @@
 #include "tui.h"
 #include "securec.h"
 #include "tc_ns_log.h"
+#include "mailbox_mempool.h"
 
 #define HASH_FILE_MAX_SIZE 8192
 #define AGENT_BUFF_SIZE (4*1024)
@@ -54,16 +55,15 @@ struct __agent_control {
 };
 static struct __agent_control agent_control;
 
-
 int TC_NS_set_nativeCA_hash(unsigned long arg)
 {
 	int ret = 0;
 	TC_NS_SMC_CMD smc_cmd = { 0 };
-	TC_NS_Operation operation = { 0 };
 	uint8_t *inbuf = (uint8_t *)arg;
 	uint32_t buflen = 0;
 	uint8_t *buftotee = NULL;
-	unsigned char uuid[17] = { 0 };
+	struct mb_cmd_pack *mb_pack;
+
 	if (NULL == inbuf)
 		return -1;
 
@@ -81,33 +81,43 @@ int TC_NS_set_nativeCA_hash(unsigned long arg)
 		return -1;
 	}
 
-	buftotee = kzalloc(buflen, GFP_KERNEL);
-	if (NULL == buftotee) {
+	buftotee = mailbox_alloc(buflen, 0);
+	if (!buftotee) {
 		tloge("failed to alloc memory!\n");
-		return -1;
+		return -1; /*lint !e429 */
 	}
 
-	if (copy_from_user(buftotee, inbuf, buflen)) {
+	if (copy_from_user(buftotee, inbuf, buflen)) { /*lint !e613 !e668 */
 		tloge("copy from user failed\n");
-		kfree(buftotee);
+		mailbox_free(buftotee);
 		return -EFAULT;
 	}
-	operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT |
-			       (TEE_PARAM_TYPE_VALUE_INPUT << 4);
-	operation.params[0].value.a = (unsigned int)virt_to_phys(buftotee);
-	operation.params[0].value.b = (unsigned int)(virt_to_phys(buftotee) >> 32);
-	operation.params[1].value.a = buflen;
 
-	uuid[0] = 1;
-	smc_cmd.uuid_phys = virt_to_phys(uuid);
-	smc_cmd.uuid_h_phys = virt_to_phys(uuid) >> 32;
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack) {
+		tloge("alloc cmd pack failed\n");
+		mailbox_free(buftotee);
+		return -ENOMEM;
+	}
+
+	mb_pack->operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT |
+			       (TEE_PARAM_TYPE_VALUE_INPUT << 4);
+	mb_pack->operation.params[0].value.a = (unsigned int)virt_to_phys(buftotee);
+	mb_pack->operation.params[0].value.b = (unsigned int)(virt_to_phys(buftotee) >> 32); /*lint !e572*/
+	mb_pack->operation.params[1].value.a = buflen;
+
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys(mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys(mb_pack->uuid) >> 32; /*lint !e572*/
 	smc_cmd.cmd_id = GLOBAL_CMD_ID_SET_CA_HASH;
-	smc_cmd.operation_phys = virt_to_phys(&operation);
-	smc_cmd.operation_h_phys = virt_to_phys(&operation) >> 32;
+	smc_cmd.operation_phys = virt_to_phys(&mb_pack->operation);
+	smc_cmd.operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32; /*lint !e572*/
 
 	ret = TC_NS_SMC(&smc_cmd, 0);
 
-	kfree(buftotee);
+	mailbox_free(buftotee);
+	mailbox_free(mb_pack);
+
 	return ret;
 }
 
@@ -117,17 +127,17 @@ void TC_NS_send_event_response_all(void)
 	struct __smc_event_data *event_data = NULL;
 
 	if (TC_NS_send_event_response(AGENT_FS_ID))
-		tloge("failed to send response to AGENT_FS_ID\n");
+		tlogd("failed to send response to AGENT_FS_ID\n");
 	event_data = find_event_control(AGENT_FS_ID);
 	if (event_data)
 		event_data->agent_alive = 0;
 	if (TC_NS_send_event_response(AGENT_MISC_ID))
-		tloge("failed to send response to AGENT_MISC_ID\n");
+		tlogd("failed to send response to AGENT_MISC_ID\n");
 	event_data = find_event_control(AGENT_MISC_ID);
 	if (event_data)
 		event_data->agent_alive = 0;
 	if (TC_NS_send_event_response(AGENT_SOCKET_ID))
-		tloge("failed to send response to AGENT_SOCKET_ID\n");
+		tlogd("failed to send response to AGENT_SOCKET_ID\n");
 	event_data = find_event_control(AGENT_SOCKET_ID);
 	if (event_data)
 		event_data->agent_alive = 0;
@@ -194,6 +204,32 @@ unsigned int agent_process_work(TC_NS_SMC_CMD *smc_cmd, unsigned int agent_id)
 }
 
 /*
+ * ADDED BY HISILICON.
+ *
+ * Function:	  TC_NS_wakeup_event
+ * Description:   This function used for informing the agent to exit when driver rmmod.
+ * Used For klad driver currently.
+ * Parameters:	 agent_id.
+ */
+int TC_NS_wakeup_event(unsigned int agent_id)
+{
+	struct __smc_event_data *event_data;
+
+	event_data = find_event_control(agent_id);
+	if ( NULL == event_data || 0 == event_data->agent_alive) {
+		/*TODO: if return, the pending task in S can't be resumed!! */
+		tloge("agent %u not exist\n", agent_id);
+		return TEEC_ERROR_GENERIC;/*lint !e570*/
+	}
+
+	/* Wake up the agent that will process the command */
+	tlogd("agent_process_work: wakeup the agent %p",&event_data->wait_event_wq);
+    event_data->ret_flag = 1;
+	wake_up(&event_data->wait_event_wq);
+    return 0;
+}
+
+/*
  * Function:	  is_agent_alive
  * Description:   This function check if the special agent is launched.
  * Used For HDCP key.
@@ -240,8 +276,9 @@ int TC_NS_sync_sys_time(TC_NS_Time *tc_ns_time)
 {
 	TC_NS_SMC_CMD smc_cmd = { 0 };
 	int ret = 0;
-	unsigned char uuid[17] = { 0 };
 	TC_NS_Time tmp_tc_ns_time = {0};
+	struct mb_cmd_pack *mb_pack = NULL;
+
 	if (!tc_ns_time) {
 		tloge("tc_ns_time is NULL input buffer\n");
 		return -EINVAL;
@@ -255,9 +292,15 @@ int TC_NS_sync_sys_time(TC_NS_Time *tc_ns_time)
 		return -EFAULT;
 	}
 
-	uuid[0] = 1;
-	smc_cmd.uuid_phys = virt_to_phys(uuid);
-	smc_cmd.uuid_h_phys = virt_to_phys(uuid) >> 32;
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack) {
+		tloge("alloc mb pack failed\n");
+		return -ENOMEM;
+	}
+
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys(mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys(mb_pack->uuid) >> 32; /*lint !e572*/
 	smc_cmd.cmd_id = GLOBAL_CMD_ID_ADJUST_TIME;
 	smc_cmd.err_origin = (unsigned int)tmp_tc_ns_time.seconds;
 	smc_cmd.ret_val = (unsigned int)tmp_tc_ns_time.millis;
@@ -265,6 +308,9 @@ int TC_NS_sync_sys_time(TC_NS_Time *tc_ns_time)
 	ret = TC_NS_SMC(&smc_cmd, 0);
 	if (ret)
 		tloge("tee adjust time failed, return error %x\n", ret);
+
+	mailbox_free(mb_pack);
+
 	return ret;
 }
 
@@ -297,8 +343,7 @@ int TC_NS_register_agent(TC_NS_DEV_File *dev_file, unsigned int agent_id,
 	int ret = 0;
 	int find_flag = 0;
 	unsigned long flags;
-	unsigned char uuid[17] = { 0 };
-	TC_NS_Operation operation = { 0 };
+	struct mb_cmd_pack *mb_pack = NULL;
 
 	if (TC_NS_get_uid() != 0) {
 		tloge("It is a fake tee agent\n");
@@ -336,17 +381,24 @@ int TC_NS_register_agent(TC_NS_DEV_File *dev_file, unsigned int agent_id,
 		goto error;
 	}
 
-	operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT | (TEE_PARAM_TYPE_VALUE_INPUT << 4);
-	operation.params[0].value.a = virt_to_phys(shared_mem->kernel_addr);
-	operation.params[0].value.b = virt_to_phys(shared_mem->kernel_addr) >> 32;
-	operation.params[1].value.a = shared_mem->len;
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack) {
+		tloge("alloc mailbox failed\n");
+		ret = TEEC_ERROR_GENERIC;
+		goto error;
+	}
 
-	uuid[0] = 1;
-	smc_cmd.uuid_phys = virt_to_phys(uuid);
-	smc_cmd.uuid_h_phys = virt_to_phys(uuid) >> 32;
+	mb_pack->operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT | (TEE_PARAM_TYPE_VALUE_INPUT << 4);
+	mb_pack->operation.params[0].value.a = virt_to_phys(shared_mem->kernel_addr);
+	mb_pack->operation.params[0].value.b = virt_to_phys(shared_mem->kernel_addr) >> 32; /*lint !e572*/
+	mb_pack->operation.params[1].value.a = shared_mem->len;
+
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys(mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys(mb_pack->uuid) >> 32; /*lint !e572*/
 	smc_cmd.cmd_id = GLOBAL_CMD_ID_REGISTER_AGENT;
-	smc_cmd.operation_phys = virt_to_phys(&operation);
-	smc_cmd.operation_h_phys = virt_to_phys(&operation) >> 32;
+	smc_cmd.operation_phys = virt_to_phys(&mb_pack->operation);
+	smc_cmd.operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32; /*lint !e572*/
 	smc_cmd.agent_id = agent_id;
 
 	ret = TC_NS_SMC(&smc_cmd, 0);
@@ -375,7 +427,9 @@ int TC_NS_register_agent(TC_NS_DEV_File *dev_file, unsigned int agent_id,
 	}
 
 error:
-	return ret;
+	if (mb_pack)
+		mailbox_free(mb_pack);
+	return ret; /*lint !e429 */
 }
 
 
@@ -386,15 +440,16 @@ int TC_NS_unregister_agent(unsigned int agent_id)
 	int find_flag = 0;
 	unsigned long flags;
 	TC_NS_SMC_CMD smc_cmd = { 0 };
-	unsigned char uuid[17] = { 0 };
-	TC_NS_Operation operation = { 0 };
+	struct mb_cmd_pack *mb_pack = NULL;
+	struct tee_agent_kernel_ops *agent_ops = NULL;
+	struct tee_agent_kernel_ops *tmp_ops = NULL;
 
 	if (TC_NS_get_uid() != 0) {
 		tloge("It is a fake tee agent\n");
 		return TEEC_ERROR_GENERIC;
 	}
 	if (AGENT_FS_ID == agent_id || AGENT_MISC_ID == agent_id ||
-	    TEE_RPMB_AGENT_ID == agent_id || AGENT_SOCKET_ID == agent_id ||
+	    AGENT_RPMB_ID == agent_id || AGENT_SOCKET_ID == agent_id ||
 	    TEE_TUI_AGENT_ID == agent_id) {
 		tloge("system agent is not allowed to unregister\n");
 		return TEEC_ERROR_GENERIC;
@@ -414,26 +469,38 @@ int TC_NS_unregister_agent(unsigned int agent_id)
 		tloge("agent is not found\n");
 		return TEEC_ERROR_GENERIC;
 	}
-	operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT;
-	operation.paramTypes = operation.paramTypes << 12;
-	operation.params[0].value.a = virt_to_phys(event_data->buffer->kernel_addr);
-	operation.params[0].value.b = virt_to_phys(event_data->buffer->kernel_addr) >> 32;
-	operation.params[1].value.a = SZ_4K;
 
-	uuid[0] = 1;
-	smc_cmd.uuid_phys = virt_to_phys(uuid);
-	smc_cmd.uuid_h_phys = virt_to_phys(uuid) >> 32;
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack) {
+		tloge("alloc mailbox failed\n");
+		return TEEC_ERROR_GENERIC;
+	}
+
+	mb_pack->operation.paramTypes = TEE_PARAM_TYPE_VALUE_INPUT | (TEE_PARAM_TYPE_VALUE_INPUT << 4);
+	mb_pack->operation.params[0].value.a = virt_to_phys(event_data->buffer->kernel_addr);
+	mb_pack->operation.params[0].value.b = virt_to_phys(event_data->buffer->kernel_addr) >> 32; /*lint !e572*/
+	mb_pack->operation.params[1].value.a = SZ_4K;
+
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys(mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys(mb_pack->uuid) >> 32; /*lint !e572*/
 	smc_cmd.cmd_id = GLOBAL_CMD_ID_UNREGISTER_AGENT;
-	smc_cmd.operation_phys = virt_to_phys(&operation);
-	smc_cmd.operation_h_phys = virt_to_phys(&operation) >> 32;
+	smc_cmd.operation_phys = virt_to_phys(&mb_pack->operation);
+	smc_cmd.operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32; /*lint !e572*/
 	smc_cmd.agent_id = agent_id;
 
 	mutex_lock(&event_data->work_lock);
 	tlogd("Unregistering agent %u\n", agent_id);
 	ret = TC_NS_SMC(&smc_cmd, 0);
 	mutex_unlock(&event_data->work_lock);
+	mailbox_free(mb_pack);
 
-	kfree(event_data);
+	list_for_each_entry_safe(agent_ops, tmp_ops, &tee_agent_list, list) {
+		if (agent_ops->agent_id == agent_id) {
+			list_del(&agent_ops->list);
+			break;
+		}
+	}
 
 	return ret;
 }
@@ -491,14 +558,14 @@ static int def_tee_agent_run(struct tee_agent_kernel_ops *agent_instance)
 {
 	TC_NS_Shared_MEM *shared_mem = NULL;
 	TC_NS_DEV_File dev = {0};
-	long ret = 0;
+	int ret = 0;
 	int page_order = 8;
 
 	/*1. Allocate agent buffer */
-	shared_mem = tc_mem_allocate(&dev, (size_t)(unsigned)(AGENT_BUFF_SIZE * page_order));
+	shared_mem = tc_mem_allocate(&dev, (size_t)(unsigned)(AGENT_BUFF_SIZE * page_order), true);
 	while ((IS_ERR(shared_mem)) && (page_order > 0)) {
 		page_order /= 2;
-		shared_mem = tc_mem_allocate(&dev, (size_t)(unsigned)(AGENT_BUFF_SIZE * page_order));
+		shared_mem = tc_mem_allocate(&dev, (size_t)(unsigned)(AGENT_BUFF_SIZE * page_order), true);
 	}
 	if (IS_ERR(shared_mem)) {
 		tloge("allocate agent buffer fail\n");
@@ -651,6 +718,9 @@ int tee_agent_clear_work(TC_NS_ClientContext *context,
 
 int tee_agent_kernel_register(struct tee_agent_kernel_ops *new_agent)
 {
+	if (NULL == new_agent)
+		return -1;
+
 	INIT_LIST_HEAD(&new_agent->list);
 	list_add_tail(&new_agent->list, &tee_agent_list);
 	return 0;
@@ -683,4 +753,5 @@ EXPORT_SYMBOL(TC_NS_register_agent);
 EXPORT_SYMBOL(TC_NS_unregister_agent);
 EXPORT_SYMBOL(TC_NS_send_event_response);
 EXPORT_SYMBOL(TC_NS_wait_event);
+EXPORT_SYMBOL(TC_NS_wakeup_event);
 #endif

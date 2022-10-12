@@ -54,6 +54,18 @@
 
 #define REG_BASE_L2CACHE                                0xF8A10000
 
+/* Add for bootreg_resume 2017-11-9 */
+#define NORMAL_BOOTMODE_OFFSET      			9
+#define NORMAL_BOOTMODE_MASK        			7
+#define REG_START_MODE                  		0x0000
+#define REG_RNG_DATA                    		0xF8005004
+/* DDRCA */
+#define REG_DDRCA_RANDOM0               		0xF8000F90
+#define REG_DDRCA_RANDOM1               		0xF8000F94
+#define REG_DDRCA_EN                    		0xF8000F98
+#define PLAT_IO_BASE_PHYS                   	(0xF8000000)
+#define PLAT_IO_SIZE                        	(0x02000000)
+#define REG_SCPU_SUPPORT                		(0xF8AB0060)
 
 /*CORTTX-A9 MPCORE MEMORY REGION*/
 #define REG_A9_PERI_SCU                                 0x0000

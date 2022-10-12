@@ -374,3 +374,17 @@ void phy_register_fixups(void)
 	phy_register_fixup_for_uid(PHY_ID_RTL8211F,
 			PHY_ID_MASK_RTL8211F, rtl8211f_phy_fix);
 }
+
+void phy_unregister_fixups(void)
+{
+	phy_unregister_fixup_for_uid(REALTEK_PHY_ID_8211EG, REALTEK_PHY_MASK);
+	phy_unregister_fixup_for_uid(HISILICON_PHY_ID_FESTAV200,
+				     HISILICON_PHY_MASK);
+	phy_unregister_fixup_for_uid(HISILICON_PHY_ID_FESTAV300,
+				     HISILICON_PHY_MASK);
+	phy_unregister_fixup_for_uid(PHY_ID_KSZ8051MNL, DEFAULT_PHY_MASK);
+	phy_unregister_fixup_for_uid(PHY_ID_KSZ8081RNB, DEFAULT_PHY_MASK);
+	phy_unregister_fixup_for_uid(PHY_ID_KSZ9031RNX, DEFAULT_PHY_MASK);
+	phy_unregister_fixup_for_uid(ATH8035_PHY_ID, ATH_PHY_ID_MASK);
+	phy_unregister_fixup_for_uid(PHY_ID_RTL8211F, PHY_ID_MASK_RTL8211F);
+}

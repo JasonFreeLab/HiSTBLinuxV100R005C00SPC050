@@ -25,12 +25,15 @@ ENTRY(hi3798mv2x_secondary_startup)
 	orr	r0, r0, #0xd3  /* r0 = (0xd3 | r0)    */
 	msr	cpsr, r0
 
+	/* secure os enable in asc */
+#ifndef CONFIG_TEE
 	/* CPUCTLR.SMPEN */
 	mrrc	p15,1,r0,r1,c15
 	orr	r0, r0, #0x40           @ enable data coherency with other cores in the cluster
 	mcrr	p15,1,r0,r1,c15
 
 	bl flash_cache_all
+#endif
 
 	mrc	p15, 0, r0, c0, c0, 5
 	and	r0, r0, #15

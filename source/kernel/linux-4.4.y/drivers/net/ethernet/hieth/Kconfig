@@ -4,7 +4,7 @@
 
 menuconfig HIETH_SWITCH_FABRIC
 	tristate "hieth(switch fabric) family network device support"
-	depends on (ARCH_GODBOX|| ARCH_S40 || ARCH_HI3798MX || ARCH_HI3798MV2X || ARCH_HI3796MV2X || ARCH_HI3716MV420N)
+	depends on (ARCH_GODBOX|| ARCH_S40 || ARCH_HI3798MX || ARCH_HI3798MV2X || ARCH_HI3798MV310 || ARCH_HI3796MV2X || ARCH_HI3716MV420N)
 	select PHYLIB
 	help
 	  This selects the hieth family network device.

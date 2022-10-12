@@ -28,8 +28,8 @@
 
 #include "setup.h"
 
-#define FDT_SIZE           0x4000
-static char newfdt[FDT_SIZE << 1]; /* total 32K */
+#define FDT_SIZE           0x8000
+static char newfdt[FDT_SIZE << 1]; /* total 64K */
 static char  cmd_line[COMMAND_LINE_SIZE+3];
 char no_usb3_0 = 0;
 char no_usb3_1 = 0;
@@ -335,12 +335,6 @@ static int __init deal_atags(void *atag_list, void *fdt,
 		} else
 			parse(atag, fdt);
 	}
-#if defined(CONFIG_ARCH_HI3798MV2X) && defined(CONFIG_TEE_HISI)
-	node = fdt_path_offset(fdt, "sd");
-	if (node >= 0) {
-		fdt_setprop_string(fdt, node, "status", "disabled");
-	}
-#endif
 
 #ifdef CONFIG_BLK_DEV_RAM
 	/* initmrd reserve. */

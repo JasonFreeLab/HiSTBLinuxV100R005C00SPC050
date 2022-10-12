@@ -237,7 +237,7 @@ static int hi3798cv2xx_cpuidle_entry(struct cpuidle_device *dev,
 	//	DBG_OUT("cpu%d first entry cpuidle.\n", cpuid);
 	//	per_cpu(per_init, cpuid) = 1;
 	//}
-#ifdef CONFIG_SECURE_EXTENSION
+#ifdef CONFIG_TEE
 	cpu_resume_vaddr[0] = (u32)virt_to_phys(cpu_powerup_hi3798cv2x);
 #else
 	cpu_resume_vaddr[0] = 0xe51ff004;
@@ -300,7 +300,7 @@ static int __init hi3798cv2xx_cpuidle_init(void)
 	///* LED off */
 	//writel(0x0, __io_address(0xf8004008));
 	//writel(0x0, __io_address(0xf8004010));
-#ifdef CONFIG_SECURE_EXTENSION
+#ifdef CONFIG_TEE
 	cpu_resume_vaddr = ioremap_nocache(REG_BASE_SCTL + REG_SC_GEN1, PAGE_SIZE);
 #else
 	cpu_resume_vaddr = ioremap_nocache(0xFFFF0000, PAGE_SIZE);

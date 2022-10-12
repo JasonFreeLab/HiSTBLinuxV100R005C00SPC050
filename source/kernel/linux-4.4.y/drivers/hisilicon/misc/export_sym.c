@@ -38,6 +38,9 @@ EXPORT_SYMBOL(gpio_lock);
 EXPORT_SYMBOL(gpio_chips);
 #endif
 
+DEFINE_MUTEX(sd_klad_mutex);
+EXPORT_SYMBOL(sd_klad_mutex);
+
 char *audio_options_string = NULL;
 static int __init audio_options_setup(char *s)
 {

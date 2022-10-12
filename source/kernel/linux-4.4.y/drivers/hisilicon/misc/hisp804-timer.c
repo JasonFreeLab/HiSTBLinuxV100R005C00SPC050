@@ -94,7 +94,7 @@ static void hisp804_clocksource_resume(struct clocksource *cs)
 }
 /******************************************************************************/
 
-static u64 hisp804_sched_clock_read(void)
+static u64 notrace hisp804_sched_clock_read(void)
 {
 	return ~readl_relaxed(hisp804_sched_clock_base + TIMER_VALUE);
 }

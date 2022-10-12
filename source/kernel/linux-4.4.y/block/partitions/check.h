@@ -43,6 +43,8 @@ put_partition(struct parsed_partitions *p, int n, sector_t from, sector_t size)
 	if (n < p->limit) {
 		char tmp[1 + BDEVNAME_SIZE + 10 + 1];
 
+		isb();
+
 		p->parts[n].from = from;
 		p->parts[n].size = size;
 		snprintf(tmp, sizeof(tmp), " %s%d", p->name, n);

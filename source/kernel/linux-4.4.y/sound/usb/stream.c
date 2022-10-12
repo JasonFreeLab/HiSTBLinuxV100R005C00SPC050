@@ -685,6 +685,7 @@ int snd_usb_parse_audio_interface(struct snd_usb_audio *chip, int iface_no)
 
 		switch (chip->usb_id) {
 		case USB_ID(0x0a92, 0x0053): /* AudioTrak Optoplay */
+		case USB_ID(0x045e, 0x0810): /* microsoft camera */
 			/* Optoplay sets the sample rate attribute although
 			 * it seems not supporting it in fact.
 			 */

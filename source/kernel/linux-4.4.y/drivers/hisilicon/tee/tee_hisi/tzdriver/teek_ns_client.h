@@ -14,6 +14,7 @@
 
 #include <linux/mutex.h>
 #include <linux/list.h>
+#include <linux/slab.h>
 
 #include "teek_client_type.h"
 #include "tc_ns_client.h"
@@ -98,6 +99,8 @@
  */
 #define MAX_PUBKEY_LEN 512
 
+struct tag_TC_NS_Shared_MEM;
+
 typedef struct tag_TC_NS_DEV_File {
 	unsigned int dev_file_id;
 	unsigned int service_cnt;
@@ -142,6 +145,8 @@ typedef struct tag_TC_NS_Operation {
 	unsigned int paramTypes;
 	TC_NS_Parameter params[4];
 	unsigned int    buffer_h_addr[4];
+	struct tag_TC_NS_Shared_MEM *sharemem[4];
+	void *mb_buffer[4];
 } TC_NS_Operation;
 
 typedef struct tag_TC_NS_Temp_Buf {
@@ -174,8 +179,9 @@ typedef struct tag_TC_NS_Shared_MEM {
 	void *kernel_addr;
 	void *user_addr;
 	unsigned int len;
-	unsigned int from_mem_pool;
+	bool from_mailbox;
 	struct list_head head;
+	atomic_t usage;
 } TC_NS_Shared_MEM;
 
 typedef struct tag_TC_NS_Service {
@@ -185,6 +191,7 @@ typedef struct tag_TC_NS_Service {
 	/*DTS2013030508974 sdk end */
 	struct list_head head;
 	struct list_head session_list;
+	atomic_t usage;
 } TC_NS_Service;
 
 /**
@@ -200,7 +207,36 @@ typedef struct tag_TC_NS_Session {
 	struct list_head head;
 	struct TC_wait_data wait_data;
 	struct mutex ta_session_lock;
+	atomic_t usage;
 } TC_NS_Session;
+
+static inline void get_service_struct(struct tag_TC_NS_Service *service)
+{
+	if (service)
+		atomic_inc(&service->usage);
+}
+
+static inline void put_service_struct(struct tag_TC_NS_Service *service)
+{
+	if (service) {
+		if (atomic_dec_and_test(&service->usage))
+			kfree(service);
+	}
+}
+
+static inline void get_session_struct(struct tag_TC_NS_Session *session)
+{
+	if (session)
+		atomic_inc(&session->usage);
+}
+
+static inline void put_session_struct(struct tag_TC_NS_Session *session)
+{
+	if (session) {
+		if (atomic_dec_and_test(&session->usage))
+			kfree(session);
+	}
+}
 
 TC_NS_Service *tc_find_service(struct list_head *services, char *uuid);
 TC_NS_Session *tc_find_session(struct list_head *session_list,

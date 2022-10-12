@@ -72,11 +72,17 @@ enum spinand_read_mode {
 #define SPINOR_OP_WRDI         0x04 /* Write disable */
 
 #define SPINOR_OP_READ         0x03 /* Read data bytes (low frequency) */
+#define SPINOR_OP_READ_4B      0x13 /* Read data bytes (low frequency) */
 #define SPINOR_OP_READ_FAST    0x0b /* Read data bytes (high frequency) */
+#define SPINOR_OP_READ_FAST_4B 0x0C /* Read data bytes (high frequency) */
 #define SPINOR_OP_READ_DUAL    0x3b /* Read data bytes (Dual SPI) */
+#define SPINOR_OP_READ_DUAL_4B 0x3C /* Read data bytes (Dual SPI) with 4 byte address */
 #define SPINOR_OP_READ_QUAD    0x6b /* Read data bytes (Quad SPI) */
+#define SPINOR_OP_READ_QUAD_4B 0x6C /* Read data bytes (Quad SPI) with 4 byte address  */
 #define SPINOR_OP_PP           0x02 /* Page program (up to 256 bytes) */
+#define SPINOR_OP_PP_4B        0x12 /* Page Programming with 4 byte address */
 #define SPINOR_OP_PP_QUAD      0x32 /* Quad Page program (up to 256 bytes) */
+#define SPINOR_OP_PP_QUAD_4B   0x3e /* Quad Page program (up to 256 bytes) with 4 byte address */
 
 #define SPINOR_OP_RDID         0x9f /* Read JEDEC ID */
 
@@ -85,8 +91,11 @@ enum spinand_read_mode {
 
 #define SPINOR_OP_SE           0xD8 /* 64KB Sector Erase */
 #define SPINOR_OP_SE_4K        0x20 /* 4KB sector Erase */
+#define SPINOR_OP_SE_4K_4B     0x21 /* 4KB sector Erase with 4 byte address */
 #define SPINOR_OP_SE_32K       0x52 /* 32KB sector Erase */
+#define SPINOR_OP_SE_32K_4B    0x5c /* 32KB sector Erase with 4 byte address */
 #define SPINOR_OP_SE_64K       0xD8 /* 64KB sector Erase */
+#define SPINOR_OP_SE_64K_4B    0xDC /* 64KB sector Erase with 4 byte address */
 #define SPINOR_OP_SE_128K      0xD8 /* 128KB sector Erase */
 #define SPINOR_OP_SE_256K      0xD8 /* 256KB sector Erase */
 #define SPINOR_OP_BE           0xC7 /* chip erase */

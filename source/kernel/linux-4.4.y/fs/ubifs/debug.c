@@ -1353,6 +1353,7 @@ static int dbg_check_znode(struct ubifs_info *c, struct ubifs_zbranch *zbr)
 		}
 
 		if (n + 1 < zp->child_cnt) {
+			isb();
 			max = &zp->zbranch[n + 1].key;
 
 			/*
@@ -1633,6 +1634,7 @@ int dbg_walk_index(struct ubifs_info *c, dbg_leaf_callback leaf_cb,
 		znode = znode->parent;
 		if (idx < znode->child_cnt) {
 			/* Switch to the next index in the parent */
+			isb();
 			zbr = &znode->zbranch[idx];
 			child = zbr->znode;
 			if (!child) {
@@ -1644,12 +1646,13 @@ int dbg_walk_index(struct ubifs_info *c, dbg_leaf_callback leaf_cb,
 				zbr->znode = child;
 			}
 			znode = child;
-		} else
+		} else {
 			/*
 			 * This is the last child, switch to the parent and
 			 * continue.
 			 */
 			continue;
+		}
 
 		/* Go to the lowest leftmost znode in the new sub-tree */
 		while (znode->level > 0) {

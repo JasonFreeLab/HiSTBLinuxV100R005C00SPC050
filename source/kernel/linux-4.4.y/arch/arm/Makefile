@@ -129,6 +129,10 @@ CFLAGS_ISA	:=$(call cc-option,-marm,)
 AFLAGS_ISA	:=$(CFLAGS_ISA)
 endif
 
+ifeq ($(CONFIG_MODULES),y)
+CFLAGS_MODULE += -mlong-calls
+endif
+
 # Need -Uarm for gcc < 3.x
 KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
 KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) $(arch-y) $(tune-y) -include asm/unified.h -msoft-float
@@ -226,6 +230,7 @@ machine-$(CONFIG_ARCH_S40)		+= s40
 machine-$(CONFIG_ARCH_HI3798MX)		+= hi3798mx
 machine-$(CONFIG_ARCH_HI3798CV2X)	+= hi3798cv2x
 machine-$(CONFIG_ARCH_HI3798MV2X)	+= hi3798mv2x
+machine-$(CONFIG_ARCH_HI3798MV310) 	+= hi3798mv310
 machine-$(CONFIG_ARCH_HI3796MV2X)	+= hi3796mv2x
 machine-$(CONFIG_ARCH_HI3716MV420N)	+= hi3716mv420n
 

@@ -246,4 +246,12 @@ void ion_unmap_iommu(struct ion_client *client, struct ion_handle *handle);
  *    */
 struct ion_platform_heap *hisi_get_cma_heap(const char *name);
 
+/**
+ * ion_iommu_map_ref() - get iommu map ref
+ * @client:	the client
+ * @handle:	the handle
+ * @ref:	the reference count of iommu
+ */
+int ion_iommu_map_ref(struct ion_client *client, struct ion_handle *handle,
+						unsigned int *ref);
 #endif /* _LINUX_ION_H */

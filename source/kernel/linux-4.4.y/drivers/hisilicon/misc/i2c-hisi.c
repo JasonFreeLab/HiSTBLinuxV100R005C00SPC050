@@ -170,6 +170,12 @@ static void hi_i2c_drv_setrate(struct hi_i2c_host *i2c_dev)
     u32 rate, val;
     u32 scl, sysclock;
 
+	if (0 == i2c_dev->freq)
+	{
+		pr_err("freq is zero as divisor!\n");
+		return;
+	}
+
     /* close all i2c interrupt */
     val = i2c_readl(i2c_dev, HII2C_CTRL);
     i2c_writel(i2c_dev, val & (~I2C_UNMASK_TOTAL), HII2C_CTRL);

@@ -19,6 +19,8 @@
 #include <linux/hikapi.h>
 #include <linux/hisilicon/platform.h>
 
+extern void set_cpu_core_lowpower(void);
+
 void *hi_mailbox_base_addr = NULL;
 
 int mailbox_to_smcu(void)
@@ -57,6 +59,8 @@ int hipm_suspend(void)
 {
 	if (mailbox_to_smcu() != 0)
 		return -1;
+
+	set_cpu_core_lowpower();
 
 	return 0;
 }

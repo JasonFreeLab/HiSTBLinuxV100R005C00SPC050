@@ -18,25 +18,26 @@ enum global_service_cmd_id {
 	GLOBAL_CMD_ID_OPEN_SESSION = 0x2,
 	GLOBAL_CMD_ID_CLOSE_SESSION = 0x3,
 	GLOBAL_CMD_ID_LOAD_SECURE_APP = 0x4,
-	/**< Global Task 动态加载安全应用*/
-	GLOBAL_CMD_ID_NEED_LOAD_APP = 0x5,/**< Global Task 判断是否是需要加载安全应用*/
+	/**< Global Task dynamic loading of security applications*/
+	GLOBAL_CMD_ID_NEED_LOAD_APP = 0x5,/**< Global Task judge whether the security application needs to be loaded */
 	GLOBAL_CMD_ID_REGISTER_AGENT = 0x6,
 	GLOBAL_CMD_ID_UNREGISTER_AGENT = 0x7,
 	GLOBAL_CMD_ID_REGISTER_NOTIFY_MEMORY = 0x8,
 	GLOBAL_CMD_ID_UNREGISTER_NOTIFY_MEMORY = 0x9,
-	GLOBAL_CMD_ID_INIT_CONTENT_PATH = 0xa,    /**< Global Task初始化content path*/
+	GLOBAL_CMD_ID_INIT_CONTENT_PATH = 0xa,    /**< Global Task initialize content path*/
 	GLOBAL_CMD_ID_TERMINATE_CONTENT_PATH = 0xb,
-	/**< Global Task释放content path*/
+	/**< Global Task release content path*/
 	GLOBAL_CMD_ID_ALLOC_EXCEPTION_MEM = 0xc,
 	GLOBAL_CMD_ID_TEE_TIME = 0xd,
 	GLOBAL_CMD_ID_TEE_INFO = 0xe,
 	GLOBAL_CMD_ID_REGISTER_RDR_MEM = 0xf,
 	GLOBAL_CMD_ID_KILL_TASK = 0x10,   /** Global Task Kill session */
-	GLOBAL_CMD_ID_TUI_EXCEPTION = 0x11,   /** TUI异常事件处理 */
-	GLOBAL_CMD_ID_ADJUST_TIME = 0x12,   /** TIME时间校正处理 */
-	GLOBAL_CMD_ID_SET_CA_HASH = 0x13,   /*set ca hash info设置用于检验CA身份的hash*/
+	GLOBAL_CMD_ID_TUI_EXCEPTION = 0x11,   /** TUI exception event handling */
+	GLOBAL_CMD_ID_ADJUST_TIME = 0x12,   /** TIME time correction processing */
+	GLOBAL_CMD_ID_SET_CA_HASH = 0x13,   /*set ca hash info set the hash used to verify CA identity*/
 	GLOBAL_CMD_ID_SET_BUILD_VERSION = 0x14, /* set the Android's build version */
 	GLOBAL_CMD_ID_REGISTER_TTF_MEM = 0x15,
+	GLOBAL_CMD_ID_REGISTER_MAILBOX = 0x17,
 	GLOBAL_CMD_ID_UNKNOWN = 0x7FFFFFFE,
 	GLOBAL_CMD_ID_MAX = 0x7FFFFFFF
 };
@@ -135,5 +136,27 @@ enum TEEC_LoginMethod {
 	TEEC_LOGIN_GROUP_APPLICATION = 0x6,
 	TEEC_LOGIN_IDENTIFY = 0x7,
 };
+
+/* dir: 0-inclue input, 1-include output, 2-both */
+static inline bool teec_value_type(unsigned int type, int dir)
+{
+	return (((0 == dir || 2 == dir) && TEEC_VALUE_INPUT == type) ||
+		((1 == dir || 2 == dir) && TEEC_VALUE_OUTPUT == type) ||
+		TEEC_VALUE_INOUT == type) ? true : false;
+}
+
+static inline bool teec_tmpmem_type(unsigned int type, int dir)
+{
+	return (((0 == dir || 2 == dir) && TEEC_MEMREF_TEMP_INPUT == type) ||
+		((1 == dir || 2 == dir) && TEEC_MEMREF_TEMP_OUTPUT == type) ||
+		TEEC_MEMREF_TEMP_INOUT == type) ? true : false;
+}
+
+static inline bool teec_memref_type(unsigned int type, int dir)
+{
+	return (((0 == dir || 2 == dir) && TEEC_MEMREF_PARTIAL_INPUT == type) ||
+		((1 == dir || 2 == dir) && TEEC_MEMREF_PARTIAL_OUTPUT == type) ||
+		TEEC_MEMREF_PARTIAL_INOUT == type) ? true : false;
+}
 
 #endif

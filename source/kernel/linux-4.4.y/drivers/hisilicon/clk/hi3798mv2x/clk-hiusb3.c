@@ -46,11 +46,9 @@ static void __iomem *xhci_host1_regbase;
 #define REG_GUSB3PIPECTL0           (0xc2c0)
 
 #define USB2_PHY2_SRST_REQ            BIT(6)
-#define USB2_PHY3_SRST_REQ            BIT(7)
-#define USB2_PHY01_SRST_TREQ0         BIT(8)
-#define USB2_PHY01_SRST_TREQ1         BIT(9)
 #define USB2_PHY2_SRST_TREQ           BIT(10)
-#define USB2_PHY3_SRST_TREQ           BIT(11)
+#define USB2_PHY2_REF_CKEN              BIT(2)
+#define USB2_PHY2_TEST_SRST_REQ         BIT(16)
 
 #define USB3_BUS_CKEN                 BIT(0)
 #define USB3_REF_CKEN                 BIT(1)
@@ -114,14 +112,14 @@ static void nano_phy_config_0(struct hiclk_hw *clk)
 	* GUSB3PIPECTL0[2:1] = 01 : Tx Deemphasis = -3.5dB, refer to spec
 	*/
 	reg = readl(xhci_host0_regbase + REG_GUSB3PIPECTL0);
-	reg &= ~USB3_SUSPEND_EN;
+	reg |= USB3_SUSPEND_EN;
 	reg &= ~USB3_DEEMPHASIS_MASK;
 	reg |= USB3_DEEMPHASIS0;
 	reg |= USB3_TX_MARGIN1;
 	writel(reg, xhci_host0_regbase + REG_GUSB3PIPECTL0);
 	udelay(20);
 
-	if ((_HI3798MV200 == chipid) || (_HI3798MV200_A == chipid)) {
+	if (_HI3798MV200 == chipid) {
 		writel(0x203000, clk->peri_ctrl_base + USB3_NANOPHY_REGBASE);
 		udelay(20);
 		writel(0x1203000, clk->peri_ctrl_base + USB3_NANOPHY_REGBASE);
@@ -164,16 +162,7 @@ static void inno_phy_config_1p(struct hiclk_hw *clk)
 	writel(0x4, regbase + 0x18);
 	mdelay(2);
 
-	if (chipid == _HI3798MV200_A) {
-		writel(0x1c, regbase);
-		udelay(20);
-		writel(0x06, regbase + 0x18);
-		udelay(20);	
-		writel(0xc1, regbase + 0x44);
-		udelay(20);
-		writel(0x5b, regbase + 0x28);
-		udelay(20);
-	} else if (chipid == _HI3798MV200) {
+	if (chipid == _HI3798MV200) {
 		writel(0x1c, regbase);
 		udelay(20);
 		writel(0xc1, regbase + 0x44);
@@ -202,7 +191,7 @@ static void inno_phy_config_1p(struct hiclk_hw *clk)
 		udelay(20);
 
 		/* Second handshake */
-		writel(0x0e, regbase + 0x7c);
+		writel(0x6e, regbase + 0x7c);
 		udelay(20);
 	}
 	iounmap(regbase);
@@ -240,7 +229,16 @@ static int hiclk_enable_usb3_host0(struct clk_hw *hw)
 	}
 
 	/* init usb2 phy */
-	clk_prepare_enable(usb2clk);
+	/* open ref clk */
+	reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
+	reg |= (USB2_PHY2_REF_CKEN);
+	writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
+	udelay(300);
+	
+	reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
+	reg &= ~(USB2_PHY2_TEST_SRST_REQ);
+	writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
+	udelay(200);
 	
 	/* cancel usb2 1p phy POR */
 	reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
@@ -340,35 +338,20 @@ static int hiclk_enable_usb3_host0(struct clk_hw *hw)
 
 static void hiclk_disable_usb3_host0(struct clk_hw *hw)
 {
-	u32 reg, mux = 1;
+	u32 reg;
 	struct hiclk_hw *clk = to_hiclk_hw(hw);
 	const char * clkname = CLK_NAME(PERI_CRG46_USB2CTRL);
 	struct clk * usb2clk =__clk_lookup(clkname);
 
-	/* TODO: make sure if combphy1 connected */
-	mux = readl(clk->peri_ctrl_base + PERI_CTRL);
-	mux &= COMBPHY1_SEL_MASK;
-
-	if (no_usb3_0)
-		mux &= ~COMBPHY1_SEL_MASK;
-
-	clk_disable_unprepare(usb2clk);
+	mdelay(100);
 
 	reg = readl(clk->peri_crg_base + PERI_CRG44_USB3CTRL);
-	reg |= USB3_VCC_SRST_REQ;
+	reg &= ~(USB3_UTMI_CKEN
+		| USB3_SUSPEND_CKEN
+		| USB3_REF_CKEN
+		| USB3_BUS_CKEN);
 	writel(reg, clk->peri_crg_base + PERI_CRG44_USB3CTRL);
 
-	reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
-	reg |= USB2_PHY01_SRST_TREQ0;
-	writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
-
-	if (mux == COMBPHY1_SEL_USB3) {
-		reg = readl(clk->peri_crg_base + PERI_CRG98_COMBPHY);
-		reg |= COMBPHY0_SRST_REQ;
-		writel(reg, clk->peri_crg_base + PERI_CRG98_COMBPHY);
-	}
-
-	mdelay(500);
 }
 /******************************************************************************/
 

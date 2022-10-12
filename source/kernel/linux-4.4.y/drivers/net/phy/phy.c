@@ -786,12 +786,16 @@ void phy_start(struct phy_device *phydev)
 		phydev->state = PHY_UP;
 		break;
 	case PHY_HALTED:
-		/* make sure interrupts are re-enabled for the PHY */
-		err = phy_enable_interrupts(phydev);
-		if (err < 0)
-			break;
-
 		phydev->state = PHY_RESUMING;
+		/* make sure interrupts are re-enabled for the PHY */
+		if (phydev->irq != PHY_POLL) {
+		err = phy_enable_interrupts(phydev);
+			if (err < 0){
+				phydev->state = PHY_HALTED;
+			break;
+			}
+		}
+
 		do_resume = true;
 		break;
 	default:

@@ -1,4 +1,5 @@
 #include <linux/phy.h>
+#include <linux/hisilicon_phy.h>
 #include "phy.h"
 #include "hieth.h"
 
@@ -113,7 +114,7 @@ static int rtl8211EG_init(struct phy_device *phy_dev)
 	return eee_type;
 }
 
-static int festa_v200_init(struct phy_device *phy_dev)
+static int festa_eee_init(struct phy_device *phy_dev)
 {
 	static int first_time_init;
 	int v, eee_type = 0;
@@ -149,8 +150,8 @@ static struct phy_info phy_info_table[] = {
 	{"SMSC LAN8740", 0x0007c110,  MAC_EEE, &smsc_lan8740_init},
 	/* Realtek */
 	{"Realtek 8211EG", 0x001cc915, PHY_EEE, &rtl8211EG_init},
-	{"Festa V200", HISILICON_PHY_ID_FESTAV200, MAC_EEE, &festa_v200_init},
-	{"Festa V300", HISILICON_PHY_ID_FESTAV300, MAC_EEE, &festa_v200_init},
+	{"Festa V220", HISILICON_PHY_ID_FESTAV220, MAC_EEE, &festa_eee_init},
+	{"Festa V212", HISILICON_PHY_ID_FESTAV212, MAC_EEE, &festa_eee_init},
 	{0, 0, 0, 0},
 };
 
@@ -174,9 +175,9 @@ void hieth_autoeee_init(struct hieth_netdev_priv *priv, int link_stat)
 
 		if (eee_available == PHY_EEE) {
 			debug("enter phy-EEE mode\n");
-			v = readl(priv->glb_base + EEE_ENABLE);
+			v = readl(priv->port_base + EEE_ENABLE);
 			v &= ~BIT_EEE_ENABLE;/* disable auto-EEE */
-			writel(v, priv->glb_base + EEE_ENABLE);
+			writel(v, priv->port_base + EEE_ENABLE);
 			return;
 		}
 
@@ -186,17 +187,17 @@ eee_init:
 		if (link_stat & HIETH_P_MAC_PORTSET_LINKED) {
 			if (lp_eee_capable & link_stat) {
 				/* EEE_1us: 0x7c for 125M */
-				writel(0x7c, priv->glb_base + EEE_TIME_CLK_CNT);
-				writel(0x4002710, priv->glb_base + EEE_TIMER);
+				writel(0x7c, priv->port_base + EEE_TIME_CLK_CNT);
+				writel(0x4002710, priv->port_base + EEE_TIMER);
 
-				v = readl(priv->glb_base + EEE_LINK_STATUS);
+				v = readl(priv->port_base + EEE_LINK_STATUS);
 				v |= 0x3 << 1;/* auto EEE and ... */
 				v |= BIT_PHY_LINK_STATUS;/* phy linkup */
-				writel(v, priv->glb_base + EEE_LINK_STATUS);
+				writel(v, priv->port_base + EEE_LINK_STATUS);
 
-				v = readl(priv->glb_base + EEE_ENABLE);
+				v = readl(priv->port_base + EEE_ENABLE);
 				v |= BIT_EEE_ENABLE;/* enable EEE */
-				writel(v, priv->glb_base + EEE_ENABLE);
+				writel(v, priv->port_base + EEE_ENABLE);
 
 				debug("enter auto-EEE mode\n");
 				return;
@@ -205,9 +206,9 @@ eee_init:
 				return;
 			}
 		} else {
-			v = readl(priv->glb_base + EEE_LINK_STATUS);
+			v = readl(priv->port_base + EEE_LINK_STATUS);
 			v &= ~(BIT_PHY_LINK_STATUS);/* phy linkdown */
-			writel(v, priv->glb_base + EEE_LINK_STATUS);
+			writel(v, priv->port_base + EEE_LINK_STATUS);
 			return;
 		}
 	}

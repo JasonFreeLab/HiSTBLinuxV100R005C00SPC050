@@ -33,7 +33,7 @@
 #define MII_EXPMD		0x1d
 #define MII_EXPMA		0x1e
 
-#define INT_MASK_H		0x01e5
+#define INT_MASK_H		0x0157
 #define BIT_SPEED_INT_EN	BIT(7)
 #define BIT_LINK_INT_EN		BIT(6)
 #define BIT_DUPLEX_INT_EN	BIT(5)
@@ -447,7 +447,7 @@ static struct phy_driver hisilicon_drivers[] = {
 		.phy_id_mask = HISILICON_PHY_ID_MASK,
 		.name = "HiSilicon Festa v330",
 		.features = PHY_BASIC_FEATURES,
-		.flags = PHY_IS_INTERNAL,
+		.flags = PHY_IS_INTERNAL | PHY_HAS_INTERRUPT,
 		.driver_data = &festa_v330_data,
 		.probe = festa_phy_probe,
 		.config_init = genphy_config_init,
@@ -480,6 +480,26 @@ static struct phy_driver hisilicon_drivers[] = {
 		.suspend = festa_suspend,
 		.driver = { .owner = THIS_MODULE },
 	},
+	{
+		.phy_id = HISILICON_PHY_ID_FESTA_S28V112,
+		.phy_id_mask = HISILICON_PHY_ID_MASK,
+		.name = "HiSilicon Festa s28v112",
+		.features = PHY_BASIC_FEATURES,
+		.flags = PHY_IS_INTERNAL | PHY_HAS_INTERRUPT,
+		.driver_data = &festa_v330_data,
+		.probe = festa_phy_probe,
+		.config_init = genphy_config_init,
+		.config_aneg = genphy_config_aneg,
+		.read_status = genphy_read_status,
+		.ack_interrupt = festa_ack_interrupt,
+		.config_intr = festa_config_intr,
+		.did_interrupt = festa_did_interrupt,
+		.get_wol = festa_get_wol,
+		.set_wol = festa_set_wol,
+		.resume = festa_resume,
+		.suspend = festa_suspend,
+		.driver = { .owner = THIS_MODULE },
+	},
 };
 
 module_phy_driver(hisilicon_drivers);
@@ -489,6 +509,7 @@ static struct mdio_device_id __maybe_unused hisilicon_tbl[] = {
 	{ HISILICON_PHY_ID_FESTAV220, HISILICON_PHY_ID_MASK },
 	{ HISILICON_PHY_ID_FESTAV330, HISILICON_PHY_ID_MASK },
 	{ HISILICON_PHY_ID_FESTAV331, HISILICON_PHY_ID_MASK },
+	{ HISILICON_PHY_ID_FESTA_S28V112, HISILICON_PHY_ID_MASK },
 	{ }
 };
 

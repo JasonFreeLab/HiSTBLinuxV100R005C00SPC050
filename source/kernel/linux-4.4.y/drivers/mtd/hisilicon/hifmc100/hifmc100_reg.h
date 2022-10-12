@@ -24,6 +24,12 @@
 #define HIFMC100_CFG                                       0x00
 #define HIFMC100_CFG_SPI_NOR_ADDR_MODE_4B        0x400
 
+#define HIFMC100_CFG_NF_MODE_TOGGLE10            0x2000
+#define HIFMC100_CFG_NF_MODE_ONFI23              0x4000
+#define HIFMC100_CFG_NF_MODE_ONFI30              0x4000
+#define HIFMC100_CFG_NF_MODE_TOGGLE20            0x8000
+#define HIFMC100_CFG_NF_MODE_MASK                (7 << 13)
+
 #define HIFMC100_CFG_ECC_TYPE_MASK               0xE0
 #define HIFMC100_CFG_ECC_TYPE_NONE               0x00
 #define HIFMC100_CFG_ECC_TYPE_8BIT               0x20
@@ -45,6 +51,12 @@
 #define HIFMC100_CFG_FLASH_SEL_NAND              0x4
 
 #define HIFMC100_CFG_OP_MODE_NORMAL              0x01
+
+#define HIFMC100_CFG_NFMODE_MASK                (0x7 << 13)
+#define HIFMC100_CFG_NFMODE_TOGGLE10            0x2000
+#define HIFMC100_CFG_NFMODE_ONFI23              0x4000
+#define HIFMC100_CFG_NFMODE_ONFI30              0x6000
+#define HIFMC100_CFG_NFMODE_TOGGLE20            0x8000
 /*****************************************************************************/
 #define HIFMC100_GLOBAL_CFG                                0x04
 #define HIFMC100_GLOBAL_CFG_RANDOMIZER_EN        (1 << 2)
@@ -54,6 +66,8 @@
 #define HIFMC100_TIMING_SPI_CFG                            0x08
 #define HIFMC100_PND_PWIDTH_CFG                            0x0c
 
+/*****************************************************************************/
+#define HIFMC100_SYNC_TIMING                               0x14
 /*****************************************************************************/
 #define HIFMC100_INT                                       0x18
 #define HIFMC100_INT_CACHE_PAGE_DONE             BIT(8)
@@ -122,6 +136,8 @@
 
 /*****************************************************************************/
 #define HIFMC100_OP                                        0x3c
+#define HIFMC100_OP_RW_REG                       0x400
+#define HIFMC100_OP_READID                       0x200
 #define HIFMC100_OP_DUMMY_EN                     0x100
 #define HIFMC100_OP_CMD1_EN                      0x80
 #define HIFMC100_OP_ADDR_EN                      0x40

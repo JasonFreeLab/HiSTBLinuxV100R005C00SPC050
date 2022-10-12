@@ -59,6 +59,8 @@ void hieth_mdiobus_driver_exit(struct hieth_netdev_priv *priv);
 int hieth_mdiobus_read(struct mii_bus *bus, int phy_addr, int regnum);
 int hieth_mdiobus_write(struct mii_bus *bus, int phy_addr, int regnum,
 			u16 val);
+int hieth_mdiobus_write_nodelay(struct mii_bus *bus, int phy_addr, int regnum,
+				u16 val);
 #endif
 
 /* vim: set ts=8 sw=8 tw=78: */

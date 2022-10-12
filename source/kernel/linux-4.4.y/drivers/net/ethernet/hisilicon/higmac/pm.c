@@ -170,6 +170,30 @@ int pmt_config(struct net_device *ndev, struct pm_config *config)
 	int ret = -EINVAL;
 	struct higmac_netdev_local *priv = netdev_priv(ndev);
 
+	/* If set magic packet WOL, we first try PHY wol */
+	if (config->magic_pkts_enable) {
+		struct ethtool_wolinfo wol;
+
+		wol.cmd = ETHTOOL_SWOL;
+		wol.supported = WAKE_MAGIC;
+		wol.wolopts = WAKE_MAGIC;
+		ret = phy_ethtool_set_wol(ndev->phydev, &wol);
+
+		if (!ret) {
+			pr_info("higmac: set phy wol success\n");
+			priv->phy_wol_enable = true;
+			device_set_wakeup_enable(priv->dev, true);
+			return ret;
+		}
+
+		if (ret != -EOPNOTSUPP) {
+			pr_err("higmac: set phy wol failed, err=%d\n", ret);
+			return ret;
+		}
+
+		pr_info("higmac: phy does not support wol, use mac wol\n");
+	}
+
 	if (!init)
 		init_crc_table();
 
@@ -178,8 +202,8 @@ int pmt_config(struct net_device *ndev, struct pm_config *config)
 		return ret;
 
 	priv->pm_state = PM_SET;
-	priv->wol_enable = true;
-	device_set_wakeup_enable(priv->dev, 1);
+	priv->mac_wol_enable = true;
+	device_set_wakeup_enable(priv->dev, true);
 
 	return ret;
 }
@@ -221,8 +245,8 @@ inline void pmt_exit(struct higmac_netdev_local *ld)
 
 	spin_unlock_irqrestore(&ld->pmtlock, flags);
 
-	ld->wol_enable = false;
-	/* device_set_wakeup_enable(ld->dev, 0); */
+	ld->mac_wol_enable = false;
+	ld->phy_wol_enable = false;
 }
 
 void pmt_reg_restore(struct higmac_netdev_local *ld)

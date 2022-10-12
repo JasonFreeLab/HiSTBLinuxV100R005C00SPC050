@@ -34,6 +34,7 @@
 #include <linux/clk.h>
 #include <linux/reset.h>
 
+#include <linux/hikapi.h>
 #include "util.h"
 #include "higmac.h"
 #include "mdio.h"
@@ -58,6 +59,7 @@
 #define RMII_SPEED_100			0x8f
 #define RMII_SPEED_10			0x8d
 #define GMAC_FULL_DUPLEX		BIT(4)
+#define GMAC_SRC_CLK_250M		BIT(15)
 
 /* set irq affinity to cpu1 when multi-processor */
 #define HIGMAC_IRQ_AFFINITY_CPU		2
@@ -101,6 +103,9 @@ static void higmac_config_port(struct net_device *dev, u32 speed, u32 duplex)
 
 	if (duplex)
 		val |= GMAC_FULL_DUPLEX;
+
+	if (get_chipid(0ULL) == _HI3796MV200_15X15)
+		val |= GMAC_SRC_CLK_250M;
 
 	reset_control_assert(priv->macif_rst);
 	writel_relaxed(val, priv->macif_base);
@@ -224,6 +229,12 @@ static void higmac_hw_init(struct higmac_netdev_local *priv)
 	val = readl(priv->gmac_iobase + REC_FILT_CONTROL);
 	val |= BIT_CRC_ERR_PASS;
 	writel(val, priv->gmac_iobase + REC_FILT_CONTROL);
+
+	/* set tx min packet length */
+	val = readl(priv->gmac_iobase + CRF_MIN_PACKET);
+	val &= ~BIT_MASK_TX_MIN_LEN;
+	val |= ETH_HLEN << BIT_OFFSET_TX_MIN_LEN;
+	writel(val, priv->gmac_iobase + CRF_MIN_PACKET);
 
 	/* fix bug for udp and ip error check */
 	writel(CONTROL_WORD_CONFIG, priv->gmac_iobase + CONTROL_WORD);
@@ -474,15 +485,10 @@ static void higmac_hw_set_mac_addr(struct net_device *dev)
 
 static void higmac_rx_refill(struct higmac_netdev_local *priv);
 
-/* reset and re-config gmac */
-void higmac_restart(struct higmac_netdev_local *ld)
+static void higmac_free_rx_skb(struct higmac_netdev_local *ld)
 {
-	unsigned long rxflags, txflags;
 	struct sk_buff *skb = NULL;
 	int i;
-
-	spin_lock_irqsave(&ld->rxlock, rxflags);
-	spin_lock_irqsave(&ld->txlock, txflags);
 
 	for (i = 0; i < ld->rx_fq.count; i++) {
 		skb = ld->rx_fq.skb[i];
@@ -501,6 +507,12 @@ void higmac_restart(struct higmac_netdev_local *ld)
 			 */
 		}
 	}
+}
+
+static void higmac_free_tx_skb(struct higmac_netdev_local *ld)
+{
+	struct sk_buff *skb = NULL;
+	int i;
 
 	for (i = 0; i < ld->tx_bq.count; i++) {
 		skb = ld->tx_bq.skb[i];
@@ -514,6 +526,19 @@ void higmac_restart(struct higmac_netdev_local *ld)
 			/* TODO: unmap the skb */
 		}
 	}
+}
+
+/* reset and re-config gmac */
+void higmac_restart(struct higmac_netdev_local *ld)
+{
+	unsigned long rxflags, txflags;
+
+
+	spin_lock_irqsave(&ld->rxlock, rxflags);
+	spin_lock_irqsave(&ld->txlock, txflags);
+
+	higmac_free_rx_skb(ld);
+	higmac_free_tx_skb(ld);
 
 	pmt_reg_restore(ld);
 	higmac_hw_init(ld);
@@ -797,7 +822,7 @@ static int higmac_rx(struct net_device *dev, int limit, int rxq_id)
 				spin_unlock(&ld->rxlock);
 				goto next;
 			}
-			BUG_ON(1);
+			WARN_ON(1);
 		} else {
 			ld->rx_fq.skb[skb_id] = NULL;
 		}
@@ -852,7 +877,7 @@ static int higmac_rx(struct net_device *dev, int limit, int rxq_id)
 
 		napi_gro_receive(&ld->q_napi[rxq_id].napi, skb);
 		dev->stats.rx_packets++;
-		dev->stats.rx_bytes += skb->len;
+		dev->stats.rx_bytes += len;
 		dev->last_rx = jiffies;
 next:
 		spin_lock(&ld->rxlock);
@@ -909,9 +934,8 @@ static int higmac_xmit_release_gso(struct higmac_netdev_local *ld,
 				   struct higmac_tso_desc *tx_bq_desc,
 				   unsigned int desc_pos)
 {
-	struct sk_buff *skb = ld->tx_skb[desc_pos];
 	int pkt_type;
-	int nfrags = skb_shinfo(skb)->nr_frags;
+	int nfrags = tx_bq_desc->desc1.tx.nfrags_num;
 	dma_addr_t addr;
 	size_t len;
 
@@ -928,21 +952,22 @@ static int higmac_xmit_release_gso(struct higmac_netdev_local *ld,
 		return -1;
 	}
 
-	if (skb_is_gso(skb) || nfrags)
+	if (tx_bq_desc->desc1.tx.tso_flag || nfrags)
 		pkt_type = PKT_SG;
 	else
 		pkt_type = PKT_NORMAL;
 
 	if (pkt_type == PKT_NORMAL) {
 		addr = tx_bq_desc->data_buff_addr;
-		dma_unmap_single(ld->dev, addr, skb->len, DMA_TO_DEVICE);
+		len = tx_bq_desc->desc1.tx.data_len;
+		dma_unmap_single(ld->dev, addr, len, DMA_TO_DEVICE);
 	} else {
 		struct sg_desc *desc_cur;
 		unsigned int desc_offset;
 		int i;
 
 		desc_offset = ld->tx_bq.sg_desc_offset[desc_pos];
-		BUG_ON(desc_offset != ld->sg_tail);
+		WARN_ON(desc_offset != ld->sg_tail);
 		desc_cur = ld->dma_sg_desc + desc_offset;
 
 		addr = desc_cur->linear_addr;
@@ -1219,7 +1244,7 @@ static void higmac_do_udp_checksum(struct sk_buff *skb)
 	csum = skb_checksum(skb, offset, skb->len - offset, 0);
 
 	offset += skb->csum_offset;
-	BUG_ON(offset + sizeof(__sum16) > skb_headlen(skb));
+	WARN_ON(offset + sizeof(__sum16) > skb_headlen(skb));
 	udp_csum = csum_fold(csum);
 	if (udp_csum == 0)
 		udp_csum = CSUM_MANGLED_0;
@@ -1460,6 +1485,13 @@ static netdev_tx_t higmac_net_xmit(struct sk_buff *skb, struct net_device *dev)
 	unsigned long txflags;
 	int ret;
 	u32 pos;
+
+	if (skb->len < ETH_HLEN) {
+		dev_kfree_skb_any(skb);
+		dev->stats.tx_errors++;
+		dev->stats.tx_dropped++;
+		return NETDEV_TX_OK;
+	}
 
 	/* if adding higmac_xmit_reclaim here, iperf tcp client
 	 * performance will be affected, from 550M(avg) to 513M~300M
@@ -1748,6 +1780,7 @@ static int higmac_set_mac_wol(struct net_device *dev,
 		mac_pm_config.magic_pkts_enable = 1;
 
 	pmt_config(dev, &mac_pm_config);
+	priv->mac_wol_enable = true;
 
 	return err;
 }
@@ -1757,13 +1790,16 @@ static int higmac_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
 	struct higmac_netdev_local *priv = netdev_priv(dev);
 	int err = 0;
 
-	if (dev->phydev)
+	if (dev->phydev) {
 		err = phy_ethtool_set_wol(dev->phydev, wol);
+		if (!err)
+			priv->phy_wol_enable = true;
+	}
 	if (err == -EOPNOTSUPP)
 		err = higmac_set_mac_wol(dev, wol);
 
 	if (!err)
-		priv->wol_enable = true;
+		device_set_wakeup_enable(priv->dev, true);
 
 	return err;
 }
@@ -2171,21 +2207,23 @@ static int higmac_of_get_param(struct higmac_netdev_local *ld,
 
 	child = of_get_next_available_child(node, NULL);
 	WARN_ON(child == NULL);
-
+	if (!of_phy_is_fixed_link(node)) {
 	/* get phy-addr */
 	if (of_property_read_u32(child, "reg", &data)) {
 		pr_info("%s has not config PHY address\n",
 		       child->full_name);
-		return -EINVAL;
+			of_node_put(child);
+			return -ENODEV;
 	}
 	if ((data < 0) || (data >= PHY_MAX_ADDR)) {
 		pr_info("%s has invalid PHY address=%d\n",
 		       child->full_name, data);
-		return -EINVAL;
+			of_node_put(child);
+			return -ENODEV;
 	}
 
 	ld->phy_addr = data;
-
+	}
 	child = of_get_next_available_child(node, child);
 	WARN_ON(child != NULL);
 
@@ -2359,6 +2397,21 @@ void higmac_set_irq_affinity(struct higmac_netdev_local *priv)
 				HIGMAC_IRQ_AFFINITY_CPU);
 }
 
+static void higmac_select_macif_clock_source(struct higmac_netdev_local *priv)
+{
+	if (get_chipid(0ULL) == _HI3796MV200_15X15) {
+		u32 val;
+
+		reset_control_assert(priv->macif_rst);
+		val = readl(priv->macif_base);
+		val |= GMAC_SRC_CLK_250M;
+		writel(val, priv->macif_base);
+		reset_control_deassert(priv->macif_rst);
+	}
+}
+
+#include "proc-dev.c"
+
 static int higmac_dev_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -2366,11 +2419,12 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	struct net_device *ndev;
 	struct higmac_netdev_local *priv;
 	struct resource *res;
-	struct mii_bus *bus;
+	struct mii_bus *bus = NULL;
 	const char *mac_addr;
 	unsigned int hw_cap;
 	int ret;
 	int num_rxqs;
+	bool fixed_link = false;
 
 	if (of_device_is_compatible(node, "hisilicon,higmac-v5"))
 		num_rxqs = RSS_NUM_RXQS;
@@ -2383,13 +2437,16 @@ static int higmac_dev_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	platform_set_drvdata(pdev, ndev);
+	SET_NETDEV_DEV(ndev, dev);
 
 	priv = netdev_priv(ndev);
 	priv->dev = dev;
 	priv->netdev = ndev;
 	priv->num_rxqs = num_rxqs;
 
-	higmac_of_get_param(priv, node);
+	ret = higmac_of_get_param(priv, node);
+	if (ret)
+		goto out_free_netdev;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, MEM_GMAC_IOBASE);
 	priv->gmac_iobase = devm_ioremap_resource(dev, res);
@@ -2458,13 +2515,14 @@ static int higmac_dev_probe(struct platform_device *pdev)
 		goto out_macif_clk_disable;
 	}
 
+	higmac_mac_core_reset(priv);
+	higmac_select_macif_clock_source(priv);
+
 	/* phy reset, should be early than "of_mdiobus_register".
 	 * becausue "of_mdiobus_register" will read PHY register by MDIO.
 	 */
 	higmac_hw_phy_reset(priv);
-
-	higmac_mac_core_reset(priv);
-
+	if (!of_phy_is_fixed_link(node)){
 	bus = mdiobus_alloc();
 	if (bus == NULL) {
 		ret = -ENOMEM;
@@ -2487,7 +2545,7 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	ret = of_mdiobus_register(bus, node);
 	if (ret)
 		goto err_free_mdio;
-
+	}
 	priv->phy_mode = of_get_phy_mode(node);
 	if (priv->phy_mode < 0) {
 		dev_err(dev, "not find phy-mode\n");
@@ -2497,9 +2555,24 @@ static int higmac_dev_probe(struct platform_device *pdev)
 
 	priv->phy_node = of_parse_phandle(node, "phy-handle", 0);
 	if (!priv->phy_node) {
+		/* check if a fixed-link is defined in device-tree */
+		if (of_phy_is_fixed_link(node)) {
+			ret = of_phy_register_fixed_link(node);
+			if (ret < 0) {
+				dev_err(dev, "cannot register fixed PHY %d\n", ret);
+				goto err_mdiobus;
+			}
+
+			/* In the case of a fixed PHY, the DT node associated
+			 * to the PHY is the Ethernet MAC DT node.
+			 */
+			priv->phy_node = of_node_get(node);
+			fixed_link = true;
+		} else {
 		dev_err(dev, "not find phy-handle\n");
 		ret = -EINVAL;
 		goto err_mdiobus;
+	}
 	}
 
 	mac_addr = of_get_mac_address(node);
@@ -2545,8 +2618,7 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	}
 
 	/* If the phy_id is mostly Fs, there is no device there */
-	if ((priv->phy->phy_id & 0x1fffffff) == 0x1fffffff ||
-	    priv->phy->phy_id == 0) {
+	if (priv->phy->phy_id == 0 && !fixed_link) {
 		pr_info("Eth phy %d has invalid OUI:0x%x\n", priv->phy->addr, priv->phy->phy_id);
 		ret = -ENODEV;
 		goto out_phy_disconnect;
@@ -2586,7 +2658,6 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	spin_lock_init(&priv->pmtlock);
 
 	/* init netdevice */
-	SET_NETDEV_DEV(ndev, dev);	/* init ndev */
 	ndev->irq = priv->irq[0];
 	ndev->watchdog_timeo = 3 * HZ;
 	ndev->netdev_ops = &hieth_netdev_ops;
@@ -2615,14 +2686,9 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	priv->monitor.data = (unsigned long)ndev;
 	priv->monitor.expires = jiffies + HIGMAC_MONITOR_TIMER;
 
-	device_set_wakeup_capable(priv->dev, 1);
-	/* TODO: when we can let phy powerdown?
-	 * In some mode, we don't want phy powerdown,
-	 * so I set wakeup enable all the time
-	 */
-	device_set_wakeup_enable(priv->dev, 1);
-
-	priv->wol_enable = false;
+	device_set_wakeup_capable(priv->dev, true);
+	priv->mac_wol_enable = false;
+	priv->phy_wol_enable = false;
 
 	priv->msg_enable = netif_msg_init(debug, DEFAULT_MSG_ENABLE);
 
@@ -2662,6 +2728,8 @@ static int higmac_dev_probe(struct platform_device *pdev)
 	pr_info("ETH: %s, phy_addr=%d\n",
 		phy_modes(priv->phy_mode), priv->phy->addr);
 
+	higmac_proc_create_port(priv);
+
 	return ret;
 
 _error_sg_desc_queue:
@@ -2676,8 +2744,10 @@ out_phy_disconnect:
 out_phy_node:
 	of_node_put(priv->phy_node);
 err_mdiobus:
+	if (bus)
 	mdiobus_unregister(bus);
 err_free_mdio:
+	if (bus)
 	mdiobus_free(bus);
 out_mac_clk_disable:
 	clk_disable_unprepare(priv->clk);
@@ -2707,6 +2777,8 @@ static int higmac_dev_remove(struct platform_device *pdev)
 	unregister_netdev(ndev);
 
 	higmac_reclaim_rx_tx_resource(priv);
+	higmac_free_rx_skb(priv);
+	higmac_free_tx_skb(priv);
 
 	if (priv->tso_supported)
 		higmac_destroy_sg_desc_queue(priv);
@@ -2714,12 +2786,14 @@ static int higmac_dev_remove(struct platform_device *pdev)
 
 	phy_disconnect(priv->phy);
 	of_node_put(priv->phy_node);
-
+	if (priv->bus) {
 	mdiobus_unregister(priv->bus);
 	mdiobus_free(priv->bus);
-
+	}
 	clk_disable_unprepare(priv->pub_clk);
 	free_netdev(ndev);
+
+	phy_unregister_fixups();
 
 	return 0;
 }
@@ -2742,6 +2816,72 @@ static void higmac_enable_irq(struct higmac_netdev_local *priv)
 		enable_irq(priv->irq[i]);
 }
 
+int higmac_config_phy_aneg_10M(struct phy_device *phydev)
+{
+	int adv, bmsr;
+	int err;
+
+	/* Setup standard advertisement */
+	adv = phy_read(phydev, MII_ADVERTISE);
+	if (adv < 0)
+		return adv;
+
+	adv &= ~(ADVERTISE_100HALF | ADVERTISE_100FULL | ADVERTISE_100BASE4);
+
+	err = phy_write(phydev, MII_ADVERTISE, adv);
+	if (err < 0)
+		return err;
+
+	bmsr = phy_read(phydev, MII_BMSR);
+	if (bmsr < 0)
+		return bmsr;
+
+	/* Per 802.3-2008, Section 22.2.4.2.16 Extended status all
+	 * 1000Mbits/sec capable PHYs shall have the BMSR_ESTATEN bit set to a
+	 * logical 1.
+	 */
+	if (!(bmsr & BMSR_ESTATEN))
+		return 0;
+
+	/* Configure gigabit if it's supported */
+	adv = phy_read(phydev, MII_CTRL1000);
+	if (adv < 0)
+		return adv;
+
+	adv &= ~(ADVERTISE_1000FULL | ADVERTISE_1000HALF);
+	err = phy_write(phydev, MII_CTRL1000, adv);
+	if (err < 0)
+		return err;
+
+	err = genphy_restart_aneg(phydev);
+	if (err < 0)
+		return err;
+
+	return 0;
+}
+
+#define REALTEK_PHY_ID_RTL8211F	0x001cc916
+#define RTL8211F_PAGE_SELECT	0x1f
+#define RTL8211F_WOL_PAD_ISO	0x13
+#define RTL8211F_WOL_PAD_ISO_EN	BIT(15)
+
+int higmac_config_phy_wol_low_power(struct phy_device *phydev)
+{
+	int ret = 0;
+
+	if (phydev->phy_id == REALTEK_PHY_ID_RTL8211F) {
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0xd8a);
+
+                ret = phy_write(phydev, RTL8211F_WOL_PAD_ISO, RTL8211F_WOL_PAD_ISO_EN);
+                if (ret)
+                        return ret;
+
+                phy_write(phydev, RTL8211F_PAGE_SELECT, 0);
+	}
+
+	return 0;
+}
+
 int higmac_dev_suspend(struct platform_device *pdev, pm_message_t state)
 {
 	struct net_device *ndev = platform_get_drvdata(pdev);
@@ -2751,7 +2891,7 @@ int higmac_dev_suspend(struct platform_device *pdev, pm_message_t state)
 	/* If support Wake on LAN, we should not disconnect phy
 	 * because it will call phy_suspend to power down phy.
 	 */
-	if (!priv->wol_enable)
+	if (!priv->mac_wol_enable)
 		phy_disconnect(priv->phy);
 	del_timer_sync(&priv->monitor);
 	/* If suspend when netif is not up, the napi_disable will run into
@@ -2772,20 +2912,21 @@ int higmac_dev_suspend(struct platform_device *pdev, pm_message_t state)
 
 	higmac_reclaim_rx_tx_resource(priv);
 
+	if (priv->phy_wol_enable)
+		higmac_config_phy_wol_low_power(priv->phy);
+
+	if (priv->phy_wol_enable || priv->mac_wol_enable) {
+		higmac_config_phy_aneg_10M(priv->phy);
+		higmac_config_port(ndev, SPEED_10, DUPLEX_FULL);
+	}
+
 	if (!netif_running(ndev))
 		clk_disable_unprepare(priv->clk);
 
 	pmt_enter(priv);
 
-	if (!priv->wol_enable) {	/* if no WOL, then poweroff */
-		/* pr_info("power off gmac.\n"); */
-		/* no need to call genphy_resume() in resume,
-		 * because we reset everything
-		 */
-		genphy_suspend(priv->phy);	/* power down phy */
-		msleep(20);
+	if (!priv->mac_wol_enable)
 		higmac_hw_all_clk_disable(priv);
-	}
 
 	return 0;
 }
@@ -2807,7 +2948,7 @@ int higmac_dev_resume(struct platform_device *pdev)
 	 * by re-write the mac CRG register.
 	 * So we first call clk_disable, and then clk_enable.
 	 */
-	if (priv->wol_enable)
+	if (priv->mac_wol_enable)
 		higmac_hw_all_clk_disable(priv);
 
 	higmac_hw_all_clk_enable(priv);
@@ -2823,6 +2964,7 @@ int higmac_dev_resume(struct platform_device *pdev)
 
 	/* restart hw engine now */
 	higmac_mac_core_reset(priv);
+	higmac_select_macif_clock_source(priv);
 
 	/* internal FE_PHY: enable clk and reset  */
 	higmac_hw_phy_reset(priv);
@@ -2839,7 +2981,7 @@ int higmac_dev_resume(struct platform_device *pdev)
 	 * call phy_connect to make phy_fixup excuted.
 	 * This is important for internal PHY fix.
 	 */
-	if (priv->wol_enable)
+	if (priv->mac_wol_enable)
 		phy_disconnect(priv->phy);
 
 	phy_connect_direct(ndev, priv->phy, higmac_adjust_link, priv->phy_mode);
@@ -2862,6 +3004,7 @@ int higmac_dev_resume(struct platform_device *pdev)
 	higmac_enable_irq(priv);
 
 	pmt_exit(priv);
+	device_set_wakeup_enable(priv->dev, false);
 
 	if (!netif_running(ndev)) {
 		clk_disable_unprepare(priv->macif_clk);
@@ -2900,8 +3043,6 @@ static struct platform_driver higmac_dev_driver = {
 		   },
 };
 
-#include "proc-dev.c"
-
 static int __init higmac_init(void)
 {
 	int ret = 0;
@@ -2909,8 +3050,6 @@ static int __init higmac_init(void)
 	ret = platform_driver_register(&higmac_dev_driver);
 	if (ret)
 		return ret;
-
-	higmac_proc_create();
 
 	return ret;
 }

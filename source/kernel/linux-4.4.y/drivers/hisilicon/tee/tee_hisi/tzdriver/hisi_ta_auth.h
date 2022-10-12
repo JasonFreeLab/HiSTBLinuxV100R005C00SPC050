@@ -222,6 +222,39 @@
     }\
 }
 
+/* *
+ *@ingroup  TEE_COMMON_DATA
+ *
+ * COMMON TA
+ *
+ * */
+
+#define TEE_SERVICE_COMMON \
+{\
+    0x000ac3b0, \
+    0xbf6f, \
+    0x11e7, \
+    {\
+        0x8f, 0x1a, 0x08, 0x00, 0x20, 0x0c, 0x9a, 0x66 \
+    }\
+}
+
+
+/* *
+ * @ingroup  TEE_STB_PLCIPHER
+ *
+ * Notification task
+ */
+#define TEE_SERVICE_PLCIPHER \
+{\
+    0x7ce373d9, \
+    0x60f7, \
+    0x43aa, \
+    {\
+         0xa7, 0x3f, 0x4e, 0x6b, 0xc9, 0x85, 0x99, 0x6b \
+    }\
+}
+
 /**
  * @ingroup  TEE_SERVICE_KLAD
  *
@@ -500,6 +533,21 @@
      { \
          0xb4, 0x8f, 0x37, 0x4c, 0x09, 0x38, 0x62, 0x31 \
      } \
+}
+
+/**
+ *  * @ingroup  TEE_ID
+ *   *
+ *    * session manage
+ *     */
+#define TEE_SERVICE_SESSION_MANAGE \
+{ \
+    0x90ae48e5, \
+    0xc757, \
+    0x44a7, \
+    { \
+        0xb5, 0x13, 0xde, 0x4b, 0x2b, 0x14, 0xa0, 0x7c \
+    } \
 }
 
 #define DEVCHIP_USER_CA_NAME       "__user_ca_name__"

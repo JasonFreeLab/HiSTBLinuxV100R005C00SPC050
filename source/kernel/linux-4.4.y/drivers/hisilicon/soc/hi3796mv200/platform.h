@@ -33,6 +33,22 @@
 #define CPU_REG_CORE_SRST                               8
 #define CPU_REG_CKEN                                    16
 
+#define REG_PERI_BUS_CLK                                0xF8A22058
+#define REG_PERI_APLL1                                  0xF8A22000
+#define REG_PERI_APLL2                                  0xF8A22004
+#define REG_PERI_BPLL1                                  0xF8A22008
+#define REG_PERI_BPLL2                                  0xF8A2200C
+#define REG_PERI_DPLL1                                  0xF8A22010
+#define REG_PERI_DPLL2                                  0xF8A22014
+#define REG_PERI_VPLL1                                  0xF8A22020
+#define REG_PERI_VPLL2                                  0xF8A22024
+#define REG_PERI_HPLL1                                  0xF8A22028
+#define REG_PERI_HPLL2                                  0xF8A2202C
+#define REG_PERI_EPLL1                                  0xF8A22030
+#define REG_PERI_EPLL2                                  0xF8A22034
+#define REG_PERI_QPLL1                                  0xF8A22038
+#define REG_PERI_QPLL2                                  0xF8A2203C
+
 #define HIETHPHY_SYSREG_REG                             0x0388
 
 #define REG_BASE_PMC                                    0xF8A23000

@@ -17,6 +17,7 @@
  *
 ******************************************************************************/
 
+#include <linux/delay.h>
 #include <linux/clkdev.h>
 #include <linux/hisilicon/freq.h>
 #include <dt-bindings/clock/hi3796mv200-clock.h>
@@ -27,37 +28,24 @@
 #define COMBPHY0_SEL_MASK                (BIT(17) | BIT(18))
 #define COMBPHY0_SEL_SATA                 BIT(18)
 
+#define SATA_SRST_REQ                     BIT(11)
+#define SATA_RX_SRST_REQ                  BIT(10)
+#define SATA_CKO_ALIVE_SRST_REQ           BIT(9)
+#define SATA_BUS_SRST_REQ                 BIT(8)
+
+#define SATA_TX_CKEN                      BIT(3)
+#define SATA_CKO_ALIVE_CKEN               BIT(2)
+#define SATA_RX_CKEN                      BIT(1)
+#define SATA_BUS_CKEN                     BIT(0)
+
 #define PERI_CTRL                        (0x0008)
 /******************************************************************************/
 
-static void hiclk_init_hiahci(struct clk_hw *hw)
+static int hiclk_enable_hiahci(struct clk_hw *hw)
 {
 	struct hiclk_hw *clk = to_hiclk_hw(hw);
 	u32 reg, mux;
 
-	mux = readl(clk->peri_ctrl_base + PERI_CTRL);
-	mux &= COMBPHY0_SEL_MASK;
-
-	if (mux != COMBPHY0_SEL_SATA) {
-		return;
-	}
-
-	/* enable phy clock */
-	reg = readl(clk->peri_crg_base + PERI_CRG98_COMBPHY);
-	reg &= ~0xff;
-	reg |= 0x1;
-	writel(reg, clk->peri_crg_base + PERI_CRG98_COMBPHY);
-	hiclk_init(hw);
-
-}
-/******************************************************************************/
-
-static int hiclk_prepare_hiahci(struct clk_hw *hw)
-{
-	struct hiclk_hw *clk = to_hiclk_hw(hw);
-	u32 reg, mux;
-
-	//TODO: make sure if combphy1 connected
 	mux = readl(clk->peri_ctrl_base + PERI_CTRL);
 	mux &= COMBPHY0_SEL_MASK;
 
@@ -67,14 +55,72 @@ static int hiclk_prepare_hiahci(struct clk_hw *hw)
 
 	/* enable phy clock */
 	reg = readl(clk->peri_crg_base + PERI_CRG98_COMBPHY);
-	reg &= ~0xff;
-	reg |= 0x1; // BPLL 25MHz
+	reg &= (~0xff);
+	reg |= 0x1;
 	writel(reg, clk->peri_crg_base + PERI_CRG98_COMBPHY);
-	return hiclk_prepare(hw);
+	udelay(200);
+
+	/* enable sata controller clock */
+	reg = readl(clk->peri_crg_base + PERI_CRG256_SATA3CTRL);
+	reg |= (SATA_TX_CKEN
+		|SATA_CKO_ALIVE_CKEN
+		|SATA_RX_CKEN
+		|SATA_BUS_CKEN);
+	writel(reg, clk->peri_crg_base + PERI_CRG256_SATA3CTRL);
+	udelay(200);
+
+	/* cancel control reset */
+	reg = readl(clk->peri_crg_base + PERI_CRG256_SATA3CTRL);
+	reg &= ~(SATA_SRST_REQ
+		|SATA_RX_SRST_REQ
+		|SATA_CKO_ALIVE_SRST_REQ
+		|SATA_BUS_SRST_REQ);
+	writel(reg, clk->peri_crg_base + PERI_CRG256_SATA3CTRL);
+	udelay(200);
+
+	return 0;
+}
+/******************************************************************************/
+
+static void hiclk_disable_hiahci(struct clk_hw *hw)
+{
+	struct hiclk_hw *clk = to_hiclk_hw(hw);
+	u32 reg, mux;
+
+	//TODO: make sure if combphy1 connected
+	mux = readl(clk->peri_ctrl_base + PERI_CTRL);
+	mux &= COMBPHY0_SEL_MASK;
+
+	if (mux != COMBPHY0_SEL_SATA) {
+		return;
+	}
+
+	/* control reset */
+	reg = readl(clk->peri_crg_base + PERI_CRG42_SATA3CTRL);
+	reg |= (SATA_SRST_REQ
+		|SATA_RX_SRST_REQ
+		|SATA_CKO_ALIVE_SRST_REQ
+		|SATA_BUS_SRST_REQ);
+	writel(reg, clk->peri_crg_base + PERI_CRG42_SATA3CTRL);
+	udelay(200);
+
+	/* disable sata controller clock */
+	reg = readl(clk->peri_crg_base + PERI_CRG42_SATA3CTRL);
+	reg &= ~(SATA_TX_CKEN
+		|SATA_CKO_ALIVE_CKEN
+		|SATA_RX_CKEN
+		|SATA_BUS_CKEN);
+	writel(reg, clk->peri_crg_base + PERI_CRG42_SATA3CTRL);
+	udelay(200);
+
+	/* disable phy clock */
+	reg = readl(clk->peri_crg_base + PERI_CRG98_COMBPHY);
+	reg &= (~0xff);
+	writel(reg, clk->peri_crg_base + PERI_CRG98_COMBPHY);
 }
 /******************************************************************************/
 
 struct clk_ops clk_ops_hiahci1 = {
-	.init = hiclk_init_hiahci,
-	.prepare = hiclk_prepare_hiahci,
+	.enable =	hiclk_enable_hiahci,
+	.disable = hiclk_disable_hiahci,
 };

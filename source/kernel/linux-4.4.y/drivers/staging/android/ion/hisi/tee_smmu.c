@@ -98,10 +98,10 @@ u32 hisi_get_tee_meminfo(u32 sec_addr, int flag)
 	list_for_each_entry(tee_mem, &smmu_list, list) {
 		mblock = (TEE_MEMBLOCKS *)phys_to_virt(tee_mem->phys_buf);
 		if (flag) {
-			if (mblock->sec_smmu == sec_addr)
+			if ((mblock->sec_smmu <= sec_addr) && (sec_addr < (mblock->sec_smmu + mblock->total_size)))
 				break;
 		} else {
-			if (mblock->phys_addr == sec_addr)
+			if ((mblock->phys_addr <= sec_addr) && (sec_addr < (mblock->phys_addr + mblock->total_size)))
 				break;
 		}
 

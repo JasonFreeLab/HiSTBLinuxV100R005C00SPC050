@@ -12,6 +12,7 @@
 #define MCU_START_CTRL  0xf840f000	/* mcu start control */
 #define OTP_IDWORD_ADDR 0xf8ab0128	/* OTP shadow register to indicate if it is advca chipset */
 #define OTP_CA_ID_WORD  0x6EDBE953	/* ID_WORD for CA chipset */
+#define REG_MAILBOX_INTR  0x408 //intr reg
 #define REG_MAILBOX_ARG_0 0x40 //cep
 #define REG_MAILBOX_ARG_1 0X44 //ree cep
 #define REG_MAILBOX_ARG_2 0x48 //ddr_sha_alg
@@ -225,6 +226,12 @@ store_resume:
 	/*Store resume address for non-advca chipset*/
 	ldr	r4, =hi_mailbox_base_addr
 	ldr	r4, [r4]
+
+wait_mailbox_intr:
+	ldr r2 , [r4, #REG_MAILBOX_INTR]
+	cmp r2, #0
+	bne wait_mailbox_intr
+
 	str	r5, [r4, #REG_MAILBOX_ARG_0] //CEP
 
 	ldr	r2, =0x0

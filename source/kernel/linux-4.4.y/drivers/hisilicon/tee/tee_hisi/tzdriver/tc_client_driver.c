@@ -84,6 +84,7 @@
 #include "libhwsecurec/securec.h"
 #include "tck_authentication.h"
 #include "tc_ns_log.h"
+#include "mailbox_mempool.h"
 
 #include <linux/namei.h>
 
@@ -261,6 +262,28 @@ static char ca_hash_android[SHA256_DIGEST_LENTH] =
 						0x8d, 0x76, 0x0c, 0x3d,
 						0xd5, 0xfe, 0x72, 0x47,
 					   };
+/* AndroidO: [teecd/vendor/bin/teecd0]    */
+static char ca_hash_android_vendor[SHA256_DIGEST_LENTH] =
+					{0xc5, 0x6e, 0x2b, 0x89,
+						0xce, 0x9e, 0xeb, 0x63,
+						0xe7, 0x42, 0xfb, 0x2b,
+						0x9d, 0x48, 0xff, 0x52,
+						0xb2, 0x2f, 0xa7, 0xd5,
+						0x87, 0xc6, 0x1f, 0x95,
+						0x84, 0x5c, 0xe, 0x96,
+						0x9e, 0x18, 0x81, 0x51,
+					};
+/* AndroidP: [teecd/vendor/bin/teecd1000], uid is system(1000)  */
+static char ca_hash_android_vendor_sys[SHA256_DIGEST_LENTH] =
+			{0xc2, 0x87, 0x46, 0xf1,
+			 0x6a, 0x1c, 0x70, 0x93,
+			 0x19, 0xca, 0x28, 0x78,
+			 0x88, 0x27, 0xb2, 0x8b,
+			 0x8c, 0x56, 0xf1, 0xff,
+			 0x89, 0x75, 0xc7, 0x58,
+			 0xef, 0x65, 0x98, 0x7f,
+			 0xe8, 0xfb, 0x4a, 0xe,
+			};
 #endif
 
 #define SYSTEM_SERVER "system_server"
@@ -276,11 +299,14 @@ static char *get_process_path(struct task_struct *task, char *tpath)
 	char *ret_ptr = NULL;
 	struct vm_area_struct *vma = NULL;
 	struct path base_path = {0};
+	struct mm_struct *mm = NULL;
 	bool find_path = false;
 	errno_t sret;
 
-	if (NULL == tpath || NULL == task)
+	if (NULL == tpath || NULL == task) {
+		tloge("The param is NULL\n");
 		return NULL;
+	}
 
 	sret = memset_s(tpath, MAX_PATH_SIZE, '\0', MAX_PATH_SIZE);
 	if (EOK != sret) {
@@ -288,13 +314,19 @@ static char *get_process_path(struct task_struct *task, char *tpath)
 		return NULL;
 	}
 
-	task_lock(task);
-	if (task->mm && task->mm->mmap) {
-		vma = task->mm->mmap;
-	} else {
-		task_unlock(task);
+	mm = get_task_mm(task);
+    if(!mm) {
+		tloge("Can not get task memory\n");
 		return NULL;
 	}
+	if (mm->mmap) {
+		vma = mm->mmap;
+	} else {
+		tloge("mmap is invalid\n");
+		mmput(mm);
+		return NULL;
+	}
+	down_read(&mm->mmap_sem);
 
 	while (vma) {
 		if ((vma->vm_flags & VM_EXEC) && vma->vm_file
@@ -305,15 +337,18 @@ static char *get_process_path(struct task_struct *task, char *tpath)
 #endif
 			) {
 			base_path = vma->vm_file->f_path;
+			path_get(&base_path);
 			find_path = true;
 			break;
 		}
 		vma = vma->vm_next;
 	}
-	task_unlock(task);
-	if (find_path)
+	up_read(&mm->mmap_sem);
+	mmput(mm);
+	if (find_path) {
 		ret_ptr = d_path(&base_path, tpath, MAX_PATH_SIZE);
-
+		path_put(&base_path);
+	}
 	return ret_ptr;
 }
 
@@ -414,6 +449,8 @@ static int check_teecd_access(struct task_struct *ca_task)
 				if (!memcmp(digest, ca_hash, SHA256_DIGEST_LENTH)
 #if defined(CONFIG_DEVCHIP_PLATFORM)
 				 || !memcmp(digest, ca_hash_android, SHA256_DIGEST_LENTH)
+				 || !memcmp(digest, ca_hash_android_vendor, SHA256_DIGEST_LENTH)
+				 || !memcmp(digest, ca_hash_android_vendor_sys, SHA256_DIGEST_LENTH)
 #endif
 				 ) {
 					kfree(tpath);
@@ -460,6 +497,7 @@ static int check_package_name(TC_NS_DEV_File *dev_file)
 		ret = kern_path((const char *)(dev_file->pkg_name), LOOKUP_FOLLOW, &path);
 		if (!ret) {
 			real_path = d_path(&path, realpath_buf, MAX_PATH_SIZE);
+			path_put(&path);
 			if (IS_ERR(real_path)) {
 				TCERR("failed to get real path of %s, err is %ld\n",
 						dev_file->pkg_name, PTR_ERR(real_path));
@@ -589,6 +627,9 @@ TC_NS_Service *tc_find_service(struct list_head *services, char *uuid)
 {
 	TC_NS_Service *service = NULL;
 
+	if (!services || !uuid)
+		return NULL;
+
 	/*need service init or not */
 	list_for_each_entry(service, services, head) {
 		if (0 == memcmp(service->uuid, uuid, sizeof(service->uuid)))
@@ -603,6 +644,9 @@ TC_NS_Session *tc_find_session(struct list_head *session_list,
 			       unsigned int session_id)
 {
 	TC_NS_Session *session = NULL;
+
+	if (!session_list)
+		return NULL;
 
 	list_for_each_entry(session, session_list, head) {
 		if (session->session_id == session_id)
@@ -730,7 +774,8 @@ static void tc_notify_timer_fn(struct notify_data_entry *notify_data_entry)
 			mutex_lock(&temp_dev_file->service_lock);
 			temp_svc =
 				tc_find_service(&temp_dev_file->services_list,
-						tc_notify_data_timer->uuid);
+						tc_notify_data_timer->uuid); /*lint !e64 */
+			get_service_struct(temp_svc);
 			mutex_unlock(&temp_dev_file->service_lock);
 			if (temp_svc) {
 				mutex_lock(&temp_svc->session_lock);
@@ -738,7 +783,9 @@ static void tc_notify_timer_fn(struct notify_data_entry *notify_data_entry)
 					tc_find_session(&temp_svc->session_list,
 							tc_notify_data_timer->
 							session_id);
+				get_session_struct(temp_ses);
 				mutex_unlock(&temp_svc->session_lock);
+				put_service_struct(temp_svc);
 				if (temp_ses) {
 					TCDEBUG("send cmd ses id %d\n",
 							temp_ses->session_id);
@@ -756,7 +803,8 @@ static void tc_notify_timer_fn(struct notify_data_entry *notify_data_entry)
 		TC_TIME_DEBUG("timer60 wake up event\n");
 		if (enc_found && temp_ses) {
 			temp_ses->wait_data.send_wait_flag = 1;
-			wake_up_interruptible(&temp_ses->wait_data.send_cmd_wq);
+			wake_up(&temp_ses->wait_data.send_cmd_wq);
+			put_session_struct(temp_ses);
 		}
 	} else {
 		TC_TIME_DEBUG("RTC do not need to wakeup\n");
@@ -866,6 +914,7 @@ static int TC_NS_ServiceInit(TC_NS_DEV_File *dev_file, unsigned char *uuid,
 	INIT_LIST_HEAD(&service->session_list);
 	mutex_init(&service->session_lock);
 	list_add_tail(&service->head, &dev_file->services_list);
+	atomic_set(&service->usage, 1); /*lint !e1058 */
 	*new_service = service;
 
 	return ret;
@@ -873,6 +922,9 @@ static int TC_NS_ServiceInit(TC_NS_DEV_File *dev_file, unsigned char *uuid,
 
 uint32_t TC_NS_get_uid(void)
 {
+#ifdef CONFIG_DEVCHIP_PLATFORM
+	return 0;
+#else
 	struct task_struct *task = current;
 	const struct cred *cred = NULL;
 	uint32_t uid = 0;
@@ -893,6 +945,7 @@ uint32_t TC_NS_get_uid(void)
 
 	TCDEBUG("current uid is %d\n", uid);
 	return uid;
+#endif
 }
 
 /* the input param should be "sha256" */
@@ -1116,7 +1169,7 @@ find_callback:
 EXPORT_SYMBOL(TC_NS_RegisterServiceCallbackFunc);
 
 #ifdef TC_ASYNC_NOTIFY_SUPPORT
-void timer_callback_func(struct TEEC_timer_property *timer_property)
+static void timer_callback_func(struct TEEC_timer_property *timer_property)
 {
 	TC_TIME_DEBUG
 	("timer_property->type = %x, timer_property->timer_id = %x\n",
@@ -1126,27 +1179,31 @@ void timer_callback_func(struct TEEC_timer_property *timer_property)
 
 static int TC_NS_register_notify_data_memery(void)
 {
-
 	TC_NS_SMC_CMD smc_cmd = { 0 };
 	int ret;
-	unsigned char uuid[17] = { 0 };
-	TC_NS_Operation operation = { 0 };
+	struct mb_cmd_pack *mb_pack;
 
-	operation.paramTypes =
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack)
+		return TEEC_ERROR_GENERIC;
+
+	mb_pack->operation.paramTypes =
 		TEE_PARAM_TYPE_VALUE_INPUT | TEE_PARAM_TYPE_VALUE_INPUT << 4;
-	operation.params[0].value.a = virt_to_phys(g_notify_data);
-	operation.params[0].value.b = virt_to_phys(g_notify_data) >> 32;
-	operation.params[1].value.a = SZ_4K;
+	mb_pack->operation.params[0].value.a = virt_to_phys(g_notify_data);
+	mb_pack->operation.params[0].value.b = virt_to_phys(g_notify_data) >> 32;
+	mb_pack->operation.params[1].value.a = SZ_4K;
 
-	uuid[0] = 1;
-	smc_cmd.uuid_phys = virt_to_phys((void *)uuid);
-	smc_cmd.uuid_h_phys = virt_to_phys((void *)uuid) >> 32;
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys((void *)mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys((void *)mb_pack->uuid) >> 32;
 	smc_cmd.cmd_id = GLOBAL_CMD_ID_REGISTER_NOTIFY_MEMORY;
-	smc_cmd.operation_phys = virt_to_phys(&operation);
-	smc_cmd.operation_h_phys = virt_to_phys(&operation) >> 32;
+	smc_cmd.operation_phys = virt_to_phys(&mb_pack->operation);
+	smc_cmd.operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32;
 
 	TCDEBUG("cmd. context_phys:%x\n", smc_cmd.context_id);
 	ret = TC_NS_SMC(&smc_cmd, 0);
+
+	mailbox_free(mb_pack);
 
 	return ret;
 }
@@ -1156,24 +1213,29 @@ static int TC_NS_unregister_notify_data_memory(void)
 
 	TC_NS_SMC_CMD smc_cmd = { 0 };
 	int ret;
-	unsigned char uuid[17] = { 0 };
-	TC_NS_Operation operation = { 0 };
+	struct mb_cmd_pack *mb_pack;
 
-	operation.paramTypes =
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack)
+		return TEEC_ERROR_GENERIC;
+
+	mb_pack->operation.paramTypes =
 		TEE_PARAM_TYPE_VALUE_INPUT | TEE_PARAM_TYPE_VALUE_INPUT << 4;
-	operation.params[0].value.a = virt_to_phys(g_notify_data);
-	operation.params[0].value.b = virt_to_phys(g_notify_data) >> 32;
-	operation.params[1].value.a = SZ_4K;
+	mb_pack->operation.params[0].value.a = virt_to_phys(g_notify_data);
+	mb_pack->operation.params[0].value.b = virt_to_phys(g_notify_data) >> 32;
+	mb_pack->operation.params[1].value.a = SZ_4K;
 
-	uuid[0] = 1;
-	smc_cmd.uuid_phys = virt_to_phys((void *)uuid);
-	smc_cmd.uuid_h_phys = virt_to_phys((void *)uuid) >> 32;
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys((void *)mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys((void *)mb_pack->uuid) >> 32;
 	smc_cmd.cmd_id = GLOBAL_CMD_ID_UNREGISTER_NOTIFY_MEMORY;
-	smc_cmd.operation_phys = virt_to_phys(&operation);
-	smc_cmd.operation_h_phys = virt_to_phys(&operation) >> 32;
+	smc_cmd.operation_phys = virt_to_phys(&mb_pack->operation);
+	smc_cmd.operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32;
 	TCDEBUG("cmd. context_phys:%x\n", smc_cmd.context_id);
 
 	ret = TC_NS_SMC(&smc_cmd, 0);
+
+	mailbox_free(mb_pack);
 
 	return ret;
 }
@@ -1187,7 +1249,7 @@ static void callback_demo_main(char *uuid)
 	TC_TIME_DEBUG("step into callback_demo_main\n");
 
 	ret = TC_NS_RegisterServiceCallbackFunc(uuid,
-						(void *)&timer_callback_func,
+						(void *)&timer_callback_func, /*lint !e611 */
 						NULL);
 	if (ret != 0)
 		TCERR("failed to TC_NS_RegisterServiceCallbackFunc\n");
@@ -1259,7 +1321,7 @@ static int TC_NS_Client_Login(TC_NS_DEV_File *dev_file, void __user *buffer)
 	}
 
 	cert_buffer += sizeof(dev_file->pkg_name_len);
-	sret = strncpy_s(dev_file->pkg_name, MAX_PACKAGE_NAME_LEN, cert_buffer,
+	sret = strncpy_s(dev_file->pkg_name, MAX_PACKAGE_NAME_LEN, cert_buffer, /*lint !e64 */
 			dev_file->pkg_name_len);
 	if (EOK != sret) {
 		ret = -ENOMEM;
@@ -1337,6 +1399,7 @@ int TC_NS_OpenSession(TC_NS_DEV_File *dev_file, TC_NS_ClientContext *context)
 	return ret;
 
 find_service:
+	get_service_struct(service);
 	mutex_unlock(&dev_file->service_lock);
 	session = kzalloc(sizeof(TC_NS_Session), GFP_KERNEL);
 	if (!session) {
@@ -1397,6 +1460,7 @@ find_service:
 	}
 #endif
 	mutex_lock(&g_tc_ns_dev_list.dev_lock);
+	/* use the lock to make sure the TA sessions cannot be concurrency opened */
 
 	/*cp hash_buf to global var, it is protected by lock */
 	ret = memcpy_s(g_ca_auth_hash_buf, (size_t)MAX_SHA_256_SZ,
@@ -1426,12 +1490,15 @@ find_service:
 	session->wait_data.send_wait_flag = 0;
 	init_waitqueue_head(&session->wait_data.send_cmd_wq);
 #endif
+	atomic_set(&session->usage, 1); /*lint !e1058 */
 
 	mutex_lock(&service->session_lock);
 	list_add_tail(&session->head, &service->session_list);
 	mutex_unlock(&service->session_lock);
 
-	return ret;
+	put_service_struct(service);
+
+	return ret; /*lint !e429 */
 error:
 #if defined(CONFIG_DEVCHIP_PLATFORM)
 	TCERR(" CA[%s] UID[0x%02x%02x%02x%02x] to TA[%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x] open session failed.\n",
@@ -1448,6 +1515,7 @@ error:
 			*(context->uuid+14), *(context->uuid+15));
 #endif
 	kfree(session);
+	put_service_struct(service);
 	return ret;
 }
 
@@ -1463,10 +1531,14 @@ int TC_NS_CloseSession(TC_NS_DEV_File *dev_file, TC_NS_ClientContext *context)
 		return ret;
 	}
 
+	mutex_lock(&g_tc_ns_dev_list.dev_lock);
+
 	mutex_lock(&dev_file->service_lock);
-	service = tc_find_service(&dev_file->services_list, context->uuid);
+	service = tc_find_service(&dev_file->services_list, context->uuid); /*lint !e64 */
+	get_service_struct(service);
 	mutex_unlock(&dev_file->service_lock);
 	if (NULL == service) {
+		mutex_unlock(&g_tc_ns_dev_list.dev_lock);
 		return ret;
 	}
 
@@ -1474,9 +1546,9 @@ int TC_NS_CloseSession(TC_NS_DEV_File *dev_file, TC_NS_ClientContext *context)
 	session =
 		tc_find_session(&service->session_list,
 				context->session_id);
+	get_session_struct(session);
 	mutex_unlock(&service->session_lock);
 
-	mutex_lock(&g_tc_ns_dev_list.dev_lock);
 	if (session) {
 		int ret2;
 
@@ -1493,10 +1565,12 @@ int TC_NS_CloseSession(TC_NS_DEV_File *dev_file, TC_NS_ClientContext *context)
 
 		mutex_lock(&service->session_lock);
 		list_del(&session->head);
+		put_session_struct(session);
 		mutex_unlock(&service->session_lock);
-		kfree(session);
+		put_session_struct(session); /* pair with open session */
 		ret = TEEC_SUCCESS;
 	}
+	put_service_struct(service);
 
 	mutex_unlock(&g_tc_ns_dev_list.dev_lock);
 	return ret;
@@ -1517,14 +1591,17 @@ int TC_NS_Send_CMD(TC_NS_DEV_File *dev_file, TC_NS_ClientContext *context)
 
 	/*check sessionid is validated or not */
 	mutex_lock(&dev_file->service_lock);
-	service = tc_find_service(&dev_file->services_list, context->uuid);
+	service = tc_find_service(&dev_file->services_list, context->uuid); /*lint !e64 */
+	get_service_struct(service);
 	mutex_unlock(&dev_file->service_lock);
 	if (service) {
 		mutex_lock(&service->session_lock);
 		session =
 			tc_find_session(&service->session_list,
 					context->session_id);
+		get_session_struct(session);
 		mutex_unlock(&service->session_lock);
+		put_service_struct(service);
 		if (session) {
 			TCDEBUG("send cmd find session id %x\n",
 				context->session_id);
@@ -1541,9 +1618,10 @@ find_session:
 	mutex_lock(&session->ta_session_lock);
 	ret = tc_client_call(context, dev_file, 0);
 	mutex_unlock(&session->ta_session_lock);
+	put_session_struct(session);
 
 	if (ret != 0)
-		TCERR("smc_call returns error, ret=0x%x\n", ret);
+		TCDEBUG("smc_call returns error, ret=0x%x\n", ret);
 	else
 		TCDEBUG("smc_call returns right\n");
 
@@ -1639,7 +1717,8 @@ static int TC_NS_TST_CMD(TC_NS_DEV_File *dev_id, void *argp)
 
 static int TC_NS_load_image_operation(TC_NS_ClientContext *client_context,
 				      TC_NS_Operation *operation,
-				      TC_NS_DEV_File *dev_file)
+				      TC_NS_DEV_File *dev_file,
+					  void **mb_param, TC_NS_Shared_MEM **used_shm)
 {
 	int index = 0;
 	int ret = 1;
@@ -1671,23 +1750,32 @@ static int TC_NS_load_image_operation(TC_NS_ClientContext *client_context,
 		    (void *)client_param->memref.buffer) {
 			if (shared_mem->len >=
 			    operation->params[index].memref.size) {
+				void *mb_ptr = mailbox_copy_alloc(shared_mem->kernel_addr,
+					shared_mem->len);
+
+				if (!mb_ptr) {
+					mutex_unlock(&dev_file->shared_mem_lock);
+					tloge("alloc mailbox copy failed\n");
+					return -ENOMEM;
+				}
+				if (mb_param)
+					*mb_param = mb_ptr;
+				if (used_shm)
+					*used_shm = shared_mem;
+
 				/* arbitrary CA can control offset by ioctl.
 				 * when shared_mem used in TEEC_AppLoadCmd of
 				 * libteec.so, offset is 0. so in here don't
 				 * add client_param->memref.offset to
 				 * kernel_addr. */
-				operation->params[index].memref.buffer =
-					virt_to_phys((void *)shared_mem
-						     ->kernel_addr);
-				operation->buffer_h_addr[index] =
-					virt_to_phys((void *)shared_mem
-						     ->kernel_addr) >> 32;
+				operation->params[index].memref.buffer = virt_to_phys(mb_ptr);
+				operation->buffer_h_addr[index] = virt_to_phys(mb_ptr) >> 32; /*lint !e572*/
 			}
 			break;
 		}
 	}
-	mutex_unlock(&dev_file->shared_mem_lock);
 
+	mutex_unlock(&dev_file->shared_mem_lock);
 	/* for 8G physical memory device, there is a chance that
 	 * operation->params[index].memref.buffer could be all 0,
 	 * buffer_h_addr cannot be 0 in the same time.  */
@@ -1711,16 +1799,15 @@ static int TC_NS_load_image(TC_NS_DEV_File *dev_file, void *argp, unsigned cmd)
 {
 	int ret, index = 0;
 	TC_NS_SMC_CMD *smc_cmd = NULL;
-	TC_NS_Operation *operation = NULL;
 	TC_NS_ClientContext client_context;
-	unsigned char uuid[17] = {0};
 	unsigned int reg_buf_size = 0;
-	struct reg_buf_st  *k_register_buf, *k_register_buf_p;
+	struct reg_buf_st  *k_register_buf, *k_register_buf_p = NULL;
 	TC_NS_Shared_MEM *shared_mem = NULL;
+	struct mb_cmd_pack *mb_pack = NULL;
 
 	if (!dev_file) {
 		TCERR("dev file id erro\n");
-		return IMG_LOAD_FIND_NO_DEV_ID;
+		return IMG_LOAD_FIND_NO_DEV_ID; /*lint !e569 */
 	}
 
 	if (copy_from_user(&client_context, argp,
@@ -1737,48 +1824,39 @@ static int TC_NS_load_image(TC_NS_DEV_File *dev_file, void *argp, unsigned cmd)
 		return ret;
 	}
 
-	/* load image operation */
-	operation = kzalloc(sizeof(TC_NS_Operation), GFP_KERNEL);
-	if (!operation) {
-		TCERR("login malloc failed");
-		ret = -ENOMEM;
-		goto operation_erro;
-	}
-
 	/* go with load image smc command */
 	if (copy_from_user(&reg_buf_size,
 		(void __user *)client_context.params[0].memref.size_addr,
 		sizeof(unsigned int))) {
 		TCERR("register buf size get fail\n");
 		ret = -1;
-		goto out;
+		goto out1;
 	}
 
 	if (reg_buf_size > MAX_REGISTER_SIZE) {
-		TCERR("TA size is too large(10M)\n");
+		TCERR("TA size is too large or maybe an Old Version.\n");
 		ret = -1;
-		goto out;
+		goto out1;
 	}
 
 	k_register_buf_p = kzalloc(reg_buf_size, GFP_KERNEL);
-	if (!k_register_buf_p) {
+	if (ZERO_OR_NULL_PTR(k_register_buf_p)) {
 		TCERR("alloc register buf failed");
 		ret = -ENOMEM;
-		goto out;
+		goto out1;
 	}
 
 	if (copy_from_user(k_register_buf_p,
 			(void __user *)client_context.params[0].memref.buffer,
-			reg_buf_size)) {
+			reg_buf_size)) { /*lint !e613 !e668 */
 		TCERR("register buf get fail\n");
 		ret = -1;
 		goto out1;
 	}
 
 	k_register_buf = k_register_buf_p;
-	for (index = 0; index < reg_buf_size/sizeof(struct reg_buf_st);
+	for (index = 0; index < reg_buf_size/sizeof(struct reg_buf_st); /*lint !e574 */
 			index++) {
-		errno_t sret;
 		/* large buffer, use share-memory to share with secure world */
 		if (k_register_buf->file_size > PRE_ALLOCATE_SIZE) {
 			TCERR("send_len ls too large\n");
@@ -1786,7 +1864,7 @@ static int TC_NS_load_image(TC_NS_DEV_File *dev_file, void *argp, unsigned cmd)
 			goto out1;
 		}
 		shared_mem =
-			tc_mem_allocate(dev_file, k_register_buf->file_size);
+			tc_mem_allocate(dev_file, k_register_buf->file_size, true);
 		if (IS_ERR(shared_mem)) {
 			TCERR("share mem get fail\n");
 			ret = -1;
@@ -1801,20 +1879,21 @@ static int TC_NS_load_image(TC_NS_DEV_File *dev_file, void *argp, unsigned cmd)
 			goto out1;
 		}
 
-		/* load image opration */
-		sret = memset_s(operation, sizeof(TC_NS_Operation), 0,
-				sizeof(TC_NS_Operation));
-		if (EOK != sret) {
+		mb_pack = mailbox_alloc_cmd_pack();
+		if (!mb_pack) {
+			tloge("alloc mb pack failed\n");
 			tc_mem_free(shared_mem);
+			ret = -1;
 			goto out1;
 		}
-		operation->params[0].memref.buffer  =
+
+		mb_pack->operation.params[0].memref.buffer  =
 			virt_to_phys((void *)shared_mem->kernel_addr);
-		operation->buffer_h_addr[0] =
+		mb_pack->operation.buffer_h_addr[0] =
 			virt_to_phys((void *)shared_mem->kernel_addr) >> 32;
 		/*get out of the load_flag, size is int*/
-		operation->params[0].memref.size = k_register_buf->file_size;
-		operation->paramTypes = TEEC_PARAM_TYPES(
+		mb_pack->operation.params[0].memref.size = k_register_buf->file_size;
+		mb_pack->operation.paramTypes = TEEC_PARAM_TYPES(
 			TEEC_MEMREF_TEMP_INOUT,
 			TEE_PARAM_TYPE_NONE,
 			TEE_PARAM_TYPE_NONE,
@@ -1822,24 +1901,25 @@ static int TC_NS_load_image(TC_NS_DEV_File *dev_file, void *argp, unsigned cmd)
 
 		/* load image smc command */
 		smc_cmd->cmd_id = GLOBAL_CMD_ID_LOAD_SECURE_APP;
-		uuid[0] = 1;
-		smc_cmd->uuid_phys = virt_to_phys((void *)uuid);
-		smc_cmd->uuid_h_phys = virt_to_phys((void *)uuid) >> 32;
+		mb_pack->uuid[0] = 1;
+		smc_cmd->uuid_phys = virt_to_phys((void *)mb_pack->uuid);
+		smc_cmd->uuid_h_phys = virt_to_phys((void *)mb_pack->uuid) >> 32; /*lint !e572*/
 		smc_cmd->dev_file_id = dev_file->dev_file_id;
 		smc_cmd->context_id = 0;
-		smc_cmd->operation_phys = virt_to_phys(operation);
-		smc_cmd->operation_h_phys = virt_to_phys(operation) >> 32;
+		smc_cmd->operation_phys = virt_to_phys(&mb_pack->operation);
+		smc_cmd->operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32; /*lint !e572*/
 
 		TCDEBUG("secure app load smc command, file size %d\n",
 			k_register_buf->file_size);
 		TCDEBUG("operation phys 0x%x\n", smc_cmd->operation_phys);
 		ret = TC_NS_SMC(smc_cmd, 0);
 		tc_mem_free(shared_mem);
+		mailbox_free(mb_pack);
 		k_register_buf++;
 		TCDEBUG("smc cmd ret %d\n", ret);
 		if (ret != 0) {
 			TCERR("smc_call returns error ret 0x%x\n", ret);
-			ret = IMG_LOAD_SECURE_RET_ERROR;
+			ret = IMG_LOAD_SECURE_RET_ERROR; /*lint !e569 */
 			goto out1;
 		}
 	}
@@ -1847,26 +1927,24 @@ static int TC_NS_load_image(TC_NS_DEV_File *dev_file, void *argp, unsigned cmd)
 	/* error to free: */
 out1:
 	kfree(k_register_buf_p);
-out:
-	kfree(operation);
-operation_erro:
 	kfree(smc_cmd);
 
-	return ret;
+	return ret; /*lint !e593 */
 }
 
 static int TC_NS_need_load_image(TC_NS_DEV_File *dev_file,
 		void *argp, unsigned cmd)
 {
 	int ret;
-	TC_NS_SMC_CMD *smc_cmd = NULL;
-	TC_NS_Operation *operation = NULL;
+	TC_NS_SMC_CMD smc_cmd = {0};
 	TC_NS_ClientContext client_context;
-	unsigned char uuid[17] = { 0 };
+	struct mb_cmd_pack *mb_pack = NULL;
+	void *mb_param = NULL;
+	TC_NS_Shared_MEM *usd_shm = NULL;
 
 	if (!dev_file) {
 		TCERR("dev file id erro\n");
-		return IMG_LOAD_FIND_NO_DEV_ID;
+		return IMG_LOAD_FIND_NO_DEV_ID; /*lint !e569 */
 	}
 	if (!argp) {
 		TCERR("argp is NULL input buffer\n");
@@ -1880,19 +1958,10 @@ static int TC_NS_need_load_image(TC_NS_DEV_File *dev_file,
 		return ret;
 	}
 
-	smc_cmd = kzalloc(sizeof(TC_NS_SMC_CMD), GFP_KERNEL);
-	if (!smc_cmd) {
-		TCERR("smc_cmd malloc failed");
-		ret = -ENOMEM;
-		return ret;
-	}
-
-	/* load image operation */
-	operation = kzalloc(sizeof(TC_NS_Operation), GFP_KERNEL);
-	if (!operation) {
-		TCERR("login malloc failed");
-		ret = -ENOMEM;
-		goto operation_erro;
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack) {
+		tloge("alloc mb pack failed\n");
+		return -ENOMEM;
 	}
 
 	if (TC_NS_CLIENT_IOCTL_NEED_LOAD_APP == cmd) {
@@ -1905,36 +1974,43 @@ static int TC_NS_need_load_image(TC_NS_DEV_File *dev_file,
 		goto buf_erro;
 	}
 
-	ret = TC_NS_load_image_operation(&client_context, operation, dev_file);
+	ret = TC_NS_load_image_operation(&client_context, &mb_pack->operation, dev_file,
+		&mb_param, &usd_shm);
 	if (ret < 0) {
-		ret = IMG_LOAD_FIND_NO_SHARE_MEM;
+		ret = IMG_LOAD_FIND_NO_SHARE_MEM; /*lint !e569 */
 		goto buf_erro;
 	}
 
 	/* load image smc command */
 	TCDEBUG("smc cmd id %d\n", client_context.cmd_id);
-	smc_cmd->cmd_id = client_context.cmd_id;
-	uuid[0] = 1;
-	smc_cmd->uuid_phys = virt_to_phys((void *)uuid);
-	smc_cmd->uuid_h_phys = virt_to_phys((void *)uuid) >> 32;
-	smc_cmd->dev_file_id = dev_file->dev_file_id;
-	smc_cmd->context_id = 0;
-	smc_cmd->operation_phys = virt_to_phys(operation);
-	smc_cmd->operation_h_phys = virt_to_phys(operation) >> 32;
+	smc_cmd.cmd_id = client_context.cmd_id;
+	mb_pack->uuid[0] = 1;
+	smc_cmd.uuid_phys = virt_to_phys((void *)mb_pack->uuid);
+	smc_cmd.uuid_h_phys = virt_to_phys((void *)mb_pack->uuid) >> 32; /*lint !e572*/
+	smc_cmd.dev_file_id = dev_file->dev_file_id;
+	smc_cmd.context_id = 0;
+	smc_cmd.operation_phys = virt_to_phys(&mb_pack->operation);
+	smc_cmd.operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32; /*lint !e572*/
 
 	TCDEBUG("secure app load smc command\n");
-	ret = TC_NS_SMC(smc_cmd, 0);
+	ret = TC_NS_SMC(&smc_cmd, 0);
 
 	if (ret != 0) {
 		TCERR("smc_call returns error ret 0x%x\n", ret);
-		ret = IMG_LOAD_SECURE_RET_ERROR;
+		ret = IMG_LOAD_SECURE_RET_ERROR; /*lint !e569 */
+	} else {
+		if (usd_shm && memcpy_s(usd_shm->kernel_addr, usd_shm->len, mb_param,
+				mb_pack->operation.params[0].memref.size)) {
+			tloge("copy back to mailbox failed\n");
+			ret = -1;
+		}
 	}
 
 	/* error: */
 buf_erro:
-	kfree(operation);
-operation_erro:
-	kfree(smc_cmd);
+	if (mb_param)
+		mailbox_free(mb_param);
+	mailbox_free(mb_pack);
 
 	return ret;
 }
@@ -2020,13 +2096,13 @@ int TC_NS_ClientClose(TC_NS_DEV_File *dev, int flag)
 					kill_session(dev, service->uuid,
 						     session->session_id);
 					mutex_unlock(&session->ta_session_lock);
-					kfree(session);
+					put_session_struct(session); /* pair with open session */
 				}
 				mutex_unlock(&service->session_lock);
 			}
 
 			list_del(&service->head);
-			kfree(service);
+			put_service_struct(service); /* pair with TC_NS_ServiceInit */
 			dev->service_cnt--;
 		}
 	}
@@ -2037,7 +2113,7 @@ int TC_NS_ClientClose(TC_NS_DEV_File *dev, int flag)
 		if (shared_mem) {
 			list_del(&shared_mem->head);
 			if (!flag)
-				tc_mem_free(shared_mem);
+				put_sharemem_struct(shared_mem); /* pair with tc_client_mmap */
 			dev->shared_mem_cnt--;
 		}
 	}
@@ -2046,15 +2122,9 @@ int TC_NS_ClientClose(TC_NS_DEV_File *dev, int flag)
 	if (!flag)
 		TC_NS_unregister_agent_client(dev);
 
-	mutex_lock(&dev->service_lock);
-	if (0 == dev->service_cnt && list_empty(&dev->services_list)) {
 		ret = TEEC_SUCCESS;
 		/*del dev from the list */
 		list_del(&dev->head);
-	} else {
-		TCERR("realse service first!");
-	}
-	mutex_unlock(&dev->service_lock);
 
 	kfree(dev);
 
@@ -2080,7 +2150,6 @@ void shared_vma_open(struct vm_area_struct *vma)
 void shared_vma_close(struct vm_area_struct *vma)
 {
 	TC_NS_Shared_MEM *shared_mem = NULL, *shared_mem_temp = NULL;
-	TC_NS_Service *service = NULL, *service_temp = NULL;
 	TC_NS_DEV_File *dev_file = vma->vm_private_data;
 	void *user_addr = (void *)(vma->vm_start);
 
@@ -2091,36 +2160,12 @@ void shared_vma_close(struct vm_area_struct *vma)
 		return;
 	}
 
-	mutex_lock(&dev_file->service_lock);
-	/* if there is any session in work(TA is working),then
-	 * wait on the session lock before release the sharemem,
-	 * otherwise may induce the crash issue WeChat encountered.
-	 * here we could not directly kill the TA because user maybe
-	 * just called unmap only.
-	 */
-	list_for_each_entry_safe(service, service_temp,
-			&dev_file->services_list, head) {
-		if (service) {
-			if (!list_empty(&service->session_list)) {
-				TC_NS_Session *session, *tmp_session;
-
-				mutex_lock(&service->session_lock);
-				list_for_each_entry_safe(session, tmp_session,
-						&service->session_list, head) {
-					mutex_lock(&session->ta_session_lock);
-					mutex_unlock(&session->ta_session_lock);
-				}
-				mutex_unlock(&service->session_lock);
-			}
-		}
-	}
-	mutex_unlock(&dev_file->service_lock);
 	mutex_lock(&dev_file->shared_mem_lock);
 	list_for_each_entry_safe(shared_mem, shared_mem_temp,
 				 &dev_file->shared_mem_list, head) {
 		if (shared_mem && shared_mem->user_addr == (void *)user_addr) {
 			list_del(&shared_mem->head);
-			tc_mem_free(shared_mem);
+			put_sharemem_struct(shared_mem); /* pair with tc_client_mmap */
 			dev_file->shared_mem_cnt--;
 			break;
 		}
@@ -2142,6 +2187,7 @@ static int tc_client_mmap(struct file *filp, struct vm_area_struct *vma)
 	unsigned long len = vma->vm_end - vma->vm_start;
 	TC_NS_Shared_MEM *shared_mem = NULL;
 	struct __smc_event_data *event_control = NULL;
+	bool is_teecd = false;
 
 	if (!dev_file) {
 		TCERR("can not find dev in malloc shared buffer!\n");
@@ -2158,10 +2204,12 @@ static int tc_client_mmap(struct file *filp, struct vm_area_struct *vma)
 
 		if (event_control)
 			shared_mem = event_control->buffer;
+
+		is_teecd = true;
 	}
 
 	if (!shared_mem)
-		shared_mem = tc_mem_allocate(dev_file, len);
+		shared_mem = tc_mem_allocate(dev_file, len, is_teecd);
 
 	if (IS_ERR(shared_mem))
 		return -1;
@@ -2186,6 +2234,7 @@ static int tc_client_mmap(struct file *filp, struct vm_area_struct *vma)
 	dev_file->shared_mem_cnt++;
 	vma->vm_private_data = (void *)dev_file;
 	list_add_tail(&shared_mem->head, &dev_file->shared_mem_list);
+	atomic_set(&shared_mem->usage, 1); /*lint !e1058 */
 	mutex_unlock(&dev_file->shared_mem_lock);
 
 	return ret;
@@ -2468,7 +2517,7 @@ static int tc_client_close(struct inode *inode, struct file *file)
 	if ((g_teecd_task == current->group_leader) && (!TC_NS_get_uid())
 			&& (g_teecd_task->flags & PF_EXITING
 				|| current->flags & PF_EXITING)) {
-		TCERR("teecd is killed, something bad must be happened!!!\n");
+		TCERR("teecd is killed, some secure application can not work well!!!\n");
 		TC_NS_send_event_response_all();
 		ret = TC_NS_ClientClose(dev, 1);
 		if (0 == (--agent_count))
@@ -2598,11 +2647,11 @@ static __init int tc_init(void)
 	if (ret < 0)
 		goto class_device_destroy;
 
-	ret = agent_init();
-	if (ret < 0)
+	if (tc_mem_init())
 		goto smc_data_free;
 
-	if (tc_mem_init())
+	ret = agent_init();
+	if (ret < 0)
 		goto free_agent;
 
 #if defined(CONFIG_TEELOG)
@@ -2704,10 +2753,10 @@ free_notify_mem:
 #endif
 free_shared_mem:
 	tc_mem_destroy();
-free_agent:
-	agent_exit();
 smc_data_free:
 	smc_free_data();
+free_agent:
+	agent_exit();
 class_device_destroy:
 	device_destroy(driver_class, tc_ns_client_devt);
 class_destroy:

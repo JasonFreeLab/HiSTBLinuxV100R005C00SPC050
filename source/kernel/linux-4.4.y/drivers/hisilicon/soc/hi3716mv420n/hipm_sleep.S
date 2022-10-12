@@ -261,6 +261,7 @@ jump_to_sram:
 	ldr	r2, =hi_ca_ddrwakeupcheck_phys
 	ldr 	lr, [r2]
 
+#ifdef CONFIG_PRINTK
 	/* init UART */
 	ldr	r3, =hi_uart_virtbase
 	ldr	r3, [r3]
@@ -303,7 +304,7 @@ jump_to_sram:
 	str	r4, [r3]
 	mov	r4, #0x0a
 	str	r4, [r3]
-
+#endif
 	/* disable MMU */
 	mrc p15, 0, r1, c1, c0, 0 
 	bic r1, #1
@@ -354,6 +355,7 @@ loop_wfi:
 	nop
 
 resume_code:
+#ifdef CONFIG_PRINTK
 _serial_init:
 	mov	r3, #0
 	movt	r3, #0xf8b0
@@ -419,6 +421,7 @@ _serial_init:
 	str	r4, [r3]
 	mov	r4, #0x0a
 	str	r4, [r3]
+#endif
 
 	@ write domain access to get the domain access right
 	ldr	r7, =0xFFFFFFFF

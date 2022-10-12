@@ -9,6 +9,7 @@ obj-$(CONFIG_HISI_IR_NEC_SIMPLE_2HDR_GD)	+= ir-keymap-nec-gd.o
 obj-$(CONFIG_HISI_IR_NEC_SIMPLE_UPD61261)	+= ir-keymap-nec-rc8a.o
 obj-$(CONFIG_HISI_NEC_FULL_DEZHOU)		+= ir-keymap-nec-full-dezhou.o
 obj-$(CONFIG_HISI_NEC_FULL_BANK)		+= ir-keymap-nec-bank.o
+obj-$(CONFIG_HISI_NEC_SIMPLE_ATTO)		+= ir-keymap-nec-atto.o
 obj-$(CONFIG_HISI_NEC_SIMPLE_HISILICON)		+= ir-keymap-nec-hisilicon.o
 obj-$(CONFIG_HISI_NEC_SIMPLE_BLACK)		+= ir-keymap-nec-black.o
 obj-$(CONFIG_HISI_NEC_TC9012)			+= ir-keymap-nec-skyworth-yk.o

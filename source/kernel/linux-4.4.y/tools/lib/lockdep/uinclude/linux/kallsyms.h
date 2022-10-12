@@ -4,7 +4,7 @@
 #include <linux/kernel.h>
 #include <stdio.h>
 
-#define KSYM_NAME_LEN 128
+#define KSYM_NAME_LEN 256
 
 struct module;
 

@@ -139,7 +139,7 @@ static noinline int smc_send(uint32_t cmd, phys_addr_t cmd_addr,
 	return x0;
 }
 #else
-#ifdef CONFIG_TEE_VMX_ULTRA
+#if defined(CONFIG_TEE_VMX_ULTRA) || defined(CONFIG_ARM32_ATF_SUPPORT)
 static noinline int smc_send(uint32_t cmd, phys_addr_t cmd_addr,
 		uint32_t cmd_type, uint8_t wait)
 {

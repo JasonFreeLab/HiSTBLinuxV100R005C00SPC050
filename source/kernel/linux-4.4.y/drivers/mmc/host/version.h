@@ -9,7 +9,7 @@
 #ifdef CONFIG_ARCH_HI3798MV2X       
 #  define HIMCI_VERSION        "V2.0"
 #else
-#ifdef CONFIG_ARCH_HI3796MV2X
+#if defined(CONFIG_ARCH_HI3796MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #  define HIMCI_VERSION        "V3.0"
 #else
 #  define HIMCI_VERSION        "V1.0"

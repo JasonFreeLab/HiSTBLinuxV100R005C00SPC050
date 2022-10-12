@@ -852,10 +852,13 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
 
 		ret = xattr->size;
 		if (buffer) {
-			if (size < xattr->size)
+			if (size < xattr->size) {
+				isb();
 				ret = -ERANGE;
-			else
+			} else {
+				isb();
 				memcpy(buffer, xattr->value, xattr->size);
+		}
 		}
 		break;
 	}

@@ -72,13 +72,7 @@ static int s40_boot_secondary(unsigned int cpu,
 	 */
 	spin_lock(&boot_lock);
 
-	if (chipid == _HI3798CV100A ||
-	    chipid == _HI3798CV100 ||
-	    chipid == _HI3796CV100) {
-		s5_scu_power_up(cpu);
-	} else {
 		s40_scu_power_up(cpu);
-	}
 
 	/*
 	 * The secondary processor is waiting to be released from

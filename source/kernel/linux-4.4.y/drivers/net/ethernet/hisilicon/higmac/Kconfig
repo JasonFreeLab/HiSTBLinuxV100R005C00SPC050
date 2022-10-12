@@ -4,7 +4,7 @@
 
 menuconfig HIETH_GMAC
 	tristate "hieth gmac family network device support"
-	depends on (ARCH_S40 || ARCH_HIFONE || ARCH_HI3798CV2X || ARCH_HI3798MV2X || ARCH_HI3796MV2X || ARCH_HI3716MV420N)
+	depends on (ARCH_S40 || ARCH_HIFONE || ARCH_HI3798CV2X || ARCH_HI3798MV2X || ARCH_HI3798MV310 || ARCH_HI3796MV2X || ARCH_HI3716MV420N)
 	select PHYLIB
 	select RESET_CONTROLLER
 	help

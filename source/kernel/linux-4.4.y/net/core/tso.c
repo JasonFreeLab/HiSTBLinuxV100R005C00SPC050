@@ -51,6 +51,7 @@ void tso_build_data(struct sk_buff *skb, struct tso_t *tso, int size)
 
 	if ((tso->size == 0) &&
 	    (tso->next_frag_idx < skb_shinfo(skb)->nr_frags)) {
+		isb();
 		skb_frag_t *frag = &skb_shinfo(skb)->frags[tso->next_frag_idx];
 
 		/* Move to next segment */
@@ -75,6 +76,7 @@ void tso_start(struct sk_buff *skb, struct tso_t *tso)
 	tso->data = skb->data + hdr_len;
 	if ((tso->size == 0) &&
 	    (tso->next_frag_idx < skb_shinfo(skb)->nr_frags)) {
+		isb();
 		skb_frag_t *frag = &skb_shinfo(skb)->frags[tso->next_frag_idx];
 
 		/* Move to next segment */

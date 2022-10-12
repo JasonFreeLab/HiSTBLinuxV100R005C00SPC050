@@ -109,7 +109,7 @@ static void nano_phy_config_0(struct hiclk_hw *clk)
 	* GUSB3PIPECTL0[2:1] = 01 : Tx Deemphasis = -3.5dB, refer to spec
 	*/
 	reg = readl(xhci_host0_regbase + REG_GUSB3PIPECTL0);
-	reg &= ~USB3_SUSPEND_EN;
+	reg |= USB3_SUSPEND_EN;
 	reg &= ~USB3_DEEMPHASIS_MASK;
 	reg |= USB3_DEEMPHASIS0;
 	reg |= USB3_TX_MARGIN1;
@@ -386,22 +386,14 @@ static void hiclk_disable_usb3_host0(struct clk_hw *hw)
 	struct clk * usb2clk =__clk_lookup(clkname);
 
 	clk_disable_unprepare(usb2clk);
+	mdelay(100);
 
 	reg = readl(clk->peri_crg_base + PERI_CRG44_USB3CTRL);
-	reg |= USB3_VCC_SRST_REQ;
+	reg &= ~(USB3_UTMI_CKEN
+		| USB3_SUSPEND_CKEN
+		| USB3_REF_CKEN
+		| USB3_BUS_CKEN);
 	writel(reg, clk->peri_crg_base + PERI_CRG44_USB3CTRL);
-
-	reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
-	reg |= USB2_PHY01_SRST_TREQ0;
-	writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
-
-	if (!no_usb3_0) {
-		reg = readl(clk->peri_crg_base + PERI_CRG98_COMBPHY);
-		reg |= COMBPHY0_SRST_REQ;
-		writel(reg, clk->peri_crg_base + PERI_CRG98_COMBPHY);
-	}
-
-	mdelay(500);
 }
 /******************************************************************************/
 

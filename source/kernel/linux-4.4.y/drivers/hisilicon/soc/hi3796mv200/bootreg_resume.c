@@ -193,6 +193,7 @@ struct reg_filter crg[] = {
 	{0x180, 0xffffffff},
 	{0x27C, 0xffffffff},
 	{0x380, 0xffffffff},
+	{0x420, 0xffffffff}, //do not disable plcipher, as plcipher is used in TEE
 	{0, 0}
 };
 
@@ -358,7 +359,7 @@ static void reg_read_write(unsigned long addr,
 		regmask &= bitmask;
 		tmp_val = readl((void __iomem *)addr);
 		tmp_val &= ~(regmask);
-		val = tmp_val | (val & regmask);
+		val = tmp_val | ((val << reg->member.bit_off) & regmask);
 		writel(val, (void __iomem *)addr);
 
 		udelay(wait);

@@ -194,7 +194,7 @@ struct nand_flash_dev nand_flash_ids_hisi[] = {
 		.options   = 0,
 		.ecc       = NAND_ECC_INFO(24, SZ_1K),
 	}, {
-		.name      = "MT29F256G08CMCBB",
+		.name      = "MT29F64G08CBAAB",
 		.id        = {0x2C, 0x64, 0x44, 0x4B, 0xA9, 0x00, 0x00, 0x00},
 		.id_len    = 8,
 		.chipsize  = SZ_8K,
@@ -360,6 +360,17 @@ struct nand_flash_dev nand_flash_ids_hisi[] = {
 		.ecc       = NAND_ECC_INFO(60, SZ_1K),
 		.read_retry_type = NAND_RR_TOSHIBA_V2013,
 	}, {
+		.name      = "TC58TEG5DClTA0C",
+		.id        = {0x98, 0xD7, 0x84, 0x93, 0x72, 0x51, 0x08, 0x04},
+		.id_len    = 8,
+		.chipsize  = SZ_4K,
+		.pagesize  = SZ_16K,
+		.erasesize = SZ_4M,
+		.oobsize   = 1280,
+		.options   = 0,
+		.ecc       = NAND_ECC_INFO(60, SZ_1K),
+		.read_retry_type = NAND_RR_TOSHIBA_V2013,
+	},{
 		.name      = "Tx58TEGxDDKTAx0",
 		.id        = {0x98, 0xDE, 0x94, 0x93, 0x76, 0x50},
 		.id_len    = 6,

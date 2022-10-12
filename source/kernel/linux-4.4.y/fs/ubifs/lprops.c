@@ -234,6 +234,7 @@ static void remove_from_lpt_heap(struct ubifs_info *c,
 	ubifs_assert(heap->arr[hpos] == lprops);
 	heap->cnt -= 1;
 	if (hpos < heap->cnt) {
+		isb();
 		heap->arr[hpos] = heap->arr[heap->cnt];
 		heap->arr[hpos]->hpos = hpos;
 		adjust_lpt_heap(c, heap, heap->arr[hpos], hpos, cat);

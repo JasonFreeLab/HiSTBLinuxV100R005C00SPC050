@@ -76,26 +76,26 @@ static int devfreq_hisilicon_func(struct devfreq *df, unsigned long *freq)
 
 	temp_ctrl = mali_valuable->temp_ctrl;
 
-	/* (1)Check the temperature */
-	if (temp_ctrl == 1) {
-		*freq = (unsigned long)min_frequency;
+        /* check total, avoid being divided by zero */
+	if (total == 0) {
+		*freq = status->current_frequency;
 		return 0;
 	}
 
-	/* (2)Check dvfs enable */
+        /* (1)Check dvfs enable */
 	if (dvfs_enable == 0) {
 		*freq = status->current_frequency;
 		return 0;
 	}
 
-	/* (3)Compute next rate, base on : Current Freq x Current Utilisation = Next Freq x IdealUtilisation */
-	if ((HUNDRED*busy/total < max_utilization) && (HUNDRED*busy/total > min_utilization)) {
-		*freq = status->current_frequency;
+	/* (2)Check the temperature */
+	if (temp_ctrl == 1) {
+		*freq = (unsigned long)min_frequency;
 		return 0;
 	}
 
-	/* check total, avoid being divided by zero */
-	if (total == 0) {
+	/* (3)Compute next rate, base on : Current Freq x Current Utilisation = Next Freq x IdealUtilisation */
+	if ((HUNDRED*busy/total < max_utilization) && (HUNDRED*busy/total > min_utilization)) {
 		*freq = status->current_frequency;
 		return 0;
 	}

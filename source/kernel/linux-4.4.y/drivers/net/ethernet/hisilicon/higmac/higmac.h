@@ -37,6 +37,8 @@
 #define COL_SLOT_TIME			0x01c0
 
 #define CRF_MIN_PACKET			0x0210
+#define BIT_OFFSET_TX_MIN_LEN		8
+#define BIT_MASK_TX_MIN_LEN		GENMASK(13, 8)
 
 #define CONTROL_WORD			0x0214
 #define CONTROL_WORD_CONFIG		0x640
@@ -507,7 +509,8 @@ struct higmac_netdev_local {
 
 	int dev_state;		/* INIT/OPEN/CLOSE */
 	char pm_state;
-	bool wol_enable;
+	bool mac_wol_enable;
+	bool phy_wol_enable;
 	u32 msg_enable;
 #define INIT			(0)	/* power off gmac */
 #define OPEN			(1)	/* power on gmac */

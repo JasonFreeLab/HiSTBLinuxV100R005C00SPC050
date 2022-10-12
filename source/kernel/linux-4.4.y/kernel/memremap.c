@@ -24,6 +24,13 @@ __weak void __iomem *ioremap_cache(resource_size_t offset, unsigned long size)
 }
 #endif
 
+#ifndef arch_memremap_wb
+static void *arch_memremap_wb(resource_size_t offset, unsigned long size)
+{
+	return (__force void *)ioremap_cache(offset, size);
+}
+#endif
+
 static void *try_ram_remap(resource_size_t offset, size_t size)
 {
 	struct page *page = pfn_to_page(offset >> PAGE_SHIFT);
@@ -31,7 +38,7 @@ static void *try_ram_remap(resource_size_t offset, size_t size)
 	/* In the simple case just return the existing linear address */
 	if (!PageHighMem(page))
 		return __va(offset);
-	return NULL; /* fallback to ioremap_cache */
+	return NULL; /* fallback to arch_memremap_wb */
 }
 
 /**
@@ -78,7 +85,7 @@ void *memremap(resource_size_t offset, size_t size, unsigned long flags)
 		if (is_ram == REGION_INTERSECTS)
 			addr = try_ram_remap(offset, size);
 		if (!addr)
-			addr = ioremap_cache(offset, size);
+			addr = arch_memremap_wb(offset, size);
 	}
 
 	/*

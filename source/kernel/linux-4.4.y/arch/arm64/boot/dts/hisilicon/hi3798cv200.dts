@@ -147,6 +147,13 @@
 		interrupts = <0 64 4>;
 	};
 
+	firmware {
+		optee {
+		compatible = "linaro,optee-tz";
+		method = "smc";
+		};
+	};
+
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;

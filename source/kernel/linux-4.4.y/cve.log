@@ -1,6 +1,49 @@
 ------------------------------------------
 CVE : https://cve.mitre.org/index.html
 ------------------------------------------
+CVE-2017-15128 该版本不涉及此问题
+	A flaw was found in the hugetlb_mcopy_atomic_pte function in mm/hugetlb.c in the Linux kernel before 4.13.12. A lack of size check could cause a denial of service (BUG).
+
+CVE-2017-1000405 海思未使用此代码
+	The Linux Kernel versions 2.6.38 through 4.14 have a problematic use of pmd_mkdirty() in the touch_pmd() function inside the THP implementation. touch_pmd() can be reached by get_user_pages(). In such case, the pmd will become dirty. This scenario breaks the new can_follow_write_pmd()'s logic - pmd can become dirty without going through a COW cycle. This bug is not as severe as the original "Dirty cow" because an ext4 file (or any other regular file) cannot be mapped using THP. Nevertheless, it does allow us to overwrite read-only huge pages. For example, the zero huge page and sealed shmem files can be overwritten (since their mapping can be populated using THP). Note that after the first write page-fault to the zero page, it will be replaced with a new fresh (and zeroed) thp.
+
+CVE-2017-17053 不涉及，X86平台的问题
+	The init_new_context function in arch/x86/include/asm/mmu_context.h in the Linux kernel before 4.12.10 does not correctly handle errors from LDT table allocation when forking a new process, allowing a local attacker to achieve a use-after-free or possibly have unspecified other impact by running a specially crafted program. This vulnerability only affected kernels built with CONFIG_MODIFY_LDT_SYSCALL=y.
+
+CVE-2017-17052 kernel-4.4.35 不受影响
+	https://www.securityfocus.com/bid/102009
+	https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2b7e8665b4ff51c034c55df3cff76518d1a9ee3a    4.4.35内核不存在down_write_killable()
+	The mm_init function in kernel/fork.c in the Linux kernel before 4.12.10 does not clear the ->exe_file member of a new process's mm_struct, allowing a local attacker to achieve a use-after-free or possibly have unspecified other impact by running a specially crafted program.
+
+CVE-2017-14140 新增补丁
+	The move_pages system call in mm/migrate.c in the Linux kernel before 4.12.9 doesn't check the effective uid of the target process, enabling a local attacker to learn the memory layout of a setuid executable despite ASLR.
+
+CVE-2017-14156 海思未使用该代码
+	The atyfb_ioctl function in drivers/video/fbdev/aty/atyfb_base.c in the Linux kernel through 4.12.10 does not initialize a certain data structure, which allows local users to obtain sensitive information from kernel stack memory by reading locations associated with padding bytes.
+
+CVE-2017-14106 新增补丁
+	The tcp_disconnect function in net/ipv4/tcp.c in the Linux kernel before 4.12 allows local users to cause a denial of service (__tcp_select_window divide-by-zero error and system crash) by triggering a disconnect within a certain tcp_recvmsg code path.
+
+CVE-2017-10661 kernel-4.4.35 新增补丁
+	Race condition in fs/timerfd.c in the Linux kernel before 4.10.15 allows local users to gain privileges or cause a denial of service (list corruption or use-after-free) via simultaneous file-descriptor operations that leverage improper might_cancel queueing.
+
+CVE-2017-10662 kernel-4.4.35 海思未使用该代码
+	The sanity_check_raw_super function in fs/f2fs/super.c in the Linux kernel before 4.11.1 does not validate the segment count, which allows local users to gain privileges via unspecified vectors.
+
+CVE-2017-10663 kernel-4.4.35 海思未使用该代码
+	The sanity_check_ckpt function in fs/f2fs/super.c in the Linux kernel before 4.12.4 does not validate the blkoff and segno arrays, which allows local users to gain privileges via unspecified vectors.
+
+CVE-2017-12762 kernel-4.4.35 海思未使用该代码
+	In /drivers/isdn/i4l/isdn_net.c: A user-controlled buffer is copied into a local buffer of constant size using strcpy without a length check which can cause a buffer overflow. This affects the Linux kernel 4.9-stable tree, 4.12-stable tree, 3.18-stable tree, and 4.4-stable tree.
+
+CVE-2017-12132 glibc-2.25 不是内核问题，暂时没有相关补丁
+	The DNS stub resolver in the GNU C Library (aka glibc or libc6) before version 2.26, when EDNS support is enabled, will solicit large UDP responses from name servers, potentially simplifying off-path DNS spoofing attacks due to IP fragmentation.
+
+CVE-2017-11600 海思未使用该代码
+	net/xfrm/xfrm_policy.c in the Linux kernel through 4.12.3, when CONFIG_XFRM_MIGRATE is enabled, does not ensure that the dir value of xfrm_userpolicy_id is XFRM_POLICY_MAX or less, which allows local users to cause a denial of service (out-of-bounds access) or possibly have unspecified other impact via an XFRM_MSG_MIGRATE xfrm Netlink message
+
+CVE-2017-7541 海思未使用该代码
+	The brcmf_cfg80211_mgmt_tx function in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c in the Linux kernel before 4.12.3 allows local users to cause a denial of service (buffer overflow and system crash) or possibly gain privileges via a crafted NL80211_CMD_FRAME Netlink packet. 
 
 CVE-2017-1000370 kernel-4.4.35 不受影响
 	http://www.securityfocus.com/bid/99149

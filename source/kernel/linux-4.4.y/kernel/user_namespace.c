@@ -496,8 +496,10 @@ static void *m_start(struct seq_file *seq, loff_t *ppos,
 	struct uid_gid_extent *extent = NULL;
 	loff_t pos = *ppos;
 
-	if (pos < map->nr_extents)
+	if (pos < map->nr_extents) {
+		isb();
 		extent = &map->extent[pos];
+	}
 
 	return extent;
 }

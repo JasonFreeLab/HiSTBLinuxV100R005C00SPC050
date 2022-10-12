@@ -18,7 +18,7 @@
 
 #define AGENT_FS_ID 0x46536673	/*FSfs*/
 #define AGENT_MISC_ID 0x4d495343	/*MISC*/
-#define TEE_RPMB_AGENT_ID 0x4abe6198	/*RPMB*/
+#define AGENT_RPMB_ID 0x4abe6198	/*RPMB*/
 #define AGENT_SOCKET_ID 0x69e85664	/*socket*/
 
 struct __smc_event_data *find_event_control(unsigned int agent_id);
@@ -80,7 +80,7 @@ unsigned int TC_NS_incomplete_proceed(TC_NS_SMC_CMD *smc_cmd,
 								uint8_t flags);
 
 int TC_NS_wait_event(unsigned int agent_id);
-
+int TC_NS_wakeup_event(unsigned int agent_id);
 int TC_NS_send_event_response(unsigned int agent_id);
 void TC_NS_send_event_response_all(void);
 

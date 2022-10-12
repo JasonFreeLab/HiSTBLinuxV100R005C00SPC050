@@ -46,11 +46,6 @@ static unsigned short calculate_crc16(char *buf, unsigned int mask)
 	return hieth_computeCrc(data, len);
 }
 
-
-#define	HIETH_PM_SET			(1)
-#define HIETH_PM_CLEAR		(0)
-static char pm_state[HIETH_MAX_PORT] = {HIETH_PM_CLEAR, HIETH_PM_CLEAR};
-
 int hieth_pmt_config_eth(struct hieth_pm_config *config, struct hieth_netdev_priv *priv)
 {
 	unsigned int v = 0, cmd = 0, offset = 0;
@@ -135,50 +130,42 @@ config_ctrl:
 }
 
 /* pmt_config will overwrite pre-config */
-int hieth_pmt_config(struct hieth_pm_config *config)
+int hieth_pmt_config(struct net_device *ndev, struct hieth_pm_config *config)
 {
 	static int init;
-	int map = config->index, i, ret = -EINVAL;
-	struct hieth_netdev_priv *priv;
+	int ret = -EINVAL;
+	struct hieth_netdev_priv *priv = netdev_priv(ndev);
 
-	if (!init)
+	if (!init) {
 		hieth_initCrcTable();
+		init = 1;
+	}
 
-	for (i = 0; i < HIETH_MAX_PORT; i++) {
-		if (!hieth_devs_save[i])
-			continue;
-
-		priv = netdev_priv(hieth_devs_save[i]);
-
-		if (map & 0x1) {
 			ret = hieth_pmt_config_eth(config, priv);
 			if (ret)
 				return ret;
-			else {
-				pm_state[i] = HIETH_PM_SET;
+
+	priv->pm_state_set = true;
 				device_set_wakeup_enable(priv->dev, 1);
 				priv->mac_wol_enabled = true;
-			}
-		}
-		map >>= 1;
-	}
 
 	return ret;
 }
 
-bool inline hieth_pmt_enter(void)
+bool inline hieth_pmt_enter(struct platform_device *pdev)
 {
 	int i, v, pm = false;
 	struct hieth_netdev_priv *priv;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
 	for (i = 0; i < HIETH_MAX_PORT; i++) {
-		if (!hieth_devs_save[i])
+		if (!pdata->hieth_devs_save[i])
 			continue;
 
-		priv = netdev_priv(hieth_devs_save[i]);
+		priv = netdev_priv(pdata->hieth_devs_save[i]);
 
 		local_lock(priv);
-		if (pm_state[i] == HIETH_PM_SET) {
+		if (priv->pm_state_set) {
 
 			v = hieth_readl(priv->port_base, HIETH_PMT_CTRL);
 			v |= 1 << 0;	/* enter power down */
@@ -186,7 +173,7 @@ bool inline hieth_pmt_enter(void)
 			v |= 3 << 5;	/* clear irq status */
 			hieth_writel(priv->port_base, v, HIETH_PMT_CTRL);
 
-			pm_state[i] = HIETH_PM_CLEAR;
+			priv->pm_state_set = false;
 			pm = true;
 		}
 		local_unlock(priv);
@@ -194,16 +181,17 @@ bool inline hieth_pmt_enter(void)
 	return pm;
 }
 
-void inline hieth_pmt_exit(void)
+void inline hieth_pmt_exit(struct platform_device *pdev)
 {
 	int i, v;
 	struct hieth_netdev_priv *priv;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
 	for (i = 0; i < HIETH_MAX_PORT; i++) {
-		if (!hieth_devs_save[i])
+		if (!pdata->hieth_devs_save[i])
 			continue;
 
-		priv = netdev_priv(hieth_devs_save[i]);
+		priv = netdev_priv(pdata->hieth_devs_save[i]);
 
 		/* logic auto exit power down mode */
 		local_lock(priv);

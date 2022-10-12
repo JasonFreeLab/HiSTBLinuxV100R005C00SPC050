@@ -701,7 +701,9 @@ static int fb_seq_show(struct seq_file *m, void *v)
 	struct fb_info *fi = registered_fb[i];
 
 	if (fi)
-		seq_printf(m, "%d %s\n", fi->node, fi->fix.id);
+        seq_printf(m, "%d %s (%d %d %d %d)\n", fi->node, fi->fix.id,\
+                   fi->var.xres,fi->var.yres,\
+                   fi->var.xres_virtual,fi->var.yres_virtual); //zhaobaoren
 	return 0;
 }
 

@@ -880,6 +880,7 @@ static bool lzma2_lzma(struct xz_dec_lzma2 *s, struct xz_buf *b)
 		s->lzma2.compressed -= s->rc.in_pos;
 
 		if (s->rc.in_pos < s->temp.size) {
+			isb();
 			s->temp.size -= s->rc.in_pos;
 			memmove(s->temp.buf, s->temp.buf + s->rc.in_pos,
 					s->temp.size);

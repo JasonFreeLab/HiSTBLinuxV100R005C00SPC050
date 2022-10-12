@@ -1032,10 +1032,13 @@ static int __posix_lock_file(struct inode *inode, struct file_lock *request, str
 				fl->fl_start = request->fl_start;
 			else
 				request->fl_start = fl->fl_start;
-			if (fl->fl_end < request->fl_end)
+			if (fl->fl_end < request->fl_end) {
+				isb();
 				fl->fl_end = request->fl_end;
-			else
+			} else {
+				isb();
 				request->fl_end = fl->fl_end;
+			}
 			if (added) {
 				locks_delete_lock_ctx(fl, &dispose);
 				continue;

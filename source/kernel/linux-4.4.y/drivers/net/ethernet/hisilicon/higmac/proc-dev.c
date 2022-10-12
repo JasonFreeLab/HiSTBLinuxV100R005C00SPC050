@@ -1,5 +1,8 @@
 #include "sockioctl.h"
 
+#define MAX_HIGMAC_PORTS_NUM	2
+static struct higmac_netdev_local *gmac_netdev_priv[MAX_HIGMAC_PORTS_NUM];
+
 /* debug code */
 static int set_suspend(int eth_n)
 {
@@ -15,7 +18,9 @@ static int set_resume(int eth_n)
 
 static int hw_states_read(struct seq_file *m, void *v)
 {
+	int port_id;
 	struct higmac_netdev_local *ld = NULL;
+	void __iomem *io_base = NULL;
 
 #define sprintf_io(name, base)					\
 	seq_printf(m, name, readl(io_base + base))
@@ -25,16 +30,14 @@ static int hw_states_read(struct seq_file *m, void *v)
 				readl(io_base + rx_base),	\
 				readl(io_base + tx_base))
 
-	{
-/* need to initialize ld !!!!!!!!! */
-		void __iomem *io_base = ld->gmac_iobase;
+	for (port_id = 0; port_id < MAX_HIGMAC_PORTS_NUM; port_id++) {
+		ld = gmac_netdev_priv[port_id];
+		if (!ld)
+			continue;
 
-		if (!ld->phy)
-			return 0;
-		if (!netif_running(ld->netdev))
-			return 0;
+		io_base = ld->gmac_iobase;
 
-		seq_puts(m, "----------------gmac----------------\n");
+		seq_printf(m, "---------------port%d--------------\n", port_id);
 		sprintf_pkts("ok_bytes:", 0x80, 0x100);
 		sprintf_pkts("bad_bytes:", 0x84, 0x104);
 		sprintf_pkts("uc_pkts:", 0x88, 0x108);
@@ -101,9 +104,29 @@ void higmac_proc_create(void)
 	}
 }
 
+void higmac_proc_create_port(struct higmac_netdev_local *priv)
+{
+	int port_id;
+
+	if (!higmac_proc_root)
+		higmac_proc_create();
+
+	for (port_id = 0; port_id < MAX_HIGMAC_PORTS_NUM; port_id++) {
+		if (!gmac_netdev_priv[port_id]) {
+			gmac_netdev_priv[port_id] = priv;
+			break;
+		}
+	}
+}
+
 void higmac_proc_destroy(void)
 {
 	int i;
+
+	memset(gmac_netdev_priv, 0, sizeof(gmac_netdev_priv));
+
+	if (!higmac_proc_root)
+		return;
 
 	for (i = 0; i < ARRAY_SIZE(proc_file); i++)
 		remove_proc_entry(proc_file[i].name, higmac_proc_root);

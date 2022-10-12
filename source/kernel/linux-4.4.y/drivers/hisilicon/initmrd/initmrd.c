@@ -51,7 +51,7 @@ extern void dump_stack(void);
 /*****************************************************************************/
 int parse_initmrd_bootargs(char *bootargs)
 {
-	unsigned int index;
+	unsigned int ix, index;
 	struct ramdisk *rd;
 	char *endp;
 	char *p;
@@ -61,7 +61,9 @@ int parse_initmrd_bootargs(char *bootargs)
 		return 0;
 	}
 
-	p = strstr(bootargs, "initmrd=");
+	p = bootargs;
+	for (ix = 0; ix < CONFIG_BLK_DEV_RAM_COUNT; ix++) {
+		p = strstr(p, "initmrd=");
 	if (!p) {
 		pr_notice("found no initmrd.\n");
 		return 0;
@@ -84,8 +86,10 @@ int parse_initmrd_bootargs(char *bootargs)
 		return 0;
 
 	rd->size = memparse(endp + 1, NULL);
-	if (rd->size)
+		if (rd->size) {
 		rd->status = RD_STATUS_SETUP;
+		}
+	}
 
 	return 0;
 }

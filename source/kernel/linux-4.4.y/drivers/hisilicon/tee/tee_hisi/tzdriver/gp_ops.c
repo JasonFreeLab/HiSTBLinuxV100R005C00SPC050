@@ -24,6 +24,9 @@
 #include "agent.h"
 #include "tc_ns_log.h"
 #include "gp_ops.h"
+#include "mem.h"
+#include "mailbox_mempool.h"
+
 #ifdef CONFIG_TEELOG
 #include "tlogger.h"
 #endif
@@ -39,6 +42,10 @@
 #define ROUND_UP(N, S) ((((N) + (S) - 1) / (S)) * (S))
 
 struct ion_handle *drm_ion_handle;
+
+static int free_operation(TC_NS_ClientContext *client_context,
+		TC_NS_Operation *operation,
+		TC_NS_Temp_Buf local_temp_buffer[4]);
 
 int tc_user_param_valid(TC_NS_ClientContext *client_context, int n)
 {
@@ -57,7 +64,7 @@ int tc_user_param_valid(TC_NS_ClientContext *client_context, int n)
 
 	client_param = &(client_context->params[n]);
 	param_type = TEEC_PARAM_TYPE_GET(client_context->paramTypes, n);
-	tlogd("Param %u type is %x\n", n, param_type);
+	tlogd("Param %d type is %x\n", n, param_type);
 
 	if (TEEC_NONE == param_type) {
 		tlogd("param_type is TEEC_NONE.\n");
@@ -170,16 +177,12 @@ static inline int copy_to_client(void __user *dest, void *src, size_t size,
 	return ret;
 }
 
-static int free_operation(TC_NS_ClientContext *client_context,
+static int alloc_operation(TC_NS_DEV_File *dev_file,
 		TC_NS_Operation *operation,
-		TC_NS_Temp_Buf local_temp_buffer[4]);
-
-static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 					TC_NS_ClientContext *client_context,
 					TC_NS_Temp_Buf local_temp_buffer[4],
 					uint8_t flags)
 {
-	TC_NS_Operation *operation;
 	TC_NS_ClientParam *client_param;
 	TC_NS_Shared_MEM *shared_mem = NULL;
 	ion_phys_addr_t drm_ion_phys = 0x0;
@@ -194,35 +197,53 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 
 	if (!dev_file) {
 		tloge("dev_file is null");
-		return ERR_PTR(-EINVAL);
+		return -EINVAL;
+	}
+
+	if (!operation) {
+		tloge("operation is null\n");
+		return -EINVAL;
 	}
 
 	if (!client_context) {
 		tloge("client_context is null");
-		return ERR_PTR(-EINVAL);
+		return -EINVAL; /*lint !e747 */
 	}
 
-	if (!client_context->paramTypes)
-		return NULL;
-
-	kernel_params = ((flags & TC_CALL_LOGIN) || (dev_file->kernel_api));
-	operation = kzalloc(sizeof(TC_NS_Operation), GFP_KERNEL);
-	if (!operation) {
-		tloge("operation malloc failed");
-		return ERR_PTR(-ENOMEM);
+	if (!local_temp_buffer) {
+		tloge("local_temp_buffer is null");
+		return -EINVAL;
 	}
+
+	if (!client_context->paramTypes) {
+		tloge("invalid param type\n");
+		return -EINVAL;
+	}
+
+	kernel_params = dev_file->kernel_api;
+
 	tlogd("Allocating param types %08X\n", client_context->paramTypes);
 	/* Get the 4 params from the client context */
 	for (i = 0; i < 4; i++) {
+		/*
+		 * Normally kernel_params = kernel_api
+		 *
+		 * But when TC_CALL_LOGIN, params 2/3 will
+		 * be filled by kernel. so under this circumstance,
+		 * params 2/3 has to be set to kernel mode; and
+		 * param 0/1 will keep the same with kernel_api.
+		 */
+		if ((flags & TC_CALL_LOGIN) && (i >= 2)) {
+			kernel_params = TEE_REQ_FROM_KERNEL_MODE;
+		}
+
 		client_param = &(client_context->params[i]);
 
 		param_type = TEEC_PARAM_TYPE_GET(client_context->paramTypes, i);
-		tlogd("Param %u type is %x\n", i, param_type);
+		tlogd("Param %d type is %x\n", i, param_type);
 		/* temp buffers we need to allocate/deallocate for every
 		 * operation */
-		if ((TEEC_MEMREF_TEMP_INPUT == param_type) ||
-		    (TEEC_MEMREF_TEMP_OUTPUT == param_type) ||
-		    (TEEC_MEMREF_TEMP_INOUT == param_type)) {
+		if (teec_tmpmem_type(param_type, 2)) {
 			/* For interface compatibility sake we assume buffer
 			 * size to be 32bits */
 			if (copy_from_client(&buffer_size,
@@ -240,8 +261,8 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 				ret = -EFAULT;
 				break;
 			}
-			temp_buf = (void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO,
-							    get_order(ROUND_UP(buffer_size, SZ_4K)));
+
+			temp_buf = (void *)mailbox_alloc(buffer_size, MB_FLAG_ZERO); /*lint !e647 */
 			/* If buffer size is zero or malloc failed */
 			if (!temp_buf) {
 				tloge("temp_buf malloc failed, i = %d.\n", i);
@@ -251,6 +272,7 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 				tlogd("temp_buf malloc ok, i = %d.\n", i);
 			}
 			local_temp_buffer[i].temp_buffer = temp_buf;
+			local_temp_buffer[i].size = buffer_size;
 			if ((TEEC_MEMREF_TEMP_INPUT == param_type) ||
 			    (TEEC_MEMREF_TEMP_INOUT == param_type)) {
 				tlogv("client_param->memref.buffer=0x%llx\n",
@@ -268,7 +290,6 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 			}
 			operation->params[i].memref.buffer = virt_to_phys((void *)temp_buf);
 			operation->buffer_h_addr[i] = virt_to_phys((void *)temp_buf) >> 32;
-			local_temp_buffer[i].size = buffer_size;
 			operation->params[i].memref.size = buffer_size;
 			/*TEEC_MEMREF_TEMP_INPUT equal
 			 * to TEE_PARAM_TYPE_MEMREF_INPUT*/
@@ -276,9 +297,7 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 		}
 		/* MEMREF_PARTIAL buffers are already allocated so we just need
 		 * to search for the shared_mem ref */
-		else if ((TEEC_MEMREF_PARTIAL_INPUT == param_type) ||
-			 (TEEC_MEMREF_PARTIAL_OUTPUT == param_type) ||
-			 (TEEC_MEMREF_PARTIAL_INOUT == param_type)) {
+		else if (teec_memref_type(param_type, 2)) {
 			/* For interface compatibility sake we assume buffer
 			 * size to be 32bits */
 			if (copy_from_client(&buffer_size,
@@ -306,12 +325,25 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 					 * offset must be checked, and avoid integer overflow. */
 					if (((shared_mem->len - client_param->memref.offset) >= buffer_size)
 					    && (shared_mem->len > client_param->memref.offset)) {
-						operation->params[i].memref.buffer =
-							virt_to_phys((void *)shared_mem->kernel_addr
+						void *buffer_addr = (void *)((unsigned long)shared_mem->kernel_addr
 								     + client_param->memref.offset);
-						operation->buffer_h_addr[i] =
-							virt_to_phys((void *)shared_mem->kernel_addr
-								     + client_param->memref.offset) >> 32;
+
+						if (!shared_mem->from_mailbox) {
+							buffer_addr = mailbox_copy_alloc(buffer_addr, buffer_size);
+							if (!buffer_addr) {
+								tloge("alloc mailbox copy failed\n");
+								ret = -ENOMEM;
+								break;
+							}
+							operation->mb_buffer[i] = buffer_addr;
+						}
+
+						operation->params[i].memref.buffer = virt_to_phys(buffer_addr);
+						operation->buffer_h_addr[i] = virt_to_phys(buffer_addr) >> 32; /*lint !e572*/
+						/* save shared_mem in operation so that we can use it
+						 * while free_operation */
+						operation->sharemem[i] = shared_mem;
+						get_sharemem_struct(shared_mem);
 					} else {
 						tloge("Unexpected size %u vs %u",
 						      shared_mem->len,
@@ -338,9 +370,7 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 					      TEE_PARAM_TYPE_MEMREF_INPUT);
 		}
 		/* value */
-		else if ((TEEC_VALUE_INPUT == param_type) ||
-			 (TEEC_VALUE_OUTPUT == param_type) ||
-			 (TEEC_VALUE_INOUT == param_type)) {
+		else if (teec_value_type(param_type, 2)) {
 			if (copy_from_client(&operation->params[i].value.a,
 					     client_param->value.a_addr,
 					     sizeof(operation->params[i].
@@ -384,13 +414,12 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 			if ((int)operation->params[i].value.a >= 0) {
 				unsigned int ion_shared_fd =
 					operation->params[i].value.a;
-				drm_ion_handle =
+				struct ion_handle *drm_ion_handle =
 					ion_import_dma_buf(drm_ion_client,
 							   ion_shared_fd);
 				if (IS_ERR(drm_ion_handle)) {
-					tloge("in %s err: client=%p handle=%p fd=%d\n",
-					      __func__, drm_ion_client,
-					      drm_ion_handle, ion_shared_fd);
+					tloge("in %s err: fd=%d\n",
+					      __func__, ion_shared_fd);
 					ret = -EFAULT;
 					break;
 				}
@@ -400,9 +429,8 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 					       &drm_ion_phys, &drm_ion_size);
 
 				if (ret) {
-					tloge("in %s err:ret=%d client=%p handle=%p fd=%d\n",
-					      __func__, ret, drm_ion_client,
-					      drm_ion_handle, ion_shared_fd);
+					tloge("in %s err:ret=%d fd=%d\n",
+					      __func__, ret, ion_shared_fd);
 					ret = -EFAULT;
 					break;
 				}
@@ -416,7 +444,6 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 					(unsigned int)drm_ion_size;
 				trans_paramtype_to_tee[i] = param_type;
 				ion_free(drm_ion_client, drm_ion_handle);
-				drm_ion_handle = NULL;
 			} else {
 				tloge("in %s err: drm ion handle invaild!\n", __func__);
 				ret = -EFAULT;
@@ -433,11 +460,11 @@ static TC_NS_Operation *alloc_operation(TC_NS_DEV_File *dev_file,
 					 trans_paramtype_to_tee[1],
 					 trans_paramtype_to_tee[2],
 					 trans_paramtype_to_tee[3]);
-		return operation;
+		return 0;
 	}
 
 	(void)free_operation(client_context, operation, local_temp_buffer);
-	return ERR_PTR(ret);
+	return ret;
 }
 
 static int update_client_operation(TC_NS_DEV_File *dev_file,
@@ -462,6 +489,11 @@ static int update_client_operation(TC_NS_DEV_File *dev_file,
 		return -EINVAL;
 	}
 
+	if (!local_temp_buffer) {
+		tloge("local_temp_buffer is null");
+		return -EINVAL;
+	}
+
 	/*if paramTypes is NULL, no need to update*/
 	if (!client_context->paramTypes)
 		return 0;
@@ -469,11 +501,10 @@ static int update_client_operation(TC_NS_DEV_File *dev_file,
 	for (i = 0; i < 4; i++) {
 		client_param = &(client_context->params[i]);
 		param_type = TEEC_PARAM_TYPE_GET(client_context->paramTypes, i);
-		if ((TEEC_MEMREF_TEMP_OUTPUT == param_type) ||
-		    (TEEC_MEMREF_TEMP_INOUT == param_type)) {
+		if (teec_tmpmem_type(param_type, 1)) {
 			/* temp buffer */
 			buffer_size = operation->params[i].memref.size;
-			/* Size is updated all the time */
+			/* Size is updated all the time */
 			if (copy_to_client
 			    ((void *)client_param->memref.size_addr,
 			     &buffer_size, sizeof(buffer_size),
@@ -504,10 +535,20 @@ static int update_client_operation(TC_NS_DEV_File *dev_file,
 				break;
 			}
 
-		} else if ((TEEC_MEMREF_PARTIAL_OUTPUT == param_type) ||
-			   (TEEC_MEMREF_PARTIAL_INOUT == param_type)) {
+		} else if (teec_memref_type(param_type, 1)) {
+			unsigned int orig_size = 0;
 			/* update size */
 			buffer_size = operation->params[i].memref.size;
+
+			if (copy_from_client(&orig_size,
+					(uint32_t __user *)client_param->memref.size_addr,
+					sizeof(orig_size),
+					dev_file->kernel_api)) {
+				tloge("copy orig memref.size_addr failed\n");
+				ret = -EFAULT;
+				break;
+			}
+
 			if (copy_to_client
 			    ((void *)client_param->memref.size_addr,
 			     &buffer_size, sizeof(buffer_size),
@@ -516,8 +557,21 @@ static int update_client_operation(TC_NS_DEV_File *dev_file,
 				ret = -EFAULT;
 				break;
 			}
-		} else if (incomplete && ((TEEC_VALUE_OUTPUT == param_type) ||
-					  (TEEC_VALUE_INOUT == param_type))) {
+
+			/* copy from mb_buffer to sharemem */
+			if (!operation->sharemem[i]->from_mailbox && operation->mb_buffer[i]
+				&& orig_size >= buffer_size) {
+				void *buffer_addr = (void *)((unsigned long)operation->sharemem[i]->kernel_addr
+					+ client_param->memref.offset);
+				if (memcpy_s(buffer_addr,
+						operation->sharemem[i]->len - client_param->memref.offset,
+						operation->mb_buffer[i], buffer_size)) {
+					tloge("copy to sharemem failed\n");
+					ret = -EFAULT;
+					break;
+				}
+			}
+		} else if (incomplete && teec_value_type(param_type, 1)) {
 			/* value */
 			if (copy_to_client(client_param->value.a_addr,
 					   &operation->params[i].value.a,
@@ -557,6 +611,11 @@ static int free_operation(TC_NS_ClientContext *client_context,
 	if (!client_context)
 		return -EFAULT;
 
+	if (!local_temp_buffer) {
+		tloge("local_temp_buffer is null");
+		return -EINVAL;
+	}
+
 	for (i = 0; i < 4; i++) {
 		param_type = TEEC_PARAM_TYPE_GET(client_context->paramTypes, i);
 		if ((TEEC_MEMREF_TEMP_INPUT == param_type) ||
@@ -565,16 +624,18 @@ static int free_operation(TC_NS_ClientContext *client_context,
 			/* free temp buffer */
 			/* TODO: this is all sorts of bad */
 			temp_buf = local_temp_buffer[i].temp_buffer;
-			tlogd("Free temp buf %p, i = %d\n", temp_buf, i);
-			if (virt_addr_valid(temp_buf) &&
+			tlogd("Free temp buf, i = %d\n", i);
+			if (virt_addr_valid(temp_buf) && /*lint !e648 */
 			    !ZERO_OR_NULL_PTR(temp_buf))
-				free_pages((unsigned long)temp_buf,
-					   get_order(ROUND_UP
-						     (local_temp_buffer[i].size,
-						      SZ_4K)));
+				mailbox_free(temp_buf);
+		} else if ((TEEC_MEMREF_PARTIAL_INPUT == param_type) ||
+			 (TEEC_MEMREF_PARTIAL_OUTPUT == param_type) ||
+			 (TEEC_MEMREF_PARTIAL_INOUT == param_type)) {
+			put_sharemem_struct(operation->sharemem[i]);
+			if (operation->mb_buffer[i])
+				mailbox_free(operation->mb_buffer[i]);
 		}
 	}
-	kfree(operation);
 	return ret;
 }
 #if defined(CONFIG_DEVCHIP_PLATFORM) && defined(CONFIG_TEE_DEBUG)
@@ -592,13 +653,11 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 	int ret = 0;
 	unsigned int tee_ret = 0;
 	int s_ret = 0;
-	TC_NS_Operation *operation = NULL;
 	TC_NS_SMC_CMD *smc_cmd = NULL;
 	TC_NS_Session *session = NULL;
 	TC_NS_Service *service = NULL;
 	struct TC_wait_data *wq = NULL;
 	TC_NS_Temp_Buf local_temp_buffer[4] = {{0, 0}, {0, 0}, {0, 0}, {0, 0} };
-	unsigned char uuid[17];
 	bool global = flags & TC_CALL_GLOBAL;
 	uint32_t uid;
 	unsigned char *hash_buf = NULL;
@@ -606,11 +665,13 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 	unsigned int start_time;
 	unsigned int end_time;
 #endif
+	struct mb_cmd_pack *mb_pack;
+	bool operation_init = false;
 
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0))
 	kuid_t kuid;
 
-	kuid = current_uid(); /*lint !e666 */
+	kuid = current_uid(); /*lint !e666 !e64 */
 	uid = kuid.val;
 #else
 	uid = current_uid();
@@ -620,6 +681,7 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 		tloge("dev_file is null");
 		return -EINVAL;
 	}
+
 	if (!client_context) {
 		tloge("client_context is null");
 		return -EINVAL;
@@ -627,32 +689,37 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 
 	smc_cmd = kzalloc(sizeof(TC_NS_SMC_CMD), GFP_KERNEL);
 	if (!smc_cmd) {
-		tloge("smc_cmd malloc failed");
+		tloge("smc_cmd malloc failed.\n");
+		return -ENOMEM;
+	}
+
+	mb_pack = mailbox_alloc_cmd_pack();
+	if (!mb_pack) {
+		kfree(smc_cmd);
 		return -ENOMEM;
 	}
 
 	tlogd("Calling command %08x\n", client_context->cmd_id);
 
 	if (client_context->paramTypes != 0) {
-		operation = alloc_operation(dev_file, client_context,
+		ret = alloc_operation(dev_file, &mb_pack->operation, client_context,
 					    local_temp_buffer, flags);
-		if (IS_ERR_OR_NULL(operation)) {
-			ret = PTR_ERR(operation);
-			operation = NULL;
+		if (ret) {
 			tloge("alloc_operation malloc failed");
 			goto error;
 		}
+		operation_init = true;
 	}
 
-	uuid[0] = ((global == true) ? 1 : 0);
-	s_ret = memcpy_s(uuid + 1, 16, client_context->uuid, 16);
+	mb_pack->uuid[0] = ((true == global) ? 1 : 0);
+	s_ret = memcpy_s(mb_pack->uuid + 1, 16, client_context->uuid, 16);
 	if (EOK != s_ret) {
 		ret = -EFAULT;
 		tloge("alloc_operation _s error.\n");
 		goto error;
 	}
-	smc_cmd->uuid_phys = virt_to_phys((void *)uuid);
-	smc_cmd->uuid_h_phys = virt_to_phys((void *)uuid) >> 32;
+	smc_cmd->uuid_phys = virt_to_phys((void *)mb_pack->uuid);
+	smc_cmd->uuid_h_phys = virt_to_phys((void *)mb_pack->uuid) >> 32; /*lint !e572*/
 	smc_cmd->cmd_id = client_context->cmd_id;
 	smc_cmd->dev_file_id = dev_file->dev_file_id;
 	smc_cmd->context_id = client_context->session_id;
@@ -660,10 +727,9 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 	smc_cmd->started = client_context->started;
 	smc_cmd->uid = uid;
 	tlogv("current uid is %d\n", smc_cmd->uid);
-	tlogv("operation start is :%d\n", smc_cmd->started);
-	if (operation) {
-		smc_cmd->operation_phys = virt_to_phys(operation);
-		smc_cmd->operation_h_phys = virt_to_phys(operation) >> 32;
+	if (client_context->paramTypes != 0) {
+		smc_cmd->operation_phys = virt_to_phys(&mb_pack->operation);
+		smc_cmd->operation_h_phys = virt_to_phys(&mb_pack->operation) >> 32; /*lint !e572*/
 	} else {
 		smc_cmd->operation_phys = 0;
 		smc_cmd->operation_h_phys = 0;
@@ -673,9 +739,14 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 	if (sizeof(uint32_t) == dev_file->pub_key_len &&
 	    GLOBAL_CMD_ID_OPEN_SESSION == smc_cmd->cmd_id &&
 	    (current->mm != NULL)) {
-		hash_buf = g_ca_auth_hash_buf;
-		smc_cmd->login_data_phy = virt_to_phys(hash_buf);
-		smc_cmd->login_data_h_addr = virt_to_phys(hash_buf) >> 32;
+
+		if (memcpy_s(mb_pack->login_data, sizeof(mb_pack->login_data),
+				g_ca_auth_hash_buf, sizeof(g_ca_auth_hash_buf))) {
+			tloge("copy login data failed\n");
+			goto error;
+		}
+		smc_cmd->login_data_phy = virt_to_phys(mb_pack->login_data);
+		smc_cmd->login_data_h_addr = virt_to_phys(mb_pack->login_data) >> 32; /*lint !e572*/
 		smc_cmd->login_data_len = MAX_SHA_256_SZ;
 	} else {
 		smc_cmd->login_data_phy = 0;
@@ -704,29 +775,31 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 
 	if (tee_ret != 0) {
 #ifdef TC_ASYNC_NOTIFY_SUPPORT
-		while (TEEC_PENDING == tee_ret) {
+		while (TEEC_PENDING == tee_ret) { /*lint !e650 */
 			mutex_lock(&dev_file->service_lock);
 			service = tc_find_service(&dev_file->services_list,
-					client_context->uuid);
+					client_context->uuid); /*lint !e64 */
+			get_service_struct(service);
 			if (service) {
 				mutex_lock(&service->session_lock);
 				session = tc_find_session
 					(&service->session_list,
 					 client_context->session_id);
+				get_session_struct(session);
 				mutex_unlock(&service->session_lock);
 				if (session)
 					wq = &session->wait_data;
 			}
+			put_service_struct(service);
 			mutex_unlock(&dev_file->service_lock);
 
 			if (wq) {
 				tlogv("before wait event\n");
-				if (wait_event_interruptible
-						(wq->send_cmd_wq,
-						 wq->send_wait_flag)) {
-					tlogd("wait event error\n");
-				}
+				/* use wait_event instead of wait_event_interruptible so
+				 * that ap suspend will not wake up the TEE wait call */
+				wait_event(wq->send_cmd_wq, wq->send_wait_flag);
 				wq->send_wait_flag = 0;
+				put_session_struct(session);
 			}
 
 			tlogv("operation start is :%d\n",
@@ -736,12 +809,12 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 #endif
 		/* Client was interrupted, return and let it handle it's own
 		 * signals first then retry */
-		if (TEEC_CLIENT_INTR == tee_ret) {
+		if (TEEC_CLIENT_INTR == tee_ret) { /*lint !e650 */
 			ret = -ERESTARTSYS;
 			goto error;
 		} else if (tee_ret) {
-			tloge("smc_call returns error ret 0x%x\n", tee_ret);
-			tloge("smc_call smc cmd ret 0x%x\n", smc_cmd->ret_val);
+			tlogd("smc_call returns error ret 0x%x\n", tee_ret);
+			tlogd("smc_call smc cmd ret 0x%x\n", smc_cmd->ret_val);
 			goto error1;
 		}
 
@@ -753,9 +826,9 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 	tz_log_write();
 #endif
 
-	if (operation) {
+	if (operation_init) {
 		ret = update_client_operation(dev_file, client_context,
-					      operation, local_temp_buffer,
+					      &mb_pack->operation, local_temp_buffer,
 					      true);
 		if (ret)
 			goto error;
@@ -765,11 +838,11 @@ int tc_client_call(TC_NS_ClientContext *client_context,
 	goto error;
 
 error1:
-	if (TEEC_ERROR_SHORT_BUFFER == tee_ret) {
+	if (TEEC_ERROR_SHORT_BUFFER == tee_ret) { /*lint !e650 */
 		/* update size */
-		if (operation) {
+		if (operation_init) {
 			ret = update_client_operation(dev_file, client_context,
-						      operation,
+						      &mb_pack->operation,
 						      local_temp_buffer,
 						      false);
 			if (ret)
@@ -783,9 +856,9 @@ error1:
 error:
 	/* kfree(NULL) is safe and this check is probably not required*/
 	kfree(smc_cmd);
-
-	if (operation)
-		free_operation(client_context, operation, local_temp_buffer);
+	if (operation_init)
+		free_operation(client_context, &mb_pack->operation, local_temp_buffer);
+	mailbox_free(mb_pack);
 
 	return ret;
 }

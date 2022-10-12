@@ -13,6 +13,7 @@
 /* register REG_PERI_FEPHY */
 #define REG_PERI_FEPHY		0x0118
 #define BIT_MASK_FEPHY_ADDR	0x1F
+#define BIT_MASK_FEPHY_WOL	BIT(5)
 /* register REG_PERI_FEPHY_LDO */
 #define REG_PERI_FEPHY_LDO	0x0844
 #define BIT_LDO_EN		BIT(4)
@@ -72,6 +73,7 @@ void higmac_hw_internal_phy_reset(struct higmac_netdev_local *priv)
 	v = readl(priv->peri_iobase + REG_PERI_FEPHY);
 	v &= ~BIT_MASK_FEPHY_ADDR;
 	v |= (priv->phy_addr & BIT_MASK_FEPHY_ADDR);
+	v |= BIT_MASK_FEPHY_WOL;
 	writel(v, priv->peri_iobase + REG_PERI_FEPHY);
 
 	v = readl(priv->crg_iobase + REG_CRG_FEPHY);
@@ -184,6 +186,14 @@ void higmac_internal_phy_clk_disable(struct higmac_netdev_local *priv)
 	v &= ~BIT_FEPHY_CLK;
 	v |= BIT_FEPHY_RST;
 	writel(v, priv->crg_iobase + REG_CRG_FEPHY);/* inside fephy clk disable */
+
+#if defined(CONFIG_ARCH_HI3796MV2X)
+	/* config FEPHY LDO to iddq mode to save power */
+	v = readl(priv->peri_iobase + REG_PERI_FEPHY_LDO);
+	v &= ~(BIT_LDO_EN | BIT_LDO_RSTN);
+	v |= (BIT_LDO_ENZ | BIT_IDDQ_MODE);
+	writel(v, priv->peri_iobase + REG_PERI_FEPHY_LDO);
+#endif
 #endif
 }
 
@@ -205,7 +215,7 @@ void higmac_hw_all_clk_disable(struct higmac_netdev_local *priv)
 		clk_disable_unprepare(priv->clk);
 	}
 
-	if (priv->internal_phy)
+	if (priv->internal_phy && !priv->phy_wol_enable)
 		higmac_internal_phy_clk_disable(priv);
 }
 

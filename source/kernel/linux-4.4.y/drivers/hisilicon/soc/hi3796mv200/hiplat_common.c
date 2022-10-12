@@ -28,6 +28,8 @@
 #include <linux/hisilicon/platform.h>
 
 /******************************************************************************/
+#define REG_WAKEUP_DDR_CHECK_EN      (0xF8AB0004)
+
 static void __iomem *plat_io_base_virt = NULL;
 static ulong plat_io_offset = 0;
 
@@ -56,6 +58,61 @@ int is_tee(void)
 	return 0;
 #endif
 #endif
+}
+
+static int hipm_clk_off = 1;
+
+static int __init parse_hipm_clkoff(char *str)
+{
+	hipm_clk_off = 0;
+
+	return 0;
+}
+
+early_param("nocpuclkoff", parse_hipm_clkoff);
+
+/******************************************************************************/
+/*
+ * Set cpu core and PLL to a low clock rate, and so into a low power state
+ */
+void set_cpu_core_lowpower(void)
+{
+	if (!hipm_clk_off) {
+		printk(KERN_DEBUG "no cpu core clk off\n");
+		return;
+	}
+
+	if (0xa0 != (readl(io_address(REG_WAKEUP_DDR_CHECK_EN)) & 0xF0))
+		return; /* ddr wakeup check is enable */
+
+        writel(0x204,      io_address(REG_BASE_CPU_LP)); //CPU
+	udelay(1);
+        writel(0x604,      io_address(REG_BASE_CPU_LP)); //CPU to 24M
+	udelay(1);
+
+        writel(0,          io_address(REG_PERI_BUS_CLK)); //BUS to 24M
+	udelay(1);
+
+        writel(0x0A1030C8, io_address(REG_PERI_APLL2)); //APLL
+	udelay(1);
+        writel(0x0A1020C8, io_address(REG_PERI_QPLL2)); //QPLL
+	udelay(1);
+        writel(0x08101025, io_address(REG_PERI_EPLL2)); //EPLL
+	udelay(1);
+        writel(0x0A102063, io_address(REG_PERI_HPLL2)); //HPLL
+	udelay(1);
+        writel(0x0A101048, io_address(REG_PERI_VPLL2)); //VPLL
+	udelay(1);
+
+	printk(KERN_DEBUG "--Set cpu cort to a low clock rate mode--");
+	printk(KERN_DEBUG "CPU_LP=0x%X\n", readl(io_address(REG_BASE_CPU_LP)));
+	printk(KERN_DEBUG "BUS_CLK=0x%X\n", readl(io_address(REG_PERI_BUS_CLK)));
+	printk(KERN_DEBUG "APLL2=0x%X\n", readl(io_address(REG_PERI_APLL2)));
+	printk(KERN_DEBUG "QPLL2=0x%X\n", readl(io_address(REG_PERI_QPLL2)));
+	printk(KERN_DEBUG "EPLL2=0x%X\n", readl(io_address(REG_PERI_EPLL2)));
+	printk(KERN_DEBUG "HPLL2=0x%X\n", readl(io_address(REG_PERI_HPLL2)));
+	printk(KERN_DEBUG "VPLL2=0x%X\n", readl(io_address(REG_PERI_VPLL2)));
+	printk(KERN_DEBUG "-----------------------------------------");
 }
 
 /******************************************************************************/

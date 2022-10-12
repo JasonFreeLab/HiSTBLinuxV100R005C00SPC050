@@ -166,7 +166,7 @@ store_resume:
 	str	r5, [r4, #REG_SC_GEN30]
 	str	r5, [r4, #REG_SC_GEN9]
 
-#ifndef CONFIG_TEE_HISI
+#ifndef CONFIG_TEE
 	/* if it is not advca chipset, jump to enable_mcu */
 	ldr	r1, =hi_otp_idword_addr
 	ldr	r1, [r1]

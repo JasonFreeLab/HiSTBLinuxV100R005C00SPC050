@@ -132,6 +132,12 @@
 		interrupts = <0 64 4>;
 	};
 
+	firmware {
+		optee {
+		compatible = "linaro,optee-tz";
+		method = "smc";
+		};
+	};
 
 	soc {
 		#address-cells = <1>;
@@ -404,7 +410,7 @@
 				reg = <0xf8001000 0x1000>;
 				interrupts = <0 47 4>;
 				clocks = <&hisilicon_clock HIIR_CLK>;
-				linux,rc-map-name = "rc-hisi";
+				linux,rc-map-name = "rc-atto";
 			};
 
 			armv7-pmu {
@@ -484,7 +490,7 @@
 		};
 
 		sd:himciv200.SD@0xf9820000 {
-			compatible = "hi3798mv200,himciv200";
+			compatible = "hi3798mv200,himciv300_sd";
 			reg = <0xf9820000 0x1000>,<0xF8A210C0 0x40>;
 			interrupts = <0 34 4>;
 
@@ -494,7 +500,7 @@
 			ldo-addr  = <0xf8a2011c>;
 			ldo-shift = <0>;
 
-			caps = <0x80000007>;
+			caps = <0x8007000f>;
 			caps2 = <0x4000>;
 			max-frequency = <50000000>;
 			status = "okay";
@@ -502,13 +508,14 @@
 
 		sdio:himciv200.SD@0xf9c40000 {
 			compatible = "hi3798mv200,himciv200";
-			reg = <0xf9c40000 0x1000>,<0xF8A21060 0x40>;
+			reg = <0xf9c40000 0x1000>,<0xF8A21090 0x20>;
 			interrupts = <0 86 4>;
 
 			clocks = <&hisilicon_clock PERI_CRG163_SDIO2>;
 			clock-names = "clk";
 
-			caps = <0x80000007>;
+			caps = <0x8007000f>;
+			caps2 = <0x4000>;
 			max-frequency = <50000000>;
 			status = "okay";
 		};
@@ -614,7 +621,7 @@
 			status = "okay";
 		};
 
-		otg:hi3798mv200.hiusbotg {
+		otg:hi3798cv200.hiusbotg {
 			compatible = "hiusbotg";
 			reg = <0xf9880000 0x10000>,<0xf9890000 0x10000>,<0xf8a2012c 0x4>;
 			host_time = <1500 4>;

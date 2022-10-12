@@ -16,15 +16,6 @@ config PCIE_PME_IRQ
 	default "0xa2"	if (ARCH_HI3716MV420N)
 	depends on PCIE_HISILICON 
 
-config PCIE_DMA_ADDR_READ
-	hex "hisilicon pcie dma read address"
-	default "0x0" if (ARCH_HI3798CV2X)
-	default "0x0" if (ARCH_S40)
-	default "0x0" if (ARCH_HI3798MV2X)
-	default "0x0" if (ARCH_HI3796MV2X)
-	default "0x0" if (ARCH_HI3716MV420N)
-	depends on PCIE_HISILICON
-
 config PCIE_DMA_SIZE_READ
 	hex "hisilicon pcie dma read size"
 	default "0x0" if (ARCH_HI3798CV2X)
@@ -34,15 +25,6 @@ config PCIE_DMA_SIZE_READ
 	default "0x0" if (ARCH_HI3716MV420N)
 	depends on PCIE_HISILICON
 
-config PCIE_DMA_ADDR_WRITE
-	hex "hisilicon pcie dma write address"
-	default "0x0" if (ARCH_HI3798CV2X)
-	default "0x0" if (ARCH_S40)
-	default "0x0" if (ARCH_HI3798MV2X)
-	default "0x0" if (ARCH_HI3796MV2X)
-	default "0x0" if (ARCH_HI3716MV420N)
-	depends on PCIE_HISILICON
-	
 config PCIE_DMA_SIZE_WRITE
 	hex "hisilicon pcie dma write size"
 	default "0x0" if (ARCH_HI3798CV2X)

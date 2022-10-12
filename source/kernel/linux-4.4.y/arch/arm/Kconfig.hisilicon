@@ -135,6 +135,33 @@ config ARCH_HI3798MV2X
 	  two ethernet interface, EHCI and OHCI controllers and
 	  many peripheral equipments.
 
+config ARCH_HI3798MV310
+	bool "Hisilicon HI3798MV310 family"
+	select ARM_AMBA
+	select HAVE_CLK
+	select CLKDEV_LOOKUP
+	select HAVE_SCHED_CLOCK
+	select GENERIC_TIME
+	select GENERIC_CLOCKEVENTS
+	select ARCH_HAS_CPUFREQ
+	select MIGHT_HAVE_PCI
+	select HAVE_SMP
+	select NEED_MACH_IO_H
+	select NEED_MACH_MEMORY_H
+	select ARCH_HAS_CPUFREQ
+	select USB_ARCH_HAS_OHCI
+	select USB_ARCH_HAS_EHCI
+	select USB_ARCH_HAS_XHCI
+	select ARM_HAS_SG_CHAIN
+	select PM_OPP
+	help
+	  This enables support for Hisilicon HI3798MV310 platform.
+	  With the advanced ARM Cortex A53 processor,
+	  HI3798MV310 serial provides high-speed processing capability.
+	  And HI3798MV310 serial constains a very powerfull media process engine,
+	  two ethernet interface, EHCI and OHCI controllers and
+	  many peripheral equipments.
+
 config ARCH_HI3796MV2X
 	bool "Hisilicon HI3796MV2X family"
 	select ARM_AMBA

@@ -19,7 +19,7 @@ int higmac_mdio_read(struct mii_bus *bus, int phy, int reg)
 	int val;
 
 	if (!wait_mdio_ready(ld))
-		return 0;
+		return -ETIMEDOUT;
 
 	mdio_start_phyread(ld, phy, reg);
 
@@ -27,7 +27,7 @@ int higmac_mdio_read(struct mii_bus *bus, int phy, int reg)
 		udelay(1);
 
 	if (timeout <= 0 || !test_mdio_read_data_done(ld))
-		return 0;
+		return -ETIMEDOUT;
 
 	val = mdio_get_phyread_val(ld);
 
@@ -41,12 +41,12 @@ int higmac_mdio_write(struct mii_bus *bus, int phy, int reg, u16 val)
 	struct higmac_netdev_local *ld = bus->priv;
 
 	if (!wait_mdio_ready(ld))
-		return 0;
+		return -ETIMEDOUT;
 
 	higmac_trace(2, "mdio write phy:%x, reg:%x = %x\n", phy, reg, val);
 
 	mdio_set_phywrite_val(ld, val);
 	mdio_phywrite(ld, phy, reg);
 
-	return val;
+	return 0;
 }

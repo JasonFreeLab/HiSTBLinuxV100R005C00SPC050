@@ -6,3 +6,7 @@ endif
 if ARCH_HI3798MV2X
 source "drivers/hisilicon/soc/hi3798mv200/Kconfig"
 endif
+
+if ARCH_HI3798MV310
+source "drivers/hisilicon/soc/hi3798mv310/Kconfig"
+endif

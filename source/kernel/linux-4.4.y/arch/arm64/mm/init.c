@@ -76,6 +76,23 @@ early_param("initrd", early_initrd);
 #endif
 
 /*
+ * get dma zone size from bootargs
+ */
+phys_addr_t dma_zone_total_size = 0;
+EXPORT_SYMBOL(dma_zone_total_size);
+
+static int __init get_dma_zone_size(char *p)
+{
+	if (!p)
+		return 0;
+
+	dma_zone_total_size = memparse(p, &p);
+
+	return 0;
+}
+early_param("dma_zone", get_dma_zone_size);
+
+/*
  * Return the maximum physical address for ZONE_DMA (DMA_BIT_MASK(32)). It
  * currently assumes that for memory starting above 4G, 32-bit devices will
  * use a DMA offset.
@@ -83,6 +100,10 @@ early_param("initrd", early_initrd);
 static phys_addr_t __init max_zone_dma_phys(void)
 {
 	phys_addr_t offset = memblock_start_of_DRAM() & GENMASK_ULL(63, 32);
+
+	if (dma_zone_total_size)
+		return min(offset + dma_zone_total_size, memblock_end_of_DRAM());
+
 	return min(offset + (1ULL << 32), memblock_end_of_DRAM());
 }
 

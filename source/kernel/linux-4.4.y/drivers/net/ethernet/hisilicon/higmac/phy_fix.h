@@ -41,4 +41,5 @@ int phy_mmd_read(struct phy_device *phy_dev, u32 mmd_device, u32 regnum);
 int phy_mmd_write(struct phy_device *phy_dev, u32 mmd_device, u32 regnum, u16 val);
 
 void phy_register_fixups(void);
+void phy_unregister_fixups(void);
 #endif

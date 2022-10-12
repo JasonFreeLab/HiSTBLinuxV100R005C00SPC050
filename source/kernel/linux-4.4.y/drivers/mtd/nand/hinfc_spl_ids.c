@@ -220,7 +220,7 @@ struct nand_flash_special_dev nand_flash_special_dev[] =
 	 * Hi3798CV200/Hi3798MV200 support 1ce.
 	 */
 	{        /* MLC 40bit/1k */
-		.name      = "MT29F256G08CMCBB",
+		.name      = "MT29F64G08CBAAB",
 		.id        = {0x2C, 0x64, 0x44, 0x4B, 0xA9, 0x00, 0x00, 0x00},
 		.length    = 8,
 		.chipsize  = SZ_8G,
@@ -290,8 +290,35 @@ struct nand_flash_special_dev nand_flash_special_dev[] =
 		.badblock_pos    = BBP_FIRST_PAGE,
 		.flags = 0,
 	},
-
+	{        /* SLC 8bit/512 */
+		.name      = "MT29F2G08ABAGAWP",
+		.id        = {0x2C, 0xDA, 0x90, 0x95, 0x06, 0x00, 0x00, 0x00},
+		.length    = 5,
+		.chipsize  = SZ_256M,
+		.probe     = NULL,
+		.pagesize  = SZ_2K,
+		.erasesize = SZ_128K,
+		.oobsize   = 128,
+		.options   = 0,
+		.read_retry_type = NAND_RR_NONE,
+		.badblock_pos    = BBP_FIRST_PAGE,
+		.flags = 0,
+	},
 	/****************************** Toshaba *******************************/
+	{       /* SLC 8bit/512 */
+		.name      = "TC58NVG2S0HTA00",
+		.id        = {0x98, 0xDC, 0x90, 0x26, 0x76, 0x16, 0x08},
+		.length    = 5,
+		.chipsize  = SZ_512M,
+		.probe     = NULL,
+		.pagesize  = SZ_4K,
+		.erasesize = SZ_256K,
+		.oobsize   = 256,
+		.options   = 0,
+		.read_retry_type = NAND_RR_NONE,
+		.badblock_pos    = BBP_FIRST_PAGE,
+		.flags = 0,
+	},
 
 	{       /* MLC 24bit/1k 32nm */
 		.name      = "TC58NVG4D2FTA00",

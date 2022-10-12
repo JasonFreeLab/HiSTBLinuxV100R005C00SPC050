@@ -35,6 +35,7 @@
 static void himciv300_control_cclk(struct himciv300_host *host, u32 enable);
 static void himciv300_host_reset(struct himciv300_host *host);
 static void himciv300_idma_reset(struct himciv300_host *host);
+static void himciv300_set_ldo(struct himciv300_host *host, u8 volt);
 
 #define himci_pr_dts DBG_OUT
 extern u32 emmc_boot_tuning_phase;
@@ -46,6 +47,10 @@ extern u32 emmc_boot_tuning_phase;
 
 #if defined(CONFIG_ARCH_HI3796MV2X)
 #include "himci_hi3796mv2x.c"
+#endif
+
+#if defined(CONFIG_ARCH_HI3798MV310)
+#include "himci_hi3798mv310.c"
 #endif
 
 static u32 detect_time = HI_MCI_DETECT_TIMEOUT;
@@ -114,11 +119,9 @@ static void himciv300_host_power(struct himciv300_host *host, u32 power_on,
 
 	if (host->power_on != power_on || force) {
 		if (!power_on) {
-			mci_writel(host, MCI_RESET_N, 0);
 			mci_writel(host, MCI_PWREN, 0);
 		} else {
 			mci_writel(host, MCI_PWREN, 1);
-			mci_writel(host, MCI_RESET_N, 1);
 		}
 
 		if (in_interrupt())
@@ -199,7 +202,7 @@ static void himciv300_control_cclk(struct himciv300_host *host, u32 enable)
 	if (enable) {
 		regval |= CCLK_ENABLE;
 	//TODO: low power mode disable
-#if 0
+#ifdef CONFIG_ARCH_HI3798MV310
 
 		/*enable low power mode, if sdio interrupt not enabled*/
 		if (!(mci_readl(host, MCI_INTMASK) & SDIO_INT_MASK))
@@ -363,6 +366,9 @@ static void himciv300_detect_card(unsigned long arg)
 			himciv300_host_init(host);
 			printk(KERN_INFO "card connected!\n");
 		} else {
+		#ifdef CONFIG_ARCH_HI3796MV2X
+			himciv300_set_ldo(host, 0);
+		#endif
 			himciv300_host_reset(host);
 			himciv300_host_power(host,false,false);
 			printk(KERN_INFO "card disconnected!\n");
@@ -650,9 +656,28 @@ static void himciv300_data_done(struct himciv300_host *host, unsigned int stat)
 		}
 	}
 
-	if (!data->error)
+	if (!data->error) {
+		if (!host->tunning) {
+			unsigned int i = 0;
+			int count = 1000;
+			struct himci_des *des;
+
+			des = (struct himci_des *)host->dma_vaddr;
+			for (i = 0; des[i].idmac_des_buf_size; i++) {
+				if (des[i].idmac_des_ctrl & DMA_DES_LAST_DES)
+					break;
+			}
+
+			while ((des[i].idmac_des_ctrl & DMA_DES_OWN) && count-- > 0) {
+				himci_trace(3, "wait for DMA_DES_OWN clear.\n");
+				msleep(1);
+			}
+
+			if ((des[i].idmac_des_ctrl & DMA_DES_OWN) && count <= 0)
+				pr_err("wait for DMA_DES_OWN clear timeout.\n", host->devid);
+		}
 		data->bytes_xfered = data->blocks * data->blksz;
-	else
+	} else
 		data->bytes_xfered = 0;
 
 	host->data = NULL;
@@ -904,6 +929,7 @@ static void himciv300_set_ldo(struct himciv300_host *host, u8 volt)
 {
 	u32 regval;
 
+	if (host->ldoaddr) {
 	if (volt == MMC_SIGNAL_VOLTAGE_330) {
 		regval = readl(host->ldoaddr);
 		regval &= ~(SD_LDO_MASK<<host->ldo_shift);
@@ -921,6 +947,7 @@ static void himciv300_set_ldo(struct himciv300_host *host, u8 volt)
 		writel(regval, host->ldoaddr);
 	} else {
 		himci_error("NO Support this voltage\n", host->devid);
+	}
 	}
 }
 /******************************************************************************/
@@ -1072,6 +1099,13 @@ static void himciv300_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 		regval &= ~ENABLE_HS400_MODE;
 	mci_writel(host, MCI_DDR_REG, regval);
 
+	/*logic:fix bug*/
+#ifdef CONFIG_ARCH_HI3798MV310
+	regval = mci_readl(host, MCI_GPIO);
+	regval |= DTO_FIX_ENABLE;
+	mci_writel(host, MCI_GPIO, regval);
+#endif
+
 }
 /******************************************************************************
  *1: card readonly
@@ -1111,16 +1145,23 @@ static void himciv300_enable_sdio_irq(struct mmc_host *mmc, int enable)
 {
 	struct himciv300_host *host = mmc_priv(mmc);
 	u32 regval;
+	unsigned long flags;
 
 	himci_trace(2, "begin");
+
+	if (!in_interrupt())
+		spin_lock_irqsave(&host->lock, flags);
 
 	regval = mci_readl(host, MCI_INTMASK);
 	if (enable) {
 		regval |= SDIO_INT_MASK;
 	} else {
-		regval &= ~SDIO_INT_MASK;
+		regval &= (~SDIO_INT_MASK);
 	}
 	mci_writel(host, MCI_INTMASK, regval);
+
+	if (!in_interrupt())
+		spin_unlock_irqrestore(&host->lock, flags);
 }
 /******************************************************************************/
 
@@ -1198,6 +1239,10 @@ static irqreturn_t himciv300_irq(int irq, void *dev_id)
 	}
 
 	if (state & SDIO_INT_STATUS) {
+		regval = mci_readl(host, MCI_INTMASK);
+		regval &= ~SDIO_INT_MASK;
+		mci_writel(host, MCI_INTMASK, regval);
+
 		mci_writel(host, MCI_RINTSTS, SDIO_INT_STATUS);
 		mmc_signal_sdio_irq(host->mmc);
 	}
@@ -1277,14 +1322,30 @@ static int __init himciv300_pltm_probe(struct platform_device *pdev)
 	if (of_property_read_u32(np, "caps", &mmc->caps))
 		mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SD_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED;
 
-
 	of_property_read_u32(np, "caps2", &mmc->caps2);
 	of_property_read_u32(np, "max-frequency", &mmc->f_max);
 
-	if (_HI3798MV300 == get_chipid(0ULL)) {
-		mmc->caps &= (~(MMC_CAP_1_8V_DDR | MMC_CAP_1_2V_DDR));
-		mmc->caps2 &= (~(MMC_CAP2_HS200 | MMC_CAP2_HS400));
+#if defined(CONFIG_ARCH_HI3798MV2X)
+	/* not support sdio3.0 on hi3798mv200 DMS board sdio0 */
+	{
+		void __iomem *reg_board_type;
+		u32 regval;
+		reg_board_type = ioremap_nocache(REG_BOARD_TYPE, sizeof(u32));
+		if (!reg_board_type) {
+			printk("%s %s iomap fail\n",__func__,dev_name(host->dev));
+			return;
+		}
+
+		regval = readl(reg_board_type);
+		regval &= (0x1<<30);
+		iounmap(reg_board_type);
+
+		if ((regval) &&(strcmp(dev_name(&pdev->dev), "f9820000.himciv200.SD") == 0)) {
+			mmc->caps &= ~(MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 |
+					MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR104);
 	}
+	}
+#endif
 
 	if (of_property_read_u32(np, "ldo-addr", &ldo_addr) == 0) {
 		host->ldoaddr = ioremap_nocache(ldo_addr, 4);
@@ -1477,7 +1538,7 @@ static int himciv300_pltm_resume(struct platform_device *pdev)
 {
 	struct mmc_host *mmc = platform_get_drvdata(pdev);
 	struct himciv300_host *host;
-	int ret = 0;
+	int ret = 0, status = 0;
 
 	himci_trace(2, "begin");
 
@@ -1487,6 +1548,11 @@ static int himciv300_pltm_resume(struct platform_device *pdev)
 		clk_prepare_enable(host->clk);
 
 		himciv300_host_init(host);
+
+		/* after suspend uplug sd, host can't scan */
+		status = himciv300_get_card_detect_register(host);
+		if (host->card_status != status)
+			host->card_detect_change = 1;
 
 		add_timer(&host->timer);
 	}
@@ -1502,8 +1568,10 @@ static int himciv300_pltm_resume(struct platform_device *pdev)
 static const struct of_device_id
 himciv300_match[] __maybe_unused = {
 	{ .compatible = "hi3798mv200,himciv200", },
-	{ .compatible = "hi3798mv300,himciv200", },
 	{ .compatible = "hi3796mv200,himciv200", },
+#ifndef CONFIG_TEE
+	{ .compatible = "hi3798mv200,himciv300_sd", },
+#endif
 	{},
 };
 MODULE_DEVICE_TABLE(of, hi3716cv200_himciv300_match);

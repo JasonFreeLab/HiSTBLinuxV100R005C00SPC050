@@ -1056,14 +1056,18 @@ static int tcp_packet(struct nf_conn *ct,
 		ct->proto.tcp.seen[dir].flags |= IP_CT_TCP_FLAG_CLOSE_INIT;
 
 	if (ct->proto.tcp.retrans >= tn->tcp_max_retrans &&
-	    timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS])
+	    timeouts[new_state] > timeouts[TCP_CONNTRACK_RETRANS]) {
+		isb();
 		timeout = timeouts[TCP_CONNTRACK_RETRANS];
-	else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
+	} else if ((ct->proto.tcp.seen[0].flags | ct->proto.tcp.seen[1].flags) &
 		 IP_CT_TCP_FLAG_DATA_UNACKNOWLEDGED &&
-		 timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK])
+		 timeouts[new_state] > timeouts[TCP_CONNTRACK_UNACK]) {
+		isb();
 		timeout = timeouts[TCP_CONNTRACK_UNACK];
-	else
+	} else {
+		isb();
 		timeout = timeouts[new_state];
+	}
 	spin_unlock_bh(&ct->lock);
 
 	if (new_state != old_state)

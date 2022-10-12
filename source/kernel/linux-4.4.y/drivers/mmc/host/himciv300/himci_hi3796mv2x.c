@@ -7,10 +7,9 @@
 #define HS400_MAX_CLK  HS400_CLK_100M
 
 /*HS200 clock config*/
-#define HS200_CLK_100M  100000000
 #define HS200_CLK_150M  150000000
 #define HS200_CLK_187M  187000000
-#define HS200_MAX_CLK  HS200_CLK_187M
+#define HS200_MAX_CLK  HS200_CLK_150M
 
 #define SDR104_CLK_150M  150000000
 #define SDR104_CLK_187M  187000000
@@ -92,19 +91,13 @@
 #define EMMC_DRV_CAP_HS200_CMD_DATA  (0b1011 << 4)
 #define EMMC_DRV_CAP_HS200_CLOCK     (0b0011 << 4)
 #define EMMC_DRV_SR_HS200_CMD_DATA    DRV_SLEV_RATE
-#define EMMC_DRV_SR_HS200_CLOCK       DRV_SLEV_RATE
+#define EMMC_DRV_SR_HS200_CLOCK       0
 #elif (HS200_MAX_CLK == HS200_CLK_150M)
 /*HS200 IO drv config as 150Mhz*/
 #define EMMC_DRV_CAP_HS200_CMD_DATA  (0b1011 << 4)
 #define EMMC_DRV_CAP_HS200_CLOCK     (0b1011 << 4)
 #define EMMC_DRV_SR_HS200_CMD_DATA    DRV_SLEV_RATE
 #define EMMC_DRV_SR_HS200_CLOCK       0
-#elif (HS200_MAX_CLK == HS200_CLK_100M)
-/*HS200 IO drv config as 100Mhz*/
-#define EMMC_DRV_CAP_HS200_CMD_DATA  (0b1110 << 4)
-#define EMMC_DRV_CAP_HS200_CLOCK     (0b1011 << 4)
-#define EMMC_DRV_SR_HS200_CMD_DATA    DRV_SLEV_RATE
-#define EMMC_DRV_SR_HS200_CLOCK       DRV_SLEV_RATE
 #endif
 
 #define SDIO_DRV_CAP_3V3_50M_CMD_DATA   (0b011 << 4)
@@ -214,13 +207,6 @@ static const char himci_mmc_name[]= {"f9830000.himciv200.MMC"};
 static const char himci_sdio0_name[]= {"f9820000.himciv200.SD"};
 static const char himci_sdio1_name[]= {"f9c40000.himciv200.SD"};
 
-static bool check_is_hi3796mv200_15x15_chip(void)
-{
-	if((_HI3796MV200_MASK & get_chipid(0ULL)) == _HI3796MV200_15X15)
-		return true;
-	return false;
-}
-
 static int himciv300_send_status(struct mmc_host *mmc)
 {
 	int err;
@@ -271,19 +257,6 @@ static int himciv300_send_tuning(struct mmc_host * mmc, u32 opcode)
 	himciv300_send_status(mmc);
 	return err;
 }
-
-#if 0//unused
-static u32 himciv300_edge_tuning_max_dline(struct himciv300_host *host)
-{
-	if (strncmp(dev_name(host->dev), himci_mmc_name, sizeof(himci_mmc_name)) == 0) {
-		return 8;
-	} else if ((strncmp(dev_name(host->dev), himci_sdio0_name, sizeof(himci_sdio0_name)) == 0)||
-			  (strncmp(dev_name(host->dev), himci_sdio1_name, sizeof(himci_sdio1_name)) == 0)){
-		return 4;
-	}
-	return 1;
-}
-#endif
 
 static u32 himciv300_get_tuning_phase_num(struct himciv300_host *host)
 {
@@ -443,42 +416,6 @@ static void himciv300_set_dll_element(struct himciv300_host *host, u32 element)
 		iounmap(reg_sap_dll_ctrl);
 	}
 }
-
-#if 0 //unused
-static u32 himciv300_get_dll_element(struct himciv300_host *host)
-{
-	u32 regval = 0;
-	void __iomem *reg_sap_dll_ctrl;
-
-	if (strncmp(dev_name(host->dev), himci_mmc_name, sizeof(himci_mmc_name)) == 0) {
-		reg_sap_dll_ctrl = ioremap_nocache(REG_EMMC_SAP_DLL_CTRL, sizeof(u32));
-		if (!reg_sap_dll_ctrl) {
-			printk("%s %s iomap fail\n",__func__,dev_name(host->dev));
-			return 0;
-		}
-		regval = himci_readl(reg_sap_dll_ctrl);
-		iounmap(reg_sap_dll_ctrl);
-	} else if (strncmp(dev_name(host->dev), himci_sdio0_name, sizeof(himci_sdio0_name)) == 0) {
-		reg_sap_dll_ctrl = ioremap_nocache(REG_SDIO0_SAP_DLL_CTRL, sizeof(u32));
-		if (!reg_sap_dll_ctrl) {
-			printk("%s %s iomap fail\n",__func__,dev_name(host->dev));
-			return 0;
-		}
-		regval = himci_readl(REG_SDIO0_SAP_DLL_CTRL);
-		iounmap(reg_sap_dll_ctrl);
-	} else if (strncmp(dev_name(host->dev), himci_sdio1_name, sizeof(himci_sdio1_name)) == 0) {
-		reg_sap_dll_ctrl = ioremap_nocache(REG_SDIO1_SAP_DLL_CTRL, sizeof(u32));
-		if (!reg_sap_dll_ctrl) {
-			printk("%s %s iomap fail\n",__func__,dev_name(host->dev));
-			return 0;
-		}
-		regval = himci_readl(REG_SDIO1_SAP_DLL_CTRL);
-		iounmap(reg_sap_dll_ctrl);
-	}
-
-	return (regval & SAP_DLL_CTRL_DLLSSEL);
-}
-#endif
 
 static u32 himciv300_get_sap_dll_taps(struct himciv300_host *host)
 {
@@ -662,7 +599,7 @@ tuning_out:
 	if (found) {
 		printk("scan elemnts: startp:%d endp:%d\n", startp, endp);
 
-		if (endp < startp)
+		if (endp <= startp)
 			endp += totalphases;
 
 		phaseoffset = (( startp + endp ) / 2) % totalphases;
@@ -906,63 +843,6 @@ tuning_out:
 	return -1;
 }
 
-#if 0//unused
-static int himciv300_tuning_normal_mode(struct mmc_host * mmc, u32 opcode)
-{
-	struct himciv300_host *host = mmc_priv(mmc);
-	u32 index;
-	u32 found = 0, startp = 0, endp = 0;
-	int prev_err = 0, err = 0;
-	u32 phase_num = himciv300_get_tuning_phase_num(host);
-
-	startp = 0;
-	endp = phase_num;
-	host->tunning = 1;
-
-	for (index = 0; index < phase_num; index++) {
-
-		/* set phase shift */
-		himciv300_set_sap_phase(host,index);
-		err = himciv300_send_tuning(mmc,opcode);
-
-		if (!err)
-			found = 1;
-
-		if (!prev_err && err)
-			endp = index;
-
-		if ( prev_err && !err)
-			startp = index;
-
-		//printk("\tphase:%01d st:%03d end:%03d error:%d\n", index, startp, endp, err);
-		if ((startp != 0) && (endp != phase_num))
-			break;
-
-		prev_err = err;
-		err = 0;
-	}
-
-
-	if (found) {
-		printk("scan phase: startp:%d endp:%d\n", startp, endp);
-		if (endp < startp) {
-			endp += phase_num;
-		}
-		index = ((startp + endp) / 2)%phase_num;
-
-		emmc_boot_tuning_phase = index;
-		himciv300_set_sap_phase(host, index);
-		printk(KERN_NOTICE "Tuning SampleClock. nml set phase:[%02d/%02d]\n",index,(phase_num-1));
-	} else {
-		printk(KERN_NOTICE "No valid phase shift! use default\n");
-		return -1;
-	}
-
-	host->tunning = 0;
-	mci_writel(host,  MCI_RINTSTS, ALL_INT_CLR);
-	return 0;
-}
-#endif
 #endif
 
 #ifdef MCI_TUNING_TEST
@@ -1369,10 +1249,7 @@ static void himciv300_set_crgclk(struct himciv300_host * host, u8 timing)
 		} else if (timing == MMC_TIMING_MMC_DDR52) {
 			host->mmc->f_max = 50000000;
 		} else if (timing == MMC_TIMING_MMC_HS200) {
-			if (check_is_hi3796mv200_15x15_chip())
-				host->mmc->f_max = HS200_CLK_150M;
-			else
-				host->mmc->f_max = HS200_CLK_187M;
+				host->mmc->f_max = HS200_MAX_CLK;
 		} else if (timing == MMC_TIMING_MMC_HS400) {
 			host->mmc->f_max = HS400_MAX_CLK;
 		}
@@ -1393,15 +1270,11 @@ static void himciv300_set_crgclk(struct himciv300_host * host, u8 timing)
 		} else if (timing == MMC_TIMING_UHS_SDR50) {
 			host->mmc->f_max = 100000000;
 		} else if (timing == MMC_TIMING_UHS_SDR104) {
-			if (check_is_hi3796mv200_15x15_chip()) {
-				host->mmc->f_max = SDR104_CLK_150M;
-			} else {
 				if (strncmp(dev_name(host->dev), himci_sdio1_name, sizeof(himci_sdio1_name)) == 0)
 					host->mmc->f_max = SDR104_CLK_187M;
 				else
 					host->mmc->f_max = SDR104_CLK_150M;
 			}
-		}
 
 		clk_set_rate(host->clk,	(unsigned long)host->mmc->f_max);
 	}
@@ -1415,15 +1288,9 @@ static void himciv300_emmc_set_phase(struct himciv300_host * host, u8 timing)
 	regval = regval << SDIO_SAP_PS_SHIFT_BIT;
 	if (timing == MMC_TIMING_LEGACY) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		if (host->iovoltage == EMMC_IO_VOL_1_8V)
-			regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
-		else
 			regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
 	} else if (timing == MMC_TIMING_MMC_HS) {
 		regval &= ~(SDIO_SAP_PS_MASK| SDIO_DRV_PS_MASK);
-		if (host->iovoltage == EMMC_IO_VOL_1_8V)
-			regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
-		else
 			regval |= SDIO_SAP_PS_0 | SDIO_DRV_PS_90;
 	} else if (timing == MMC_TIMING_MMC_DDR52) {
 		regval &= ~(SDIO_SAP_PS_MASK| SDIO_DRV_PS_MASK);
@@ -1434,19 +1301,11 @@ static void himciv300_emmc_set_phase(struct himciv300_host * host, u8 timing)
 			regval |= SDIO_SAP_PS_45;
 	} else if (timing == MMC_TIMING_MMC_HS200) {
 		regval &= ~(SDIO_DRV_PS_MASK);
-		if (HS200_MAX_CLK == HS200_CLK_187M) {
 			regval |= SDIO_DRV_PS_112DOT5;
-		} else {
-			regval |= SDIO_DRV_PS_112DOT5;
-		}
 	} else if(timing == MMC_TIMING_MMC_HS400) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		if (HS400_MAX_CLK == HS400_CLK_100M) {
-			regval |= (emmc_boot_tuning_phase << SDIO_SAP_PS_OFFSET) | SDIO_DRV_PS_67DOT5;
-		} else {
 			regval |= (emmc_boot_tuning_phase << SDIO_SAP_PS_OFFSET) | SDIO_DRV_PS_90;
 		}
-	}
 	/* clk_set_phase has  regval%360, so shifit 12bit */
 	regval = regval >> SDIO_SAP_PS_SHIFT_BIT;
 	clk_set_phase(host->clk, (int)regval);
@@ -1466,14 +1325,14 @@ static void himciv300_sdio0_set_phase(struct himciv300_host * host, u8 timing)
 	regval = (u32)clk_get_phase(host->clk);
 	regval = regval << SDIO_SAP_PS_SHIFT_BIT;
 	if (timing == MMC_TIMING_UHS_SDR104){
-		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		regval |= (SDIO_DRV_PS_90 | SDIO_SAP_PS_135);
+		regval &= ~(SDIO_DRV_PS_MASK);
+		regval |= (SDIO_DRV_PS_90);
 	} else if (timing == MMC_TIMING_UHS_DDR50) {
-		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_67DOT5);
+		regval &= ~(SDIO_DRV_PS_MASK);
+		regval |= (SDIO_DRV_PS_67DOT5);
 	} else if (timing == MMC_TIMING_UHS_SDR50){
-		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		regval |= (SDIO_DRV_PS_90 | SDIO_SAP_PS_112DOT5);
+		regval &= ~(SDIO_DRV_PS_MASK);
+		regval |= (SDIO_DRV_PS_90);
 	}  else if (timing == MMC_TIMING_UHS_SDR25){
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
 		regval |= (SDIO_DRV_PS_90 | SDIO_SAP_PS_22DOT5);
@@ -1498,21 +1357,21 @@ static void himciv300_sdio1_set_phase(struct himciv300_host * host, u8 timing)
 	regval = (u32)clk_get_phase(host->clk);
 	regval = regval << SDIO_SAP_PS_SHIFT_BIT;
 	if (timing == MMC_TIMING_UHS_SDR104){
-		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_135);
+		regval &= ~(SDIO_DRV_PS_MASK);
+		regval |= (SDIO_DRV_PS_67DOT5);
 	} else if (timing == MMC_TIMING_UHS_DDR50) {
-		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_67DOT5);
-	} else if (timing == MMC_TIMING_UHS_SDR50){
-		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
-		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_112DOT5);
-	}  else if (timing == MMC_TIMING_UHS_SDR25){
+		regval &= ~(SDIO_DRV_PS_MASK);
+		regval |= (SDIO_DRV_PS_67DOT5);
+	} else if (timing == MMC_TIMING_UHS_SDR50) {
+		regval &= ~(SDIO_DRV_PS_MASK);
+		regval |= (SDIO_DRV_PS_67DOT5);
+	}  else if (timing == MMC_TIMING_UHS_SDR25) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
 		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_22DOT5);
-	} else if (timing == MMC_TIMING_UHS_SDR12){
+	} else if (timing == MMC_TIMING_UHS_SDR12) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
 		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_315);
-	} else if (timing == MMC_TIMING_SD_HS){
+	} else if (timing == MMC_TIMING_SD_HS) {
 		regval &= ~(SDIO_SAP_PS_MASK | SDIO_DRV_PS_MASK);
 		regval |= (SDIO_DRV_PS_67DOT5 | SDIO_SAP_PS_0);
 	} else if(timing == MMC_TIMING_LEGACY) {
@@ -1572,11 +1431,7 @@ static int himciv300_prepare_hs400(struct mmc_host * mmc, struct mmc_ios * ios)
 		regval = (u32)clk_get_phase(host->clk);
 		regval = regval << SDIO_SAP_PS_SHIFT_BIT;
 		regval &= ~(SDIO_DRV_PS_MASK);
-		if (HS400_MAX_CLK == HS400_CLK_100M) {
 			regval |= SDIO_DRV_PS_90;
-		} else {
-			regval |= SDIO_DRV_PS_90;
-		}
 		regval = regval >> SDIO_SAP_PS_SHIFT_BIT;
 		clk_set_phase(host->clk, (int)regval);
 	}

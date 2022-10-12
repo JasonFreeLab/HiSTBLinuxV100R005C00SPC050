@@ -15,6 +15,7 @@
  */
 #include <linux/phy.h>
 #include <linux/module.h>
+#include <linux/etherdevice.h>
 
 #define RTL821x_PHYSR		0x11
 #define RTL821x_PHYSR_DUPLEX	0x2000
@@ -28,6 +29,17 @@
 #define RTL8211F_INSR		0x1d
 #define RTL8211F_PAGE_SELECT	0x1f
 #define RTL8211F_TX_DELAY	0x100
+
+#define RTL8211F_WOL_EVENT	0x10
+#define RTL8211F_WOL_MAGIC_EN	BIT(12)
+#define RTL8211F_MAX_PKT_LEN	0x11
+
+#define RTL8211F_WOL_PAD_ISO	0x13
+#define RTL8211F_WOL_PAD_ISO_EN	BIT(15)
+
+#define RTL8211F_MAC_ADDR	0x10
+#define RTL8211F_INTBCR		0x16
+#define RTL8211F_INTB_PMEB	BIT(5)
 
 MODULE_DESCRIPTION("Realtek PHY driver");
 MODULE_AUTHOR("Johnson Leung");
@@ -115,6 +127,71 @@ static int rtl8211f_config_init(struct phy_device *phydev)
 	return 0;
 }
 
+static void rtl8211f_get_wol(struct phy_device *phydev,
+			     struct ethtool_wolinfo *wol)
+{
+	u32 value;
+
+	wol->supported = WAKE_MAGIC;
+	wol->wolopts = 0;
+
+	phy_write(phydev, RTL8211F_PAGE_SELECT, 0xd8a);
+	value = phy_read(phydev, RTL8211F_WOL_EVENT);
+	if (value & RTL8211F_WOL_MAGIC_EN)
+		wol->wolopts |= WAKE_MAGIC;
+	phy_write(phydev, RTL8211F_PAGE_SELECT, 0);
+}
+
+static int rtl8211f_set_wol(struct phy_device *phydev,
+			    struct ethtool_wolinfo *wol)
+{
+	struct net_device *ndev = phydev->attached_dev;
+	const u8 *mac;
+	int ret = 0;
+
+        if (!ndev)
+                return -ENODEV;
+
+	if (wol->wolopts & WAKE_MAGIC) {
+		int i;
+
+		mac = (const u8 *)ndev->dev_addr;
+
+		if (!is_valid_ether_addr(mac))
+			return -EFAULT;
+
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0xd8c);
+		for (i = 0; i < 3; i++) {
+			phy_write(phydev, RTL8211F_MAC_ADDR + i,
+					(mac[(i * 2) + 1] << 8) | mac[(i * 2)]);
+		}
+
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0xd40);
+		ret = phy_write(phydev, RTL8211F_INTBCR, RTL8211F_INTB_PMEB);
+		if (ret)
+			return ret;
+
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0xd8a);
+		ret = phy_write(phydev, RTL8211F_MAX_PKT_LEN, 0x9fff);
+		if (ret)
+			return ret;
+
+		ret = phy_write(phydev, RTL8211F_WOL_EVENT, RTL8211F_WOL_MAGIC_EN);
+		if (ret)
+			return ret;
+
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0);
+	} else {
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0xd8a);
+		ret = phy_write(phydev, RTL8211F_WOL_EVENT, 0);
+		if (ret)
+			return ret;
+		phy_write(phydev, RTL8211F_PAGE_SELECT, 0);
+	}
+
+	return ret;
+}
+
 static struct phy_driver realtek_drvs[] = {
 	{
 		.phy_id         = 0x00008201,
@@ -173,6 +250,8 @@ static struct phy_driver realtek_drvs[] = {
 		.read_status	= &genphy_read_status,
 		.ack_interrupt	= &rtl8211f_ack_interrupt,
 		.config_intr	= &rtl8211f_config_intr,
+		.get_wol	= rtl8211f_get_wol,
+		.set_wol	= rtl8211f_set_wol,
 		.suspend	= genphy_suspend,
 		.resume		= genphy_resume,
 		.driver		= { .owner = THIS_MODULE },

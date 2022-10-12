@@ -73,6 +73,17 @@ int (*hinfc_param_adjust)(struct mtd_info *, struct nand_chip *, struct nand_dev
 static struct nand_dev_t __nand_dev;
 /*****************************************************************************/
 
+/* Extract the bits of per cell from the 3rd byte of the extended ID */
+static int nand_get_bits_per_cell(u8 cellinfo)
+{
+	int bits;
+
+	bits = cellinfo & NAND_CI_CELLTYPE_MSK;
+	bits >>= NAND_CI_CELLTYPE_SHIFT;
+	return bits + 1;
+}
+/*****************************************************************************/
+
 struct nand_flash_dev *hinfc_get_flash_type(struct mtd_info *mtd,
 					    struct nand_chip *chip,
 					    u8 *id_data, int *busw)
@@ -97,6 +108,7 @@ struct nand_flash_dev *hinfc_get_flash_type(struct mtd_info *mtd,
 		mtd->name = type->name;
 
 	chip->chipsize = (uint64_t)type->chipsize << 20;
+	chip->bits_per_cell = nand_get_bits_per_cell(id_data[2]);
 	mtd->erasesize = type->erasesize;
 	mtd->writesize = type->pagesize;
 	mtd->oobsize   = nand_dev->oobsize;

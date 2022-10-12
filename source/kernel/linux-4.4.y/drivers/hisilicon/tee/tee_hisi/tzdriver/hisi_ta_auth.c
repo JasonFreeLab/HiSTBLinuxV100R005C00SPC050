@@ -49,7 +49,6 @@
  */
 static st_ta_auth g_ta_auth_list[] = {
 	{TEE_SERVICE_WIDEVINE, "hisi_widevine_client", 0},
-	{TEE_SERVICE_EMPTYDRM, NULL, 0},
 	{TEE_SERVICE_PLAYREADY, "hisi_playready_client", 0},
 	{TEE_SERVICE_PLAYREADY, NULL, 0},
 	{TEE_SERVICE_HDMI, NULL, 0},
@@ -60,18 +59,15 @@ static st_ta_auth g_ta_auth_list[] = {
 	{TEE_SERVICE_HISI_VDP, NULL, 0},
 	{TEE_SERVICE_SMMU, NULL, 0},
 	{TEE_SERVICE_VPSS, NULL, 0},
-	{TEE_SERVICE_DMX, NULL, 0},
+	{TEE_SERVICE_DMX, "tee_dmx_general_session", 0},
+	{TEE_SERVICE_COMMON, "tee_common_session", 0},
+	{TEE_SERVICE_PLCIPHER, "tee_plcipher_session", 0},
 	{TEE_SERVICE_KLAD, NULL, 0},
 	{TEE_SERVICE_CRYPTOEN, NULL, 0},
 	{TEE_SERVICE_PVR, "hisi_pvr_client", 0},
 	{TEE_SERVICE_AVPLAY, NULL, 0},
 	{TEE_SERVICE_MCU, NULL, 0},
 	{TEE_SERVICE_LOG, NULL, 0},
-	{TEE_SERVICE_STB_VMX_ULTRA_VMXTA, NULL, 0},
-	{TEE_SERVICE_STB_VMX_ULTRA_videomarkTA, NULL, 0},
-	{TEE_SERVICE_STB_VMX_ULTRA_VMXTAC_TEST_TA2, NULL, 0},
-	{TEE_SERVICE_STB_VMX_ULTRA_VMXTAC_TEST_TA3, NULL, 0},
-	{TEE_SERVICE_STB_VMX_ULTRA_VMXTAC_TEST_TA1, NULL, 0},
 	{TEE_SERVICE_STB_UPDATE_TA, NULL, 0},
 	{TEE_SERVICE_STB_DISPLAY_TA, NULL, 0},
 	{TEE_SERVICE_DCAS_COMMON, NULL, 0},
@@ -79,6 +75,7 @@ static st_ta_auth g_ta_auth_list[] = {
 	{TEE_SERVICE_DCAS_SUMA, NULL, 0},
 	{TEE_SERVICE_DCAS_NOVEL, NULL, 0},
 	{TEE_SERVICE_NETFLIX, NULL, 0},
+	{TEE_SERVICE_SESSION_MANAGE, NULL, 0},	
 };
 
 static int hisi_set_ca_info(TC_NS_DEV_File *dev_file, char *ca_name, unsigned int ca_uid)

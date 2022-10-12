@@ -44,7 +44,7 @@ struct spinor_flash_dev spinor_flash_ids_hisi[] = {
 	{"MX25L128xx",  {0xc2, 0x20, 0x18}, 3, SZ_16M,  SZ_64K},
 	{"MX25L1655D",  {0xc2, 0x26, 0x15}, 3, SZ_2M,   SZ_64K},
 	{"MX25L12855E", {0xc2, 0x26, 0x18}, 3, SZ_16M,  SZ_64K},
-	{"MX25L25x35x", {0xc2, 0x20, 0x19}, 3, SZ_32M,  SZ_64K},
+	{"MX25L25645G", {0xc2, 0x20, 0x19}, 3, SZ_32M,  SZ_64K},
 
 	/* SPANSION QE=bit2, CMD=35h */
 	{"S25SL004A",  {0x01, 0x02, 0x12}, 3, SZ_512K, SZ_64K},
@@ -58,6 +58,7 @@ struct spinor_flash_dev spinor_flash_ids_hisi[] = {
 	{"S25FL128P1", {0x01, 0x20, 0x18, 0x03, 0x01}, 5, SZ_16M, SZ_64K }, /* NO EQ 8bits I/O */
 	{"S25FL129P0", {0x01, 0x20, 0x18, 0x4d, 0x00}, 5, SZ_16M, SZ_256K},
 	{"S25FL129P1", {0x01, 0x20, 0x18, 0x4d, 0x01}, 5, SZ_16M, SZ_64K},
+	{"S25FL128L",  {0x01, 0x60, 0x18}, 3, SZ_16M, SZ_64K},
 
 	{"sst25wf512",  {0xbf, 0x25, 0x01}, 3, SZ_64K,  SZ_64K},
 	{"sst25wf010",  {0xbf, 0x25, 0x02}, 3, SZ_128K, SZ_64K},
@@ -111,11 +112,16 @@ struct spinor_flash_dev spinor_flash_ids_hisi[] = {
 	{"EN25Q32B", {0x1c, 0x30, 0x16}, 3, SZ_4M,  SZ_64K},
 	{"EN25Q64",  {0x1c, 0x30, 0x17}, 3, SZ_8M,  SZ_64K},
 	{"EN25Q128", {0x1c, 0x30, 0x18}, 3, SZ_16M, SZ_64K},
+	{"EN25QH128A", {0x1c, 0x70, 0x18}, 3, SZ_16M, SZ_64K},
 
-	/* GIGA QE=bit2, CMD=35h, the sample as spansion */
-	{"GD25Q128", {0xC8, 0x40, 0x18}, 3, SZ_16M, SZ_64K},
+	/* GIGA QE=bit2, CMD=35h, the same as spansion */
+	{"GD25Q12(7/8)", {0xC8, 0x40, 0x18}, 3, SZ_16M, SZ_64K},
 	{"GD25Q64B", {0xC8, 0x40, 0x17}, 3, SZ_8M,  SZ_64K},
 	{"GD25Q32B", {0xC8, 0x40, 0x16}, 3, SZ_4M,  SZ_64K},
+
+	/* XMC Not support QE */
+	{"XM25QH128A", {0x20, 0x70, 0x18}, 3, SZ_16M,  SZ_64K},
+
 
 	{ NULL, },
 };

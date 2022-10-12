@@ -405,13 +405,13 @@ static int _discard_cache(struct flash_cache *cache, u32 pageindex,
 {
 	struct cache_ctrl *ctrl = (struct cache_ctrl *)cache;
 
-	for (; nr_pages > 0; nr_pages--, pageindex++) {
 		mutex_lock(&ctrl->mutex);
-
 		if (!cache->enable) {
 			mutex_unlock(&ctrl->mutex);
 			return 0;
 		}
+
+	for (; nr_pages > 0; nr_pages--, pageindex++) {
 
 		if (GET_STATUS(ctrl, pageindex) == FLASHCACHE_PAGE_CACHE) {
 			struct cache_node *node = find_cache_node(ctrl,
@@ -421,9 +421,8 @@ static int _discard_cache(struct flash_cache *cache, u32 pageindex,
 
 		SET_STATUS(ctrl, pageindex, status);
 		SET_READ_COUNT(ctrl, pageindex, 0);
-
-		mutex_unlock(&ctrl->mutex);
 	}
+	mutex_unlock(&ctrl->mutex);
 
 	return 0;
 }
@@ -503,10 +502,7 @@ static bool flash_cache_try_enable(struct cache_ctrl *ctrl)
 	if (ctrl->status_change_request && ctrl->enable_change_to) {
 		ctrl->status_change_request = false;
 
-		if (ctrl->cache.enable) {
-			mutex_unlock(&ctrl->mutex);
-			return ctrl->cache.enable;
-		}
+		if (!ctrl->cache.enable) {
 		ctrl->pages = kzalloc(
 			ctrl->max_pages * sizeof(ctrl->pages),
 			GFP_KERNEL);
@@ -516,6 +512,7 @@ static bool flash_cache_try_enable(struct cache_ctrl *ctrl)
 			ctrl->cache.enable = true;
 			start_read_ahead_thread(ctrl);
 		}
+	}
 	}
 
 	mutex_unlock(&ctrl->mutex);
@@ -556,11 +553,12 @@ static int _peek_status(struct flash_cache *cache, u32 pageindex)
 
 	mutex_lock(&ctrl->mutex);
 
-	if (cache->enable)
-		status = GET_STATUS(ctrl, pageindex);
-	else
-		status = FLASHCACHE_DISABLE;
+	if (!cache->enable) {
+		mutex_unlock(&ctrl->mutex);
+		return FLASHCACHE_DISABLE;
+	}
 
+	status = GET_STATUS(ctrl, pageindex);
 	mutex_unlock(&ctrl->mutex);
 
 	return status;
@@ -681,7 +679,7 @@ static void flash_cache_disable(struct cache_ctrl *ctrl)
 
 	flash_cache_remove(ctrl, ctrl->max_caches);
 
-	flash_cache_try_disable(ctrl);
+//	flash_cache_try_disable(ctrl);
 }
 /******************************************************************************/
 

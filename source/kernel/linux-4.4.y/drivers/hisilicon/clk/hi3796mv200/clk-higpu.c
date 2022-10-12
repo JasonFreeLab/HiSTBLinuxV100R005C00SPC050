@@ -1,176 +1,354 @@
-/******************************************************************************
- *  Copyright (C) 2014 Hisilicon Technologies CO.,LTD.
+
+/*
+ * devfreq clock for utgard GPUs
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Copyright (c) <2011-2015> HiSilicon Technologies Co., Ltd.
+ *              http://www.hisilicon.com
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Create By Xia Qing 2015.12.03
- *
-******************************************************************************/
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
 
 #include <linux/delay.h>
-#include <dt-bindings/clock/hi3798mv200-clock.h>
+#include <dt-bindings/clock/hi3796mv200-clock.h>
 #include <linux/hikapi.h>
 
+#include <linux/of.h>
+#include <linux/of_address.h>
 #include "clk-hisi.h"
 
-/******************************************************************************/
+#define CLOCK_ERROR_INFO() \
+	printk("error: func = %s, line = %d\n", __FUNCTION__, __LINE__);
 
-#define GPU_MAX_FREQ_NUM	6
-#define GPU_INIT_FREQ_INDEX	0
-#define GPU_FREQ_SEL_CFG_CRG	0x7
-#define GPU_BEGIN_CFG_BYPASS	0x200
-#define GPU_SW_BEGIN_CFG	0x400
-#define GPU_CLK_RESET		0xd4
-#define GPU_SRST_REG		0x10
-#define GPU_CKEN		0x1
-#define GPU_CLK_MUX		0x154
-#define GPU_CLK_MUX_MASK	0xe0
-#define GPU_CLK_MUX_SHIFT	0x5
+#define CLOCK_DEBUG 0
 
-struct gpll_table {
-	unsigned long rate; /* unit: KHZ */
-	int reg_value;
+typedef enum
+{
+	CRG_REG_ADDR_SOFTRESET = 0x00d4,
+	CRG_REG_ADDR_LOWPOWER = 0x0124
+}crg_register_addr;
+
+typedef enum
+{
+	PMC_REG_ADDR_FREQ = 0x0034,
+	PMC_REG_ADDR_CNTBYPASS = 0x0090
+}pmc_register_addr;
+
+typedef enum
+{
+	CRG_REG_MASK_ENABLE = 0x1,
+	CRG_REG_MASK_ENABLE_PP0 = (0x1 << 8),
+	CRG_REG_MASK_ENABLE_PP1 = (0x1 << 9),
+	CRG_REG_MASK_ENABLE_PP2 = (0x1 << 10),
+	CRG_REG_MASK_ENABLE_PP3 = (0x1 << 11),
+
+	CRG_REG_MASK_RESET = (0x1 << 4),
+	CRG_REG_MASK_FREQ_SEL = 0x7
+}crg_register_mask;
+
+typedef enum
+{
+	PMC_REG_MASK_CNT_BYPASS = 0x1,
+	PMC_REG_MASK_FSM_ENABLE = (0x1 << 20),
+	PMC_REG_MASK_WAIT_POWER_GOOD_MASK = 0xffff,
+	PMC_REG_MASK_WAIT_POWER_GOOD_VALUE = 0x2fff,
+	PMC_REG_MASK_WAIT_POWER_GOOD_CPU = (0x1 << 16),
+	PMC_REG_MASK_BEGIN_CFG_BYPASS = (0x1 << 9),
+	PMC_REG_MASK_FREQ_SW_TREND = (0x1 << 18),
+	PMC_REG_MASK_FREQ_SW_REQUSET = (0x1 << 21)
+}pmc_register_mask;
+
+struct pll_table {
+	unsigned long rate;
+	int value;
 };
 
-static struct gpll_table gpu_pll_table[GPU_MAX_FREQ_NUM] = {
+struct device_node *pmc_node;
+void __iomem *pmc_base;
+
+static struct pll_table gpu_pll_table[] = {
 	{200000000, 0x7},
 	{300000000, 0x4},
-	{400000000, 0x1},
+	{432000000, 0x1},
 	{500000000, 0x6},
 	{600000000, 0x3},
-	{675000000, 0x5}
+	{750000000, 0x5},
+	{864000000, 0x0},
+	{907000000, 0x2}
 };
 
-static unsigned long hiclk_recalc_rate_gpu(struct clk_hw *hw, unsigned long parent_rate);
-static int hiclk_set_rate_gpu(struct clk_hw *hw, unsigned long rate, unsigned long parent_rate);
+#define CLOCK_MAX_FREQ_NUM (sizeof(gpu_pll_table)/sizeof(gpu_pll_table[0]))
 
-static int hiclk_enable_gpu(struct clk_hw *hw)
+/************ private function ************/
+
+static void hisi_gpu_clk_on(struct clk_hw *hw)
 {
-	struct hiclk_hw *clk = to_hiclk_hw(hw);
-	u32 reg;
+	unsigned int value;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
 
-	reg = readl(clk->peri_crg_base + GPU_CLK_RESET);
-	reg |= (GPU_SRST_REG|GPU_CKEN);
+	value = readl(clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
+	value |= CRG_REG_MASK_ENABLE | CRG_REG_MASK_ENABLE_PP0 | CRG_REG_MASK_ENABLE_PP1;
+	writel(value, clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
 
-	writel(reg, clk->peri_crg_base + GPU_CLK_RESET);
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_on@\n");
+}
 
-	reg &= ~GPU_SRST_REG;
-	writel(reg, clk->peri_crg_base + GPU_CLK_RESET);
+static void hisi_gpu_clk_off(struct clk_hw *hw)
+{
+	unsigned int value;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
 
-	hiclk_set_rate_gpu(hw, gpu_pll_table[GPU_INIT_FREQ_INDEX].rate, 0);
+	value = readl(clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
+	value &= ~(CRG_REG_MASK_ENABLE | CRG_REG_MASK_ENABLE_PP0 | CRG_REG_MASK_ENABLE_PP1);
+	writel(value, clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
 
-	hiclk_recalc_rate_gpu(hw, 0);
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_off@\n");
+}
+
+static void hisi_gpu_clk_reset(struct clk_hw *hw)
+{
+	unsigned int value;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
+
+	/* reset */
+	value = readl(clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
+	value |= CRG_REG_MASK_RESET;
+	writel(value, clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
+
+	udelay(1);
+
+	/* cancel reset */
+	value &= ~CRG_REG_MASK_RESET;
+	writel(value, clock->peri_crg_base + CRG_REG_ADDR_SOFTRESET);
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_reset@\n");
+}
+
+static int hisi_gpu_clk_get_index(unsigned int rate)
+{
+	int index;
+
+	for (index = 0; index < CLOCK_MAX_FREQ_NUM; index++) {
+		if (gpu_pll_table[index].rate == rate) {
+			/*if(CLOCK_DEBUG)
+				printk("hisi_gpu_clk_get_index@ index = %d\n", index);*/
+
+			return index;
+		}
+	}
+
+	CLOCK_ERROR_INFO();
+
+	return -1;
+}
+
+static unsigned long hisi_gpu_clk_get_rate(struct clk_hw *hw)
+{
+	unsigned int i, value;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
+
+	value = readl(clock->peri_crg_base + CRG_REG_ADDR_LOWPOWER);
+	value &= CRG_REG_MASK_FREQ_SEL;
+
+	for (i = 0; i < CLOCK_MAX_FREQ_NUM; i++) {
+		if (gpu_pll_table[i].value == value) {
+			if (CLOCK_DEBUG)
+				printk("hisi_gpu_clk_get_rate@ Freq = %ld\n", gpu_pll_table[i].rate);
+
+			return gpu_pll_table[i].rate;
+		}
+	}
+
+	CLOCK_ERROR_INFO();
+
+	return 0;
+}
+
+static void hisi_gpu_pmc_node_create(void)
+{
+	pmc_node = of_find_compatible_node(NULL, NULL, "hisilicon,hi3796mv200-volt");
+	if (NULL == pmc_node) {
+		CLOCK_ERROR_INFO();
+		return;
+	}
+
+	pmc_base = of_iomap(pmc_node, 0);
+	if (NULL == pmc_base) {
+		CLOCK_ERROR_INFO();
+		of_node_put(pmc_node);
+	return;
+	}
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_pmc_node_create@\n");
+}
+
+static void hisi_gpu_pmc_node_destroy(void)
+{
+	iounmap(pmc_base);
+	of_node_put(pmc_node);
+
+	pmc_base = NULL;
+	pmc_node = NULL;
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_pmc_node_destroy@\n");
+}
+
+static void hisi_gpu_pmc_init(struct clk_hw *hw)
+{
+	unsigned int value;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
+
+	value = readl(pmc_base + PMC_REG_ADDR_CNTBYPASS);
+	value &= ~PMC_REG_MASK_CNT_BYPASS;              /* use cnt */
+	writel(value, pmc_base + PMC_REG_ADDR_CNTBYPASS);
+
+	value = readl(pmc_base + PMC_REG_ADDR_FREQ);
+	value |= PMC_REG_MASK_FSM_ENABLE;               /* use hardware status machine */
+	value &= ~PMC_REG_MASK_WAIT_POWER_GOOD_MASK;    /* clear power good value */
+	value |= PMC_REG_MASK_WAIT_POWER_GOOD_VALUE;    /* set power good value */
+	value &= ~PMC_REG_MASK_WAIT_POWER_GOOD_CPU;     /* use hardware power good signal */
+	writel(value, pmc_base + PMC_REG_ADDR_FREQ);
+
+	value = readl(clock->peri_crg_base + CRG_REG_ADDR_LOWPOWER);    /* status machine output signal */
+	value &= ~PMC_REG_MASK_BEGIN_CFG_BYPASS;
+	writel(value, clock->peri_crg_base + CRG_REG_ADDR_LOWPOWER);
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_pmc_init@\n");
+}
+
+/************ plugin function ************/
+
+static int hisi_gpu_clk_prepare(struct clk_hw *hw)
+{
+	hisi_gpu_pmc_node_create();
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_prepare@\n");
+
+			return 0;
+}
+
+
+static void hisi_gpu_clk_unprepare(struct clk_hw *hw)
+{
+	hisi_gpu_pmc_node_destroy();
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_unprepare@\n");
+}
+
+static int hisi_gpu_clk_enable(struct clk_hw *hw)
+{
+	hisi_gpu_clk_on(hw);
+
+	hisi_gpu_clk_reset(hw);
+
+	hisi_gpu_pmc_init(hw);
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_enable@\n");
 
 	return 0;
 }
 
 
-static void hiclk_disable_gpu(struct clk_hw *hw)
+static void hisi_gpu_clk_disable(struct clk_hw *hw)
 {
-	struct hiclk_hw *clk = to_hiclk_hw(hw);
-	u32 reg;
+	hisi_gpu_clk_off(hw);
 
-	reg = readl(clk->peri_crg_base + GPU_CLK_RESET);
-	reg &= ~GPU_SRST_REG;
-	writel(reg, clk->peri_crg_base + GPU_CLK_RESET);
-
-	reg &= ~GPU_CKEN;
-	writel(reg, clk->peri_crg_base + GPU_CLK_RESET);
-
-	return;
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_disable@\n");
 }
 
-static int hiclk_set_rate_gpu(struct clk_hw *hw, unsigned long rate, unsigned long parent_rate)
+static int hisi_gpu_clk_set_rate(struct clk_hw *hw, unsigned long rate, unsigned long parent_rate)
 {
-	struct hiclk_hw *clk = to_hiclk_hw(hw);
-	u32 reg, value;
-	int i;
+	unsigned int pmc_value, crg_vale, index;
+	unsigned long old_rate;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
 
-	reg = readl(clk->peri_crgx);
-	reg &= ~(GPU_FREQ_SEL_CFG_CRG | GPU_SW_BEGIN_CFG);
+	index = hisi_gpu_clk_get_index(rate);
 
-	for (i = 0; i < GPU_MAX_FREQ_NUM; i++) {
-		if (gpu_pll_table[i].rate == rate) {
-			value = gpu_pll_table[i].reg_value;
-
-			reg |= (GPU_BEGIN_CFG_BYPASS | value);
-			writel(reg, clk->peri_crgx);
-
-			reg |= GPU_SW_BEGIN_CFG;
-			writel(reg, clk->peri_crgx);
-
-			/* check if pll switch is over */
-			for (i = 0; i < 100; i++) {
-				reg = readl(clk->peri_crg_base + GPU_CLK_MUX);
-				if (((reg & GPU_CLK_MUX_MASK) >> GPU_CLK_MUX_SHIFT) == value)
-					break;
-			}
-
-			clk->rate = rate;
-			return 0;
-		}
+	if (-1 == index) {
+		CLOCK_ERROR_INFO();
+		return -1;
 	}
 
-	return -1;
+	old_rate = clock->rate;
+
+	/* (1)judge increase or decrease frequency */
+	pmc_value = readl(pmc_base + PMC_REG_ADDR_FREQ);
+
+	if (rate > old_rate) {
+		pmc_value |= PMC_REG_MASK_FREQ_SW_TREND;
+	} else {
+		pmc_value &= ~PMC_REG_MASK_FREQ_SW_TREND;
+		}
+
+	writel(pmc_value, pmc_base + PMC_REG_ADDR_FREQ);
+
+	/* (2)set frequency */
+	crg_vale = readl(clock->peri_crg_base + CRG_REG_ADDR_LOWPOWER);
+
+	crg_vale &= ~CRG_REG_MASK_FREQ_SEL;
+	crg_vale |= gpu_pll_table[index].value;
+
+	writel(crg_vale, clock->peri_crg_base + CRG_REG_ADDR_LOWPOWER);
+
+	/* (3)frequency request and canel frequency request */
+	pmc_value |= PMC_REG_MASK_FREQ_SW_REQUSET;
+	writel(pmc_value, pmc_base + PMC_REG_ADDR_FREQ);
+
+	pmc_value &= ~PMC_REG_MASK_FREQ_SW_REQUSET;
+	writel(pmc_value, pmc_base + PMC_REG_ADDR_FREQ);
+
+	clock->rate = rate;
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_set_rate@ cur = %lu, next = %lu\n", old_rate, rate);
+
+	return 0;
 }
 
-static unsigned long hiclk_recalc_rate_gpu(struct clk_hw *hw, unsigned long parent_rate)
+static unsigned long hisi_gpu_clk_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
 {
-	struct hiclk_hw *clk = to_hiclk_hw(hw);
-	int i;
-	u32 reg;
-	unsigned long rate;
+	struct hiclk_hw *clock = to_hiclk_hw(hw);
+	unsigned long rate = hisi_gpu_clk_get_rate(hw);
 
-	reg = readl(clk->peri_crgx);
-	reg &= GPU_FREQ_SEL_CFG_CRG;
-
-	for (i = 0; i < GPU_MAX_FREQ_NUM; i++) {
-		if (gpu_pll_table[i].reg_value == reg) {
-			rate = gpu_pll_table[i].rate;
-
-			clk->rate = rate;
-
-			return rate;
-		}
+	if (0 == rate) {
+		CLOCK_ERROR_INFO();
+		return -1;
 	}
 
-	return (unsigned long)-1;
+	clock->rate = rate;
+
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_recalc_rate@ Freq = %ld\n", rate);
+
+	return rate;
 }
 
-static long hiclk_round_rate_gpu(struct clk_hw *hw, unsigned long rate, unsigned long *parent_rate)
+static long hisi_gpu_clk_round_rate(struct clk_hw *hw, unsigned long rate, unsigned long *parent_rate)
 {
-	unsigned long prev, next;
-	int i;
+	if (CLOCK_DEBUG)
+		printk("hisi_gpu_clk_round_rate@ next = %lu\n", rate);
 
-	if (rate < gpu_pll_table[0].rate)
-		return gpu_pll_table[0].rate;
-
-	for (i = 1; i < GPU_MAX_FREQ_NUM; i++) {
-		if (rate < gpu_pll_table[i].rate) {
-			prev = rate - gpu_pll_table[i -1].rate;
-			next = gpu_pll_table[i].rate - rate;
-
-			return (prev > next) ? gpu_pll_table[i].rate : gpu_pll_table[i-1].rate;
-		}
-	}
-
-	return gpu_pll_table[GPU_MAX_FREQ_NUM - 1].rate;
+	return rate;
 }
 
 struct clk_ops clk_ops_higpu = {
-	.enable = hiclk_enable_gpu,
-	.disable = hiclk_disable_gpu,
-	.set_rate = hiclk_set_rate_gpu,
-	.recalc_rate = hiclk_recalc_rate_gpu,
-	.round_rate = hiclk_round_rate_gpu,
+	.prepare = hisi_gpu_clk_prepare,
+	.unprepare = hisi_gpu_clk_unprepare,
+	.enable = hisi_gpu_clk_enable,
+	.disable = hisi_gpu_clk_disable,
+	.set_rate = hisi_gpu_clk_set_rate,
+	.recalc_rate = hisi_gpu_clk_recalc_rate,
+	.round_rate = hisi_gpu_clk_round_rate,
 };
+

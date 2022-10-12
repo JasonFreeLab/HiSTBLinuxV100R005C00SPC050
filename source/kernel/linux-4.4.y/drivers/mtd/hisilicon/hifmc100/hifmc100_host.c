@@ -34,8 +34,6 @@
 #include <linux/mtd/mtd.h>
 #include <linux/hisilicon/freq.h>
 #include <linux/delay.h>
-#include <dt-bindings/clock/hi3798mv200-clock.h>
-
 #include "hifmc100_reg.h"
 #include "hifmc100_host.h"
 
@@ -252,7 +250,10 @@ int hifmc100_write_reg(struct flash_regop_info *info)
 		hifmc_write(hifmc, 0, HIFMC100_ADDRL);
 	}
 
-	regval = HIFMC100_OP_REG_OP_START;
+	/* for syncmode, need to config HIFMC100_OP_RW_REG. 
+	 * for asyncmode, do not care this bit.
+	 */
+	regval = HIFMC100_OP_REG_OP_START | HIFMC100_OP_RW_REG;
 
 	if (info->dummy)
 		regval |= HIFMC100_OP_DUMMY_EN;
@@ -347,7 +348,10 @@ int hifmc100_read_reg(struct flash_regop_info *info)
 	hifmc_write(hifmc, HIFMC100_DATA_NUM_CNT(info->sz_buf),
 		HIFMC100_DATA_NUM);
 
-	regval = HIFMC100_OP_REG_OP_START;
+	/* for syncmode, need to config HIFMC100_OP_RW_REG. 
+	 * for asyncmode, do not care this bit.
+	 */
+	regval = HIFMC100_OP_REG_OP_START | HIFMC100_OP_RW_REG;
 
 	if (info->dummy)
 		regval |= HIFMC100_OP_DUMMY_EN;
@@ -367,6 +371,12 @@ int hifmc100_read_reg(struct flash_regop_info *info)
 
 	if (info->addr_cycle)
 		regval |= HIFMC100_OP_ADDR_EN;
+
+	/* for syncmode, need to config HIFMC100_OP_RW_REG, 
+	 * for asyncmode, do not care this bit.
+	 */
+	if (info->cmd == NAND_CMD_READID)
+		regval |= HIFMC100_OP_READID;
 
 	hifmc_write(hifmc, regval, HIFMC100_OP);
 
@@ -435,6 +445,10 @@ static int hifmc100_driver_probe(struct platform_device *pdev)
 	host->wait_dma_finish = hifmc100_wait_dma_finish;
 	host->wait_host_ready = hifmc100_wait_host_ready;
 
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
+	host->caps |= NAND_MODE_SYNC;
+#endif
+
 	host->fmc_crg_addr = ioremap_nocache(REG_BASE_CRG + REG_PERI_CRG_FMC, sizeof(u32));
 	if (!host->fmc_crg_addr) {
 		pr_err("fmc_crg_addr ioremap fail.\n");
@@ -449,6 +463,15 @@ static int hifmc100_driver_probe(struct platform_device *pdev)
 	regval = hifmc_read(host, HIFMC100_CFG);
 	host->reg.fmc_cfg_ecc_type = HIFMC100_CFG_ECC_TYPE_MASK & regval;
 	host->reg.fmc_cfg_page_size = HIFMC100_CFG_PAGE_SIZE_MASK & regval;
+
+#ifdef CONFIG_MTD_HIFMC100_NAND
+	if ((host->caps)&NAND_MODE_SYNC) {
+		/* check if controler is in syncmode. */
+		regval &= HIFMC100_CFG_NF_MODE_MASK;
+		if (regval)
+			host->flags |= hifmc100_syncmode_reg(regval, 0);
+	}
+#endif
 
 	mutex_init(&host->lock);
 

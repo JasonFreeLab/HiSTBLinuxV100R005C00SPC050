@@ -46,6 +46,9 @@ static void xhci_plat_quirks(struct device *dev, struct xhci_hcd *xhci)
 	 * dev struct in order to setup MSI
 	 */
 	xhci->quirks |= XHCI_PLAT;
+
+	/* QUIRK: Logic xHC  must be suspended extra slowly */
+ 	xhci->quirks |= XHCI_SLOW_SUSPEND;
 }
 
 /* called during probe() after chip reset completes */

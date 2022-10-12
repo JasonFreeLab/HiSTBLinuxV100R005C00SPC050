@@ -8,7 +8,7 @@ config MACH_HI3796MV2X
 	select ARM_TIMER_SP804
 	select COMMON_CLK
 	select ARCH_REQUIRE_GPIOLIB
-	select DYNAMIC_DEBUG
+	select DYNAMIC_DEBUG if !CA_SUPPORT_ADVCA || DEBUG_FS && PRINTK
 	help
 	  Include support for the hisilion HI3796MV2X platform.
 	  HI3796MV2X support ARM CORTEX-A7 processer,

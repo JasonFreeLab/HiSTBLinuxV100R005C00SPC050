@@ -126,6 +126,13 @@
 		interrupts = <0 64 4>;
 	};
 
+	firmware {
+		optee {
+		compatible = "linaro,optee-tz";
+		method = "smc";
+		};
+	};
+
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -459,7 +466,7 @@
 				reg = <0xf8001000 0x1000>;
 				interrupts = <0 47 4>;
 				clocks = <&hisilicon_clock HIIR_CLK>;
-				linux,rc-map-name = "rc-hisi";
+				linux,rc-map-name = "rc-atto";
 			};
 
 			armv7-pmu {
@@ -539,7 +546,7 @@
 			ldo-addr  = <0xf8a2011c>;
 			ldo-shift = <0>;
 
-			caps = <0x80000007>;
+			caps = <0x8000000f>;
 			caps2 = <0x4000>;
 			max-frequency = <50000000>;
 			status = "okay";
@@ -553,7 +560,8 @@
 			clocks = <&hisilicon_clock PERI_CRG163_SDIO2>;
 			clock-names = "clk";
 
-			caps = <0x80000007>;
+			caps = <0x8000000f>;
+			caps2 = <0x4000>;
 			max-frequency = <50000000>;
 			status = "okay";
 		};

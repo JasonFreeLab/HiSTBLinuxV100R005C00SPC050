@@ -62,6 +62,10 @@ config HISI_NEC_FULL_BANK
 	default m
 
 
+config HISI_NEC_SIMPLE_ATTO
+	tristate "atto nec simple"
+	default m
+
 config HISI_NEC_SIMPLE_HISILICON
 	tristate "hisilicon nec simple"
 	default m

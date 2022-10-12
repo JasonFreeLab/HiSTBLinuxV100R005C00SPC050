@@ -74,22 +74,7 @@ static int __init l2_cache_init(void)
 	val |= (1 << 0);  /* Full Line of Zero Enable */
 	writel_relaxed(val, l2x0_viraddr + L2X0_AUX_CTRL);
 
-	if ((chipid == _HI3719MV100) || (chipid == _HI3718MV100)) {
-		val = readl_relaxed(l2x0_viraddr + L310_TAG_LATENCY_CTRL);
-		val &=0xfffff888;
-		writel_relaxed(val, l2x0_viraddr + L310_TAG_LATENCY_CTRL);
-
-		val = readl_relaxed(l2x0_viraddr + L310_DATA_LATENCY_CTRL);
-		val &=0xfffff888;
-		writel_relaxed(val, l2x0_viraddr + L310_DATA_LATENCY_CTRL);
-
-		l2x0_init(l2x0_viraddr, 0x00440000, 0xFFB0FFFF);
-	} else if (chipid == _HI3798CV100A ||
-		   chipid == _HI3798CV100 ||
-		   chipid == _HI3796CV100) {
-		/* L2cache is 1M( 64KB * 16 Way = 1M ) bytes */
-		l2x0_init(l2x0_viraddr, 0x00470000, 0xFFB0FFFF);
-	} else if ((chipid == _HI3716MV410) || (chipid == _HI3716MV420)) {
+	if ((chipid == _HI3716MV410) || (chipid == _HI3716MV420)) {
 		l2x0_init(l2x0_viraddr, 0x00440000, 0xFFB0FFFF);
 	} else 
 		l2x0_init(l2x0_viraddr, 0x00450000, 0xFFB0FFFF);

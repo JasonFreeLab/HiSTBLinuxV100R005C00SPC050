@@ -32,7 +32,7 @@ extern struct task_struct *__curr(void);
 #define debug_locks_off() 1
 #define task_pid_nr(tsk) ((tsk)->pid)
 
-#define KSYM_NAME_LEN 128
+#define KSYM_NAME_LEN 256
 #define printk printf
 
 #define list_del_rcu list_del

@@ -45,36 +45,60 @@
 		bootargs = "rw";
 	};
 
+        psci {
+                compatible = "arm,psci-0.2";
+                method = "smc";
+        };
+
 	cpus {
-		cluster0: cluster0 {
 			#address-cells = <1>;
 			#size-cells = <0>;
 
 			/* cooling options */
 			#cooling-cells = <2>; /* min followed by max */
 
-			cpu@0 {
+			cpu-map {
+				cluster0: cluster0 {
+					core0 {
+						cpu = <&CPU0>;
+					};
+					core1 {
+						cpu = <&CPU1>;
+					};
+					core2 {
+						cpu = <&CPU2>;
+					};
+					core3 {
+						cpu = <&CPU3>;
+					};
+				};
+			};
+
+			CPU0: cpu@0 {
 				compatible = "arm,cortex-a53";
 				device_type = "cpu";
 				reg = <0>;
+				enable-method = "psci";
 			};
-			cpu@1 {
+			CPU1: cpu@1 {
 				compatible = "arm,cortex-a53";
 				device_type = "cpu";
 				reg = <1>;
+				enable-method = "psci";
 			};
-			cpu@2 {
+			CPU2: cpu@2 {
 				compatible = "arm,cortex-a53";
 				device_type = "cpu";
 				reg = <2>;
+				enable-method = "psci";
 			};
-			cpu@3 {
+			CPU3: cpu@3 {
 				compatible = "arm,cortex-a53";
 				device_type = "cpu";
 				reg = <3>;
+				enable-method = "psci";
 			};
 
-		}; /* cluster0 */
 	}; /* cpus */
 
 	gic: interrupt-controller {
@@ -113,6 +137,13 @@
 		compatible = "trusted_core";
 		interrupts = <0 64 4>;
 	};
+
+        firmware {
+                optee {
+                compatible = "linaro,optee-tz";
+                method = "smc";
+                };
+        };
 
 	soc {
 		#address-cells = <1>;
@@ -563,7 +594,7 @@
 			ldo-addr  = <0xf8a2011c>;
 			ldo-shift = <0>;
 
-			caps = <0x80070007>;
+			caps = <0x8007000f>;
 			caps2 = <0x4000>;
 			max-frequency = <50000000>;
 			status = "okay";
@@ -577,7 +608,8 @@
 			clocks = <&hisilicon_clock PERI_CRG163_SDIO2>;
 			clock-names = "clk";
 
-			caps = <0x80000007>;
+			caps = <0x8007000f>;
+			caps2 = <0x4000>;
 			max-frequency = <50000000>;
 			status = "okay";
 		};
@@ -722,10 +754,10 @@
                 vddgpu: regulator@0xf8a23020 {
                         compatible = "hisilicon,hi3796mv200-volt";
                         reg = <0xf8a23020 0x4>;
-                        reg-names = "base-address";
+			reg-names = "Hisilicon GPU Regulator";
                         regulator-name = "vdd-gpu";
-                        regulator-min-microvolt = <900000>;
-                        regulator-max-microvolt = <1320000>;
+			regulator-min-microvolt = <700000>;
+			regulator-max-microvolt = <1250000>;
                         regulator-always-on;
                         status = "okay";
                 };
@@ -738,21 +770,76 @@
                         interrupt-names = "IRQGP", "IRQGPMMU", "IRQPP0", "IRQPPMMU0", "IRQPP1", "IRQPPMMU1", "IRQPMU", "IRQPP";
                         pmu_domain_config = <0x1 0x2 0x2 0x0 0x0 0x0 0x0 0x0 0x0 0x1 0x2 0x0>;
                         pmu_switch_delay = <0x1ff>;
-
-                        #cooling-cells = <2>; /* min followed by max */
-
+			#cooling-cells = <2>;
                         clocks = <&hisilicon_clock PERI_CRG73_GPU_LP>;
                         clock-names = "clk_mali";
                         mali-supply = <&vddgpu>;
-                        operating-points = <
-                        150000 000000
-                        200000 000000
-                        250000 000000
-                        300000 000000
-                        345600 000000
-                        400000 000000
-                        432000 000000
-                        500000 000000>;
+
+			default-frequency = <600000000>;
+			max-utilization   = <60>;
+			min-utilization   = <30>;
+			max-frequency     = <907000000>;
+			min-frequency     = <200000000>;
+
+			operating-points-tt-15x15 = <
+				200000000 890000
+				300000000 890000
+				432000000 890000
+				500000000 890000
+				600000000 890000
+				750000000 950000
+				864000000 1020000
+				907000000 1020000>;
+
+			operating-points-ss-15x15 = <
+				200000000 920000
+				300000000 920000
+				432000000 920000
+				500000000 920000
+				600000000 920000
+				750000000 1000000
+				864000000 1080000
+				907000000 1080000>;
+
+			operating-points-ff-15x15 = <
+				200000000 840000
+				300000000 840000
+				432000000 840000
+				500000000 840000
+				600000000 840000
+				750000000 910000
+				864000000 980000
+				907000000 980000>;
+
+			operating-points-tt-21x21 = <
+				200000000 870000
+				300000000 870000
+				432000000 870000
+				500000000 870000
+				600000000 870000
+				750000000 930000
+				864000000 990000
+				907000000 990000>;
+
+			operating-points-ss-21x21 = <
+				200000000 910000
+				300000000 910000
+				432000000 910000
+				500000000 910000
+				600000000 910000
+				750000000 990000
+				864000000 1050000
+				907000000 1050000>;
+
+			operating-points-ff-21x21 = <
+				200000000 830000
+				300000000 830000
+				432000000 830000
+				500000000 830000
+				600000000 830000
+				750000000 880000
+				864000000 940000
+				907000000 940000>;
 
                         cooling-min-state = <0>;
                         cooling-max-state = <7>;
@@ -832,6 +919,7 @@
 		virtdev {
 			compatible = "virt-device";
 			interrupts = <0 36 4>,  /* "sci0"          */
+						 <0 37 4>,  /* "sci1"          */
 						 <0 47 4>,  /* "ir_std"        */
 						 <0 47 4>,  /* "ir_s2"         */
 						 <0 48 4>,  /* "keyled_ct1642" */
@@ -866,8 +954,11 @@
 						 <0 158 4>, /* "plcipher"      */
 						 <0 174 4>, /* "tsio"          */
 						 <0 182 4>, /* "tsio_phy"      */
-						 <0 176 4>; /* "plcipher_safe" */
+						 <0 176 4>, /* "plcipher_safe" */
+						 <0 160 4>, /* "scpu_mailbox"  */
+						 <0 161 4>; /* "tcpu_mailbox"  */
 			interrupt-names = /* 36  */ "sci0",
+							  /* 37  */ "sci1",
 							  /* 47  */ "ir_std",
 							  /* 47  */ "ir_s2",
 							  /* 48  */ "keyled_ct1642",
@@ -902,7 +993,9 @@
 							  /* 158 */ "plcipher",
 							  /* 174 */ "tsio",
 							  /* 182 */ "tsio_phy",
-							  /* 176 */ "plcipher_safe";
+							  /* 176 */ "plcipher_safe",
+							  /* 160 */ "scpu_mailbox",
+							  /* 161 */ "tcpu_mailbox";
 		};
 	};
 };

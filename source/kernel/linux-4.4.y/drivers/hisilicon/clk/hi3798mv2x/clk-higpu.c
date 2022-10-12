@@ -99,7 +99,7 @@ static struct pll_table gpu_pll_table_youtube[] = {
         {800000000, 0x0}
 };
 
-#define CLOCK_MAX_FREQ_NUM (sizeof(gpu_pll_table)/sizeof(gpu_pll_table[0]))
+static int CLOCK_MAX_FREQ_NUM = (sizeof(gpu_pll_table)/sizeof(gpu_pll_table[0]));
 
 /************ private function ************/
 
@@ -119,8 +119,7 @@ static void hisi_gpu_update_vmin_table(void)
 	}
 
 	if ((*chip_mode & 0xffffffff) == MODEID_REG_YOUTUBE) {
-#undef CLOCK_MAX_FREQ_NUM
-#define CLOCK_MAX_FREQ_NUM 7
+		CLOCK_MAX_FREQ_NUM = 7;
 		memcpy(gpu_pll_table, gpu_pll_table_youtube, sizeof(gpu_pll_table_youtube));
 	}
 

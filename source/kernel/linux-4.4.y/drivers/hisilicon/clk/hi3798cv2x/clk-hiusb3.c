@@ -112,7 +112,7 @@ static void nano_phy_config_0(struct hiclk_hw *clk)
 	* GUSB3PIPECTL0[2:1] = 01 : Tx Deemphasis = -3.5dB, refer to spec
 	*/
 	reg = readl(xhci_host0_regbase + REG_GUSB3PIPECTL0);
-//	reg &= ~USB3_SUSPEND_EN;
+	reg &= ~USB3_SUSPEND_EN;
 	reg &= ~USB3_DEEMPHASIS_MASK;
 	reg |= USB3_DEEMPHASIS0;
 	reg |= USB3_TX_MARGIN1;
@@ -130,7 +130,7 @@ static void nano_phy_config_1(struct hiclk_hw *clk)
 	* GUSB3PIPECTL0[2:1] = 01 : Tx Deemphasis = -3.5dB, refer to spec
 	*/
 	reg = readl(xhci_host1_regbase + REG_GUSB3PIPECTL0);
-//	reg &= ~USB3_SUSPEND_EN;
+	reg &= ~USB3_SUSPEND_EN;
 	reg &= ~USB3_DEEMPHASIS_MASK;
 	reg |= USB3_DEEMPHASIS0;
 	reg |= USB3_TX_MARGIN1;

@@ -27,8 +27,8 @@ int do_aes256_cbc(u8 *output, const u8 *input,
 
 	if (IS_ERR(cipher)) {
 		antiroot_error(
-			"rootagent:crypto_alloc_blkcipher() failed. %p\n",
-			cipher);
+			"rootagent:crypto_alloc_blkcipher() failed (%ld).\n",
+			PTR_ERR(cipher));
 		return -EFAULT;
 	}
 

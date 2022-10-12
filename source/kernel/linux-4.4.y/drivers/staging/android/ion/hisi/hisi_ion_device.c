@@ -30,8 +30,8 @@ static char ion_default_cmd[MMZ_SETUP_CMDLINE_LEN] __initdata = "ddr,0,0,160M";
 #endif
 
 #define cma_name_len		(10)
-#define cma_heap_start		(3)
-#define cma_heap_num		(4)
+#define cma_heap_start		(2)
+#define cma_heap_num		(6)
 static int cma_heap_index  = cma_heap_start;
 static char cma_name[cma_heap_num][cma_name_len];
 static struct ion_platform_heap hi_ion_heaps[]  = {
@@ -40,25 +40,12 @@ static struct ion_platform_heap hi_ion_heaps[]  = {
 		.type   = ION_HEAP_TYPE_SYSTEM,
 		.name   = "vmalloc",
 	}, [1] = {
-		.id	= ION_HEAP_TYPE_SYSTEM_CONTIG,
-		.type   = ION_HEAP_TYPE_SYSTEM_CONTIG,
-		.name   = "kmalloc",
-	}, [2] = {
 		.id	= ION_HEAP_TYPE_DMA,
 		.type	= ION_HEAP_TYPE_DMA,
 		.name	= "dma area",
 	},
-	/*
-	 * the following is mmz(cma) zones, hisi_ion_parse_cmdline will
-	 * overwrite it!
-	 */
-	[cma_heap_start] = {
-		.id	= ION_HEAP_ID_CMA,
-		.type	= ION_HEAP_TYPE_DMA,
-		.name	= "cma",
-	},
 #ifdef CONFIG_TEE_DRIVER
-	[cma_heap_start + 1] = {
+	[cma_heap_start + cma_heap_num -2] = {
 		.id	= ION_HEAP_ID_TEE_SEC_MEM, /* secure mem in TEE */
 		.type	= ION_HEAP_TYPE_TEE_SEC_MEM,
 		.name	= "SEC-MMZ",
@@ -87,6 +74,7 @@ static int __init hisi_ion_parse_cmdline(char *s)
 {
 	char *line, *tmp;
 	char tmpline[256];
+	unsigned int heap_id = ION_HEAP_ID_MULTI_CMA;
 
 	strncpy(tmpline, s, sizeof(tmpline));
 	tmpline[sizeof(tmpline)-1] = '\0';
@@ -96,6 +84,11 @@ static int __init hisi_ion_parse_cmdline(char *s)
 		char *argv[6], *name;
 		struct ion_platform_heap *heap;
 
+		if (cma_heap_index >= (cma_heap_start + cma_heap_num - 2)) {
+			WARN_ON(1);
+			break;
+		}
+
 		for (i = 0; (argv[i] = strsep(&line, ",")) != NULL;)
 			if (++i == ARRAY_SIZE(argv))
 				break;
@@ -104,18 +97,17 @@ static int __init hisi_ion_parse_cmdline(char *s)
 			heap = &hi_ion_heaps[cma_heap_index];
 			name = &cma_name[cma_heap_index - cma_heap_start][0];
 			heap->name = strncpy(name, argv[0], cma_name_len);;
-			heap->id = ION_HEAP_ID_CMA + (cma_heap_index
-				- cma_heap_start);
 			heap->base = memparse(argv[2], NULL);
 			heap->size = memparse(argv[3], NULL);
 			heap->priv = hisi_get_cma_device(heap->name);
+			heap->type = ION_HEAP_TYPE_DMA;
+			if(cma_heap_start == cma_heap_index)
+				heap->id = ION_HEAP_ID_CMA;
+			else
+				heap->id = heap_id ++;
 			WARN_ON(heap->priv == NULL);
 
 			cma_heap_index++;
-			if (cma_heap_index >= cma_heap_start + cma_heap_num) {
-				WARN_ON(1);
-				break;
-			}
 		} else {
 			pr_err("hisi ion parameter is not correct\n");
 			continue;
@@ -135,7 +127,12 @@ struct ion_platform_heap *hisi_get_cma_heap(const char *name)
 	int i = 0;
 	struct cma_zone *cma_zone;
 
+	if (!name)
+		return NULL;
+
 	for (i = 0; i < (cma_heap_start + cma_heap_num); i++) {
+		if (!(hi_ion_heaps[i].name))
+			continue;
 		if (strcmp(hi_ion_heaps[i].name, name) == 0)
 			break;
 	}
@@ -163,7 +160,6 @@ static void set_platform_device(void)
 		}
 	}
 }
-
 
 int hisi_register_ion_device(void)
 {

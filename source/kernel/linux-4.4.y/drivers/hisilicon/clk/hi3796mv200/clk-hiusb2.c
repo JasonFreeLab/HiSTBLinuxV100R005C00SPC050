@@ -320,13 +320,13 @@ static void hiclk_disable_usb2(struct clk_hw *hw)
 	if (atomic_sub_return(1, &dev_open_cnt) == 0) {
 
 		reg = readl(clk->peri_crg_base + PERI_CRG46_USB2CTRL);
-		reg |= (USB2_BUS_SRST_REQ
-			| USB2_UTMI0_SRST_REQ
-			| USB2_UTMI1_SRST_REQ
-			| USB2_HST_PHY_SYST_REQ);
+		reg &= ~(USB2_BUS_CKEN
+			| USB2_OTG_UTMI_CKEN
+			| USB2_HST_PHY_CKEN
+			| USB2_UTMI0_CKEN
+			| USB2_UTMI1_CKEN);
 		writel(reg, clk->peri_crg_base + PERI_CRG46_USB2CTRL);
 		udelay(200);
-		printk("%s->%d: CRG47=0x%x\n", __func__, __LINE__, readl(clk->peri_crg_base + PERI_CRG47_USB2PHY));
 
 		reg = readl(clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		reg |= (USB2_PHY01_SRST_REQ
@@ -334,7 +334,7 @@ static void hiclk_disable_usb2(struct clk_hw *hw)
 			| USB2_PHY1_SRST_TREQ);
 		writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		udelay(100);
-		printk("%s->%d: CRG47=0x%x\n", __func__, __LINE__, readl(clk->peri_crg_base + PERI_CRG47_USB2PHY));
+
 	}
 }
 /******************************************************************************/

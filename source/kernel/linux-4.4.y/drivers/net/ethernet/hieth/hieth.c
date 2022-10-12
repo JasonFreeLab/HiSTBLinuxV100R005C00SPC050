@@ -15,21 +15,16 @@
 #include "mdio.h"
 #include "hieth_dbg.h"
 
+#define FEMAC_RX_REFILL_IN_IRQ
 
-/*----------------------------Global variable-------------------------------*/
-struct hieth_phy_param_s hieth_phy_param[HIETH_MAX_PORT];
-
-/*----------------------------Local variable-------------------------------*/
-static struct net_device *hieth_devs_save[HIETH_MAX_PORT] = { NULL, NULL };
-static struct hieth_netdev_priv hieth_priv;
-
-/* real port count */
-static int hieth_real_port_cnt;
 /* default, eth enable */
 static bool hieth_disable;
-/* autoeee, enabled by dts */
-static bool hieth_enable_autoeee;
+bool hieth_fephy_opt;
 
+#ifdef MODULE
+module_param(hieth_disable, bool, 0);
+module_param(hieth_fephy_opt, bool, 0);
+#else
 static int __init hieth_noeth(char *str)
 {
 	hieth_disable = true;
@@ -39,7 +34,34 @@ static int __init hieth_noeth(char *str)
 
 early_param("noeth", hieth_noeth);
 
+static int __init hieth_fephy_opt_check(char *str)
+{
+	hieth_fephy_opt = true;
+
+	return 0;
+}
+early_param("fephy_opt", hieth_fephy_opt_check);
+#endif
+
 #include "pm.c"
+
+int hieth_set_fephy_ed_time(unsigned int ed_time, struct hieth_platdrv_data *pdata)
+{
+	struct net_device *ndev;
+	int ret;
+	int i;
+
+	for (i = 0; i < HIETH_MAX_PORT; i++) {
+		ndev = pdata->hieth_devs_save[i];
+		if (ndev && pdata->hieth_phy_param[i].isinternal) {
+			ret = fephy_set_ed_time(ndev->phydev, ed_time);
+			if (ret)
+				return ret;
+		}
+	}
+
+	return 0;
+}
 
 static int hieth_hw_set_macaddress(struct hieth_netdev_priv *priv,
 				   unsigned char *mac)
@@ -96,18 +118,17 @@ static void hieth_clear_irqstatus(struct hieth_netdev_priv *priv, int irqs)
 
 static int hieth_port_reset(struct hieth_netdev_priv *priv)
 {
+	struct hieth_platdrv_data *pdata = dev_get_drvdata(priv->dev);
 	u32 rst_bit = 0;
 	u32 val;
 
-	if (hieth_real_port_cnt == 1)
+	if (pdata->hieth_real_port_cnt == 1)
 		rst_bit = HIETH_GLB_SOFT_RESET_ALL;
 	else {
 		if (priv->port == HIETH_PORT_0) {
 			rst_bit |= HIETH_GLB_SOFT_RESET_P0;
 		} else if (priv->port == HIETH_PORT_1) {
 			rst_bit |= HIETH_GLB_SOFT_RESET_P1;
-		} else {
-			BUG();
 		}
 	}
 
@@ -173,6 +194,13 @@ static void hieth_port_init(struct hieth_netdev_priv *priv)
 	val &= ~HIETH_P_MAC_SET_LEN_MAX_MSK;
 	val |= HIETH_P_MAC_SET_LEN_MAX(HIETH_MAX_RCV_LEN);
 	hieth_writel(priv->port_base, val, HIETH_P_MAC_SET);
+
+	/* config Rx Checksum Offload,
+	 * disable TCP/UDP payload checksum bad drop
+	 */
+	val = hieth_readl(priv->port_base, HIETH_P_RX_COE_CTRL);
+	val &= ~BIT_COE_PAYLOAD_DROP;
+	hieth_writel(priv->port_base, val, HIETH_P_RX_COE_CTRL);
 }
 
 static void hieth_set_hwq_depth(struct hieth_netdev_priv *priv)
@@ -200,34 +228,42 @@ static inline int hieth_hw_xmitq_ready(struct hieth_netdev_priv *priv)
 
 static int hieth_xmit_release_skb(struct hieth_netdev_priv *priv)
 {
+	struct hieth_queue *txq = &priv->txq;
 	u32 val;
 	int ret = 0;
 	struct sk_buff *skb;
+	dma_addr_t dma_addr;
 	u32 tx_comp = 0;
-	struct net_device *ndev = hieth_devs_save[priv->port];
+	struct net_device *ndev = priv->ndev;
 
 	local_lock(priv);
 
 	val = hieth_readl(priv->port_base, HIETH_P_GLB_RO_QUEUE_STAT) &
 			  HIETH_P_GLB_RO_QUEUE_STAT_XMITQ_CNT_INUSE_MSK;
-	while (val < priv->tx_hw_cnt) {
-		skb = skb_dequeue(&priv->tx_hw);
+	while (val < priv->tx_fifo_used_cnt) {
+		skb = txq->skb[txq->tail];
 
 		if (!skb) {
-			pr_err("hw_xmitq_cnt_inuse=%d, tx_hw_cnt=%d\n",
-			       val, priv->tx_hw_cnt);
-
-			BUG();
+			pr_err("hw_xmitq_cnt_inuse=%d, tx_fifo_used_cnt=%d\n",
+			       val, priv->tx_fifo_used_cnt);
 			ret = -1;
 			goto error_exit;
 		}
+#ifdef HIETH_SKB_MEMORY_STATS
+		atomic_dec(&priv->tx_skb_occupied);
+		atomic_sub(skb->truesize, &priv->tx_skb_mem_occupied);
+#endif
+		dma_addr = priv->txq.dma_phys[txq->tail];
+		dma_unmap_single(priv->dev, dma_addr, skb->len, DMA_TO_DEVICE);
 		dev_kfree_skb_any(skb);
 
-		priv->tx_hw_cnt--;
+		priv->tx_fifo_used_cnt--;
 		tx_comp++;
 
 		val = hieth_readl(priv->port_base, HIETH_P_GLB_RO_QUEUE_STAT) &
 				HIETH_P_GLB_RO_QUEUE_STAT_XMITQ_CNT_INUSE_MSK;
+		txq->skb[txq->tail] = NULL;
+		txq->tail = (txq->tail + 1) % txq->num;
 	}
 
 	if (tx_comp)
@@ -238,28 +274,7 @@ error_exit:
 	return ret;
 }
 
-static void hieth_xmit_real_send(struct hieth_netdev_priv *priv,
-				struct sk_buff *skb)
-{
-	u32 val;
-
-	local_lock(priv);
-
-	/* for recalc CRC, 4 bytes more is needed */
-	hieth_writel(priv->port_base, virt_to_phys(skb->data),
-		     HIETH_P_GLB_EQ_ADDR);
-	val = hieth_readl(priv->port_base, HIETH_P_GLB_EQFRM_LEN);
-	val &= ~HIETH_P_GLB_EQFRM_TXINQ_LEN_MSK;
-	val |= skb->len + 4;
-	hieth_writel(priv->port_base, skb->len + 4, HIETH_P_GLB_EQFRM_LEN);
-
-	skb_queue_tail(&priv->tx_hw, skb);
-
-	priv->tx_hw_cnt++;
-
-	local_unlock(priv);
-}
-
+#if CONFIG_HIETH_MAX_RX_POOLS
 static __maybe_unused struct sk_buff *hieth_platdev_alloc_skb(struct hieth_netdev_priv *priv)
 {
 	struct sk_buff *skb;
@@ -288,7 +303,7 @@ static __maybe_unused struct sk_buff *hieth_platdev_alloc_skb(struct hieth_netde
 			priv->stat.rx_pool_dry_times++;
 			pr_debug("%ld: no free skb\n",
 				    priv->stat.rx_pool_dry_times);
-			skb = dev_alloc_skb(SKB_SIZE);
+			skb = netdev_alloc_skb_ip_align(priv->ndev, SKB_SIZE);
 			return skb;
 		}
 	}
@@ -296,24 +311,29 @@ static __maybe_unused struct sk_buff *hieth_platdev_alloc_skb(struct hieth_netde
 
 	skb->data = skb->head;
 	skb_reset_tail_pointer(skb);
-	WARN(skb->end != (skb->tail + SKB_DATA_ALIGN(SKB_SIZE + NET_SKB_PAD)),
+	WARN(skb->end != (skb->tail + SKB_DATA_ALIGN(SKB_SIZE + NET_IP_ALIGN + NET_SKB_PAD)),
 	     "head=%p, tail=%x, end=%x\n", skb->head, (unsigned int)skb->tail,
 	     (unsigned int)skb->end);
-	skb->end = skb->tail + SKB_DATA_ALIGN(SKB_SIZE + NET_SKB_PAD);
+	skb->end = skb->tail + SKB_DATA_ALIGN(SKB_SIZE + NET_IP_ALIGN + NET_SKB_PAD);
 
-	skb_reserve(skb, NET_SKB_PAD);
+	skb_reserve(skb, NET_IP_ALIGN + NET_SKB_PAD);
 	skb->len = 0;
 	skb->data_len = 0;
 	skb->cloned = 0;
+	skb->dev = priv->ndev;
 	atomic_inc(&skb->users);
 	return skb;
 }
+#endif
 
 static int hieth_feed_hw(struct hieth_netdev_priv *priv)
 {
+	struct hieth_queue *rxq = &priv->rxq;
 	struct sk_buff *skb;
+	dma_addr_t addr;
 	int cnt = 0;
 	int rx_head_len;
+	u32 pos;
 
 	/* if skb occupied too much, then do not alloc any more. */
 	rx_head_len = skb_queue_len(&priv->rx_head);
@@ -322,64 +342,87 @@ static int hieth_feed_hw(struct hieth_netdev_priv *priv)
 
 	local_lock(priv);
 
+	pos = rxq->head;
 	while (hieth_readl(priv->port_base, HIETH_P_GLB_RO_QUEUE_STAT) &
 		HIETH_P_GLB_RO_QUEUE_STAT_RECVQ_RDY_MSK) {
-		skb = dev_alloc_skb(SKB_SIZE);
+		if (unlikely(!CIRC_SPACE(pos, rxq->tail, rxq->num)))
+			break;
+		if (unlikely(rxq->skb[pos])) {
+			netdev_err(priv->ndev, "err skb[%d]=%p\n",
+					pos, rxq->skb[pos]);
+			break;
+		}
+
+		skb = netdev_alloc_skb_ip_align(priv->ndev, HIETH_MAX_FRAME_SIZE);
 		if (!skb)
 			break;
 
-		dma_map_single(priv->dev, skb->data, HIETH_MAX_FRAME_SIZE,
+		addr = dma_map_single(priv->dev, skb->data, HIETH_MAX_FRAME_SIZE,
 			       DMA_FROM_DEVICE);
-		hieth_writel(priv->port_base, virt_to_phys(skb->data + 2),
-			     HIETH_P_GLB_IQ_ADDR);
-		skb_queue_tail(&priv->rx_hw, skb);
+		if (dma_mapping_error(priv->dev, addr)) {
+			dev_kfree_skb_any(skb);
+			break;
+		}
+		rxq->dma_phys[pos] = addr;
+		rxq->skb[pos] = skb;
+
+		hieth_writel(priv->port_base, addr, HIETH_P_GLB_IQ_ADDR);
+		pos = (pos + 1) % rxq->num;
 		cnt++;
+
+#ifdef HIETH_SKB_MEMORY_STATS
+		atomic_inc(&priv->rx_skb_occupied);
+		atomic_add(skb->truesize, &priv->rx_skb_mem_occupied);
+#endif
 	}
+	rxq->head = pos;
 
 	local_unlock(priv);
 	return cnt;
 }
 
-int hieth_recv_budget(struct hieth_netdev_priv *priv, int budget)
+static int hieth_recv_budget(struct hieth_netdev_priv *priv)
 {
+	struct hieth_queue *rxq = &priv->rxq;
 	struct sk_buff *skb;
+	dma_addr_t addr;
+	u32 pos;
 	uint32_t rlen;
 	int cnt = 0;
 
 	local_lock(priv);
 
+	pos = rxq->tail;
 	while ((hieth_readl(priv->glb_base, HIETH_GLB_IRQ_RAW) &
 		(UD_BIT_NAME(HIETH_GLB_IRQ_INT_RX_RDY)))) {
-
-		if (budget > 0 && cnt >= budget)
-			break;
-
 		rlen = hieth_readl(priv->port_base, HIETH_P_GLB_RO_IQFRM_DES);
 		rlen &= HIETH_P_GLB_RO_IQFRM_DES_FDIN_LEN_MSK;
-		rlen -= 4; /* remove FCS 4Bytes */
+		rlen -= ETH_FCS_LEN; /* remove FCS 4Bytes */
 
 		/* hw set rx pkg finish */
 		hieth_writel(priv->glb_base,
 			     UD_BIT_NAME(HIETH_GLB_IRQ_INT_RX_RDY),
 			     HIETH_GLB_IRQ_RAW);
 
-		skb = skb_dequeue(&priv->rx_hw);
+		skb = rxq->skb[pos];
 
 		if (!skb) {
 			pr_err("chip told us to receive pkg,"
 			       "but no more can be received!\n");
-			BUG();
 			break;
 		}
+		rxq->skb[pos] = NULL;
 
-		dma_map_single(priv->dev, skb->data, HIETH_MAX_FRAME_SIZE,
+		addr = rxq->dma_phys[pos];
+		dma_unmap_single(priv->dev, addr, HIETH_MAX_FRAME_SIZE,
 			DMA_FROM_DEVICE);
-		skb_reserve(skb, 2);
 		skb_put(skb, rlen);
 
 		skb_queue_tail(&priv->rx_head, skb);
+		pos = (pos + 1) % rxq->num;
 		cnt++;
 	}
+	rxq->tail = pos;
 
 	local_unlock(priv);
 
@@ -414,18 +457,19 @@ static void hieth_adjust_link(struct net_device *dev)
 		phy_print_status(priv->phy);
 		priv->link_stat = stat;
 
-		if (hieth_enable_autoeee)
+		if (priv->autoeee_enabled)
 			hieth_autoeee_init(priv, stat);
 	}
 }
 
+#if CONFIG_HIETH_MAX_RX_POOLS
 static int hieth_init_skb_buffers(struct hieth_netdev_priv *priv)
 {
 	int i;
 	struct sk_buff *skb;
 
 	for (i = 0; i < CONFIG_HIETH_MAX_RX_POOLS; i++) {
-		skb = dev_alloc_skb(SKB_SIZE);
+		skb = netdev_alloc_skb_ip_align(priv->ndev, SKB_SIZE);
 		if (!skb)
 			break;
 		priv->rx_pool.sk_pool[i] = skb;
@@ -453,6 +497,7 @@ static void hieth_destroy_skb_buffers(struct hieth_netdev_priv *priv)
 	priv->rx_pool.next_free_skb = 0;
 	priv->stat.rx_pool_dry_times = 0;
 }
+#endif
 
 static void hieth_net_isr_proc(struct net_device *ndev, int ints)
 {
@@ -461,10 +506,14 @@ static void hieth_net_isr_proc(struct net_device *ndev, int ints)
 	if ((ints & UD_BIT_NAME(HIETH_GLB_IRQ_INT_MULTI_RXRDY)) ||
 	    (ints & UD_BIT_NAME(HIETH_GLB_IRQ_INT_TXQUE_RDY))) {
 		hieth_clear_irqstatus(priv, UD_BIT_NAME(HIETH_GLB_IRQ_INT_TXQUE_RDY));
+#ifdef FEMAC_RX_REFILL_IN_IRQ
+		hieth_recv_budget(priv);
+#else
 		hieth_irq_disable(priv,
 				UD_BIT_NAME(HIETH_GLB_IRQ_INT_MULTI_RXRDY));
 		hieth_irq_disable(priv,
 				UD_BIT_NAME(HIETH_GLB_IRQ_INT_TXQUE_RDY));
+#endif
 		napi_schedule(&priv->napi);
 	}
 }
@@ -499,6 +548,18 @@ static irqreturn_t hieth_net_isr(int irq, void *dev_id)
 
 	return IRQ_HANDLED;
 }
+
+#ifdef CONFIG_NET_POLL_CONTROLLER
+/* Polling receive - used by NETCONSOLE and other diagnostic tools
+ * to allow network I/O with interrupts disabled.
+ */
+static void hieth_poll_controller(struct net_device *dev)
+{
+	disable_irq(dev->irq);
+	hieth_net_isr(dev->irq, dev);
+	enable_irq(dev->irq);
+}
+#endif
 
 static void hieth_monitor_func(unsigned long arg)
 {
@@ -568,9 +629,12 @@ static int hieth_net_open(struct net_device *dev)
 	return 0;
 }
 
+static void hieth_free_skb_rings(struct hieth_netdev_priv *priv);
+
 static int hieth_net_close(struct net_device *dev)
 {
 	struct hieth_netdev_priv *priv = netdev_priv(dev);
+	struct sk_buff *skb;
 
 	hieth_irq_disable(priv, UD_BIT_NAME(HIETH_GLB_IRQ_INT_MULTI_RXRDY));
 	napi_disable(&priv->napi);
@@ -583,10 +647,15 @@ static int hieth_net_close(struct net_device *dev)
 	/* reset and init port */
 	hieth_port_reset(priv);
 
-	skb_queue_purge(&priv->rx_head);
-	skb_queue_purge(&priv->rx_hw);
-	skb_queue_purge(&priv->tx_hw);
-	priv->tx_hw_cnt = 0;
+	while ((skb = skb_dequeue(&priv->rx_head)) != NULL) {
+#ifdef HIETH_SKB_MEMORY_STATS
+		atomic_dec(&priv->rx_skb_occupied);
+		atomic_sub(skb->truesize, &priv->rx_skb_mem_occupied);
+#endif
+		kfree_skb(skb);
+	}
+
+	hieth_free_skb_rings(priv);
 
 	free_irq(dev->irq, dev);
 	return 0;
@@ -614,7 +683,7 @@ static struct sk_buff *hieth_skb_copy(const struct sk_buff *skb, gfp_t gfp_mask)
 	skb_put(n, skb->len);
 
 	if (skb_copy_bits(skb, 0, n->data, skb->len))
-		BUG();
+		WARN_ON(1);
 
 	return n;
 }
@@ -624,12 +693,15 @@ static int hieth_net_hard_start_xmit(struct sk_buff *skb,
 				     struct net_device *dev)
 {
 	struct hieth_netdev_priv *priv = netdev_priv(dev);
+	struct hieth_queue *txq = &priv->txq;
 #ifdef HIETH_COPY_WHEN_XMIT
 	bool tx_buff_not_aligned = false;
 #endif
+	dma_addr_t addr;
+	u32 val;
 
-	if (!hieth_hw_xmitq_ready(priv)) {
-		priv->stats.tx_dropped++;
+	if (!hieth_hw_xmitq_ready(priv) ||
+	    unlikely(!CIRC_SPACE(txq->head, txq->tail, txq->num))) {
 		netif_stop_queue(dev);
 		hieth_irq_enable(priv,
 				UD_BIT_NAME(HIETH_GLB_IRQ_INT_TXQUE_RDY));
@@ -649,13 +721,45 @@ static int hieth_net_hard_start_xmit(struct sk_buff *skb,
 	}
 #endif
 
-	dma_map_single(priv->dev, skb->data, skb->len, DMA_TO_DEVICE);
+	addr = dma_map_single(priv->dev, skb->data, skb->len, DMA_TO_DEVICE);
+	if (dma_mapping_error(priv->dev, addr)) {
+		netdev_err(priv->ndev, "DMA mapping error when sending.");
+		priv->stats.tx_errors++;
+		priv->stats.tx_dropped++;
+		dev_kfree_skb_any(skb);
+		return NETDEV_TX_OK;
+	}
 
-	hieth_xmit_real_send(priv, skb);
+	local_lock(priv);
 
-	dev->trans_start = jiffies;
+	/* we must use "skb->len" before sending packet to hardware,
+	 * because once we send packet to hardware,
+	 * "hieth_xmit_release_skb" in softirq may free this skb.
+	 * This bug is reported by KASAN: use-after-free.
+	 */
 	priv->stats.tx_packets++;
 	priv->stats.tx_bytes += skb->len;
+#ifdef HIETH_SKB_MEMORY_STATS
+	atomic_inc(&priv->tx_skb_occupied);
+	atomic_add(skb->truesize, &priv->tx_skb_mem_occupied);
+#endif
+
+	txq->dma_phys[txq->head] = addr;
+	txq->skb[txq->head] = skb;
+
+	/* for recalc CRC, 4 bytes more is needed */
+	hieth_writel(priv->port_base, addr, HIETH_P_GLB_EQ_ADDR);
+	val = hieth_readl(priv->port_base, HIETH_P_GLB_EQFRM_LEN);
+	val &= ~HIETH_P_GLB_EQFRM_TXINQ_LEN_MSK;
+	val |= skb->len + ETH_FCS_LEN;
+	hieth_writel(priv->port_base, val, HIETH_P_GLB_EQFRM_LEN);
+
+	txq->head = (txq->head + 1) % txq->num;
+	priv->tx_fifo_used_cnt++;
+
+	dev->trans_start = jiffies;
+
+	local_unlock(priv);
 
 	return NETDEV_TX_OK;
 }
@@ -729,9 +833,10 @@ static void hieth_net_set_rx_mode(struct net_device *dev)
 {
 	u32 val;
 	struct hieth_netdev_priv *priv = netdev_priv(dev);
+	struct hieth_platdrv_data *pdata = dev_get_drvdata(priv->dev);
 
 	local_lock(priv);
-	multicast_dump_netdev_flags(dev->flags);
+	multicast_dump_netdev_flags(dev->flags, pdata);
 	val = hieth_readl(priv->glb_base, HIETH_GLB_FWCTRL);
 	if (dev->flags & IFF_PROMISC) {
 		val |= ((priv->port == HIETH_PORT_0) ?
@@ -758,7 +863,7 @@ static void hieth_net_set_rx_mode(struct net_device *dev)
 
 			netdev_for_each_mc_addr(ha, dev) {
 				hieth_set_mac_addr_filter(priv, ha->addr, reg);
-				multicast_dump_macaddr(nr++, ha->addr);
+				multicast_dump_macaddr(nr++, ha->addr, pdata);
 				reg++;
 			}
 
@@ -800,7 +905,7 @@ static int hieth_net_ioctl(struct net_device *net_dev,
 		if (copy_from_user(&pm_config, ifreq->ifr_data,
 				   sizeof(pm_config)))
 			return -EFAULT;
-		return hieth_pmt_config(&pm_config);
+		return hieth_pmt_config(net_dev, &pm_config);
 
 	default:
 		if (!netif_running(net_dev))
@@ -888,7 +993,7 @@ static int hieth_set_mac_wol(struct net_device *dev,
 	if (wol->wolopts & WAKE_MAGIC)
 		mac_pm_config.magic_pkts_enable = 1;
 
-	hieth_pmt_config(&mac_pm_config);
+	hieth_pmt_config(dev, &mac_pm_config);
 
 	return err;
 }
@@ -928,18 +1033,25 @@ static const struct net_device_ops hieth_netdev_ops = {
 	.ndo_set_rx_mode	= hieth_net_set_rx_mode,
 	.ndo_change_mtu		= eth_change_mtu,
 	.ndo_get_stats = hieth_net_get_stats,
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	.ndo_poll_controller = hieth_poll_controller,
+#endif
 };
 
 void hieth_clean_rx(struct hieth_netdev_priv *priv, unsigned int *workdone, int budget)
 {
 	unsigned int nr_recv = 0;
 	struct sk_buff *skb;
-	struct net_device *dev = hieth_devs_save[priv->port];
+	struct net_device *dev = priv->ndev;
 	int ret = 0;
 
-	hieth_recv_budget(priv, budget);
+	hieth_recv_budget(priv);
 
 	while ((skb = skb_dequeue(&priv->rx_head)) != NULL) {
+#ifdef HIETH_SKB_MEMORY_STATS
+		atomic_dec(&priv->rx_skb_occupied);
+		atomic_sub(skb->truesize, &priv->rx_skb_mem_occupied);
+#endif
 
 		skb->protocol = eth_type_trans(skb, dev);
 
@@ -962,12 +1074,13 @@ void hieth_clean_rx(struct hieth_netdev_priv *priv, unsigned int *workdone, int 
 		}
 
 		nr_recv++;
+		if (nr_recv >= budget)
+			break;
 	}
 
 	if (workdone)
 		*workdone = nr_recv;
 }
-
 
 static int hieth_poll(struct napi_struct *napi, int budget)
 {
@@ -985,6 +1098,95 @@ static int hieth_poll(struct napi_struct *napi, int budget)
 	return work_done;
 }
 
+static int hieth_init_queue(struct device *dev,
+		struct hieth_queue *queue,
+		unsigned int num)
+{
+	queue->skb = devm_kcalloc(dev, num, sizeof(struct sk_buff *),
+			GFP_KERNEL);
+	if (!queue->skb)
+		return -ENOMEM;
+
+	queue->dma_phys = devm_kcalloc(dev, num, sizeof(dma_addr_t),
+			GFP_KERNEL);
+	if (!queue->dma_phys)
+		return -ENOMEM;
+
+	queue->num = num;
+	queue->head = 0;
+	queue->tail = 0;
+
+	return 0;
+}
+
+static int hieth_init_tx_and_rx_queues(struct hieth_netdev_priv *priv)
+{
+	int ret;
+
+	ret = hieth_init_queue(priv->dev, &priv->txq, TXQ_NUM);
+	if (ret)
+		return ret;
+
+	ret = hieth_init_queue(priv->dev, &priv->rxq, RXQ_NUM);
+	if (ret)
+		return ret;
+
+	priv->tx_fifo_used_cnt = 0;
+
+	return 0;
+}
+
+static void hieth_free_skb_rings(struct hieth_netdev_priv *priv)
+{
+	struct hieth_queue *txq = &priv->txq;
+	struct hieth_queue *rxq = &priv->rxq;
+	struct sk_buff *skb;
+	dma_addr_t dma_addr;
+	u32 pos;
+
+	pos = rxq->tail;
+	while (pos != rxq->head) {
+		skb = rxq->skb[pos];
+		if (unlikely(!skb)) {
+			netdev_err(priv->ndev, "NULL rx skb. pos=%d, head=%d\n",
+					pos, rxq->head);
+			continue;
+		}
+
+		dma_addr = rxq->dma_phys[pos];
+		dma_unmap_single(priv->dev, dma_addr, HIETH_MAX_FRAME_SIZE,
+				DMA_FROM_DEVICE);
+#ifdef HIETH_SKB_MEMORY_STATS
+		atomic_dec(&priv->rx_skb_occupied);
+		atomic_sub(skb->truesize, &priv->rx_skb_mem_occupied);
+#endif
+		dev_kfree_skb_any(skb);
+		rxq->skb[pos] = NULL;
+		pos = (pos + 1) % rxq->num;
+	}
+	rxq->tail = pos;
+
+	pos = txq->tail;
+	while (pos != txq->head) {
+		skb = txq->skb[pos];
+		if (unlikely(!skb)) {
+			netdev_err(priv->ndev, "NULL tx skb. pos=%d, head=%d\n",
+					pos, txq->head);
+			continue;
+		}
+		dma_addr = txq->dma_phys[pos];
+		dma_unmap_single(priv->dev, dma_addr, skb->len, DMA_TO_DEVICE);
+#ifdef HIETH_SKB_MEMORY_STATS
+		atomic_dec(&priv->tx_skb_occupied);
+		atomic_sub(skb->truesize, &priv->tx_skb_mem_occupied);
+#endif
+		dev_kfree_skb_any(skb);
+		txq->skb[pos] = NULL;
+		pos = (pos + 1) % txq->num;
+	}
+	txq->tail = pos;
+	priv->tx_fifo_used_cnt = 0;
+}
 
 static int hieth_platdev_probe_port(struct platform_device *pdev,
 				    struct hieth_netdev_priv *com_priv,
@@ -994,6 +1196,7 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 	struct net_device *netdev = NULL;
 	struct device *dev = &pdev->dev;
 	struct hieth_netdev_priv *priv;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
 	if ((HIETH_PORT_0 != port) && (HIETH_PORT_1 != port)) {
 		pr_err("port error!\n");
@@ -1008,7 +1211,6 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 		goto _error_exit;
 	}
 
-	platform_set_drvdata(pdev, netdev);
 	SET_NETDEV_DEV(netdev, &pdev->dev);
 
 	netdev->irq = com_priv->irq;
@@ -1019,15 +1221,15 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 
 	netdev->priv_flags |= IFF_UNICAST_FLT;
 
-	if (hieth_phy_param[port].macaddr)
+	if (pdata->hieth_phy_param[port].macaddr)
 		ether_addr_copy(netdev->dev_addr,
-				hieth_phy_param[port].macaddr);
+				pdata->hieth_phy_param[port].macaddr);
 
 	if (!is_valid_ether_addr(netdev->dev_addr))
 		eth_hw_addr_random(netdev);
 
 	/* init hieth_global somethings... */
-	hieth_devs_save[port] = netdev;
+	pdata->hieth_devs_save[port] = netdev;
 
 	/* init hieth_local_driver */
 	priv = netdev_priv(netdev);
@@ -1044,6 +1246,7 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 		priv->port_base = priv->glb_base + 0x2000;
 
 	priv->dev = dev;
+	priv->ndev = netdev;
 
 	init_timer(&priv->monitor);
 	priv->monitor.function = hieth_monitor_func;
@@ -1058,6 +1261,7 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 	 * so I set wakeup enable all the time
 	 */
 	device_set_wakeup_enable(priv->dev, 1);
+	priv->pm_state_set = false;
 
 	/* reset and init port */
 	hieth_port_init(priv);
@@ -1075,19 +1279,28 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 	pr_info("attached port %d PHY %d to driver %s\n",
 		port, priv->phy->addr, priv->phy->drv->name);
 
-	if (hieth_enable_autoeee)
+	if (priv->autoeee_enabled)
 		hieth_autoeee_init(priv, 0);
 
 	skb_queue_head_init(&priv->rx_head);
-	skb_queue_head_init(&priv->rx_hw);
-	skb_queue_head_init(&priv->tx_hw);
-	priv->tx_hw_cnt = 0;
 
+#ifdef HIETH_SKB_MEMORY_STATS
+	atomic_set(&priv->tx_skb_occupied, 0);
+	atomic_set(&priv->tx_skb_mem_occupied, 0);
+	atomic_set(&priv->rx_skb_occupied, 0);
+	atomic_set(&priv->rx_skb_mem_occupied, 0);
+#endif
+
+#if CONFIG_HIETH_MAX_RX_POOLS
 	ret = hieth_init_skb_buffers(priv);
 	if (ret) {
 		pr_err("hieth_init_skb_buffers failed!\n");
 		goto _error_init_skb_buffers;
 	}
+#endif
+	ret = hieth_init_tx_and_rx_queues(priv);
+	if (ret)
+		goto _error_register_netdev;
 
 	netif_napi_add(netdev, &priv->napi, hieth_poll, HIETH_NAPI_WEIGHT);
 
@@ -1097,18 +1310,22 @@ static int hieth_platdev_probe_port(struct platform_device *pdev,
 		goto _error_register_netdev;
 	}
 
+	phy_stop(priv->phy);
+
 	return ret;
 
 _error_register_netdev:
+#if CONFIG_HIETH_MAX_RX_POOLS
 	hieth_destroy_skb_buffers(priv);
 
 _error_init_skb_buffers:
+#endif
 	phy_disconnect(priv->phy);
 	priv->phy = NULL;
 
 _error_phy_connect:
 	local_lock_exit();
-	hieth_devs_save[port] = NULL;
+	pdata->hieth_devs_save[port] = NULL;
 	free_netdev(netdev);
 
 _error_exit:
@@ -1119,9 +1336,9 @@ static int hieth_platdev_remove_port(struct platform_device *pdev, int port)
 {
 	struct net_device *ndev;
 	struct hieth_netdev_priv *priv;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
-	hieth_dbg_deinit();
-	ndev = hieth_devs_save[port];
+	ndev = pdata->hieth_devs_save[port];
 
 	if (!ndev)
 		goto _ndev_exit;
@@ -1129,7 +1346,9 @@ static int hieth_platdev_remove_port(struct platform_device *pdev, int port)
 	priv = netdev_priv(ndev);
 
 	unregister_netdev(ndev);
+#if CONFIG_HIETH_MAX_RX_POOLS
 	hieth_destroy_skb_buffers(priv);
+#endif
 
 	phy_disconnect(priv->phy);
 	priv->phy = NULL;
@@ -1138,7 +1357,7 @@ static int hieth_platdev_remove_port(struct platform_device *pdev, int port)
 
 	local_lock_exit();
 
-	hieth_devs_save[port] = NULL;
+	pdata->hieth_devs_save[port] = NULL;
 	free_netdev(ndev);
 
 _ndev_exit:
@@ -1148,7 +1367,7 @@ _ndev_exit:
 #define DEFAULT_LD_AM          0xe
 #define DEFAULT_LDO_AM         0x3
 #define DEFAULT_R_TUNING       0x16
-static void hieth_of_get_phy_trim_params(int port_index)
+static void hieth_of_get_phy_trim_params(struct hieth_platdrv_data *pdata, int port_index)
 {
 	struct device_node *chiptrim_node;
 	u32 phy_trim_val = 0;
@@ -1180,18 +1399,15 @@ static void hieth_of_get_phy_trim_params(int port_index)
 		r_tuning = phy_trim_val & 0x3f;
 	}
 
-	hieth_phy_param[port_index].trim_params =
+	pdata->hieth_phy_param[port_index].trim_params =
 		(r_tuning << 16) | (ldo_am << 8) | ld_am;
 }
 
-static int hieth_of_get_param(struct device_node *node)
+static int hieth_of_get_param(struct device_node *node, struct hieth_platdrv_data *pdata)
 {
 	struct device_node *child = NULL;
 	int idx = 0;
 	int data;
-
-	/* get auto eee */
-	hieth_enable_autoeee = of_property_read_bool(node, "autoeee");
 
 	for_each_available_child_of_node(node, child) {
 		/* get phy-addr */
@@ -1203,27 +1419,27 @@ static int hieth_of_get_param(struct device_node *node)
 			data = HIETH_INVALID_PHY_ADDR;
 		}
 
-		hieth_phy_param[idx].phy_addr = data;
+		pdata->hieth_phy_param[idx].phy_addr = data;
 		if (data != HIETH_INVALID_PHY_ADDR)
-			hieth_phy_param[idx].isvalid = true;
+			pdata->hieth_phy_param[idx].isvalid = true;
 
 		/* get phy_mode */
-		hieth_phy_param[idx].phy_mode = of_get_phy_mode(child);
+		pdata->hieth_phy_param[idx].phy_mode = of_get_phy_mode(child);
 
 		/* get mac */
-		hieth_phy_param[idx].macaddr = of_get_mac_address(child);
+		pdata->hieth_phy_param[idx].macaddr = of_get_mac_address(child);
 
 		/* get gpio_base and bit */
 		of_property_read_u32(child, "phy-gpio-base",
-				     (u32 *)(&hieth_phy_param[idx].gpio_base));
+				     (u32 *)(&pdata->hieth_phy_param[idx].gpio_base));
 		of_property_read_u32(child, "phy-gpio-bit",
-				     &hieth_phy_param[idx].gpio_bit);
+				     &pdata->hieth_phy_param[idx].gpio_bit);
 
 		/* get internal flag */
-		hieth_phy_param[idx].isinternal =
+		pdata->hieth_phy_param[idx].isinternal =
 			of_property_read_bool(child, "internal-phy");
 
-		hieth_of_get_phy_trim_params(idx);
+		hieth_of_get_phy_trim_params(pdata, idx);
 
 		if (++idx >= HIETH_MAX_PORT)
 			break;
@@ -1236,19 +1452,23 @@ static int hieth_plat_driver_probe(struct platform_device *pdev)
 {
 	int ret = 0;
 	int irq;
-	struct net_device *ndev = NULL;
 	struct device *dev = &pdev->dev;
 	struct device_node *node = dev->of_node;
 	struct resource *res;
-	struct hieth_netdev_priv *priv = &hieth_priv;
+	struct hieth_netdev_priv *priv;
 	struct device_node *child = NULL;
 	int port = -1;
+	struct hieth_platdrv_data *pdata;
 
-	memset(hieth_devs_save, 0, sizeof(hieth_devs_save));
-	memset(hieth_phy_param, 0, sizeof(hieth_phy_param));
-	memset(priv, 0, sizeof(*priv));
+	pdata = devm_kzalloc(dev, sizeof(struct hieth_platdrv_data), GFP_KERNEL);
+	if (!pdata)
+		return -ENOMEM;
 
-	if (hieth_of_get_param(node)) {
+	platform_set_drvdata(pdev, pdata);
+
+	priv = &pdata->hieth_priv;
+
+	if (hieth_of_get_param(node, pdata)) {
 		pr_err("of get parameter fail\n");
 		ret = -ENODEV;
 		goto exit;
@@ -1261,7 +1481,7 @@ static int hieth_plat_driver_probe(struct platform_device *pdev)
 		ret = PTR_ERR(priv->glb_base);
 		goto exit;
 	}
-	hieth_dbg_init(priv->glb_base);
+	hieth_dbg_init(priv->glb_base, pdev);
 
 	priv->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(priv->clk)) {
@@ -1279,7 +1499,7 @@ static int hieth_plat_driver_probe(struct platform_device *pdev)
 	priv->irq = irq;
 
 	/* first disable ETH clock, then reset PHY to load PHY address */
-	hieth_phy_reset();
+	hieth_phy_reset(pdata);
 
 	ret = clk_prepare_enable(priv->clk);
 	if (ret < 0) {
@@ -1302,7 +1522,7 @@ static int hieth_plat_driver_probe(struct platform_device *pdev)
 		if (++port >= HIETH_MAX_PORT)
 			break;
 
-		if (!hieth_phy_param[port].isvalid)
+		if (!pdata->hieth_phy_param[port].isvalid)
 			continue;
 
 		priv->phy_node = of_parse_phandle(node, "phy-handle", port);
@@ -1311,18 +1531,15 @@ static int hieth_plat_driver_probe(struct platform_device *pdev)
 			continue;
 		}
 
-		priv->phy_mode = hieth_phy_param[port].phy_mode;
+		priv->phy_mode = pdata->hieth_phy_param[port].phy_mode;
+		priv->autoeee_enabled = of_property_read_bool(child, "autoeee");
 
 		if (!hieth_platdev_probe_port(pdev, priv, port))
-			hieth_real_port_cnt++;
+			pdata->hieth_real_port_cnt++;
 	}
 
-	if (hieth_devs_save[HIETH_PORT_0])
-		ndev = hieth_devs_save[HIETH_PORT_0];
-	else if (hieth_devs_save[HIETH_PORT_1])
-		ndev = hieth_devs_save[HIETH_PORT_1];
-
-	if (!ndev) {
+	if (!pdata->hieth_devs_save[HIETH_PORT_0] &&
+	    !pdata->hieth_devs_save[HIETH_PORT_1]) {
 		pr_err("no dev probed!\n");
 		ret = -ENODEV;
 		goto exit_mdiobus;
@@ -1345,14 +1562,17 @@ static int hieth_plat_driver_remove(struct platform_device *pdev)
 {
 	int i;
 	struct net_device *ndev = NULL;
-	struct hieth_netdev_priv *priv = netdev_priv(ndev);
+	struct hieth_netdev_priv *priv = NULL;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
-	if (hieth_devs_save[HIETH_PORT_0])
-		ndev = hieth_devs_save[HIETH_PORT_0];
-	else if (hieth_devs_save[HIETH_PORT_1])
-		ndev = hieth_devs_save[HIETH_PORT_1];
+	if (pdata->hieth_devs_save[HIETH_PORT_0])
+		ndev = pdata->hieth_devs_save[HIETH_PORT_0];
+	else if (pdata->hieth_devs_save[HIETH_PORT_1])
+		ndev = pdata->hieth_devs_save[HIETH_PORT_1];
 
-	free_irq(ndev->irq, hieth_devs_save);
+	priv = netdev_priv(ndev);
+
+	hieth_dbg_deinit(pdev);
 
 	for (i = 0; i < HIETH_MAX_PORT; i++)
 		hieth_platdev_remove_port(pdev, i);
@@ -1361,7 +1581,9 @@ static int hieth_plat_driver_remove(struct platform_device *pdev)
 
 	clk_disable_unprepare(priv->clk);
 
-	memset(hieth_devs_save, 0, sizeof(hieth_devs_save));
+	memset(pdata->hieth_devs_save, 0, sizeof(pdata->hieth_devs_save));
+
+	hieth_phy_unregister_fixups();
 
 	return 0;
 }
@@ -1370,7 +1592,8 @@ static int hieth_plat_driver_remove(struct platform_device *pdev)
 static int hieth_plat_driver_suspend_port(struct platform_device *pdev,
 					  pm_message_t state, int port)
 {
-	struct net_device *ndev = hieth_devs_save[port];
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
+	struct net_device *ndev = pdata->hieth_devs_save[port];
 
 	if (ndev) {
 		if (netif_running(ndev)) {
@@ -1388,17 +1611,18 @@ int hieth_plat_driver_suspend(struct platform_device *pdev,
 	int i;
 	bool power_off = true;
 	struct hieth_netdev_priv *priv = NULL;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 
 	for (i = 0; i < HIETH_MAX_PORT; i++)
 		hieth_plat_driver_suspend_port(pdev, state, i);
 
-	if (hieth_pmt_enter())
+	if (hieth_pmt_enter(pdev))
 		power_off = false;
 
 	if (power_off) {
 		for (i = 0; i < HIETH_MAX_PORT; i++) {
-			if (hieth_devs_save[i]) {
-				priv = netdev_priv(hieth_devs_save[i]);
+			if (pdata->hieth_devs_save[i]) {
+				priv = netdev_priv(pdata->hieth_devs_save[i]);
 				genphy_suspend(priv->phy);/* power down phy */
 			}
 		}
@@ -1408,6 +1632,8 @@ int hieth_plat_driver_suspend(struct platform_device *pdev,
 
 		if (priv)
 			clk_disable_unprepare(priv->clk);
+
+		hieth_phy_clk_disable(pdata);
 	}
 
 	return 0;
@@ -1415,10 +1641,12 @@ int hieth_plat_driver_suspend(struct platform_device *pdev,
 
 static int hieth_plat_driver_resume_port(struct platform_device *pdev, int port)
 {
-	struct net_device *ndev = hieth_devs_save[port];
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
+	struct net_device *ndev = pdata->hieth_devs_save[port];
 	struct hieth_netdev_priv *priv = netdev_priv(ndev);
 
 	if (ndev) {
+		phy_init_hw(ndev->phydev);
 		if (netif_running(ndev)) {
 			hieth_port_init(priv);
 			hieth_net_open(ndev);
@@ -1429,17 +1657,18 @@ static int hieth_plat_driver_resume_port(struct platform_device *pdev, int port)
 	return 0;
 }
 
-static bool hieth_mac_wol_enabled(void)
+static bool hieth_mac_wol_enabled(struct platform_device *pdev)
 {
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
 	struct hieth_netdev_priv *priv = NULL;
 	bool mac_wol_enabled = false;
 	int i;
 
 	for (i = 0; i < HIETH_MAX_PORT; i++) {
-		if (!hieth_devs_save[i])
+		if (!pdata->hieth_devs_save[i])
 			continue;
 
-		priv = netdev_priv(hieth_devs_save[i]);
+		priv = netdev_priv(pdata->hieth_devs_save[i]);
 		if (priv->mac_wol_enabled) {
 			mac_wol_enabled = true;
 			break;
@@ -1452,22 +1681,23 @@ static bool hieth_mac_wol_enabled(void)
 int hieth_plat_driver_resume(struct platform_device *pdev)
 {
 	int i;
-	struct hieth_netdev_priv *priv = &hieth_priv;
+	struct hieth_platdrv_data *pdata = platform_get_drvdata(pdev);
+	struct hieth_netdev_priv *priv = &pdata->hieth_priv;
 
 	/* first disable ETH clock, then reset PHY to load PHY address */
-	if (hieth_mac_wol_enabled())
+	if (hieth_mac_wol_enabled(pdev))
 		clk_disable_unprepare(priv->clk);
-	hieth_phy_reset();
+	hieth_phy_reset(pdata);
 	/* enable clk */
 	clk_prepare_enable(priv->clk);
 	/* After MDCK clock giving, wait 5ms before MDIO access */
 	mdelay(5);
-	hieth_fix_festa_phy_trim(priv->mii_bus);
+	hieth_fix_festa_phy_trim(priv->mii_bus, pdata);
 
 	for (i = 0; i < HIETH_MAX_PORT; i++)
 		hieth_plat_driver_resume_port(pdev, i);
 
-	hieth_pmt_exit();
+	hieth_pmt_exit(pdev);
 	return 0;
 }
 #else

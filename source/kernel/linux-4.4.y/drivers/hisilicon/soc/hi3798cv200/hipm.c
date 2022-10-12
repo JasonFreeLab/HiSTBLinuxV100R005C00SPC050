@@ -45,7 +45,7 @@ EXPORT_SYMBOL(ca_pm_suspend);
 static int hi_pm_suspend(void)
 {
 	int ret = 0;
-#ifndef CONFIG_TEE_HISI
+#ifndef CONFIG_TEE
 	unsigned int regval = readl(hi_otp_idword_addr);
 	if (regval == OTP_CA_ID_WORD) {
 		if (!hi_ca_ddrwakeupcheck_virt) {

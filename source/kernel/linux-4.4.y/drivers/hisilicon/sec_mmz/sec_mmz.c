@@ -302,6 +302,85 @@ int HI_SEC_MMZ_TA2TA(unsigned long phyaddr1, unsigned long phyaddr2, unsigned lo
 	return ret;
 }
 
+unsigned long HI_SEC_MMZ_New_And_Map_SecSmmu(unsigned long size ,
+					     char *mmz_name, char *mmb_name)
+{
+	TEEC_Result result;
+	TEEC_Operation operation;
+	unsigned long smmu_addr = 0;
+
+	if (!mmz_name)
+	{
+		pr_err("NULL mmz name, not supported!\n");
+		return NULL;
+	}
+
+	if (!mmb_name)
+	{
+		pr_err("NULL mmb name, not supported!\n");
+		return NULL;
+	}
+
+	memset(&operation, 0x00, sizeof(operation));
+	operation.started = 1;
+
+	operation.params[0].tmpref.buffer = mmz_name;
+	operation.params[0].tmpref.size = strlen(mmz_name) + 1;
+
+	operation.params[1].tmpref.buffer = mmb_name;
+	operation.params[1].tmpref.size = strlen(mmb_name) + 1;
+	operation.params[2].value.a = size;
+
+	operation.paramTypes = TEEC_PARAM_TYPES(
+				TEEC_MEMREF_TEMP_INPUT,
+				TEEC_MEMREF_TEMP_INPUT,
+				TEEC_VALUE_INPUT,
+				TEEC_VALUE_OUTPUT);
+
+	result = TEEC_InvokeCommand(&session, HI_MMZ_NEW_MAPSMMU, &operation, NULL, dev_id);
+	if (result == TEEC_SUCCESS)
+	{
+		smmu_addr = operation.params[3].value.a;
+		pr_debug("new and map smmu '%s'(smmu_addr:0x%x, size:%lu) mmb from mmz(%s) successful.\n", mmb_name, (unsigned int)smmu_addr, size, mmz_name);
+	} else {
+		smmu_addr = 0;
+		pr_err("new and map smmu '%s'(size:%lu) mmb from mmz(%s) failed, ret=0x%x.\n", mmb_name, size, mmz_name, result);
+	}
+
+	return smmu_addr;
+}
+
+int HI_SEC_MMZ_Delete_And_Unmap_SecSmmu(unsigned long smmu_addr, unsigned long size)
+{
+	TEEC_Result result;
+	TEEC_Operation operation;
+	int ret  = -1;
+
+	memset(&operation, 0x00, sizeof(operation));
+	operation.started = 1;
+	operation.params[0].value.a = smmu_addr;
+	operation.params[0].value.b = size;
+
+	operation.paramTypes = TEEC_PARAM_TYPES(TEEC_VALUE_INPUT,
+				TEEC_NONE,
+				TEEC_NONE,
+				TEEC_NONE);
+
+	result = TEEC_InvokeCommand(&session, HI_MMZ_DEL_UNMAPSMMU, &operation, NULL, dev_id);
+	if (result != TEEC_SUCCESS)
+	{
+		pr_err("delete and unmap sec smmu (smmu_addr:0x%lx) failed, ret=0x%x.\n", smmu_addr, result);
+		ret = -1;
+	}
+	else
+	{
+		pr_debug("delete and unmap sec smmu(smmu_addr:0x%lx) successful.\n", smmu_addr);
+		ret = 0;
+	}
+
+	return ret;
+}
+
 EXPORT_SYMBOL(HI_SEC_MMZ_New);
 EXPORT_SYMBOL(HI_SEC_MMZ_Delete);
 EXPORT_SYMBOL(HI_SEC_MMZ_CA2TA);
@@ -309,6 +388,8 @@ EXPORT_SYMBOL(HI_SEC_MMZ_CA2TA);
 EXPORT_SYMBOL(HI_SEC_MMZ_TA2CA);
 #endif
 EXPORT_SYMBOL(HI_SEC_MMZ_TA2TA);
+EXPORT_SYMBOL(HI_SEC_MMZ_New_And_Map_SecSmmu);
+EXPORT_SYMBOL(HI_SEC_MMZ_Delete_And_Unmap_SecSmmu);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Hisilicon Secure MMZ Driver");

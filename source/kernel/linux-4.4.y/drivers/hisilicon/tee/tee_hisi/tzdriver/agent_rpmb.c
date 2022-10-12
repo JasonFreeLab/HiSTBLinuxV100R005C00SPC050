@@ -20,8 +20,6 @@
 #include <linux/time.h>
 #include <linux/delay.h>
 
-#define MT_AGENT_UPDATE_MSG 11725
-
 #ifdef CONFIG_DEVCHIP_PLATFORM
 /*#define TEE_RPMB_DEBUG*/
 
@@ -452,8 +450,6 @@ static uint32_t m_cmd_sn;
 u64  g_ioctl_start_time = 0;
 u64  g_ioctl_end_time = 0;
 struct timeval tv;
-static TC_NS_SMC_CMD rpmb_update_cmd;
-
 
 
 static int rpmb_agent_work(struct tee_agent_kernel_ops *agent_instance)
@@ -568,29 +564,31 @@ static int rpmb_agent_exit(struct tee_agent_kernel_ops *agent_instance)
 	return 0;
 }
 
+
+static int rpmb_agent_crash_work(struct tee_agent_kernel_ops *agent_instance,
+	TC_NS_ClientContext *context,
+	unsigned int dev_file_id)
+{
+	tlogd("check free lock or not, dev_id=%d\n", dev_file_id);
+	if (lock_info.lock_need_free && (lock_info.dev_id == dev_file_id)) {
+		tloge("CA crash, need to free lock\n");
+		process_rpmb_unlock(agent_instance);
+	}
+	return 0;
+}
+
+
 static struct tee_agent_kernel_ops rpmb_agent_ops = {
 	.agent_name = "rpmb",
-	.agent_id = TEE_RPMB_AGENT_ID,
+	.agent_id = AGENT_RPMB_ID,
 	.tee_agent_init = NULL,
 	.tee_agent_work = rpmb_agent_work,
 	.tee_agent_exit = rpmb_agent_exit,
-	.tee_agent_crash_work = NULL,
+	.tee_agent_crash_work = rpmb_agent_crash_work,
 
 	.list = LIST_HEAD_INIT(rpmb_agent_ops.list)
 };
 /*lint -restore*/
-
-
-static int __init rpmb_update_timer_init(void)
-{
-
-	rpmb_update_cmd.agent_id = TEE_RPMB_AGENT_ID;
-	rpmb_update_cmd.cmd_id 	 = MT_AGENT_UPDATE_MSG;
-
-	TC_NS_POST_SMC(&rpmb_update_cmd);
-
-	return 0;
-}
 
 int rpmb_agent_register(void)
 {

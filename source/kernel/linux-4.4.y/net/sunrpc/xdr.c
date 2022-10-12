@@ -916,6 +916,7 @@ static unsigned int xdr_align_pages(struct xdr_stream *xdr, unsigned int len)
 	}
 
 	if (nwords > xdr->nwords) {
+		isb();
 		nwords = xdr->nwords;
 		len = nwords << 2;
 	}
@@ -1036,6 +1037,7 @@ xdr_buf_subsegment(struct xdr_buf *buf, struct xdr_buf *subbuf,
 	}
 
 	if (base < buf->page_len) {
+		isb();
 		subbuf->page_len = min(buf->page_len - base, len);
 		base += buf->page_base;
 		subbuf->page_base = base & ~PAGE_CACHE_MASK;
@@ -1043,6 +1045,7 @@ xdr_buf_subsegment(struct xdr_buf *buf, struct xdr_buf *subbuf,
 		len -= subbuf->page_len;
 		base = 0;
 	} else {
+		isb();
 		base -= buf->page_len;
 		subbuf->page_len = 0;
 	}

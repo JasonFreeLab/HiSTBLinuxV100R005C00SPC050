@@ -1,7 +1,7 @@
 ifneq ($(TARGET_BUILD_VARIANT),user)
 ccflags-y += -DDEBUG_TUI
 endif
-obj-$(CONFIG_TZDRIVER) += tc_client_driver.o teek_client_api.o
+obj-$(CONFIG_TZDRIVER) += tc_client_driver.o teek_client_api.o mailbox_mempool.o
 obj-$(CONFIG_TZDRIVER) += smc.o agent.o gp_ops.o mem.o
 obj-$(CONFIG_TEELOG) += tlogger.o tee_rdr_register.o
 obj-$(CONFIG_MMC) += agent_rpmb.o

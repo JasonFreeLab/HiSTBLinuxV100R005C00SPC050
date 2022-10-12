@@ -37,7 +37,7 @@ void __iomem *hi_uart_virtbase = NULL;
 extern void *hi_otp_idword_addr;
 extern void *hi_mcu_start_ctrl;
 extern void *hi_mailbox_base_addr;
-
+extern void set_cpu_core_lowpower(void);
 
 asmlinkage int hi_pm_sleep(unsigned long arg);
 
@@ -46,6 +46,8 @@ asmlinkage int hi_pm_sleep(unsigned long arg);
 static int hi_pm_suspend(void)
 {
 	int ret = 0;
+
+	set_cpu_core_lowpower();
 
 	ret = cpu_suspend(0, hi_pm_sleep);
 

@@ -71,6 +71,7 @@
 
 #define PCIE_BAK_REG_LOCK_EN             (0x1 << 0)
 
+#define PCIE_PERI_COMBPHY1_CFG           (0xf8a20858)
 #define PCIE_LINK_CTRL_2_REG             (0xf00000a0)
 #define PCIE_LINk2_TRANSMIT_MASK         (0x7 << 7)
 #define PCIE_LINk2_TRANSMIT_700          (0x3 << 7)
@@ -87,19 +88,8 @@ struct hipcie_host {
 #define to_hipcie(x) container_of(x, struct hipcie_host, pp)
 /******************************************************************************/
 
-/*
-* pcieaddr=0x10000000,0x500000,0x10500000,0x500000
-*/
-struct pcie_dma_addr {
-	u32 start;   /* phy address. */
-	u32 size;
-};
-
-static struct pcie_dma_addr pcie_dma_addr_read 
-	= {CONFIG_PCIE_DMA_ADDR_READ, CONFIG_PCIE_DMA_SIZE_READ};
-static struct pcie_dma_addr pcie_dma_addr_write 
-	= {CONFIG_PCIE_DMA_ADDR_WRITE, CONFIG_PCIE_DMA_SIZE_WRITE};
-/******************************************************************************/
+extern struct pcie_alloc_ctrl_t pcie_read_ctrl;
+extern struct pcie_alloc_ctrl_t pcie_write_ctrl;
 #if 0
 static int __init early_pcie_dma_addr(char *p)
 {
@@ -181,33 +171,8 @@ fail:
 	pcie_dma_addr_write.start = 0;
 	pcie_dma_addr_write.size =0;
 	return;
-#else
-	return;
 #endif
 }
-/*****************************************************************************/
-
-int pcie_get_dma_phyaddr(u32 *read, u32 *sz_read, u32 *write, u32 *sz_write)
-{
-	if ((!pcie_dma_addr_read.size) && (!pcie_dma_addr_write.size)
-		&& (!pcie_dma_addr_read.start) && (!pcie_dma_addr_write.start)) {
-		pr_err("Not config pcieaddr or config err\n");
-		dump_stack();
-		return -1;
-	}
-
-	if (read)
-		*read = pcie_dma_addr_read.start;
-	if (sz_read)
-		*sz_read = pcie_dma_addr_read.size;
-	if (write)
-		*write = pcie_dma_addr_write.start;
-	if (sz_write)
-		*sz_write = pcie_dma_addr_write.size;
-
-	return 0;
-}
-EXPORT_SYMBOL(pcie_get_dma_phyaddr);
 /*****************************************************************************/
 
 static void hipcie_dbi_w_mode(struct pcie_port *pp, bool on)
@@ -376,6 +341,26 @@ static int hipcie_establish_link(struct pcie_port *pp)
 		}
 	}
 
+#if defined(CONFIG_ARCH_HI3798CV2X)
+	/* only for HI3798CV200 */
+	void __iomem *combophy1_cfg = NULL;
+	combophy1_cfg = ioremap_nocache(PCIE_PERI_COMBPHY1_CFG, 0x20);
+	if (!combophy1_cfg) {
+		printk("ioremap combophy1_cfg failed.\n");
+		return -1;
+	}
+	regval=readl(combophy1_cfg);
+	printk("ComboPHY CFG:%#x\n",regval);
+	/* if pcie linkup, config PWON to auto mode */
+	writel(0x1203001,combophy1_cfg);
+	/* release test_write */
+	writel(0x0203001,combophy1_cfg);
+	if(combophy1_cfg){
+		iounmap(combophy1_cfg);
+		combophy1_cfg = NULL;
+	}
+#endif
+
 	dev_info(pp->dev, "Link up\n");
 
 	return 0;
@@ -469,15 +454,17 @@ static int __init hipcie_pltm_probe(struct platform_device *pdev)
 		return PTR_ERR(hipcie->clk);
 	}
 
+	if ((!pcie_read_ctrl.size) && (!pcie_write_ctrl.size)) {
 	get_mem_size(&size,  HIKAPI_GET_RAM_SIZE);
-	pcie_dma_addr_write.size = size<<20;
-	pcie_dma_addr_read.size = size<<20;
+		pcie_write_ctrl.size = size<<20;
+		pcie_read_ctrl.size = size<<20;
+	}
 
-	regvalwt = (pcie_dma_addr_write.start >> 20)
-		| (pcie_dma_addr_write.start + pcie_dma_addr_write.size);
+	regvalwt = (pcie_write_ctrl.phyaddr >> 20)
+		| (pcie_write_ctrl.phyaddr+ pcie_write_ctrl.size);
 
-	regvalrd = (pcie_dma_addr_read.start >> 20)
-		| (pcie_dma_addr_read.start + pcie_dma_addr_read.size);
+	regvalrd = (pcie_read_ctrl.phyaddr>> 20)
+		| (pcie_read_ctrl.phyaddr + pcie_read_ctrl.size);
 
 	/* ca: config ddr bank for ep dma before cancel reset */
 #if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
@@ -549,11 +536,11 @@ static int hipci_set_power_state(struct pci_dev *dev, pci_power_t state)
 
 	clk_disable_unprepare(hipcie->clk);
 	
-	regvalwt = (pcie_dma_addr_write.start >> 20)
-		| (pcie_dma_addr_write.start + pcie_dma_addr_write.size);
+	regvalwt = (pcie_write_ctrl.phyaddr >> 20)
+		| (pcie_write_ctrl.phyaddr + pcie_write_ctrl.size);
 	
-	regvalrd = (pcie_dma_addr_read.start >> 20)
-		| (pcie_dma_addr_read.start + pcie_dma_addr_read.size);
+	regvalrd = (pcie_read_ctrl.phyaddr >> 20)
+		| (pcie_read_ctrl.phyaddr + pcie_read_ctrl.size);
 
 	/* ca: config ddr bank for ep dma before cancel reset */
 #if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)

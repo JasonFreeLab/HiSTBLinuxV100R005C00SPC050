@@ -14,6 +14,8 @@
 #include <mach/irqs.h>
 #endif
 
+#define HIETH_SKB_MEMORY_STATS
+
 #define HIETH_MIIBUS_NAME	"himii"
 #define HIETH_DRIVER_NAME	"hieth"
 
@@ -21,7 +23,7 @@
 #define HIETH_MAX_PORT	2
 
 /* invalid phy addr */
-#define HIETH_INVALID_PHY_ADDR  31
+#define HIETH_INVALID_PHY_ADDR	0xff
 
 /* hieth monitor timer, 10ms */
 #define HIETH_MONITOR_TIMER	10
@@ -35,12 +37,15 @@
 #define HIETH_MAX_QUEUE_DEPTH	64
 #define HIETH_MAX_RX_HEAD_LEN	(10000)  /* max skbs for rx */
 #define HIETH_MAX_RCV_LEN	1535     /* max receive length */
+#define TXQ_NUM			64
+#define RXQ_NUM			128
 
 #define HIETH_NAPI_WEIGHT 32
 /*  mmu should be less than 1600 Bytes
  */
 
 #define HIETH_MAX_FRAME_SIZE	(1600)
+#define SKB_SIZE		(HIETH_MAX_FRAME_SIZE)
 #define HIETH_INVALID_RXPKG_LEN(len) (!((len) >= 42 && \
 				      (len) <= HIETH_MAX_FRAME_SIZE))
 
@@ -105,6 +110,9 @@
 #define  HIETH_P_GLB_RO_QUEUE_STAT_RECVQ_RDY_MSK BIT(25)
 /* counts in queue, include currently sending */
 #define  HIETH_P_GLB_RO_QUEUE_STAT_XMITQ_CNT_INUSE_MSK GENMASK(5, 0)
+/* Rx Checksum Offload Control */
+#define HIETH_P_RX_COE_CTRL		0x0380
+#define BIT_COE_PAYLOAD_DROP		BIT(14)
 
 /*------------------------- global register --------------------------------*/
 /* host mac address  */
@@ -231,6 +239,14 @@ enum hieth_port_e {
 	HIETH_PORT_NUM,
 };
 
+struct hieth_queue {
+	struct sk_buff **skb;
+	dma_addr_t *dma_phys;
+	int num;
+	unsigned int head;
+	unsigned int tail;
+};
+
 struct hieth_netdev_priv {
 	void __iomem *glb_base;     /* virtual io global addr */
 	void __iomem *port_base;    /* virtual to port addr:
@@ -240,6 +256,7 @@ struct hieth_netdev_priv {
 	int irq;
 
 	struct device *dev;
+	struct net_device *ndev;
 	struct net_device_stats stats;
 	struct phy_device *phy;
 	struct device_node *phy_node;
@@ -248,9 +265,9 @@ struct hieth_netdev_priv {
 	struct mii_bus *mii_bus;
 
 	struct sk_buff_head rx_head;   /*received pkgs */
-	struct sk_buff_head rx_hw;     /*rx pkgs in hw */
-	struct sk_buff_head tx_hw;     /*tx pkgs in hw */
-	u32 tx_hw_cnt;
+	struct hieth_queue rxq;
+	struct hieth_queue txq;
+	u32 tx_fifo_used_cnt;
 
 	struct timer_list monitor;
 
@@ -258,15 +275,16 @@ struct hieth_netdev_priv {
 		int hw_xmitq;
 	} depth;
 
+#if CONFIG_HIETH_MAX_RX_POOLS
 	struct {
 		unsigned long rx_pool_dry_times;
 	} stat;
 
-#define SKB_SIZE		(HIETH_MAX_FRAME_SIZE)
 	struct rx_skb_pool {
 		struct sk_buff *sk_pool[CONFIG_HIETH_MAX_RX_POOLS];/*skb pool*/
 		int next_free_skb;	/*next free skb*/
 	} rx_pool;
+#endif
 
 	struct napi_struct napi;
 
@@ -281,6 +299,15 @@ struct hieth_netdev_priv {
 
 	struct clk *clk;
 	bool mac_wol_enabled;
+	bool pm_state_set;
+	bool autoeee_enabled;
+
+#ifdef HIETH_SKB_MEMORY_STATS
+	atomic_t tx_skb_occupied;
+	atomic_t tx_skb_mem_occupied;
+	atomic_t rx_skb_occupied;
+	atomic_t rx_skb_mem_occupied;
+#endif
 };
 
 /* phy parameter */
@@ -295,6 +322,57 @@ struct hieth_phy_param_s {
 	/* gpio reset pin if has */
 	void __iomem *gpio_base;
 	u32 gpio_bit;
+};
+
+#define MAX_MULTICAST_FILTER    8
+#define MAX_MAC_LIMIT ETH_ALEN*MAX_MULTICAST_FILTER
+
+struct ethstats {
+	void __iomem *base;
+	void __iomem *macbase[2];
+
+	char prbuf[SZ_4K];
+	u32 sz_prbuf;
+
+	struct dentry *dentry;
+};
+
+struct mcdump {
+	void __iomem *base;
+	u32 net_flags;
+	u32 mc_rcv;
+	u32 mc_drop;
+	u32 mac_nr;
+	spinlock_t lock;
+	char mac[MAX_MAC_LIMIT];
+	char prbuf[SZ_1K];
+	u32 sz_prbuf;
+
+	struct dentry *dentry;
+};
+
+#ifdef HIETH_SKB_MEMORY_STATS
+struct eth_mem_stats {
+	char prbuf[SZ_1K];
+	u32 sz_prbuf;
+
+	struct dentry *dentry;
+};
+#endif
+
+struct hieth_platdrv_data {
+	struct hieth_phy_param_s hieth_phy_param[HIETH_MAX_PORT];
+	struct net_device *hieth_devs_save[HIETH_MAX_PORT];
+	struct hieth_netdev_priv hieth_priv;
+	int hieth_real_port_cnt;
+
+	/* debugfs info */
+	struct dentry *root;
+	struct ethstats ethstats;
+	struct mcdump mcdump;
+#ifdef HIETH_SKB_MEMORY_STATS
+	struct eth_mem_stats eth_mem_stats;
+#endif
 };
 
 #define local_lock_init(priv)	spin_lock_init(&(priv)->lock)
@@ -329,12 +407,17 @@ struct hieth_phy_param_s {
 #define SIOCSETSUSPEND	(SIOCDEVPRIVATE + 5)	/* call dev->suspend */
 #define SIOCSETRESUME	(SIOCDEVPRIVATE + 6)	/* call dev->resume */
 
-extern struct hieth_phy_param_s hieth_phy_param[];
+extern bool hieth_fephy_opt;
 
 void hieth_autoeee_init(struct hieth_netdev_priv *priv, int link_stat);
 void hieth_phy_register_fixups(void);
-void hieth_phy_reset(void);
-void hieth_fix_festa_phy_trim(struct mii_bus *bus);
+void hieth_phy_unregister_fixups(void);
+void hieth_phy_reset(struct hieth_platdrv_data *pdata);
+void hieth_phy_clk_disable(struct hieth_platdrv_data *pdata);
+void hieth_fix_festa_phy_trim(struct mii_bus *bus, struct hieth_platdrv_data *pdata);
+unsigned int fephy_get_ed_time(void);
+int fephy_set_ed_time(struct phy_device *phy_dev, unsigned int ed_time);
+int hieth_set_fephy_ed_time(unsigned int ed_time, struct hieth_platdrv_data *pdata);
 #endif
 
 /* vim: set ts=8 sw=8 tw=78: */

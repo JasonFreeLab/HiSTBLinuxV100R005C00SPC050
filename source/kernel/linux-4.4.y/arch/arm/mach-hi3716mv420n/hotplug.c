@@ -80,13 +80,7 @@ void s40_cpu_die(unsigned int cpu)
 
 	flush_cache_all();
 
-	if (chipid == _HI3798CV100A ||
-	    chipid == _HI3798CV100 ||
-	    chipid == _HI3796CV100) {
-		s5_scu_power_off(cpu);
-	} else {
 		s40_scu_power_off(cpu);
-	}
 }
 /*****************************************************************************/
 /*
