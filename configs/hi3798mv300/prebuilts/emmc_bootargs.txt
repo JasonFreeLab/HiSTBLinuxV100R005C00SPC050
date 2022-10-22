@@ -11,7 +11,7 @@ bootargs_2G=mem=2G mmz=ddr,0,0,48M vmalloc=500M
 bootargs_768M=mem=768M mmz=ddr,0,0,48M vmalloc=500M
 bootargs_1536M=mem=1536M mmz=ddr,0,0,48M vmalloc=500M
 bootargs_3840M=mem=3840M mmz=ddr,0,0,48M vmalloc=500M
-bootargs=console=ttyAMA0,115200 root=/dev/mmcblk0p12 rootfstype=ext4 rootwait blkdevparts=mmcblk0:1M(boot),1M(bootargs),4M(baseparam),4M(pqparam),4M(logo),4M(deviceinfo),4M(softwareinfo),4M(loaderdb),32M(loader),8M(trustedcore),32M(kernel),256M(rootfs),-(others)
+bootargs=console=ttyAMA0,115200 root=/dev/mmcblk0p12 rootfstype=ext4 rootwait blkdevparts=mmcblk0:1M(boot),1M(bootargs),4M(baseparam),4M(pqparam),4M(logo),4M(deviceinfo),4M(softwareinfo),4M(loaderdb),32M(loader),8M(trustedcore),32M(kernel),1024M(rootfs),-(others)
 bootdelay=0
 stdin=serial
 stdout=serial
