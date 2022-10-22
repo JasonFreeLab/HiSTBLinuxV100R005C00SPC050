@@ -707,6 +707,7 @@ HI_S32 main(HI_S32 argc, HI_CHAR *argv[])
     || defined(CHIP_TYPE_hi3716mv420)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
     printf("please input vccen mode (default %d): %d-CMOS, %d-OD, others-default\n", HI_SCI_VCCEN_MODE, HI_UNF_SCI_MODE_CMOS,
             HI_UNF_SCI_MODE_OD);

@@ -81,7 +81,7 @@ else
 CFG_HI_CFLAGS += -DHI_PROC_SUPPORT=0
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3796mv200 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3796mv200 hi3798mv200_a),)
 CFLAGS += -DCONFIG_GFX_MEM_ION
 else
 CFLAGS += -DCONFIG_GFX_MEM_MMZ

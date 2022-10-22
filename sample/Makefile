@@ -20,7 +20,7 @@ objects :=  esplay ao audiocast tsplay es_ts_switch ipplay mosaic pip log memdev
             otp flash uart network fs cipher snapshot 3dtv pq test/hdmi_tsplay test/video_test omxvdec rawplay \
             deviceinfo
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 objects += test/ddr_test
 endif
 
@@ -41,7 +41,7 @@ objects += plcipher
 endif
 
 ifeq ($(CFG_HI_TEE_SUPPORT),y)
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310),)
 objects += tee
 endif
 endif
@@ -159,7 +159,7 @@ ifeq ($(CFG_HI_OPENSSL_SUPPORT),y)
 objects += openssl
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
     objects += advca
 endif
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716mv410 hi3716mv420),)
@@ -195,7 +195,7 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716mv410 hi3716mv420),)
 endif
 
 ifeq ($(CFG_HI_TEE_SUPPORT),y)
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 objects += tee
 endif
 endif

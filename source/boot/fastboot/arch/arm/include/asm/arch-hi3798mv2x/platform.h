@@ -1,4 +1,4 @@
-/* hi3798cv2x */
+/* hi3798mv2x */
 #ifndef __HI_CHIP_REGS_H__
 #define __HI_CHIP_REGS_H__
 

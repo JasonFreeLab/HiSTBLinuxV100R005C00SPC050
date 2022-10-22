@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # SDK version: KERNELVERSION
-# Wed Oct 12 22:50:25 2022
+# Sat Oct 15 14:17:12 2022
 #
 
 #
@@ -17,6 +17,7 @@ CFG_HI_ENG_MODE=y
 # CFG_HI3798MV100 is not set
 # CFG_HI3798MV200 is not set
 CFG_HI3798MV300=y
+# CFG_HI3798MV310 is not set
 # CFG_HI3798MV200_A is not set
 # CFG_HI3796MV100 is not set
 # CFG_HI3796MV200 is not set
@@ -661,7 +662,8 @@ CFG_HI_WIFI_DEVICE_RTL8822BS=y
 #
 CFG_HI_WIFI_MODE_STA=y
 # CFG_HI_WIFI_MODE_AP is not set
-# CFG_HI_NTFS_SUPPORT is not set
+CFG_HI_NTFS_SUPPORT=y
+CFG_HI_NTFS_TOOLS_SUPPORT=y
 CFG_HI_EXFAT_SUPPORT=y
 # CFG_HI_3G_SUPPORT is not set
 CFG_HI_ALSA_SUPPORT=y

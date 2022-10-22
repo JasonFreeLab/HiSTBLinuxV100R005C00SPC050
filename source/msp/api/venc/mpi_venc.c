@@ -275,7 +275,8 @@ HI_S32 HI_MPI_VENC_GetAttr(HI_HANDLE hVencChn, HI_UNF_VENC_CHN_ATTR_S* pstAttr)
 
 static HI_BOOL IsChipIDV500R001(HI_CHIP_TYPE_E enChipType, HI_CHIP_VERSION_E enChipVersion)
 {
-    if (((enChipType == HI_CHIP_TYPE_HI3798M) && (enChipVersion == HI_CHIP_VERSION_V300)) ||
+    if (((enChipType == HI_CHIP_TYPE_HI3798M) && (enChipVersion == HI_CHIP_VERSION_V310)) ||
+        ((enChipType == HI_CHIP_TYPE_HI3798M) && (enChipVersion == HI_CHIP_VERSION_V300)) ||
         ((enChipType == HI_CHIP_TYPE_HI3796M) && (enChipVersion == HI_CHIP_VERSION_V200)))
     {
         return HI_TRUE;

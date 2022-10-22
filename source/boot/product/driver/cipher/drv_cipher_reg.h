@@ -171,6 +171,7 @@ extern "C"
 #if  defined(CHIP_TYPE_hi3798cv200) \
      || defined (CHIP_TYPE_hi3798mv200) \
      || defined(CHIP_TYPE_hi3798mv300)	\
+     || defined(CHIP_TYPE_hi3798mv310)	\
      || defined (CHIP_TYPE_hi3798mv200_a) \
      || defined (NOCS3_0_SUPPORT)
 #define  HISEC_COM_TRNG_CTRL                (REG_RNG_BASE_ADDR + 0x200)

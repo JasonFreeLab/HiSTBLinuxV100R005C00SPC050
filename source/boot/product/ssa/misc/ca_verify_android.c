@@ -25,7 +25,7 @@ History       :
 
 
 #if defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100) || defined(CHIP_TYPE_hi3798cv200) \
-     || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+     || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 static HI_U8 CAIMGHEAD_MAGICNUMBER[32]  =  "Hisilicon_ADVCA_ImgHead_MagicNum";
 HI_U32 HI_CA_GetAuthMode(HI_CHAR* pPartionName)
 {

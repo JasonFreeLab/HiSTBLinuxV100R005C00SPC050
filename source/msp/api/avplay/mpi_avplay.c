@@ -101,14 +101,14 @@ extern "C" {
 
 
 /* video buffer dither waterline */
-/* CNcomment: ÊÓÆµ»º³å¹ÜÀí¶¶¶¯Ë®ÏßµÄ°Ù·Ö±È£¬0-99 */
+/* CNcomment: ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ßµÄ°Ù·Ö±È£ï¿½0-99 */
 #define  AVPLAY_ES_VID_FULL_PERCENT     85
 #define  AVPLAY_ES_VID_HIGH_PERCENT     70
 #define  AVPLAY_ES_VID_LOW_PERCENT      30
 #define  AVPLAY_ES_VID_EMPTY_PERCENT    10
 
 /* audio buffer dither waterline */
-/* CNcomment: ÒôÆµ»º³å¹ÜÀí¶¶¶¯Ë®ÏßµÄ°Ù·Ö±È£¬0-99 */
+/* CNcomment: ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ßµÄ°Ù·Ö±È£ï¿½0-99 */
 #define  AVPLAY_ES_AUD_FULL_PERCENT     98
 #define  AVPLAY_ES_AUD_HIGH_PERCENT     85
 #define  AVPLAY_ES_AUD_LOW_PERCENT      5
@@ -182,6 +182,7 @@ extern "C" {
     || defined(CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310) \
     || defined(CHIP_TYPE_hi3798mv100) \
     || defined(CHIP_TYPE_hi3796mv100) \
     || defined(CHIP_TYPE_hi3716dv100) \
@@ -195,6 +196,7 @@ extern "C" {
     && !defined(CHIP_TYPE_hi3798cv200) \
     && !defined(CHIP_TYPE_hi3798mv200) \
     && !defined(CHIP_TYPE_hi3798mv300) \
+    && !defined(CHIP_TYPE_hi3798mv310) \
     && !defined(CHIP_TYPE_hi3798mv200_a) \
     && !defined(CHIP_TYPE_hi3796mv200)
 
@@ -205,6 +207,7 @@ extern "C" {
     || defined(CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310) \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
     #define AVPLAY_VID_PEEK_FRAME_SUPPORT
@@ -422,11 +425,11 @@ typedef struct
 
     /*frc parameters*/
     HI_BOOL                         bFrcEnable;
-    AVPLAY_FRC_CFG_S                FrcParamCfg;        /* config frc param */ /*CNcomment: ÅäÖÃµÄfrc²ÎÊý */
-    AVPLAY_ALG_FRC_S                FrcCalAlg;          /* frc used rate info */ /*CNcomment: frcÕýÔÚÊ¹ÓÃµÄÖ¡ÂÊÐÅÏ¢ */
-    AVPLAY_FRC_CTRL_S               FrcCtrlInfo;        /* frc control */ /*CNcomment: frc¿ØÖÆÐÅÏ¢ */
-    HI_U32                          FrcNeedPlayCnt;     /* this frame need to play time*/ /*CNcomment:¸ÃÖ¡ÐèÒª²¥¼¸´Î */
-    HI_U32                          FrcCurPlayCnt;      /* this frame had played time*/   /*CNcomment:¸ÃÖ¡Êµ¼Ê²¥µ½µÚ¼¸´Î*/
+    AVPLAY_FRC_CFG_S                FrcParamCfg;        /* config frc param */ /*CNcomment: ï¿½ï¿½ï¿½Ãµï¿½frcï¿½ï¿½ï¿½ï¿½ */
+    AVPLAY_ALG_FRC_S                FrcCalAlg;          /* frc used rate info */ /*CNcomment: frcï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½Ö¡ï¿½ï¿½ï¿½ï¿½Ï¢ */
+    AVPLAY_FRC_CTRL_S               FrcCtrlInfo;        /* frc control */ /*CNcomment: frcï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
+    HI_U32                          FrcNeedPlayCnt;     /* this frame need to play time*/ /*CNcomment:ï¿½ï¿½Ö¡ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    HI_U32                          FrcCurPlayCnt;      /* this frame had played time*/   /*CNcomment:ï¿½ï¿½Ö¡Êµï¿½Ê²ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½*/
 
     /*flush stream control*/
     HI_BOOL                         bSetEosFlag;
@@ -10485,7 +10488,7 @@ HI_S32 AVPLAY_AttachWindow(AVPLAY_S *pAvplay, HI_HANDLE hWin)
 
     switch (stWinInfo.eType)
     {
-        /* homologous window*/ /* CNcomment: Í¬Ô´´°¿Ú */
+        /* homologous window*/ /* CNcomment: Í¬Ô´ï¿½ï¿½ï¿½ï¿½ */
         case HI_DRV_WIN_ACTIVE_MAIN_AND_SLAVE :
         {
             Ret = AVPLAY_AddMasterPort(pAvplay, stWinInfo.hPrim);
@@ -10508,7 +10511,7 @@ HI_S32 AVPLAY_AttachWindow(AVPLAY_S *pAvplay, HI_HANDLE hWin)
             break;
         }
 
-        /* analogous master window*/ /* CNcomment: ·ÇÍ¬Ô´ Ö÷´°¿Ú¼°´Ó´°¿Ú */
+        /* analogous master window*/ /* CNcomment: ï¿½ï¿½Í¬Ô´ ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ */
         case HI_DRV_WIN_ACTIVE_SINGLE :
         {
             if (hWin == pAvplay->MasterFrmChn.hWindow)
@@ -10537,7 +10540,7 @@ HI_S32 AVPLAY_AttachWindow(AVPLAY_S *pAvplay, HI_HANDLE hWin)
             break;
         }
 
-        /* analogous virtual window*/ /* CNcomment ·ÇÍ¬Ô´ ÐéÄâ´°¿Ú*/
+        /* analogous virtual window*/ /* CNcomment ï¿½ï¿½Í¬Ô´ ï¿½ï¿½ï¿½â´°ï¿½ï¿½*/
         case HI_DRV_WIN_VITUAL_SINGLE :
         {
             Ret = AVPLAY_AddVirtualPort(pAvplay, hWin);
@@ -10590,7 +10593,7 @@ HI_S32 AVPLAY_DetachWindow(AVPLAY_S *pAvplay, HI_HANDLE hWin)
 
     switch (WinInfo.eType)
     {
-        /* homologous window*/ /* CNcomment: Í¬Ô´´°¿Ú */
+        /* homologous window*/ /* CNcomment: Í¬Ô´ï¿½ï¿½ï¿½ï¿½ */
         case HI_DRV_WIN_ACTIVE_MAIN_AND_SLAVE :
         {
             Ret = AVPLAY_DelMasterPort(pAvplay, WinInfo.hPrim);
@@ -10618,7 +10621,7 @@ HI_S32 AVPLAY_DetachWindow(AVPLAY_S *pAvplay, HI_HANDLE hWin)
             break;
         }
 
-        /* analogous master window*/ /* CNcomment: ·ÇÍ¬Ô´ Ö÷´°¿Ú¼°´Ó´°¿Ú */
+        /* analogous master window*/ /* CNcomment: ï¿½ï¿½Í¬Ô´ ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½Ó´ï¿½ï¿½ï¿½ */
         case HI_DRV_WIN_ACTIVE_SINGLE :
         {
             if (pAvplay->MasterFrmChn.hWindow == hWin)
@@ -10647,7 +10650,7 @@ HI_S32 AVPLAY_DetachWindow(AVPLAY_S *pAvplay, HI_HANDLE hWin)
             break;
         }
 
-        /* analogous virtual window*/ /* CNcomment ·ÇÍ¬Ô´ ÐéÄâ´°¿Ú*/
+        /* analogous virtual window*/ /* CNcomment ï¿½ï¿½Í¬Ô´ ï¿½ï¿½ï¿½â´°ï¿½ï¿½*/
         case HI_DRV_WIN_VITUAL_SINGLE :
         {
             Ret = AVPLAY_DelVirtualPort(pAvplay, hWin);
@@ -14868,7 +14871,7 @@ HI_S32 HI_MPI_AVPLAY_GetSndHandle(HI_HANDLE hAvplay, HI_HANDLE *phTrack)
     return HI_SUCCESS;
 }
 
-// TODO: È·ÈÏ¸Ã½Ó¿ÚÄÜ·ñÉ¾³ý
+// TODO: È·ï¿½Ï¸Ã½Ó¿ï¿½ï¿½Ü·ï¿½É¾ï¿½ï¿½
 HI_S32 HI_MPI_AVPLAY_GetWindowHandle(HI_HANDLE hAvplay, HI_HANDLE *phWindow)
 {
     HI_U32      Id = GET_AVPLAY_ID(hAvplay);
@@ -14946,7 +14949,7 @@ HI_S32 HI_MPI_AVPLAY_DetachWindow(HI_HANDLE hAvplay, HI_HANDLE hWindow)
 }
 
 
-// TODO: È·ÈÏ¸Ã¹¦ÄÜÊÇ·ñ»¹ÐèÒª
+// TODO: È·ï¿½Ï¸Ã¹ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Òª
 HI_S32 HI_MPI_AVPLAY_SetWindowRepeat(HI_HANDLE hAvplay, HI_U32 u32Repeat)
 {
     HI_U32      Id = GET_AVPLAY_ID(hAvplay);
@@ -15562,7 +15565,7 @@ HI_S32 HI_MPI_AVPLAY_Invoke(HI_HANDLE hAvplay, HI_UNF_AVPLAY_INVOKE_E enInvokeTy
             return HI_ERR_AVPLAY_INVALID_OPT;
         }
 
-#if !defined(CHIP_TYPE_hi3798mv200) && !defined(CHIP_TYPE_hi3798mv300) && !defined(CHIP_TYPE_hi3798mv200_a)
+#if !defined(CHIP_TYPE_hi3798mv200) && !defined(CHIP_TYPE_hi3798mv300) && !defined(CHIP_TYPE_hi3798mv310) && !defined(CHIP_TYPE_hi3798mv200_a)
         if(((HI_CODEC_VIDEO_CMD_S*)pPara)->u32CmdID == HI_UNF_AVPLAY_SET_SCENE_MODE_CMD)
         {
             AVPLAY_INST_UNLOCK(Id);
@@ -15701,7 +15704,7 @@ HI_S32 HI_MPI_AVPLAY_RlsUserData(HI_HANDLE hAvplay, HI_UNF_VIDEO_USERDATA_S* pst
 {
     HI_S32      Ret;
     HI_U32      Id = GET_AVPLAY_ID(hAvplay);
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
     HI_UNF_VIDEO_USERDATA_TYPE_E enType;
 #endif
     AVPLAY_S   *pAvplay;
@@ -15721,7 +15724,7 @@ HI_S32 HI_MPI_AVPLAY_RlsUserData(HI_HANDLE hAvplay, HI_UNF_VIDEO_USERDATA_S* pst
         return HI_ERR_AVPLAY_INVALID_OPT;
     }
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
     enType = HI_UNF_VIDEO_USERDATA_DVB1_CC;
     Ret = HI_MPI_VDEC_RlsUserData(pAvplay->hVdec, pstUserData, &enType);
     if (HI_SUCCESS != Ret)
@@ -15744,7 +15747,7 @@ HI_S32 HI_MPI_AVPLAY_RlsUserData(HI_HANDLE hAvplay, HI_UNF_VIDEO_USERDATA_S* pst
 HI_S32 HI_MPI_AVPLAY_AcqUserDataEx(HI_HANDLE hAvplay, HI_UNF_VIDEO_USERDATA_TYPE_E enType, HI_UNF_VIDEO_USERDATA_S *pstUserData)
 {
     HI_S32      Ret ;
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
     HI_U32      Id = GET_AVPLAY_ID(hAvplay);
     HI_UNF_VIDEO_USERDATA_TYPE_E enUserType;
     AVPLAY_S   *pAvplay;
@@ -15782,7 +15785,7 @@ HI_S32 HI_MPI_AVPLAY_AcqUserDataEx(HI_HANDLE hAvplay, HI_UNF_VIDEO_USERDATA_TYPE
 HI_S32 HI_MPI_AVPLAY_RlsUserDataEx(HI_HANDLE hAvplay, HI_UNF_VIDEO_USERDATA_TYPE_E enType, HI_UNF_VIDEO_USERDATA_S *pstUserData)
 {
     HI_S32      Ret;
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200)|| defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200)|| defined(CHIP_TYPE_hi3796mv200)
     HI_U32      Id = GET_AVPLAY_ID(hAvplay);
     HI_UNF_VIDEO_USERDATA_TYPE_E enUserType;
     AVPLAY_S   *pAvplay;

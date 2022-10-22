@@ -547,6 +547,7 @@ static HI_BOOL AOCheckOutPortIsValid(HI_UNF_SND_OUTPUTPORT_E enOutPort)
       || defined(CHIP_TYPE_hi3798cv200)   \
       || defined(CHIP_TYPE_hi3798mv200)   \
       || defined(CHIP_TYPE_hi3798mv300)   \
+      || defined(CHIP_TYPE_hi3798mv310)   \
       || defined(CHIP_TYPE_hi3798mv200_a) \
       || defined(CHIP_TYPE_hi3716mv420)   \
       || defined(CHIP_TYPE_hi3796mv200)
@@ -3957,7 +3958,7 @@ static HI_S32 AO_Cast_ReleseData(HI_HANDLE hCast, AO_Cast_Data_Param_S* pstCastD
 
 #if (1 == HI_PROC_SUPPORT)
 /*********************************** Code ************************************/
-//zgjiere; proc¼æÈÝÐèÇóÊÇ·ñÂú×ã£¬ÆðÂë·ç¸ñÀàËÆÓÚV1R1
+//zgjiere; procï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½V1R1
 static HI_BOOL bSaveThreadRunFlag = HI_FALSE;
 #ifdef __DPT__
 static HI_BOOL bSaveAefThreadRunFlag = HI_FALSE;

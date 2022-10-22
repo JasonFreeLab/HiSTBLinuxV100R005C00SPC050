@@ -1455,6 +1455,7 @@ himciv200_match[] __maybe_unused = {
 	{ .compatible = "hi3798mv100,himciv200", },
 	{ .compatible = "hi3798cv200,himciv200", },
 	{ .compatible = "hi3798mv200,himciv200", },
+	{ .compatible = "hi3798mv300,himciv200", },
 	{ .compatible = "hi3796mv200,himciv200", },
 	{},
 };

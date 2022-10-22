@@ -251,7 +251,7 @@ typedef struct hiPVR_PLAY_CHN_S
     HI_UNF_PVR_PLAY_STATUS_S      stLastStatus;     /* the last play status, when failure to get current play status, return this */
 
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     HI_BOOL bSecTsBuffer;
     PVR_REE_BUFFER_INFO_S stReeBuf;
 #endif
@@ -260,8 +260,8 @@ typedef struct hiPVR_PLAY_CHN_S
     HI_U64                 u64SendFrameNum;
     ExtraCallBack          readCallBack;
     PVR_EXTEND_CALLBACK_S  stPlayCallback;
-    PVR_PID_CHANGE_CALLBACK_S   stPlayPidChangeCB;                       /**<the callback function was called when pid changed.*//**<CNcomment: Pid±ä¸üÊ±µÄ²¥·Å»Øµ÷º¯Êý*/
-    HI_BOOL                 bChangePID;             /*ÅÐ¶Ïµ±Ç°²¥·ÅÍ¨µÀ×´Ì¬ÊÇ·ñÎªÕýÔÚÇÐ»»PID*/
+    PVR_PID_CHANGE_CALLBACK_S   stPlayPidChangeCB;                       /**<the callback function was called when pid changed.*//**<CNcomment: Pidï¿½ï¿½ï¿½Ê±ï¿½Ä²ï¿½ï¿½Å»Øµï¿½ï¿½ï¿½ï¿½ï¿½*/
+    HI_BOOL                 bChangePID;             /*ï¿½Ð¶Ïµï¿½Ç°ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½×´Ì¬ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½PID*/
 } PVR_PLAY_CHN_S;
 
 HI_BOOL PVRPlayCheckInitStat(HI_VOID);

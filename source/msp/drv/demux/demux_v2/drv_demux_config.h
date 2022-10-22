@@ -19,10 +19,10 @@
 
 #define DMX_IFPORT_CNT                  1
 #define DMX_TSIPORT_CNT                 4
-#define DMX_TSOPORT_CNT                 2 /*Á½Â·´®ÐÐ»òÕßÒ»Â·²¢ÐÐ*/
+#define DMX_TSOPORT_CNT                 2 /*ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Ò»Â·ï¿½ï¿½ï¿½ï¿½*/
 #define DMX_TUNERPORT_CNT               (DMX_IFPORT_CNT + DMX_TSIPORT_CNT)
 #define DMX_RAMPORT_CNT                 5
-#define DMX_TAGPORT_CNT                 0  /* 4Â·tag dealÊä³ö¶Ë¿Ú*/
+#define DMX_TAGPORT_CNT                 0  /* 4Â·tag dealï¿½ï¿½ï¿½ï¿½Ë¿ï¿½*/
 
 #define DMX_CHANNEL_CNT                 96
 #define DMX_AV_CHANNEL_CNT              32
@@ -184,9 +184,9 @@
 #define DMX_OQ_CNT                      128
 
 /*0xf9c03a04 , switch :
-0x00£º ¹Ø±ÕTSÔ´£»
-0x01¡«0x07£º·Ö±ðÑ¡ÔñDVBÏÂµÄTS1¡«TS7¶Ë¿ÚÂëÁ÷£»
-0x10¡«0x15£º·Ö±ðÑ¡ÔñIPÏÂµÄIP0¡«IP5ÄÚ²¿¶Ë¿ÚÂëÁ÷¡£*/
+0x00ï¿½ï¿½ ï¿½Ø±ï¿½TSÔ´ï¿½ï¿½
+0x01ï¿½ï¿½0x07ï¿½ï¿½ï¿½Ö±ï¿½Ñ¡ï¿½ï¿½DVBï¿½Âµï¿½TS1ï¿½ï¿½TS7ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+0x10ï¿½ï¿½0x15ï¿½ï¿½ï¿½Ö±ï¿½Ñ¡ï¿½ï¿½IPï¿½Âµï¿½IP0ï¿½ï¿½IP5ï¿½Ú²ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #define DMX_RAM_PORT_OFFSET             15
 
 
@@ -251,9 +251,9 @@
 #define DMX_OQ_CNT                      128
 
 /*0xf9c03a04 , switch :
-0x00£º ¹Ø±ÕTSÔ´£»
-0x01¡«0x07£º·Ö±ðÑ¡ÔñDVBÏÂµÄTS1¡«TS7¶Ë¿ÚÂëÁ÷£»
-0x10¡«0x15£º·Ö±ðÑ¡ÔñIPÏÂµÄIP0¡«IP5ÄÚ²¿¶Ë¿ÚÂëÁ÷¡£*/
+0x00ï¿½ï¿½ ï¿½Ø±ï¿½TSÔ´ï¿½ï¿½
+0x01ï¿½ï¿½0x07ï¿½ï¿½ï¿½Ö±ï¿½Ñ¡ï¿½ï¿½DVBï¿½Âµï¿½TS1ï¿½ï¿½TS7ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+0x10ï¿½ï¿½0x15ï¿½ï¿½ï¿½Ö±ï¿½Ñ¡ï¿½ï¿½IPï¿½Âµï¿½IP0ï¿½ï¿½IP5ï¿½Ú²ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #define DMX_RAM_PORT_OFFSET             15
 
 
@@ -276,7 +276,7 @@
 /*=============================================CHIP_TYPE_hi3796cv100/CHIP_TYPE_hi3798cv100=========================================*/
 #elif defined(CHIP_TYPE_hi3796cv100) || defined(CHIP_TYPE_hi3798cv100)
 
-#define DMX_INT_NUM                     (82 + 32)/*A9Ò»¹²ÓÐ128¸öÖÐ¶Ï£¬A9×Ô¼ºÕ¼ÓÃ32¸ö*/
+#define DMX_INT_NUM                     (82 + 32)/*A9Ò»ï¿½ï¿½ï¿½ï¿½128ï¿½ï¿½ï¿½Ð¶Ï£ï¿½A9ï¿½Ô¼ï¿½Õ¼ï¿½ï¿½32ï¿½ï¿½*/
 
 #define HI_PVR_BASE                     (0xF9C00000)
 
@@ -286,7 +286,7 @@
 
 #define DMX_IFPORT_CNT                  2
 #define DMX_TSIPORT_CNT                 6
-#define DMX_TSOPORT_CNT                 2 /*Á½Â·´®ÐÐ»òÕßÒ»Â·²¢ÐÐ*/
+#define DMX_TSOPORT_CNT                 2 /*ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Ò»Â·ï¿½ï¿½ï¿½ï¿½*/
 #define DMX_TUNERPORT_CNT               (DMX_IFPORT_CNT + DMX_TSIPORT_CNT)
 #define DMX_RAMPORT_CNT                 6
 #define DMX_TSIOPORT_CNT                0
@@ -479,7 +479,7 @@
 #define DMX_DUP_PID_CHANNEL_SUPPORT
 
 /*=============================================CHIP_TYPE_hi3798mv200=========================================*/
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define DMX_CLUSTER_TOTAL_SET_CNT    1
 
 #define DMX_MMU_VERSION_2

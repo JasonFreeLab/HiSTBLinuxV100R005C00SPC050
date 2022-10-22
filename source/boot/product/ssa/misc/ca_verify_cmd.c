@@ -43,6 +43,7 @@ typedef union
 #if defined(CHIP_TYPE_hi3798cv200) \
    || defined(CHIP_TYPE_hi3798mv200) \
    || defined(CHIP_TYPE_hi3798mv300) \
+   || defined(CHIP_TYPE_hi3798mv310) \
    || defined(CHIP_TYPE_hi3798mv200_a)
 #define NEW_BOOT_FORMAT
 #elif defined (CHIP_TYPE_hi3716cv200) \
@@ -640,7 +641,7 @@ HI_S32 CA_GetExternRsaKey(cmd_tbl_t *cmdtp, HI_S32 flag, HI_S32 argc, char *argv
     else if (EnvFlashType == HI_FLASH_TYPE_EMMC_0 || EnvFlashType == HI_FLASH_TYPE_SD)
     {
        memset(command, 0, 256);
-#if defined(CHIP_TYPE_hi3719mv100) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3719mv100) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
        if (((HI_CHIP_TYPE_HI3719M == enChipType) && (HI_CHIP_VERSION_V100 == u32ChipVersion)) || \
           ((HI_CHIP_TYPE_HI3798C == enChipType) && (HI_CHIP_VERSION_V200 == u32ChipVersion)) || \
           ((HI_CHIP_TYPE_HI3798M == enChipType) && (HI_CHIP_VERSION_V200 == u32ChipVersion)) || \

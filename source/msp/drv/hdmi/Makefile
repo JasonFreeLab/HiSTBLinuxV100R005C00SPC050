@@ -39,8 +39,13 @@ EXTRA_CFLAGS += -I$(COMMON_UNF_INCLUDE)                 \
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv300),)
 EXTRA_CFLAGS	 += -I$(COMMON_DRV_INCLUDE)/hi3798mv200
 else
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+EXTRA_CFLAGS	 += -I$(COMMON_DRV_INCLUDE)/hi3798mv310
+else
 EXTRA_CFLAGS	 += -I$(COMMON_DRV_INCLUDE)/$(CFG_HI_CHIP_TYPE)
 endif
+endif
+
 ifeq ($(CFG_HI_TEE_HDMI_SUPPORT), y)
 EXTRA_CFLAGS += -I$(TEE_DRV_INCLUDE)
 endif
@@ -274,11 +279,11 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300),)
 EXTRA_CFLAGS += -DHIFONEV300
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 EXTRA_CFLAGS += -DHI3798MV200
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 EXTRA_CFLAGS += -DHDMI_SUPPORT_LOGIC_HISIV100
 CTRL_DIR := hal/ctrl/hisiv100
 PHY_DIR  := hal/phy/hisiv100
@@ -296,7 +301,7 @@ PRODUCT_DIR := product/hi3796mv200
 LINUX_VERSION := osal/hisiv200
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 EXTRA_CFLAGS += -I$(HDMI_DRV_DIR)
 EXTRA_CFLAGS += -I$(HDMI_DRV_DIR)/hal
 EXTRA_CFLAGS += -I$(HDMI_DRV_DIR)/$(LINUX_VERSION)

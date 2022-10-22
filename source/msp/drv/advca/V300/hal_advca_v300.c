@@ -570,8 +570,8 @@ HI_S32 HAL_ADVCA_V300_DecryptCw(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *pu3
         return HI_FAILURE;
     }
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if(unConfigStatus.bits.st_vld != 1)
     {
@@ -586,20 +586,20 @@ HI_S32 HAL_ADVCA_V300_DecryptCw(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *pu3
     }
     else
     {
-        /*2  put DVB_RootKey£¨CK2£©to CA register(DATA input) */
-        //(2)   ÅäÖÃ¼Ä´æÆ÷CA_DIN0£¬CA_DIN1£¬CA_DIN2£¬CA_DIN3£¬ÕâÊÇ½âÃÜ(¼ÓÃÜ)µÄÊäÈëÊý¾Ý¡£
+        /*2  put DVB_RootKeyï¿½ï¿½CK2ï¿½ï¿½to CA register(DATA input) */
+        //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CA_DIN0ï¿½ï¿½CA_DIN1ï¿½ï¿½CA_DIN2ï¿½ï¿½CA_DIN3ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN0, pu32DataIn[0]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN1, pu32DataIn[1]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, pu32DataIn[2]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, pu32DataIn[3]);
     }
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷CSA2_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CSA2_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     CSA2Ctrl.u32 = 0;
     CSA2Ctrl.bits.dsc_mode = 0;
     CSA2Ctrl.bits.level_sel = enLevel;
     CSA2Ctrl.bits.tdes_aes_sel = g_CSA2Info.Alg;
-    CSA2Ctrl.bits.EvenOrOdd = bEvenOrOdd;  //0£ºµ±Ç°ÊÇÅ¼ÃÜÔ¿£»1£ºµ±Ç°ÊÇÆæÃÜÔ¿
+    CSA2Ctrl.bits.EvenOrOdd = bEvenOrOdd;  //0ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Å¼ï¿½ï¿½Ô¿ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
     CSA2Ctrl.bits.key_addr = AddrID & 0x7F; //Demux DescambleKey ID
     if (enCaVendorType == CA_OTP_VENDOR_IRDETO && g_TAInfo.OpenFlag == HI_TRUE
         && enKeyladderLev == enLevel) //last level
@@ -636,7 +636,7 @@ HI_S32 HAL_ADVCA_V300_DecryptCw(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *pu3
 
         g_CSA2Info.Keyladder_Ready = DRV_ADVCA_ReadReg(CA_V300_CA_STATE);
 
-        //0£ºµ±Ç°ÊÇÅ¼ÃÜÔ¿£»1£ºµ±Ç°ÊÇÆæÃÜÔ¿
+        //0ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Å¼ï¿½ï¿½Ô¿ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         if(g_CSA2Info.MaxLevel == (enLevel + 1))
         {
             if(bEvenOrOdd == 0x00)
@@ -684,8 +684,8 @@ HI_S32 HAL_ADVCA_V300_DecryptCsa3(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *p
         return HI_FAILURE;
     }
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if(unConfigStatus.bits.st_vld != 1)
     {
@@ -708,15 +708,15 @@ HI_S32 HAL_ADVCA_V300_DecryptCsa3(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *p
     }
     else
     {
-        /*2  put DVB_RootKey£¨CK2£©to CA register(DATA input) */
-        //(2)   ÅäÖÃ¼Ä´æÆ÷CA_DIN0£¬CA_DIN1£¬CA_DIN2£¬CA_DIN3£¬ÕâÊÇ½âÃÜ(¼ÓÃÜ)µÄÊäÈëÊý¾Ý¡£
+        /*2  put DVB_RootKeyï¿½ï¿½CK2ï¿½ï¿½to CA register(DATA input) */
+        //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CA_DIN0ï¿½ï¿½CA_DIN1ï¿½ï¿½CA_DIN2ï¿½ï¿½CA_DIN3ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN0, pu32DataIn[0]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN1, pu32DataIn[1]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, pu32DataIn[2]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, pu32DataIn[3]);
     }
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷CSA3_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CSA3_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     CSA3Ctrl.u32 = 0;
     CSA3Ctrl.bits.dsc_mode = 0x10;
     CSA3Ctrl.bits.level_sel = enLevel;
@@ -758,7 +758,7 @@ HI_S32 HAL_ADVCA_V300_DecryptCsa3(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *p
 
         g_CSA3Info.Keyladder_Ready = DRV_ADVCA_ReadReg(CA_V300_CA_STATE);
 
-        //0£ºµ±Ç°ÊÇÅ¼ÃÜÔ¿£»1£ºµ±Ç°ÊÇÆæÃÜÔ¿
+        //0ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Å¼ï¿½ï¿½Ô¿ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         if(g_CSA3Info.MaxLevel == (enLevel + 1))
         {
             if(bEvenOrOdd == 0x00)
@@ -783,8 +783,8 @@ HI_S32 HAL_ADVCA_V300_CryptR2R_REE(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *
     CA_V300_CONFIG_STATE_U unConfigStatus;
     CA_V300_R2R_CTRL_U R2RCtrl;
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if(unConfigStatus.bits.st_vld != 1)
     {
@@ -799,14 +799,14 @@ HI_S32 HAL_ADVCA_V300_CryptR2R_REE(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,HI_U32 *
         return HI_ERR_CA_WAIT_TIMEOUT;
     }
 
-    /*2  put DVB_RootKey£¨CK2£©to CA register(DATA input) */
-    //(2)   ÅäÖÃ¼Ä´æÆ÷CA_DIN0£¬CA_DIN1£¬CA_DIN2£¬CA_DIN3£¬ÕâÊÇ½âÃÜ(¼ÓÃÜ)µÄÊäÈëÊý¾Ý¡£
+    /*2  put DVB_RootKeyï¿½ï¿½CK2ï¿½ï¿½to CA register(DATA input) */
+    //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CA_DIN0ï¿½ï¿½CA_DIN1ï¿½ï¿½CA_DIN2ï¿½ï¿½CA_DIN3ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN0, pu32DataIn[0]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN1, pu32DataIn[1]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, pu32DataIn[2]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, pu32DataIn[3]);
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷R2R_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½R2R_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     R2RCtrl.u32 = 0;
     R2RCtrl.bits.level_sel = enLevel;
     R2RCtrl.bits.mc_alg_sel = 0;//Multicipher Algorithm. default setting
@@ -951,8 +951,8 @@ HI_S32 HAL_ADVCA_V300_DecryptSP(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,
         return HI_FAILURE;
     }
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if(unConfigStatus.bits.st_vld != 1)
     {
@@ -974,15 +974,15 @@ HI_S32 HAL_ADVCA_V300_DecryptSP(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,
     }
     else
     {
-        /*2  put SPE_RootKey£¨CK2£©to CA register(DATA input) */
-        //(2)   ÅäÖÃ¼Ä´æÆ÷CA_DIN0£¬CA_DIN1£¬CA_DIN2£¬CA_DIN3£¬ÕâÊÇ½âÃÜ(¼ÓÃÜ)µÄÊäÈëÊý¾Ý¡£
+        /*2  put SPE_RootKeyï¿½ï¿½CK2ï¿½ï¿½to CA register(DATA input) */
+        //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CA_DIN0ï¿½ï¿½CA_DIN1ï¿½ï¿½CA_DIN2ï¿½ï¿½CA_DIN3ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN0, pu32DataIn[0]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN1, pu32DataIn[1]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, pu32DataIn[2]);
         DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, pu32DataIn[3]);
     }
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷SP_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½SP_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     unSPCtrl.u32 = 0;
     if(HI_UNF_ADVCA_KEYLADDER_LEV5 == enLevel)
     {
@@ -1052,7 +1052,7 @@ HI_S32 HAL_ADVCA_V300_DecryptSP(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,
 
         g_SPInfo.Keyladder_Ready = DRV_ADVCA_ReadReg(CA_V300_CA_STATE);
 
-        //0£ºµ±Ç°ÊÇÅ¼ÃÜÔ¿£»1£ºµ±Ç°ÊÇÆæÃÜÔ¿
+        //0ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Å¼ï¿½ï¿½Ô¿ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         if(g_SPInfo.MaxLevel == (enLevel + 1))
         {
             if(bEvenOrOdd == 0x00)
@@ -1183,9 +1183,9 @@ HI_S32 HAL_ADVCA_V300_EncryptSwpk(HI_U32 *pClearSwpk,HI_U32 *pEncryptSwpk)
         return HI_ERR_CA_WAIT_TIMEOUT;
     }
 
-    /*2  put R2R_RootKey£¨CK2£©to CA register(DATA input) */
-    //(2)   ÅäÖÃ¼Ä´æÆ÷CA_DIN0£¬CA_DIN1£¬CA_DIN2£¬CA_DIN3£¬ÕâÊÇ½âÃÜ(¼ÓÃÜ)µÄÊäÈëÊý¾Ý¡£
-#if defined (CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+    /*2  put R2R_RootKeyï¿½ï¿½CK2ï¿½ï¿½to CA register(DATA input) */
+    //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CA_DIN0ï¿½ï¿½CA_DIN1ï¿½ï¿½CA_DIN2ï¿½ï¿½CA_DIN3ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
+#if defined (CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     //STB_ROOT key not have secure attr
     DRV_ADVCA_WriteReg(CA_V300_CA_NOMAL_DIN0, pClearSwpk[0]);
     DRV_ADVCA_WriteReg(CA_V300_CA_NOMAL_DIN1, pClearSwpk[1]);
@@ -1197,7 +1197,7 @@ HI_S32 HAL_ADVCA_V300_EncryptSwpk(HI_U32 *pClearSwpk,HI_U32 *pEncryptSwpk)
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, pClearSwpk[2]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, pClearSwpk[3]);
 #endif
-    //(3)   ÅäÖÃ¼Ä´æÆ÷BL_CTRL_ENC£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½BL_CTRL_ENCï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     DRV_ADVCA_WriteReg(CA_V300_BL_CTRL_ENC, 0x01);//0x1c Set Register
 
     Ret = HAL_ADVCA_V300_WaitStat();
@@ -1292,22 +1292,22 @@ HI_S32 HAL_ADVCA_V300_DecryptDCAS(HI_U32 enLevel, HI_U32 *pu32DataIn, HI_U32 Add
 
     HI_INFO_CA("input: 0x%08x %08x %08x %08x\n", pu32DataIn[0], pu32DataIn[1], pu32DataIn[2], pu32DataIn[3]);
     /*2  put EncryptData to CA register(DATA input) */
-    //(2)   ÅäÖÃ¼Ä´æÆ÷CA_DIN0£¬CA_DIN1£¬CA_DIN2£¬CA_DIN3£¬ÕâÊÇ½âÃÜ(¼ÓÃÜ)µÄÊäÈëÊý¾Ý¡£
+    //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CA_DIN0ï¿½ï¿½CA_DIN1ï¿½ï¿½CA_DIN2ï¿½ï¿½CA_DIN3ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN0, pu32DataIn[0]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN1, pu32DataIn[1]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, pu32DataIn[2]);
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, pu32DataIn[3]);
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷DCAS_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½DCAS_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     DCASCtrl.u32 = 0;
     DCASCtrl.bits.dsc_code_mc_alg_sel = 0;
     DCASCtrl.bits.level_sel = enLevel;
-    if(enLevel == 0x04) //To Demux:0100£ºµ±Ç°ÊÇµÚ3¼¶»á»°ÃÜÔ¿,payloadÄ£Ê½SPÃÜÔ¿£»
+    if(enLevel == 0x04) //To Demux:0100ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Çµï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿,payloadÄ£Ê½SPï¿½ï¿½Ô¿ï¿½ï¿½
     {
         if(enKlTarget == HI_UNF_ADVCA_CA_TARGET_DEMUX)
         {
-            //ÉèÖÃµÚ3¼¶ÃÜÔ¿µÄ»°£¬±ØÐëÉèÖÃÎª0x04: 0100£ºµ±Ç°ÊÇµÚ3¼¶»á»°ÃÜÔ¿
-            //0100£ºµ±Ç°ÊÇµÚ3¼¶»á»°ÃÜÔ¿,payloadÄ£Ê½SPÃÜÔ¿£»
+            //ï¿½ï¿½ï¿½Ãµï¿½3ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª0x04: 0100ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Çµï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿
+            //0100ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Çµï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿,payloadÄ£Ê½SPï¿½ï¿½Ô¿ï¿½ï¿½
             DCASCtrl.bits.level_sel = 0x04;
             DCASCtrl.bits.even_or_odd = bEvenOrOdd;  //Odd/Even Key
             /* Demux DescambleKey ID + even_or_odd */
@@ -1315,15 +1315,15 @@ HI_S32 HAL_ADVCA_V300_DecryptDCAS(HI_U32 enLevel, HI_U32 *pu32DataIn, HI_U32 Add
         }
         else
         {
-            //0101£ºµ±Ç°ÊÇµÚ3¼¶»á»°ÃÜÔ¿,rawÄ£Ê½SPÃÜÔ¿£»
+            //0101ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Çµï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿,rawÄ£Ê½SPï¿½ï¿½Ô¿ï¿½ï¿½
             DCASCtrl.bits.level_sel = 0x05;
             /* multicipher channel ID */
             DCASCtrl.bits.key_addr = AddrID & 0xFF; //Demux DescambleKey ID
         }
     }
-    else if(enLevel == 0x05)  //To R2R,0101£ºµ±Ç°ÊÇµÚ3¼¶»á»°ÃÜÔ¿,rawÄ£Ê½SPÃÜÔ¿£»
+    else if(enLevel == 0x05)  //To R2R,0101ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Çµï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿,rawÄ£Ê½SPï¿½ï¿½Ô¿ï¿½ï¿½
     {
-        //R2R£»0011£ºµ±Ç°ÊÇµÚ3¼¶»á»°ÃÜÔ¿,R2RÃÜÔ¿
+        //R2Rï¿½ï¿½0011ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Çµï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿,R2Rï¿½ï¿½Ô¿
         DCASCtrl.bits.level_sel = 0x05;
         /* multicipher channel ID */
         DCASCtrl.bits.even_or_odd = (AddrID & 0x01);
@@ -1386,7 +1386,7 @@ HI_S32 HAL_ADVCA_V300_DecryptDCAS(HI_U32 enLevel, HI_U32 *pu32DataIn, HI_U32 Add
         //HI_INFO_CA("DCAS enLevel:%d\n", enLevel);
         g_DCASInfo.Keyladder_Ready = DRV_ADVCA_ReadReg(CA_V300_CA_STATE);
 
-        //0£ºµ±Ç°ÊÇÅ¼ÃÜÔ¿£»1£ºµ±Ç°ÊÇÆæÃÜÔ¿
+        //0ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Å¼ï¿½ï¿½Ô¿ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         if ((g_DCASInfo.MaxLevel == (enLevel + 1))
         || (enLevel == 0x04) || (enLevel == 0x05))
         {
@@ -1449,7 +1449,7 @@ HI_S32 HAL_ADVCA_V300_DecryptSWPK(HI_U32 *pu32DataIn,HI_U32 AddrID)
     }
 
     /* Config the input data for crypto : CA_DIN0, CA_DIN1, CA_DIN2, CA_DIN3 */
-#if defined (CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     //STB_ROOT key not have secure attr
     DRV_ADVCA_WriteReg(CA_V300_CA_NOMAL_DIN0, pu32DataIn[0]);
     DRV_ADVCA_WriteReg(CA_V300_CA_NOMAL_DIN1, pu32DataIn[1]);
@@ -1503,11 +1503,11 @@ HI_S32 HAL_ADVCA_V300_CryptGDRM(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,
     }
 
     /*
-        'level_sel: '»á»°ÃÜÔ¿½»»»¼¶Êý¡£
-        00£ºµ±Ç°ÊÇ1¼¶»á»°ÃÜÔ¿£»AES ECB
-        01£ºµ±Ç°ÊÇ2¼¶»á»°ÃÜÔ¿£»AES ECB
-        10£ºµ±Ç°ÊÇ3¼¶»á»°ÃÜÔ¿byte0~byte15£»AES CBC
-        11£ºµ±Ç°ÊÇ3¼¶»á»°ÃÜÔ¿¸ßbyte16~byte31£»AES CBC¡£
+        'level_sel: 'ï¿½á»°ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        00ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½1ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿ï¿½ï¿½AES ECB
+        01ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½2ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿ï¿½ï¿½AES ECB
+        10ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿byte0~byte15ï¿½ï¿½AES CBC
+        11ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½3ï¿½ï¿½ï¿½á»°ï¿½ï¿½Ô¿ï¿½ï¿½byte16~byte31ï¿½ï¿½AES CBCï¿½ï¿½
     */
     switch (enLevel)
     {
@@ -1787,7 +1787,7 @@ HI_S32 HAL_ADVCA_V300_DecryptMisc(HI_UNF_ADVCA_KEYLADDER_LEV_E enLevel,
 
         g_MiscInfo.Keyladder_Ready = DRV_ADVCA_ReadReg(CA_V300_CA_STATE);
 
-        //0£ºµ±Ç°ÊÇÅ¼ÃÜÔ¿£»1£ºµ±Ç°ÊÇÆæÃÜÔ¿
+        //0ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Å¼ï¿½ï¿½Ô¿ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿
         if(g_MiscInfo.MaxLevel == (enLevel + 1))
         {
             if(bEvenOrOdd == 0x00)
@@ -1870,8 +1870,8 @@ HI_S32 HAL_ADVCA_V300_CryptbyStbRootkey(HI_U32 AddrID)
     CA_V300_CONFIG_STATE_U unConfigStatus;
     CA_V300_STB_CTRL_U unStbCtrl;
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if (unConfigStatus.bits.st_vld != 1)
     {
@@ -1886,7 +1886,7 @@ HI_S32 HAL_ADVCA_V300_CryptbyStbRootkey(HI_U32 AddrID)
         return HI_ERR_CA_WAIT_TIMEOUT;
     }
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷STB KEY CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½STB KEY CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     unStbCtrl.u32 = 0;
     unStbCtrl.bits.key_addr = AddrID & 0xFF;
     DRV_ADVCA_WriteReg(CA_V300_STB_KEY_CTRL, unStbCtrl.u32); //CAStatus.bits.klad_busy will be set to 1
@@ -1916,8 +1916,8 @@ HI_S32 HAL_ADVCA_V300_CryptHCA(HI_U32 AddrID)
     CA_V300_CONFIG_STATE_U unConfigStatus;
     CA_V300_CAUK_CTRL_U unCaukCtrl;
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if (unConfigStatus.bits.st_vld != 1)
     {
@@ -1932,7 +1932,7 @@ HI_S32 HAL_ADVCA_V300_CryptHCA(HI_U32 AddrID)
         return HI_ERR_CA_WAIT_TIMEOUT;
     }
 
-    //(3)   ÅäÖÃ¼Ä´æÆ÷CAUK_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(3)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CAUK_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     unCaukCtrl.u32 = 0;
     unCaukCtrl.bits.key_addr = AddrID & 0xFF;
     DRV_ADVCA_WriteReg(CA_V300_CAUK_CTRL, unCaukCtrl.u32); //CAStatus.bits.klad_busy will be set to 1
@@ -2456,8 +2456,8 @@ HI_S32 HAL_ADVCA_V300_GenChipConfCmac(HI_U8 *pu8ChipConfBitm, HI_U8 *pu8ChipConf
         HI_ERR_CA("invalid param\n");
         return HI_ERR_CA_INVALID_PARA;
     }
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if (unConfigStatus.bits.st_vld != 1)
     {
@@ -2470,7 +2470,7 @@ HI_S32 HAL_ADVCA_V300_GenChipConfCmac(HI_U8 *pu8ChipConfBitm, HI_U8 *pu8ChipConf
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, *((HI_U32*)pu8ChipConfBitm + 2));
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, *((HI_U32*)pu8ChipConfBitm + 3));
 
-    //(2)   ÅäÖÃ¼Ä´æÆ÷CFG_CBC_MAC£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CFG_CBC_MACï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     unCfgCbcMacCtrl.u32 = 0;
     unCfgCbcMacCtrl.bits.start = 1;
     DRV_ADVCA_WriteReg(CA_V300_CFG_CMAC_CTRL, unCfgCbcMacCtrl.u32); //CAStatus.bits.klad_busy will be set to 1
@@ -2503,8 +2503,8 @@ HI_S32 HAL_ADVCA_V300_SetIrdetoCsa3ActCode(HI_U8 *pu8Csa3ActCode)
         return HI_ERR_CA_INVALID_PARA;
     }
 
-    //(1)   ÏÈ¶Á¼Ä´æÆ÷CONIFG_STATE.st_vld£¬Ö»ÓÐÆäÖµÎª1Ê±£¬caµÄ¼Ä´æÆ÷Öµ²ÅÊÇÓÐÐ§µÄ£¬²ÅÄÜ¶Ô¼Ä´æÆ÷²Ù×÷¡£
-    //Ò»µ©CONIFG_STATE.st_vld±ä¸ßÖ®ºó£¬»áÒ»Ö±±£³Ö¡£Ö»ÐèÉÏµçÖ®ºó²éÑ¯Ò»´Î¡£
+    //(1)   ï¿½È¶ï¿½ï¿½Ä´ï¿½ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ÖµÎª1Ê±ï¿½ï¿½caï¿½Ä¼Ä´ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü¶Ô¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //Ò»ï¿½ï¿½CONIFG_STATE.st_vldï¿½ï¿½ï¿½Ö®ï¿½ó£¬»ï¿½Ò»Ö±ï¿½ï¿½ï¿½Ö¡ï¿½Ö»ï¿½ï¿½ï¿½Ïµï¿½Ö®ï¿½ï¿½ï¿½Ñ¯Ò»ï¿½Î¡ï¿½
     unConfigStatus.u32 = DRV_ADVCA_ReadReg(CA_V300_CONFIG_STATE);
     if (unConfigStatus.bits.st_vld != 1)
     {
@@ -2517,7 +2517,7 @@ HI_S32 HAL_ADVCA_V300_SetIrdetoCsa3ActCode(HI_U8 *pu8Csa3ActCode)
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN2, *((HI_U32*)pu8Csa3ActCode + 2));
     DRV_ADVCA_WriteReg(CA_V300_CA_DIN3, *((HI_U32*)pu8Csa3ActCode + 3));
 
-    //(2)   ÅäÖÃ¼Ä´æÆ÷CFG_IVRK_CTRL£¬Ö®ºóÂß¼­»áÆô¶¯ÔËËã£¬Âß¼­Í¬Ê±°ÑCA_STATE.klad_busyÖÃ¸ß
+    //(2)   ï¿½ï¿½ï¿½Ã¼Ä´ï¿½ï¿½ï¿½CFG_IVRK_CTRLï¿½ï¿½Ö®ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ß¼ï¿½Í¬Ê±ï¿½ï¿½CA_STATE.klad_busyï¿½Ã¸ï¿½
     unCfgIvRkCtrl.u32 = 0;
     unCfgIvRkCtrl.bits.alg_sel = g_CSA3Info.Alg;
     DRV_ADVCA_WriteReg(CA_V300_IVRK_CTRL, unCfgIvRkCtrl.u32); //CAStatus.bits.klad_busy will be set to 1

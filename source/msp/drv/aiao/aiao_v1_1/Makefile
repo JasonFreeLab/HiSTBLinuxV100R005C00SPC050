@@ -61,7 +61,7 @@ ifeq ($(CFG_HI_SND_HBRA_PASSTHROUGH_SUPPORT),y)
 EXTRA_CFLAGS += -DHI_SND_HBRA_PASSTHROUGH_SUPPORT
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 EXTRA_CFLAGS += -DHI_SND_HDMI_I2S_SPDIF_MUX
 endif
 #===============================================================================
@@ -100,7 +100,7 @@ $(MOD_NAME)-y += common/src/hal_tianlai_adac_v600.o
 EXTRA_CFLAGS += -DHI_TIANLAI_V600
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310),)
 $(MOD_NAME)-y += common/src/hal_tianlai_adac_v600.o
 EXTRA_CFLAGS += -DHI_TIANLAI_V600
 $(MOD_NAME)-y += common/src/hal_tianlai_adac_v700.o
@@ -113,7 +113,7 @@ $(MOD_NAME)-y += common/src/drv_aiao_veri.o
 endif
 #===============================================================================
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3716dv100 hi3798cv200 hi3716mv410 hi3716mv420 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3716dv100 hi3798cv200 hi3716mv410 hi3716mv420 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 EXTRA_CFLAGS += -DHI_AIAO_TIMER_SUPPORT
 EXTRA_CFLAGS += -I$(MSP_DIR)/drv/aiao/aiao_v1_1/timer
 $(MOD_NAME)-y += timer/drv_timer.o

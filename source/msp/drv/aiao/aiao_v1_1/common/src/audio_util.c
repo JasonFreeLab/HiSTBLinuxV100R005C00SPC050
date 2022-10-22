@@ -1113,6 +1113,7 @@ AUTIL_CHIP_PLATFORM_E  AUTIL_GetChipPlatform(HI_VOID)
     enChipPlatform = AUTIL_CHIP_TYPE_PLATFORM_S5;
 #elif  defined(CHIP_TYPE_hi3798mv200)    \
 	|| defined(CHIP_TYPE_hi3798mv300)    \
+    || defined(CHIP_TYPE_hi3798mv310)	 \
     || defined(CHIP_TYPE_hi3798mv200_a)  \
     || defined(CHIP_TYPE_hi3796mv200)
     enChipPlatform = AUTIL_CHIP_TYPE_PLATFORM_S28;

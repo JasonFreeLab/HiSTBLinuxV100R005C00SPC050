@@ -157,7 +157,7 @@ int mali_platform_device_init(struct platform_device *device)
 {
     int err = -1;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3796mv200)
     int num_pp_cores = 2;
 #else
     int num_pp_cores = 0;

@@ -225,6 +225,12 @@ HI_VOID DRV_HDMI_ProdIoCfgSet(HI_VOID)
         u32TmpRegValue |= HDMI_IO_CFG_FUNCTION1_SEL;
         HDMIRegWriteU32(HDMI_ADDR_IO_CFG_CEC, u32TmpRegValue);
 	}
+    else if(HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+    {
+        u32TmpRegValue  = HDMIRegReadU32(HDMI_ADDR_BASE_IO_CFG);
+        u32TmpRegValue &= ~HDMI_IO_CFG_MASK;
+        HDMIRegWriteU32(HDMI_ADDR_BASE_IO_CFG, u32TmpRegValue);
+    }
     else if(HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )
     {
         u32TmpRegValue  = HDMIRegReadU32(HDMI_ADDR_BASE_IO_CFG);
@@ -271,6 +277,20 @@ HI_VOID DRV_HDMI_ProdIoTrimSet(HI_VOID)
         u32TmpRegValue |= (u32TrimValue & HDMI_TRIM_DATA_MASK);
         HDMIRegWriteU32(HDMI_ADDR_IO_CFG_CEC, u32TmpRegValue);
 	}
+    else if (HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+	{
+		HI_U32  u32OtpRegValue = 0;
+    	HI_U32  u32IOTrimValue = 0;
+
+	    u32OtpRegValue  = HDMIRegReadU32(HDMI_ADDR_OTP_CECIOTRIM);
+    	u32OtpRegValue &= HDMI_MASK_OTP_CECIOTRIM;
+
+	    u32IOTrimValue  = HDMIRegReadU32(HDMI_ADDR_CEC_IOTRIM);
+	    u32IOTrimValue &= ~HDMI_MASK_CEC_IOTRIM;
+
+    	u32IOTrimValue |= u32OtpRegValue >> 12;
+	    HDMIRegWriteU32(HDMI_ADDR_CEC_IOTRIM, u32IOTrimValue);
+	}
 	else if (HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )
 	{
 		HI_U32  u32OtpRegValue = 0;
@@ -310,6 +330,27 @@ HI_VOID DRV_HDMI_ProdCrgGateSet(HI_BOOL bEnable)
         /* CLK Sel */
         /* PERI_CRG67  HDMITX_CTRL CRG  0x010C   0x0000043F */
         REG_HDMI_CRG_hdmitx_ctrl_cec_clk_sel_Set(HI_FALSE);
+    }
+    else if(HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+    {
+        /* Gate */
+        /* SC_CLKGATE_SRST_CTRL 0xf8000048 confirm by weizhigui */
+        REG_HDMI_SYSCTRL_hdmi_apb_cken_Set(bEnable);
+        REG_HDMI_SYSCTRL_hdmi_osc_cken_Set(bEnable);
+        REG_HDMI_SYSCTRL_hdmi_cec_cken_Set(bEnable);
+        /* PERI_CRG67  HDMITX_CTRL CRG  0x010C   0x0000043F */
+        REG_HDMI_CRG_ssc_in_cken_Set(bEnable);
+        REG_HDMI_CRG_ssc_bypass_cken_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ctrl_osc_24m_cken_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ctrl_os_cken_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ctrl_as_cken_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_pxl_cken_Set(bEnable);
+        /* PERI_CRG68  HDMITX_PHY      0x0110  0x00000001 */
+        REG_HDMI_CRG_phy_tmds_cken_Set(bEnable);
+
+        /* CLK Sel */
+        /* PERI_CRG67  HDMITX_CTRL CRG  0x010C   0x0000043F */
+        REG_HDMI_CRG_ssc_bypass_clk_sel_Set(HI_FALSE);
     }
     else if(HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )
     {
@@ -360,6 +401,34 @@ HI_VOID DRV_HDMI_ProdCrgAllResetSet(HI_BOOL bEnable)
         REG_HDMI_CRG_hdmitx_ctrl_bus_srst_req_Set(bEnable);
         REG_HDMI_CRG_hdmitx_ctrl_srst_req_Set(bEnable);
         REG_HDMI_CRG_hdmitx_ctrl_cec_srst_req_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ssc_srst_req_Set(bEnable);
+        /* PERI_CRG68  HDMITX_PHY      0x0110  0x00000001 */
+        REG_HDMI_CRG_hdmitx_phy_srst_req_Set(bEnable);
+        REG_HDMI_CRG_phy_tmds_srst_req_Set(bEnable);
+    }
+    else if (HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+    {
+        /* SC_CLKGATE_SRST_CTRL  0xf8000048 confirm by weizhigui */
+        REG_HDMI_SYSCTRL_hdmi_bus_srst_req_Set(bEnable);
+        REG_HDMI_SYSCTRL_hdmi_srst_req_Set(bEnable);
+        REG_HDMI_SYSCTRL_hdmi_cec_srst_req_Set(bEnable);
+        /* PERI_CRG67  HDMITX_CTRL CRG  0x010C   0x0000043F */
+        REG_HDMI_CRG_hdmitx_ctrl_bus_srst_req_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ctrl_srst_req_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ssc_srst_req_Set(bEnable);
+        /* PERI_CRG68  HDMITX_PHY      0x0110  0x00000001 */
+        REG_HDMI_CRG_hdmitx_phy_srst_req_Set(bEnable);
+        REG_HDMI_CRG_phy_tmds_srst_req_Set(bEnable);
+
+        bEnable = !bEnable;
+
+        /* SC_CLKGATE_SRST_CTRL  0xf8000048 */
+        REG_HDMI_SYSCTRL_hdmi_bus_srst_req_Set(bEnable);
+        REG_HDMI_SYSCTRL_hdmi_srst_req_Set(bEnable);
+        REG_HDMI_SYSCTRL_hdmi_cec_srst_req_Set(bEnable);
+        /* PERI_CRG67  HDMITX_CTRL CRG  0x010C   0x0000043F */
+        REG_HDMI_CRG_hdmitx_ctrl_bus_srst_req_Set(bEnable);
+        REG_HDMI_CRG_hdmitx_ctrl_srst_req_Set(bEnable);
         REG_HDMI_CRG_hdmitx_ssc_srst_req_Set(bEnable);
         /* PERI_CRG68  HDMITX_PHY      0x0110  0x00000001 */
         REG_HDMI_CRG_hdmitx_phy_srst_req_Set(bEnable);
@@ -502,6 +571,11 @@ HDMI_CHIP_TYPE_E DRV_HDMI_ProdChipGet(HI_VOID)
     else if(HI_CHIP_TYPE_HI3798M == enChipType && HI_CHIP_VERSION_V300 == enChipVersion)
     {
        enHdmiChip = HDMI_CHIP_HI3798MV300;
+    }
+
+    else if(HI_CHIP_TYPE_HI3798M == enChipType && HI_CHIP_VERSION_V310 == enChipVersion)
+    {
+       enHdmiChip = HDMI_CHIP_HI3798MV310;
     }
 
     return enHdmiChip;

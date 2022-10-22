@@ -25,7 +25,7 @@ config HI_GFX2D_SUPPORT
     bool "GFX2D Support"
     default y
     depends on ANDROID_PRODUCT
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200
 
 config HI_FB0_SMMU_SUPPORT
     bool
@@ -58,7 +58,7 @@ config  HI_FB_DECOMPRESS_SUPPORT
     bool "DeCompress in FB Support"
     default y
     depends on HI_GFX2D_SUPPORT
-    depends on HI3798CV200 || HI3798MV300 || HI3798MV200 || HI3798MV200_A || HI3796MV200
+    depends on HI3798CV200 || HI3798MV300 || HI3798MV310 || HI3798MV200 || HI3798MV200_A || HI3796MV200
 
 config  HI_GFX_DEBUG_LOG_SUPPORT
     bool "Graphic Debug Log Support"

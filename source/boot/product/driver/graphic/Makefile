@@ -42,14 +42,14 @@ CFLAGS += -DCONFIG_JPEG_OMX_FUNCTION
 HIFB_HAL_DIR  := hifb_v1_0
 HIFB_ALG_DIR  := alg
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 HIFB_HAL_DIR := hifb_v2_0
 endif
 
 
 TDE_HAL_DIR  := tde_v1_0
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 TDE_HAL_DIR  := tde_v2_0
 endif
 
@@ -91,14 +91,14 @@ CFLAGS   += -I$(PRODUCT_DIR)/driver/include           \
             -I$(PRODUCT_DIR)/driver/include_inc       \
 	    -I$(MSP_DIR)/drv/include
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 CFLAGS   += -I$(PRODUCT_DIR)/driver/disp/vdp_v4_0/component/
 endif
 
 CFLAGS   += -I$(BOOT_DIR)/include
 CFLAGS   += -I$(BOOT_DIR)/include/linux/mtd
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 CFLAGS += -DCONFIG_GFX_PQ
 endif
 
@@ -133,7 +133,7 @@ SRC     +=  $(HIGO_DIR)/msp/drv/hifb/adp/src/drv_hifb_wbc.c                   \
             $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_HAL_DIR}/drv_hifb_adp.c       \
             $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_HAL_DIR}/drv_hifb_hal.c
 
-ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 SRC     +=  $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_ALG_DIR}/optm_alg_csc.c     \
             $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_ALG_DIR}/optm_alg_gzme.c    \
             $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_ALG_DIR}/optm_alg_gsharp.c  \
@@ -174,7 +174,7 @@ prepare:
 	$(AT)cp -rf   $(MSP_DIR)/api/tde/*.c $(HIGO_DIR)/msp/api/tde
 	$(AT)cp -rf   $(MSP_DIR)/drv/hifb/adp/src/drv_hifb_wbc.c       $(HIGO_DIR)/msp/drv/hifb/adp/src
 	$(AT)cp -rf   $(MSP_DIR)/drv/hifb/adp/${HIFB_HAL_DIR}/*.c      $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_HAL_DIR}
-ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 	$(AT)cp -rf   $(MSP_DIR)/drv/hifb/adp/${HIFB_ALG_DIR}/*.c  $(HIGO_DIR)/msp/drv/hifb/adp/${HIFB_ALG_DIR}
 endif
 	$(AT)rm -rf   $(HIGO_DIR)/msp/drv/tde/*.mod*

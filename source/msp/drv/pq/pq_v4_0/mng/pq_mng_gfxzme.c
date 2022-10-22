@@ -37,7 +37,7 @@
 
 /**
  ** apply memory for zme coefficient, and get the address
- ** 7¸öÏµÊý£¬Ã¿¸öÏµÊý¶ÔÓ¦Ò»¸öGP£¬ËùÒÔÓÐÁ½¸öGP
+ ** 7ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½GPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GP
  **/
 #define GZME_MMZ_SIZE       ((256*5 + 48*2 + 96*2) * 7)
 #define SHARPEN_MAX_WIDTH   3840
@@ -140,8 +140,8 @@ const HI_S16 *g_pPQGfxDtiZmeCoef[PQ_GZME_COEF_RATIO_BUTT][PQ_GDTI_COEF_TYPE_BUTT
     {&PQ_s16GZmeCoef_2T8P_Gus2_6_75M_a0_5[0][0], &PQ_s16GZmeCoef_2T16P_Gus2_6M_a0_5[0][0],     &PQ_s16GZmeCoef_2T8P_4M_0_1[0][0], &PQ_s16GZmeCoef_2T16P_4M_0_1[0][0],}  //else
 };
 
-#if defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
-/* 3798MV200 Í¼ÐÎ²ãËõ·ÅÏµÊý±í */
+#if defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv310)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+/* 3798MV200 Í¼ï¿½Î²ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ */
 const HI_S16 *g_pPQGfxZmeReduceCoef[PQ_GZME_COEF_RATIO_BUTT][4] =
 {
     //DDR    HL8T8P                               VL4T16P                              HC8T8P                           VC4T16P
@@ -302,7 +302,7 @@ static HI_U32 PQ_MNG_GDtiTransCoefHor(const HI_S16 *ps16LtiCoef, const HI_S16 *p
 
 /***************************************************************************************
 * func          : PQ_MNG_GZmeLoadCoefH
-* description   : CNcomment: Ë®Æ½ZMEÏµÊý CNend\n
+* description   : CNcomment: Ë®Æ½ZMEÏµï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -325,7 +325,7 @@ static HI_U32 PQ_MNG_GZmeLoadCoefH(PQ_GZME_COEF_RATIO_E enCoefRatio, HI_U8 *pu8A
     u32TableTmpSize = PQ_MNG_GZmeTransCoefAlign(g_pPQGfxZmeCoef[enCoefRatio][PQ_GZME_COEF_8T8P_CH], (HI_S16)(8 * 8), u16TableTmp);
     memcpy(pu8Addr, u16TableTmp, u32TableTmpSize);
     pu8Addr += u32TableTmpSize;
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv310)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
     u32TableTmpSize = PQ_MNG_GZmeTransCoefAlign(g_pPQGfxZmeReduceCoef[enCoefRatio][PQ_GZME_COEF_8T8P_LH], (HI_S16)(8 * 8), u16TableTmp);
     memcpy(pu8Addr, u16TableTmp, u32TableTmpSize);
     pu8Addr += u32TableTmpSize;
@@ -345,7 +345,7 @@ static HI_U32 PQ_MNG_GZmeLoadCoefH(PQ_GZME_COEF_RATIO_E enCoefRatio, HI_U8 *pu8A
 }
 /***************************************************************************************
 * func          : PQ_MNG_GZmeLoadCoefV
-* description   : CNcomment: ´¹Ö±ZMEÏµÊý CNend\n
+* description   : CNcomment: ï¿½ï¿½Ö±ZMEÏµï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -362,7 +362,7 @@ static HI_S32 PQ_MNG_GZmeLoadCoefV(PQ_GZME_COEF_RATIO_E enCoefRatio, HI_U8 *pu8A
 #if defined(CHIP_TYPE_hi3798cv200)
     ps16L   = g_pPQGfxZmeCoef[enCoefRatio][PQ_GZME_COEF_4T16P_LV];
     ps16Ch  = g_pPQGfxZmeCoef[enCoefRatio][PQ_GZME_COEF_4T16P_CV];
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv310)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
     ps16L   = g_pPQGfxZmeReduceCoef[enCoefRatio][PQ_GZME_COEF_4T16P_LV];
     ps16Ch  = g_pPQGfxZmeReduceCoef[enCoefRatio][PQ_GZME_COEF_4T16P_CV];
 #endif
@@ -397,7 +397,7 @@ static HI_S32 PQ_MNG_GZmeLoadCoefV(PQ_GZME_COEF_RATIO_E enCoefRatio, HI_U8 *pu8A
 /* add from HiFoneB2 for 4K tiny zme */
 /***************************************************************************************
 * func          : PQ_MNG_GTinyZmeLoadCoefV
-* description   : CNcomment: ´¹Ö±ZMEÏµÊý 4K TinyZME 2T16P CNend\n
+* description   : CNcomment: ï¿½ï¿½Ö±ZMEÏµï¿½ï¿½ 4K TinyZME 2T16P CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -436,7 +436,7 @@ static HI_S32 PQ_MNG_GTinyZmeLoadCoefV(PQ_GZME_COEF_RATIO_E enCoefRatio, HI_U8 *
 
 /***************************************************************************************
 * func          : PQ_MNG_GZmeLoadSDCoefH
-* description   : CNcomment: SDË®Æ½ZMEÏµÊý CNend\n
+* description   : CNcomment: SDË®Æ½ZMEÏµï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -467,7 +467,7 @@ static HI_U32 PQ_MNG_GZmeLoadSDCoefH(PQ_GZME_COEF_RATIO_E enCoefRatio, HI_U8 *pu
 
 /***************************************************************************************
 * func          : PQ_MNG_GZmeLoadSDCoefV
-* description   : CNcomment: SD´¹Ö±ZMEÏµÊý CNend\n
+* description   : CNcomment: SDï¿½ï¿½Ö±ZMEÏµï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -1362,7 +1362,7 @@ static HI_S32 PQ_MNG_SetGfxZmeRegCfg(HI_PQ_GFX_LAYER_E enGfxZmeLayer, HI_BOOL bS
     if (pstZmeRtlPara->bZmeEnH || pstZmeRtlPara->bZmeEnV)
     {
         /**
-         ** ÉèÖÃGP CTRL£¬°üÀ¨WBC_GP0ÊÇ·ñ°ó¶¨µ½GP1 ZMEÉÏÒÔ¼°LBOXÊ¹ÄÜµÈ
+         ** ï¿½ï¿½ï¿½ï¿½GP CTRLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½WBC_GP0ï¿½Ç·ï¿½ó¶¨µï¿½GP1 ZMEï¿½ï¿½ï¿½Ô¼ï¿½LBOXÊ¹ï¿½Üµï¿½
          **/
         PQ_HAL_SetGZmeIpOrder         (enGfxZmeLayer, bSlvGp, PQ_GP_ORDER_ZME_CSC);
         /* GP0 sharpen is forced to open,  set hfir_order V_H */
@@ -1397,9 +1397,9 @@ static HI_S32 PQ_MNG_SetGfxZmeRegCfg(HI_PQ_GFX_LAYER_E enGfxZmeLayer, HI_BOOL bS
     }
 
     /**
-     ** ÅäÖÃ½×Êý£¬Î¢ËõÊ¹ÓÃ
-     ** Õâ¸öµØ·½ÐèÒª2½×¾ÍÓÃ2½×£¬ÏÂ´Î²»ÐèÒªµÄÊ±ºòÒªÅä»ØÀ´£¬ËùÒÔÕâÀï
-     ** Ã¿´Î¶¼ÅäÖÃÒ»´Î
+     ** ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½Î¢ï¿½ï¿½Ê¹ï¿½ï¿½
+     ** ï¿½ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½Òª2ï¿½×¾ï¿½ï¿½ï¿½2ï¿½×£ï¿½ï¿½Â´Î²ï¿½ï¿½ï¿½Òªï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     ** Ã¿ï¿½Î¶ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
      **/
     //PQ_HAL_SetGZmeTabV(enGfxZmeLayer, pstZmeRtlPara->bZmeTapV);
 
@@ -1484,7 +1484,7 @@ HI_S32 PQ_MNG_InitGfxZme(HI_VOID)
     /* 98MV200 sdk */
 #if defined(CHIP_TYPE_hi3798cv200)
     s32Ret = PQ_HAL_MMZ_AllocAndMap("PQ_GfxZmeCoef", HI_NULL, GZME_MMZ_SIZE, 16, &stMMZ);
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv310)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
     s32Ret = PQ_HAL_MMZ_AllocAndMap("PQ_GfxZmeCoef", HI_NULL, GZME_MMZ_SIZE, 256, &stMMZ);
 #endif
     if (HI_SUCCESS != s32Ret)

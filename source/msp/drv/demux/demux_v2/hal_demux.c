@@ -38,8 +38,8 @@
     } while (0)
 #endif
 
-/*demux ÖÐ¶ÔÓÚ¼Ä´æÆ÷²Ù×÷´æÔÚ¾ºÕù£¬¿ÉÄÜ»áÒýÆðÄªÃûÆæÃîµÄ´íÎó£¬review ËùÓÐ¼Ä´æÆ÷£¬Í³Ò»ÐÞ¸Ä
-ÎÊÌâµ¥ºÅ: DTS2013082001104 */
+/*demux ï¿½Ð¶ï¿½ï¿½Ú¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½Äªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½review ï¿½ï¿½ï¿½Ð¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Í³Ò»ï¿½Þ¸ï¿½
+ï¿½ï¿½ï¿½âµ¥ï¿½ï¿½: DTS2013082001104 */
 
 #if (LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 36))
 spinlock_t DmxHalLock = SPIN_LOCK_UNLOCKED;
@@ -309,7 +309,7 @@ HI_VOID DmxHalDvbPortSetClkInPol(HI_U32 RawPortId, HI_BOOL Pol)
             WARN(1, "%s: Invalid TSI Port ID(%d).\n", __func__, RawPortId);
             return;
 
-/*for 3751v100 (S5), we have 2 inside QAM port£¬ so , TSI port ID begin from 2 in driver code*/
+/*for 3751v100 (S5), we have 2 inside QAM portï¿½ï¿½ so , TSI port ID begin from 2 in driver code*/
 #elif defined(CHIP_TYPE_hi3796cv100) || defined(CHIP_TYPE_hi3798cv100)
         case 2 :
             /*pvr_tsi3_pctrl acturally is point to tsi0,the name tsi3 because logic code use this name ,in logic code ,
@@ -343,6 +343,7 @@ HI_VOID DmxHalDvbPortSetClkInPol(HI_U32 RawPortId, HI_BOOL Pol)
  #elif defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
         case 0:
             PeriCrg63.bits.pvr_tsi1_pctrl = Pol;
@@ -490,6 +491,7 @@ HI_S32 DmxHalDvbPortGetShareClk(HI_U32 PortID, HI_UNF_DMX_PORT_E *pSerialPortSha
 
 #elif defined(CHIP_TYPE_hi3798mv200)   \
    || defined(CHIP_TYPE_hi3798mv300)   \
+   || defined(CHIP_TYPE_hi3798mv310)	\
    || defined(CHIP_TYPE_hi3798mv200_a) \
    || defined(CHIP_TYPE_hi3796mv200)
 
@@ -620,6 +622,7 @@ HI_VOID DmxHalDvbPortSetShareClk(HI_U32 PortID, HI_UNF_DMX_PORT_E SerialPortShar
 
 #elif defined(CHIP_TYPE_hi3798mv200)   \
    || defined(CHIP_TYPE_hi3798mv300)   \
+   || defined(CHIP_TYPE_hi3798mv310)	\
    || defined(CHIP_TYPE_hi3798mv200_a) \
    || defined(CHIP_TYPE_hi3796mv200)
 
@@ -1330,8 +1333,8 @@ HI_VOID DmxHalIPPortGetDescInfo(Dmx_Set_S *DmxSet, HI_U32 RawPortId, DMX_Proc_Ra
     DescInfo->ValidDescNum  = DMX_READ_REG(DmxSet->IoBase, IP_VLDDESC_CNT(RawPortId));
     DescInfo->AddDescNum    = DMX_READ_REG(DmxSet->IoBase, IP_DESC_ADD(RawPortId));
 
-    DescWNodeAddr            = DescInfo->DescPhyAddr + DescInfo->DescWPtr * 16 ; /*Ã¿¸öÃèÊö×Ó½Úµãsize ÊÇ 16BYTE*/
-    DescRNodeAddr            = DescInfo->DescPhyAddr + DescInfo->DescRPtr * 16 ; /*Ã¿¸öÃèÊö×Ó½Úµãsize ÊÇ 16BYTE*/
+    DescWNodeAddr            = DescInfo->DescPhyAddr + DescInfo->DescWPtr * 16 ; /*Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½Úµï¿½size ï¿½ï¿½ 16BYTE*/
+    DescRNodeAddr            = DescInfo->DescPhyAddr + DescInfo->DescRPtr * 16 ; /*Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½Úµï¿½size ï¿½ï¿½ 16BYTE*/
 
     if ((DescWNodeAddr != 0) && (DescRNodeAddr != 0))
     {
@@ -4171,6 +4174,7 @@ static U_PERI_CRG63 g_sPeriCrg63;
 #elif defined(CHIP_TYPE_hi3798cv200) \
    || defined(CHIP_TYPE_hi3798mv200)   \
    || defined(CHIP_TYPE_hi3798mv300)   \
+   || defined(CHIP_TYPE_hi3798mv310)	\
    || defined(CHIP_TYPE_hi3798mv200_a) \
    || defined(CHIP_TYPE_hi3796mv200)
 static HI_BOOL g_bSuspendFlag = HI_FALSE;
@@ -4340,6 +4344,7 @@ HI_VOID DmxHalDeConfigHardware(HI_VOID)
 #elif defined(CHIP_TYPE_hi3798cv200)  \
    || defined(CHIP_TYPE_hi3798mv200)  \
    || defined(CHIP_TYPE_hi3798mv300)  \
+   || defined(CHIP_TYPE_hi3798mv310)	\
    || defined(CHIP_TYPE_hi3798mv200_a)
 HI_VOID DmxHalConfigHardware(HI_VOID)
 {
@@ -4408,7 +4413,7 @@ HI_VOID DmxHalConfigHardware(HI_VOID)
     {
 #if defined(CHIP_TYPE_hi3798cv200)
         PeriCrg64.bits.clk_tsi03_com_sel = g_sPeriCrg64.bits.clk_tsi03_com_sel; /* clk_tsi03 use original clock */
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
         PeriCrg64.bits.pvr_tsi_sel = g_sPeriCrg64.bits.pvr_tsi_sel;/* clk_tsi0,1,3 share tsi2 clock */
 #endif
         g_bSuspendFlag = HI_FALSE;

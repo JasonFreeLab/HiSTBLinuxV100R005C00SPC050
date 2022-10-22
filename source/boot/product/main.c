@@ -28,7 +28,7 @@
 #endif
 
 /***************************** Macro Definition ******************************/
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define SC_GEN20    0xf80000d0
 #endif
 
@@ -78,7 +78,7 @@ static HI_DISP_PARAM_S             g_stDispParam1;
 
 /*****************************************************************************
 * func             PRODUCT_DisplayInit
-* description   :  display³õÊ¼»¯
+* description   :  displayï¿½ï¿½Ê¼ï¿½ï¿½
 * retval        :  NA
 * others:       :  NA
 *****************************************************************************/
@@ -107,7 +107,7 @@ HI_S32 PRODUCT_DisplayInit(HI_VOID)
 
 /*****************************************************************************
 * func             Logo_Main
-* description   :  ¿ª»úlogoÈë¿Ú
+* description   :  ï¿½ï¿½ï¿½ï¿½logoï¿½ï¿½ï¿½
 * retval        :  NA
 * others:       :  NA
 *****************************************************************************/
@@ -378,7 +378,7 @@ int fastapp_entry(int argc, char *argv[])
         {
             LogoEnable = 0;
 
-        #if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+        #if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
             HI_REG_WRITE32(SC_GEN20, 0x2);
         #endif
         }

@@ -42,6 +42,7 @@
     || defined(CHIP_TYPE_hi3798cv200_b) \
     || defined(CHIP_TYPE_hi3798mv200) 	\
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
 	|| defined(CHIP_TYPE_hi3798cv200)
 #define GPIO_5_BASE     (0xF8004000)
@@ -59,7 +60,7 @@
 #elif  defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3798mv100)
 #define     HI_GPIO_MAX_GROUP_NUM   7
 
-#elif  defined(CHIP_TYPE_hi3719mv100)|| defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) 
+#elif  defined(CHIP_TYPE_hi3719mv100)|| defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) 
 #define GPIO_8_BASE     (0XF8B28000)
 #define GPIO_9_BASE     (0XF8B29000)
 #define     HI_GPIO_MAX_GROUP_NUM   10
@@ -940,7 +941,7 @@ HI_S32 HI_DRV_GPIOI2C_Init(HI_VOID)
 		g_u32GpioRegAddrs[6] = GPIO_6_BASE;
         g_u32GpioRegAddrs[7] = GPIO_7_BASE;
         g_u32GpioRegAddrs[8] = GPIO_8_BASE;
-    #elif defined(CHIP_TYPE_hi3719mv100)||defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+    #elif defined(CHIP_TYPE_hi3719mv100)||defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 		g_u32GpioRegAddrs[6] = GPIO_6_BASE;
         g_u32GpioRegAddrs[7] = GPIO_7_BASE;
         g_u32GpioRegAddrs[8] = GPIO_8_BASE;

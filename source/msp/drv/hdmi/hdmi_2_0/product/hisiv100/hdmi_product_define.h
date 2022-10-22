@@ -97,6 +97,7 @@ typedef enum
     HDMI_CHIP_HI3798MV200     =0x03,
     HDMI_CHIP_HI3796MV200     =0x04,
     HDMI_CHIP_HI3798MV300     =0x05,
+    HDMI_CHIP_HI3798MV310     =0x06,
 }HDMI_CHIP_TYPE_E;
 typedef struct
 {

@@ -1359,7 +1359,7 @@ static HI_S32 DRV_ADVCA_V300_Ioctl_CMD_CA_SWPK_CRYPT (HI_VOID* arg)
         HI_ERR_CA("invalid arg\n");
         return HI_FAILURE;
     }
-#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     //use stb rootkey,not set the bload_dec_mode
 #else
     /*Set the bload_dec_mode to R2R Rootkey*/
@@ -2929,7 +2929,7 @@ static HI_S32 DRV_ADVCA_V300_Ioctl_CMD_CA_EXT1_SETRSAKEY(HI_VOID* arg)
         HI_ERR_CA("Set rsa key E failed!\n");
         return ret;
     }
-#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     /*Set rsa key crc*/
     ret = DRV_CA_OTP_V200_SetRSACRC(pKey->KeyBuf);
     if (HI_SUCCESS != ret)
@@ -3624,6 +3624,7 @@ HI_S32  DRV_ADVCA_V300_ModeInit_0(HI_VOID)
 #if   (defined(CHIP_TYPE_hi3798cv200) && !defined(HI_TEE_SUPPORT)) \
    || (defined(CHIP_TYPE_hi3798mv200) && !defined(HI_TEE_SUPPORT)) \
    || (defined(CHIP_TYPE_hi3798mv300) && !defined(HI_TEE_SUPPORT)) \
+   || (defined(CHIP_TYPE_hi3798mv310) && !defined(HI_TEE_SUPPORT)) \
    || (defined(CHIP_TYPE_hi3798mv200_a) && !defined(HI_TEE_SUPPORT))
     //Set keyladder to secure keyladder
     DRV_ADVCA_WriteReg(CA_V300_KL_SEC_EN, CA_V300_KL_EN_MASK);

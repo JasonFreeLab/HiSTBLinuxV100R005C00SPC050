@@ -65,6 +65,10 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),
 BOOTCONFIG     = hi3798mv2x
 endif
 
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+BOOTCONFIG     = hi3798mv310
+endif
+
 export BOOTCONFIG
 
 CONFIG_SYSREG  := $(CFG_HI_BOOT_REG_NAME)
@@ -154,7 +158,7 @@ ifdef CONFIG_UNIFIED_BOOT
 			   CONFIG_BOOT_REG7=$(CFG_HI_BOOT_REG7_NAME)
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716mv410 hi3716mv420 hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716mv410 hi3716mv420 hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 CONFIG_EXTERN_FLAGS     += $(if $(CFG_HI_NAND_SUPPORT),CONFIG_GENERIC_HIFMC100_NAND=$(CFG_HI_NAND_SUPPORT),)
 CONFIG_EXTERN_FLAGS     += $(if $(CFG_HI_SPI_NAND_SUPPORT),CONFIG_GENERIC_HIFMC100_SPI_NAND=$(CFG_HI_SPI_NAND_SUPPORT),)
 CONFIG_EXTERN_FLAGS     += $(if $(CFG_HI_SPI_SUPPORT),CONFIG_GENERIC_HIFMC100_SPI_SPI_NOR=$(CFG_HI_SPI_SUPPORT),)
@@ -184,7 +188,7 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200),)
 BOOTCONFIG_FILE     := hi3798cv2x
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 ifeq ($(findstring skb,$(CFG_HI_BOOT_REG_NAME)), skb)
 CONFIG_NET_HIGMACV300 := 1
 else
@@ -236,6 +240,10 @@ endif
 
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),)
     MKFLAGS += MACH=hi3798mv2x
+endif
+
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+    MKFLAGS += MACH=hi3798mv310
 endif
 ################################################################################
 PHONYS += all product prepare miniboot $(AUXIMG)

@@ -36,6 +36,7 @@
 	|| defined(CHIP_TYPE_hi3716dv100) \
 	|| defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
 
 #define I2C_DFT_CLK       (100000000)
@@ -197,7 +198,7 @@ HI_S32 HI_DRV_I2C_SetRate(HI_U32 I2cNum, HI_U32 I2cRate)
     SclL = (I2C_DFT_CLK / (I2cRate * 2)) / 2 - 1;
     I2C_WRITE_REG((g_I2cKernelAddr[I2cNum] + I2C_SCL_L_REG), SclL);
 
-    /*enable i2c interrupt£¬resume original  interrupt*/
+    /*enable i2c interruptï¿½ï¿½resume original  interrupt*/
     I2C_WRITE_REG((g_I2cKernelAddr[I2cNum] + I2C_CTRL_REG), Value);
 
     return HI_SUCCESS;
@@ -601,7 +602,7 @@ HI_S32 HI_DRV_I2C_Init(HI_VOID)
     u32RegVal  &= ~0x222222;
     u32RegVal  |= 0x111111;
     g_pstRegCrg->PERI_CRG27.u32 = u32RegVal;
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     g_I2cKernelAddr[0] = (I2C0_PHY_ADDR);
     g_I2cKernelAddr[1] = (I2C1_PHY_ADDR);
     g_I2cKernelAddr[2] = (I2C2_PHY_ADDR);
@@ -707,6 +708,7 @@ HI_VOID HI_DRV_I2C_Exit(HI_VOID)
     || defined(CHIP_TYPE_hi3716dv100)   \
     || defined(CHIP_TYPE_hi3798mv200)    \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
     u32RegVal  = g_pstRegCrg->PERI_CRG27.u32;
     u32RegVal  |= 0x222222;

@@ -24,7 +24,7 @@
 
 #include "audio_util.h"
 
-#if defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
 #ifdef HI_SND_MUTECTL_SUPPORT
 HI_VOID ADAC_TIANLAI_FastPowerEnable(HI_BOOL bEnable)

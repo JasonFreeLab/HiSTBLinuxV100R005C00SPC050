@@ -16,8 +16,8 @@
  * Create By Cai Zhiyong 2015.6.4
  *
 ******************************************************************************/
-#ifndef __DT_BINDINGS_CLOCK_HI3798CV200_H
-#define __DT_BINDINGS_CLOCK_HI3798CV200_H
+#ifndef __DT_BINDINGS_CLOCK_HI3798MV310_H
+#define __DT_BINDINGS_CLOCK_HI3798MV310_H
 
 #define PERI_CRG0_APLL_1                        0x0000
 #define PERI_CRG1_APLL_2                        0x0004
@@ -63,7 +63,7 @@
 #define PERI_CRG49_SHA                          0x00C4
 #define PERI_CRG50_PMC                          0x00C8
 #define PERI_CRG51_GSF                          0x00CC
-/* PERI_CRG52_SF is for Hi3798MV200 only*/
+/* PERI_CRG52_SF is for Hi3798MV310 only*/
 #define PERI_CRG52_SF                           0x00D0
 #define PERI_CRG53_GPU                          0x00D4
 #define PERI_CRG54_VDP                          0x00D8
@@ -114,7 +114,7 @@
 #define PERI_CRG163_SDIO2                       0x028C
 #define PERI_CRG224_FMC                         0x0380
 #define HIIR_CLK                                0x0384
-#define PERI_CRG239_ETH1			0x03BC
+#define PERI_CRG239_ETH1			            0x03BC
 #define CLK_MAX                                 0x03C0
 
-#endif /* __DT_BINDINGS_CLOCK_HI3798CV200_H */
+#endif /* __DT_BINDINGS_CLOCK_HI3798MV310_H */

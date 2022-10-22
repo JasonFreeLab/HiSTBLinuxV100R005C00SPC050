@@ -180,7 +180,7 @@ typedef int (*PFN_VDEC_Chan_VOChangeWinInfo)(HI_HANDLE,HI_DRV_WIN_PRIV_INFO_S*);
 //add by sdk
 typedef struct tagVDEC_PORT_PARAM_S
 {
-   /*Ìá¹©¸øVO,ÊÕÖ¡£¬ÊÍ·ÅÖ¡£¬´¦Àí´°¿ÚÐÅÏ¢¸Ä±äµÄº¯Êý*/
+   /*ï¿½á¹©ï¿½ï¿½VO,ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½Í·ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä±ï¿½Äºï¿½ï¿½ï¿½*/
   PFN_VDEC_Chan_VOAcqFrame pfVOAcqFrame;
   PFN_VDEC_Chan_VORlsFrame pfVORlsFrame;
   PFN_VDEC_Chan_VOChangeWinInfo pfVOSendWinInfo;
@@ -212,50 +212,50 @@ typedef struct tagVDEC_PORT_ATTR_WITHHANDLE_S
 
 typedef struct hiUNF_VDEC_BUFF_ATTR_S
 {
-    HI_U8* pu8UsrVirAddr[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ÓÃ»§Ì¬ÐéÄâµØÖ·*/
-    HI_U32 u32PhyAddr[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ÎïÀíµØÖ·*/
-    HI_U8* pu8UsrVirAddr_meta[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ÓÃ»§Ì¬ÐéÄâµØÖ·*/
-    HI_U32 u32PhyAddr_meta[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ÎïÀíµØÖ·*/
+    HI_U8* pu8UsrVirAddr[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ï¿½Ã»ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
+    HI_U32 u32PhyAddr[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
+    HI_U8* pu8UsrVirAddr_meta[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ï¿½Ã»ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
+    HI_U32 u32PhyAddr_meta[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
 
     HI_S32 s32FrameBufFd[MAX_VDEC_EXT_BUF_NUM];
     HI_S32 s32MetadataBufFd[MAX_VDEC_EXT_BUF_NUM];
     HI_U32 u32PrivOffset_meta;
 
-    HI_U32 u32BufNum;                          /**<Buffer number *//**<CNcomment: »º³åÇø¸öÊý*/
+    HI_U32 u32BufNum;                          /**<Buffer number *//**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     HI_U32 u32BufSize;
     HI_U32 u32MetaBufSize;
-    HI_U32 u32Stride;                          /**<Stride of external frame buffer *//**<CNcomment:Íâ²¿Ö¡´æµÄstride*/
+    HI_U32 u32Stride;                          /**<Stride of external frame buffer *//**<CNcomment:ï¿½â²¿Ö¡ï¿½ï¿½ï¿½stride*/
     HI_U32 bTvp;
     HI_BOOL bVideoBypass;
 } VDEC_BUFFER_ATTR_S;
 typedef struct hiUNF_VDEC_BUFF_ATTR_PRI_S
 {
-    HI_U64 u64UsrVirAddr[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ÓÃ»§Ì¬ÐéÄâµØÖ·*/
-    HI_U32 u32PhyAddr[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ÎïÀíµØÖ·*/
-    HI_U64 u64UsrVirAddr_meta[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ÓÃ»§Ì¬ÐéÄâµØÖ·*/
-    HI_U32 u32PhyAddr_meta[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ÎïÀíµØÖ·*/
+    HI_U64 u64UsrVirAddr[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ï¿½Ã»ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
+    HI_U32 u32PhyAddr[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
+    HI_U64 u64UsrVirAddr_meta[MAX_VDEC_EXT_BUF_NUM];  /**<User virtual address *//**<CNcomment: ï¿½Ã»ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
+    HI_U32 u32PhyAddr_meta[MAX_VDEC_EXT_BUF_NUM];     /**<Physical address *//**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·*/
 
     HI_S32 s32FrameBufFd[MAX_VDEC_EXT_BUF_NUM];
     HI_S32 s32MetadataBufFd[MAX_VDEC_EXT_BUF_NUM];
     HI_U32 u32PrivOffset_meta;
 
-    HI_U32 u32BufNum;                          /**<Buffer number *//**<CNcomment: »º³åÇø¸öÊý*/
+    HI_U32 u32BufNum;                          /**<Buffer number *//**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     HI_U32 u32BufSize;
     HI_U32 u32MetaBufSize;
-    HI_U32 u32Stride;                          /**<Stride of external frame buffer *//**<CNcomment:Íâ²¿Ö¡´æµÄstride*/
+    HI_U32 u32Stride;                          /**<Stride of external frame buffer *//**<CNcomment:ï¿½â²¿Ö¡ï¿½ï¿½ï¿½stride*/
     HI_U32 bTvp;
     HI_BOOL bVideoBypass;
 } VDEC_BUFFER_ATTR_PRI_S;
 
 typedef enum hiVDEC_FRAMEBUFFER_MODE_E{
-    VDEC_BUF_VPSS_ALLOC_MANAGE = 0,/**vpss buffer should alloc and manage by vpss*//**<CNcomment:vpssµÄbufferµÄ·ÖÅäºÍ¹ÜÀíÓÐvpssÄ£¿é×Ô¼º¹ÜÀí*/
-    VDEC_BUF_USER_ALLOC_MANAGE,    /**vpss buffer should alloc and manage by user*//**<CNcomment:vpssµÄbuffer·ÖÅäÓÉvdecµÄÉÏ²ãÓÃ»§À´·ÖÅä£¬¹ÜÀíÓÐvdec¸ºÔð*/
+    VDEC_BUF_VPSS_ALLOC_MANAGE = 0,/**vpss buffer should alloc and manage by vpss*//**<CNcomment:vpssï¿½ï¿½bufferï¿½Ä·ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ï¿½ï¿½vpssÄ£ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½*/
+    VDEC_BUF_USER_ALLOC_MANAGE,    /**vpss buffer should alloc and manage by user*//**<CNcomment:vpssï¿½ï¿½bufferï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½Ï²ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½ï¿½*/
     VDEC_BUF_TYPE_BUTT
 }VDEC_FRAMEBUFFER_MODE_E;
 typedef enum hiVDEC_FRAMEBUFFER_STATE_E{
-    VDEC_BUF_STATE_EMPTY = 0,/**the frame buffer have no data*//**<CNcomment:Òª²éÑ¯µÄbufferÀïÃæÃ»ÓÐÊý¾Ý*/
-    VDEC_BUF_STATE_FULL,     /**the frame buffer have data*//**<CNcomment:Òª²éÑ¯µÄbufferÀïÃæÒÑ¾­±»Ìî³äÁËÓÐÐ§Êý¾Ý*/
-    VDEC_BUF_STATE_IN_USE,   /**the frame buffer is in using*//**<CNcomment:Òª²éÑ¯µÄbufferÕýÔÚ±»Ìî³äÊý¾ÝµÄ¹ý³ÌÖÐ*/
+    VDEC_BUF_STATE_EMPTY = 0,/**the frame buffer have no data*//**<CNcomment:Òªï¿½ï¿½Ñ¯ï¿½ï¿½bufferï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+    VDEC_BUF_STATE_FULL,     /**the frame buffer have data*//**<CNcomment:Òªï¿½ï¿½Ñ¯ï¿½ï¿½bufferï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½*/
+    VDEC_BUF_STATE_IN_USE,   /**the frame buffer is in using*//**<CNcomment:Òªï¿½ï¿½Ñ¯ï¿½ï¿½bufferï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÝµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½*/
     VDEC_BUF_STATE_BUTT
 }VDEC_FRAMEBUFFER_STATE_E;
 typedef struct hi_VDEC_BUFF_INFO_S
@@ -289,15 +289,15 @@ typedef enum hiVDEC_PRE_CAP
 #ifdef HI_HDR_SUPPORT
 typedef enum hiVDEC_HDR_TYPE_E
 {
-    HI_VDEC_HDR_CHAN_TYPE_BL = 0,    /**<CNcomment: VDEC BL½âÂëÍ¨µÀ.*/
-    HI_VDEC_HDR_CHAN_TYPE_EL,        /**<CNcomment: VDEC EL½âÂëÍ¨µÀ.*/
+    HI_VDEC_HDR_CHAN_TYPE_BL = 0,    /**<CNcomment: VDEC BLï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½.*/
+    HI_VDEC_HDR_CHAN_TYPE_EL,        /**<CNcomment: VDEC ELï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½.*/
     HI_VDEC_HDR_CHAN_TYPE_BUTT
 } VDEC_HDR_CHAN_TYPE_E;
 
 typedef struct hiVDEC_HDR_ATTR_S
 {
-    VDEC_HDR_CHAN_TYPE_E       enVdecHDRType;    /**<CNcomment: VDEC½âÂëÍ¨µÀÀàÐÍ.*/
-    HI_UNF_AVPLAY_HDR_ATTR_S   AvplayHDRAttr;    /**<CNcomment: HDRÅäÖÃÊôÐÔ.*/
+    VDEC_HDR_CHAN_TYPE_E       enVdecHDRType;    /**<CNcomment: VDECï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.*/
+    HI_UNF_AVPLAY_HDR_ATTR_S   AvplayHDRAttr;    /**<CNcomment: HDRï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.*/
 } VDEC_HDR_ATTR_S;
 #endif
 typedef struct hiVDEC_RECVFRM_OPT_S
@@ -355,7 +355,7 @@ HI_S32 HI_MPI_VDEC_GetChanFrmStatusInfo(HI_HANDLE hVdec, HI_HANDLE  hPort,VDEC_F
 HI_S32 HI_MPI_VDEC_SetChanFrmPackType(HI_HANDLE hVdec, HI_UNF_VIDEO_FRAME_PACKING_TYPE_E *pFrmPackingType);
 HI_S32 HI_MPI_VDEC_GetChanFrmPackType(HI_HANDLE hVdec, HI_UNF_VIDEO_FRAME_PACKING_TYPE_E *pFrmPackingType);
 HI_S32 HI_MPI_VDEC_AcqUserData(HI_HANDLE hVdec, HI_UNF_VIDEO_USERDATA_S *pstUserData, HI_UNF_VIDEO_USERDATA_TYPE_E *penType);
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
 HI_S32 HI_MPI_VDEC_RlsUserData(HI_HANDLE hVdec, HI_UNF_VIDEO_USERDATA_S *pstUserData, HI_UNF_VIDEO_USERDATA_TYPE_E *penType);
 #else
 HI_S32 HI_MPI_VDEC_RlsUserData(HI_HANDLE hVdec, HI_UNF_VIDEO_USERDATA_S *pstUserData);

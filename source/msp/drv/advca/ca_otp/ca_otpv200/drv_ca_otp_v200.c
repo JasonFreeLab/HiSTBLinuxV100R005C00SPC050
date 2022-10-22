@@ -430,7 +430,7 @@ HI_S32 DRV_CA_OTP_V200_Set_UniqueVersionId(HI_U8 *pu8Id)
         }
     }
 
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     //not set version id lock
 #else
     //Set version_id_lock
@@ -1251,7 +1251,7 @@ HI_S32 DRV_CA_OTP_V200_SetBootMode(CA_OTP_FLASH_TYPE_E type)
             PV_0.bits.boot_mode_sel_1 = 0;
             PV_1.bits.boot_mode_sel_2 = 1;
             break;
-#elif defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
         case HI_UNF_ADVCA_FLASH_TYPE_SPI:
             PV_0.bits.boot_mode_sel_0 = 0;
             PV_0.bits.boot_mode_sel_1 = 0;
@@ -1336,7 +1336,7 @@ HI_S32 DRV_CA_OTP_V200_SetBootMode(CA_OTP_FLASH_TYPE_E type)
     /*lock boot mode*/
     PVLOCK_0.u32 = 0;
     PVLOCK_1.u32 = 0;
-#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     PVLOCK_0.bits.boot_mode_sel_0_lock = 1;
     PVLOCK_0.bits.boot_mode_sel_1_lock = 1;
     PVLOCK_1.bits.boot_mode_sel_2_lock = 1;
@@ -1424,7 +1424,7 @@ static HI_UNF_ADVCA_FLASH_TYPE_E otpTobootmode_hi3716mv410(CA_OTP_V200_INTERNAL_
 }
 #endif
 
-#if defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 static HI_UNF_ADVCA_FLASH_TYPE_E otpTobootmode_hi3798cv200(CA_OTP_V200_INTERNAL_PV_0_U u32PV0, CA_OTP_V200_INTERNAL_PV_1_U u32PV1)
 {
     HI_UNF_ADVCA_FLASH_TYPE_E eFlashType = HI_UNF_ADVCA_FLASH_TYPE_BUTT;
@@ -1478,7 +1478,7 @@ HI_S32 DRV_CA_OTP_V200_GetBootMode(HI_UNF_ADVCA_FLASH_TYPE_E *pType)
 
 #if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410)
     eFlashType = otpTobootmode_hi3716mv410(PV_0, PV_1);
-#elif defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     eFlashType = otpTobootmode_hi3798cv200(PV_0, PV_1);
 #elif defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100) || defined(CHIP_TYPE_hi3716cv200)
     eFlashType = otpTobootmode_hi3716cv200(PV_0);
@@ -2763,7 +2763,8 @@ HI_S32 DRV_CA_OTP_V200_SetR2RRootKey(HI_U8 *pu8Key)
         HI_ERR_CA("Failed to set R2R_RootKey, locked!\n");
         return HI_FAILURE;
     }
-
+
+
     /* check if checksum locked */
     ChecksumLock.u32 = 0;
     ChecksumLock.u32 = (g_pOTPExportFunctionList->HAL_OTP_V200_Read)(CA_OTP_V200_INTERNAL_CHECKSUMLOCK);
@@ -3751,7 +3752,7 @@ HI_S32 DRV_CA_OTP_V200_LockRSAKey(HI_VOID)
     HI_S32    ret = HI_SUCCESS;
     CA_OTP_V200_INTERNAL_DATALOCK_1_U DataLock_1;
 
-#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     CA_OTP_V200_INTERNAL_DATALOCK_0_U DataLock_0;
 #endif
 
@@ -3765,7 +3766,7 @@ HI_S32 DRV_CA_OTP_V200_LockRSAKey(HI_VOID)
         return HI_FAILURE;
     }
 
-#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     //Lock RSA CRC
     DataLock_0.u32 = 0;
     DataLock_0.bits.RSA_CRC_lock = 1;
@@ -8402,7 +8403,7 @@ HI_S32 DRV_CA_OTP_V200_SetEthernetDisable(HI_VOID)
     CA_OTP_V200_CHIPSET_CFG_1_U CFG_1;
     CA_OTP_V200_CHIPSET_CFG_LOCK_1_U CFGLOCK_1;
 
-#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     CA_OTP_V200_CHIPSET_CFG_2_U CFG_2;
     CA_OTP_V200_CHIPSET_CFG_LOCK_2_U CFGLOCK_2;
 #endif
@@ -8427,7 +8428,7 @@ HI_S32 DRV_CA_OTP_V200_SetEthernetDisable(HI_VOID)
         return ret;
     }
 
-#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     CFG_2.u32 = 0;
     CFG_2.bits.gmii_disable = 1;
     ret = (g_pOTPExportFunctionList->HAL_OTP_V200_Write)(CA_OTP_V200_CHIPSET_CONFIGURE_2, CFG_2.u32);
@@ -8478,7 +8479,7 @@ HI_S32 DRV_CA_OTP_V200_SetSM4Disable(HI_VOID)
     /* disable */
     PV_0.u32 = 0;
     PV_0.bits.tskl_nv_disable = 1;
-#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200)  || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     PV_0.bits.tskl_others_disable = 1;
 #endif
     ret = (g_pOTPExportFunctionList->HAL_OTP_V200_Write)(CA_OTP_V200_INTERNAL_PV_0, PV_0.u32);
@@ -8491,7 +8492,7 @@ HI_S32 DRV_CA_OTP_V200_SetSM4Disable(HI_VOID)
     /* lock */
     PVLOCK_0.u32 = 0;
     PVLOCK_0.bits.tskl_nv_disable_lock = 1;
-#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     PVLOCK_0.bits.tskl_others_disable_lock = 1;
 #endif
     ret = (g_pOTPExportFunctionList->HAL_OTP_V200_Write)(CA_OTP_V200_INTERNAL_PVLOCK_0, PVLOCK_0.u32);
@@ -9549,7 +9550,7 @@ static HI_S32 DRV_CA_OTP_V200_SetOtpFuse_RSA_KEY_LOCK_FLAG(HI_UNF_ADVCA_OTP_ATTR
     return DRV_CA_OTP_V200_LockRSAKey();
 }
 
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 static HI_S32 DRV_CA_OTP_V200_SetOtpFuse_USB_DEACTIVATION(HI_UNF_ADVCA_OTP_ATTR_S *pstOtpAttr)
 {
     return DRV_CA_OTP_V200_SetUSBDisable(pstOtpAttr->unOtpFuseAttr.stDefaultAttr.bEnable);
@@ -9631,7 +9632,7 @@ static DRV_ADVCA_OTP_FUSE_FUNC_MAP_S g_astSetOtpFuseFuncMap[] =
     {HI_UNF_ADVCA_OTP_IRDETO_ITCSA3_ACTIVATION,          DRV_CA_OTP_V200_SetOtpFuse_IRDETO_ITCSA3_ACTIVATION},
     {HI_UNF_ADVCA_OTP_BOOTINFO_DEACTIVATION,             DRV_CA_OTP_V200_SetOtpFuse_BOOTINFO_DEACTIVATION},
     {HI_UNF_ADVCA_OTP_ITCSA3_IMLB,                       DRV_CA_OTP_V200_SetOtpFuse_ITCSA3_IMLB},
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     {HI_UNF_ADVCA_OTP_USB_DEACTIVATION,                  DRV_CA_OTP_V200_SetOtpFuse_USB_DEACTIVATION},
     {HI_UNF_ADVCA_OTP_SERIAL_DEACTIVATION,               DRV_CA_OTP_V200_SetOtpFuse_SERIAL_DEACTIVATION},
     {HI_UNF_ADVCA_OTP_ETHERNET_DEACTIVATION,             DRV_CA_OTP_V200_SetOtpFuse_ETHERNET_DEACTIVATION},
@@ -10280,7 +10281,7 @@ static HI_S32 DRV_CA_OTP_V200_GetOtpFuse_ITCSA3_IMLB(HI_UNF_ADVCA_OTP_ATTR_S *ps
 
     return ret;
 }
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 static HI_S32 DRV_CA_OTP_V200_GetOtpFuse_USB_DEACTIVATION(HI_UNF_ADVCA_OTP_ATTR_S *pstOtpAttr)
 {
     HI_S32 ret = HI_FAILURE;
@@ -10522,7 +10523,7 @@ static DRV_ADVCA_OTP_FUSE_FUNC_MAP_S g_astGetOtpFuseFuncMap[] =
     {HI_UNF_ADVCA_OTP_IRDETO_ITCSA3_ACTIVATION,          DRV_CA_OTP_V200_GetOtpFuse_IRDETO_ITCSA3_ACTIVATION},
     {HI_UNF_ADVCA_OTP_BOOTINFO_DEACTIVATION,             DRV_CA_OTP_V200_GetOtpFuse_BOOTINFO_DEACTIVATION},
     {HI_UNF_ADVCA_OTP_ITCSA3_IMLB,                       DRV_CA_OTP_V200_GetOtpFuse_ITCSA3_IMLB},
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     {HI_UNF_ADVCA_OTP_USB_DEACTIVATION,                  DRV_CA_OTP_V200_GetOtpFuse_USB_DEACTIVATION},
     {HI_UNF_ADVCA_OTP_SERIAL_DEACTIVATION,               DRV_CA_OTP_V200_GetOtpFuse_SERIAL_DEACTIVATION},
     {HI_UNF_ADVCA_OTP_ETHERNET_DEACTIVATION,             DRV_CA_OTP_V200_GetOtpFuse_ETHERNET_DEACTIVATION},

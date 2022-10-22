@@ -33,6 +33,7 @@
 	|| defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)   \
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
 #define REG_BASE_GPIO5  0xF8004000
@@ -44,7 +45,7 @@
 #endif
 
 /**GPIO output type*/
-/** CNcomment:GPIO Êä³öÀàÐÍ*/
+/** CNcomment:GPIO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 typedef enum hiUNF_GPIO_OUTPUTTYPE_E
 {
     HI_UNF_GPIO_OUTPUTTYPE_CMOS,

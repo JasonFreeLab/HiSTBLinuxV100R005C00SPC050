@@ -33,7 +33,7 @@ typedef enum{
 
 static char *clock_table[3] = {"operating-points-ff", "operating-points-tt", "operating-points-ss"};
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 static char *clock_table_98mv300[3] = {"operating-points-ff-98mv300", "operating-points-tt-98mv300", "operating-points-ss-98mv300"};
 static char *clock_table_youtube[3] = {"operating-points-ff-youtube", "operating-points-tt-youtube", "operating-points-ss-youtube"};
 #endif
@@ -43,7 +43,7 @@ char* opps_get_svb_type(void)
     volatile u32* pu32SVBBase = (u32*)ioremap_nocache(SVB_REG_ADDR_BASE,  SVB_REG_ADDR_SIZE);
     int svb_type, svb_corner[3];
     int reg1, reg2;
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     HI_CHIP_TYPE_E ChipType;
     HI_CHIP_VERSION_E ChipID;
     HI_U32 ChipMode;
@@ -70,7 +70,7 @@ char* opps_get_svb_type(void)
         svb_type = SVB_CHIP_TYPE_SS;
     }
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     HI_DRV_SYS_GetChipVersion(&ChipType, &ChipID);
 
     HI_DRV_SYS_GetFlag(&ChipMode);

@@ -371,6 +371,11 @@ HDMI_CHIP_TYPE_E DRV_HDMI_ProdChipGet(HI_VOID)
        enHdmiChip = HDMI_CHIP_HI3798MV300;
     }
 
+    else if(HI_CHIP_TYPE_HI3798M == enChipType && HI_CHIP_VERSION_V310 == enChipVersion)
+    {
+       enHdmiChip = HDMI_CHIP_HI3798MV310;
+    }
+
     return enHdmiChip;
 
 

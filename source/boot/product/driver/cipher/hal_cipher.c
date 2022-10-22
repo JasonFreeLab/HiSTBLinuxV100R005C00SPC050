@@ -1026,6 +1026,7 @@ HI_VOID HAL_Cipher_HashDisable(HI_VOID)
 #if defined (CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310) \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
     U_PERI_CRG49 unShaCrg;
@@ -1068,6 +1069,7 @@ HI_VOID HAL_Cipher_HashEnable(HI_VOID)
 #if defined (CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310) \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
     U_PERI_CRG49 unShaCrg;
@@ -1485,6 +1487,7 @@ HI_S32 HAL_Cipher_GetRandomNumber(HI_U32 *pu32RandomNumber)
 #if defined (CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310) \
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined (NOCS3_0_SUPPORT)
 

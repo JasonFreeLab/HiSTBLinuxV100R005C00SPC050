@@ -194,7 +194,7 @@ void HDMI_HotPlug_Proc(HI_VOID *pPrivateData)
         else
         {
             stHdmiAttr.enVidOutMode = HI_UNF_HDMI_VIDEO_MODE_RGB444;
-            //¶ÁÈ¡µ½ÁËedid£¬²¢ÇÒ²»Ö§³ÖhdmiÔò½øÈëdviÄ£Ê½
+            //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½edidï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½Ö§ï¿½ï¿½hdmiï¿½ï¿½ï¿½ï¿½ï¿½dviÄ£Ê½
             //read real edid ok && sink not support hdmi,then we run in dvi mode
             stHdmiAttr.bEnableHdmi = HI_FALSE;
         }
@@ -441,7 +441,7 @@ HI_S32 HIADP_HDMI_Init(HI_UNF_HDMI_ID_E enHDMIId)
     stDelay.bForceFmtDelay = HI_TRUE;
     stDelay.bForceMuteDelay = HI_TRUE;
 
-#if defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     stDelay.u32FmtDelay  = 1;
     stDelay.u32MuteDelay = 50;
 #else

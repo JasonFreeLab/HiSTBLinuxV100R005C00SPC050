@@ -31,7 +31,7 @@ History       :
 #define TEST_END_FAIL()				  	  HI_ERR_CIPHER("****************** %s test FAIL !!! ******************\n", __FUNCTION__)
 #define TEST_RESULT_PRINT()				  { if (ret) TEST_END_FAIL(); else TEST_END_PASS();}
 
-#if 0 //defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3796mv200)
+#if 0 //defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3796mv200)
 #define MAX_HASH_HANDLE 4
 #define MAX_HMAC_HANDLE 3
 #else

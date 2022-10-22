@@ -91,7 +91,7 @@ static int i2cchn = 2;
 #define SDA_GPIO_PNUM_S40   5
 #endif
 
-#elif  defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif  defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 static int i2cchn = 1;
 #define SLAC_RESET_GPIO_GNUM_S40    4
 #define SLAC_RESET_GPIO_PNUM_S40    3
@@ -1268,28 +1268,28 @@ static int __INIT__ tlv320aic31_init(void)
     g_pstRegIO->ioshare_35.u32 = 0x2;  //set I2C2_SDA pin
 #endif
 /*
-himm 0xf8a21094 0x176   //GPIO4_5¸´ÓÃI2C1_SCL
-himm 0xf8a21090 0x176   //GPIO4_4Åä³ÉI2C1_SDA
-himm 0xf8a2108C 0x130   //GPIO4_3ÓÃ×÷RSTN
-himm 0xf8a21084 0x131   //GPIO4_1Åä³ÉI2S_DIN
-himm 0xf8a21094 0x111   //GPIO4_0Åä³ÉI2S_BCLK
-himm 0xf8a2107C 0x131   //GPIO3_7Åä³ÉI2S_DOUT0
-himm 0xf8a21078 0x131   //GPIO3_6Åä³ÉI2S_WS
-himm 0xf8a21074 0x101   //GPIO3_5Åä³ÉI2S_MCLK
+himm 0xf8a21094 0x176   //GPIO4_5ï¿½ï¿½ï¿½ï¿½I2C1_SCL
+himm 0xf8a21090 0x176   //GPIO4_4ï¿½ï¿½ï¿½I2C1_SDA
+himm 0xf8a2108C 0x130   //GPIO4_3ï¿½ï¿½ï¿½ï¿½RSTN
+himm 0xf8a21084 0x131   //GPIO4_1ï¿½ï¿½ï¿½I2S_DIN
+himm 0xf8a21094 0x111   //GPIO4_0ï¿½ï¿½ï¿½I2S_BCLK
+himm 0xf8a2107C 0x131   //GPIO3_7ï¿½ï¿½ï¿½I2S_DOUT0
+himm 0xf8a21078 0x131   //GPIO3_6ï¿½ï¿½ï¿½I2S_WS
+himm 0xf8a21074 0x101   //GPIO3_5ï¿½ï¿½ï¿½I2S_MCLK
 
 */
 
         /* HiFONEV310B02_tst use I2C1 */
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
-        /* I2S0¸´ÓÃÅäÖÃ */
+        /* I2S0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
         g_pstRegIO->ioshare_29.u32 = 0x101;
         g_pstRegIO->ioshare_30.u32 = 0x131;
         g_pstRegIO->ioshare_31.u32 = 0x131;
         g_pstRegIO->ioshare_32.u32 = 0x111;
         g_pstRegIO->ioshare_33.u32 = 0x131;
 
-        /* I2C¸´ÓÃÅäÖÃ */
+        /* I2Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
         g_pstRegIO->ioshare_35.u32 = 0x0;  //set reset pin
 #ifdef USE_GPIO_I2C
         g_pstRegIO->ioshare_36.u32 = 0x0;  //set I2C1_SDA pin
@@ -1302,14 +1302,14 @@ himm 0xf8a21074 0x101   //GPIO3_5Åä³ÉI2S_MCLK
     /* hi3796mv200_tst use I2C1 */
 #elif defined(CHIP_TYPE_hi3796mv200)
 
-    /* I2S0¸´ÓÃÅäÖÃ */
+    /* I2S0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     g_pstRegIO->ioshare_64.u32 = 0x135;
     g_pstRegIO->ioshare_65.u32 = 0x175;
     g_pstRegIO->ioshare_66.u32 = 0x135;
     g_pstRegIO->ioshare_67.u32 = 0x135;
     g_pstRegIO->ioshare_68.u32 = 0x135;
 
-    /* I2C¸´ÓÃÅäÖÃ */
+    /* I2Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     g_pstRegIO->ioshare_70.u32 = 0x0;  //set reset pin
 #ifdef USE_GPIO_I2C
     g_pstRegIO->ioshare_71.u32 = 0x0;  //set I2C1_SDA pin

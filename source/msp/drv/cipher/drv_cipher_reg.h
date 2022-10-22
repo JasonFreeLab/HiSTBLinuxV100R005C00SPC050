@@ -44,7 +44,7 @@ extern HI_VOID *g_u32HdmiRegBase;
 
 #define  CIPHER_RSA_CRG_REG_BASE_ADDR_PHY       (0XF8A22384)
 #define  CIPHER_MMU_CRG_REG_BASE_ADDR_PHY       (0XF8A22378)
-#if   defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined (CHIP_TYPE_hi3798mv300) || defined (CHIP_TYPE_hi3798mv200_a)
+#if   defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined (CHIP_TYPE_hi3798mv300) || defined (CHIP_TYPE_hi3798mv310) || defined (CHIP_TYPE_hi3798mv200_a)
 #define  CIPHER_HASH_REG_BASE_ADDR_PHY          (0xF9A20000)
 #else
 #define  CIPHER_HASH_REG_BASE_ADDR_PHY          (0xF9A10000)
@@ -204,6 +204,7 @@ extern HI_VOID *g_u32HdmiRegBase;
 #if  defined(CHIP_TYPE_hi3798cv200) \
      || defined (CHIP_TYPE_hi3798mv200) \
      || defined (CHIP_TYPE_hi3798mv300) \
+     || defined (CHIP_TYPE_hi3798mv310) \
      || defined (CHIP_TYPE_hi3798mv200_a) \
      || defined (NOCS3_0_SUPPORT)
 #define  REG_RNG_BASE_ADDR 				g_u32RngRegBase

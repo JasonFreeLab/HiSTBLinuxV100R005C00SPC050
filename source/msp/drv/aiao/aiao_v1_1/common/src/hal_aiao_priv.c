@@ -717,6 +717,7 @@ HI_S32 AIAO_HW_PowerOn(HI_VOID)
 #elif   defined(CHIP_TYPE_hi3798cv200)   \
      || defined(CHIP_TYPE_hi3798mv200)   \
      || defined(CHIP_TYPE_hi3798mv300)	 \
+     || defined(CHIP_TYPE_hi3798mv310)	 \
      || defined(CHIP_TYPE_hi3798mv200_a) \
      || defined(CHIP_TYPE_hi3796mv200)
 
@@ -1023,6 +1024,7 @@ HI_S32 AIAO_HW_SetStart(AIAO_PORT_ID_E enPortID, HI_S32 bEn)
     || defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)    \
     || defined(CHIP_TYPE_hi3716mv410)   \

@@ -1817,6 +1817,7 @@ HI_S32 HAL_Cipher_GetRandomNumber(CIPHER_RNG_S *pstRNG)
 #elif defined (CHIP_TYPE_hi3798cv200) \
     || defined (CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined (CHIP_TYPE_hi3798mv310)   \
     || defined (CHIP_TYPE_hi3798mv200_a)    \
     || defined (NOCS3_0_SUPPORT)
 
@@ -1938,7 +1939,7 @@ HI_S32 HAL_Cipher_HashDisable(HI_VOID)
 
 /* reset request */
     unShaCrg.u32 = g_pstRegCrg->PERI_CRG49.u32;
-#if defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined (CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined (CHIP_TYPE_hi3798mv200_a)
 	unShaCrg.bits.sha1_srst_req = 1;
     g_pstRegCrg->PERI_CRG49.u32 = unShaCrg.u32;
     mdelay(1);
@@ -1962,7 +1963,7 @@ HI_S32 HAL_Cipher_HashEnable(HI_VOID)
 
 /* cancel reset */
     unShaCrg.u32 = g_pstRegCrg->PERI_CRG49.u32;
-#if defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined (CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined (CHIP_TYPE_hi3798mv200_a)
     unShaCrg.bits.sha1_cken = 1;
     g_pstRegCrg->PERI_CRG49.u32 = unShaCrg.u32;
     mdelay(1);
@@ -2006,7 +2007,7 @@ HI_VOID HAL_Cipher_Init(void)
     unCipherCrg.bits.ca_ci_srst_req = 0;
     g_pstRegCrg->PERI_CRG48.u32 = unCipherCrg.u32;
 
-#if defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     {
         HI_U32 i;
         HI_U32 u32RegValue;

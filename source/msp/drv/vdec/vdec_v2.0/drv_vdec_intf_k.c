@@ -208,7 +208,7 @@ typedef struct
 
 /***************************** Global Definition *****************************/
 
-/* VDECÈ«¾ÖÆÁ±Î¿ØÖÆ×Ö bit0: DynamicFs Mask Ctrl; other: reserve*/
+/* VDECÈ«ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ bit0: DynamicFs Mask Ctrl; other: reserve*/
 HI_U32 MaskCtrlWord = 0;
 
 #define DEFAULT_MAP_FRM   (HI_FALSE)
@@ -216,7 +216,7 @@ HI_BOOL g_bMapFrmEnable = DEFAULT_MAP_FRM;
 #define DEFAULT_EOP_EN    (HI_TRUE)
 HI_BOOL g_bEopEnable = DEFAULT_EOP_EN;
 
-/*½áÊøÂë´óÈ«*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«*/
 HI_CHAR g_EopTab_H264[] = {0x00, 0x00, 0x01, 0x1E, 0x48, 0x53, 0x50, 0x49, 0x43, 0x45, 0x4E, 0x44, 0x00, 0x00, 0x01, 0x00};
 HI_CHAR g_EopTab_MPEG4[] = {0x00, 0x00, 0x01, 0x1E, 0x48, 0x53, 0x50, 0x49, 0x43, 0x45, 0x4E, 0x44, 0x00, 0x00, 0x01};
 HI_CHAR g_EopTab_H265[] = {0x00, 0x00, 0x01, 0x60, 0x00, 0x48, 0x53, 0x50, 0x49, 0x43, 0x45, 0x4E, 0x44, 0x00, 0x00, 0x01};
@@ -548,7 +548,7 @@ static inline HI_S32  VDEC_CHAN_RLS_DOWN_HELP(VDEC_CHAN_ENTITY_S* pstEnt, HI_U32
     HI_S32 s32Ret;
 
     /* Realse all */
-    /* CNcomment:¶à¸ö½øÐÐÊÍ·Å */
+    /* CNcomment:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ */
     if (atomic_inc_return(&pstEnt->atmRlsFlag) != 1)
     {
         atomic_dec(&pstEnt->atmRlsFlag);
@@ -595,7 +595,7 @@ static inline HI_S32  VDEC_CHAN_RLS_UP_HELP(VDEC_CHAN_ENTITY_S* pstEnt)
 
     return HI_SUCCESS;
 }
-/* ³õÊ¼»¯»¥³âËø*/
+/* ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 HI_S32  VDEC_InitSpinLock( VDEC_PORT_FRAME_LIST_LOCK_S* pIntrMutex )
 {
     if (HI_NULL == pIntrMutex)
@@ -607,7 +607,7 @@ HI_S32  VDEC_InitSpinLock( VDEC_PORT_FRAME_LIST_LOCK_S* pIntrMutex )
     pIntrMutex->isInit = HI_TRUE;
     return HI_SUCCESS;
 }
-/* ÖÐ¶Ï»¥³â¼ÓËø(¹ØÖÐ¶ÏÇÒ¼ÓËø)*/
+/* ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½)*/
 HI_S32 VDEC_SpinLockIRQ( VDEC_PORT_FRAME_LIST_LOCK_S* pIntrMutex )
 {
     if (HI_NULL == pIntrMutex)
@@ -625,7 +625,7 @@ HI_S32 VDEC_SpinLockIRQ( VDEC_PORT_FRAME_LIST_LOCK_S* pIntrMutex )
 
     return HI_SUCCESS;
 }
-/* ÖÐ¶Ï»¥³â½âËø(¿ªÖÐ¶ÏÇÒÈ¥Ëø)*/
+/* ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½È¥ï¿½ï¿½)*/
 HI_S32 VDEC_SpinUnLockIRQ( VDEC_PORT_FRAME_LIST_LOCK_S* pIntrMutex )
 {
     if (HI_NULL == pIntrMutex)
@@ -648,7 +648,7 @@ HI_S32  VDEC_InitFrmBufRecSpinLock(CHAN_FRAME_BUF_RECORD_LOCK_S* pIntrMutex)
     return HI_SUCCESS;
 }
 
-/* ÖÐ¶Ï»¥³â¼ÓËø(¹ØÖÐ¶ÏÇÒ¼ÓËø)*/
+/* ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½)*/
 HI_S32 VDEC_FrmBufRecSpinLockIRQ(CHAN_FRAME_BUF_RECORD_LOCK_S* pIntrMutex)
 {
     if (pIntrMutex->isInit == HI_FALSE)
@@ -662,7 +662,7 @@ HI_S32 VDEC_FrmBufRecSpinLockIRQ(CHAN_FRAME_BUF_RECORD_LOCK_S* pIntrMutex)
     return HI_SUCCESS;
 }
 
-/* ÖÐ¶Ï»¥³â½âËø(¿ªÖÐ¶ÏÇÒÈ¥Ëø)*/
+/* ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½È¥ï¿½ï¿½)*/
 HI_S32 VDEC_FrmBufRecSpinUnLockIRQ(CHAN_FRAME_BUF_RECORD_LOCK_S* pIntrMutex)
 {
     if (pIntrMutex->isInit == HI_TRUE)
@@ -740,7 +740,7 @@ HI_S32  BUFMNG_InitSpinLock( BUFMNG_VPSS_IRQ_LOCK_S *pIntrMutex )
     pIntrMutex->isInit = HI_TRUE;
     return HI_SUCCESS;
 }
-/* ÖÐ¶Ï»¥³â¼ÓËø(¹ØÖÐ¶ÏÇÒ¼ÓËø)*/
+/* ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½)*/
 HI_S32 BUFMNG_SpinLockIRQ( BUFMNG_VPSS_IRQ_LOCK_S* pIntrMutex )
 {
     if (HI_NULL == pIntrMutex)
@@ -758,7 +758,7 @@ HI_S32 BUFMNG_SpinLockIRQ( BUFMNG_VPSS_IRQ_LOCK_S* pIntrMutex )
 
     return HI_SUCCESS;
 }
-/* ÖÐ¶Ï»¥³â½âËø(¿ªÖÐ¶ÏÇÒÈ¥Ëø)*/
+/* ï¿½Ð¶Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½È¥ï¿½ï¿½)*/
 HI_S32 BUFMNG_SpinUnLockIRQ( BUFMNG_VPSS_IRQ_LOCK_S* pIntrMutex )
 {
     if (HI_NULL == pIntrMutex)
@@ -799,7 +799,7 @@ static HI_S32 BUFMNG_VPSS_Init(BUFMNG_VPSS_INST_S* pstBufVpssInst)
 
             if (HI_NULL == pstBufNode)
             {
-                //HI_VFREE_BUFMNG(pstBufNode);//ÉêÇëÊ§°Ü²»ÄÜÊÍ·Å£¬ÐèÒª°ÑÒÔÇ°µÄ¶¼ÊÍ·Å
+                //HI_VFREE_BUFMNG(pstBufNode);//ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü²ï¿½ï¿½ï¿½ï¿½Í·Å£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ä¶ï¿½ï¿½Í·ï¿½
                 HI_ERR_VDEC("BUFMNG_VPSS_Init No memory.\n");
                 list_for_each_safe(pos, n, &(pstBufVpssInst->stVpssBufAvailableList))
                 {
@@ -823,7 +823,7 @@ static HI_S32 BUFMNG_VPSS_Init(BUFMNG_VPSS_INST_S* pstBufVpssInst)
                 {
                     pstTarget = list_entry(pos, BUFMNG_VPSS_NODE_S, node);
                     HI_DRV_VDEC_UnmapAndRelease(&(pstTarget->VDECBuf_frm));
-                    HI_DRV_VDEC_UnmapAndRelease(&(pstTarget->VDECBuf_meta));//DRM: metaÄÚ´æÎª·Ç°²ÄÚ´æ sdk
+                    HI_DRV_VDEC_UnmapAndRelease(&(pstTarget->VDECBuf_meta));//DRM: metaï¿½Ú´ï¿½Îªï¿½Ç°ï¿½ï¿½Ú´ï¿½ sdk
                     list_del_init(pos);
                     HI_VFREE_BUFMNG(pstTarget);
                 }
@@ -1085,7 +1085,7 @@ static HI_S32 BUFMNG_VPSS_RecBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, BUF_VPSS_S
         return HI_FAILURE;
     }
 
-    /*Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -1111,7 +1111,7 @@ static HI_S32 BUFMNG_VPSS_RecBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, BUF_VPSS_S
 
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
-    /*²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -1127,14 +1127,14 @@ static HI_S32 BUFMNG_VPSS_RecBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, BUF_VPSS_S
         return HI_FAILURE;
     }
 
-    /*´Ë×´Ì¬ÓÐÉÏ²ã¿ØÖÆµ±ÉèÖÃÎªSTOP×´Ì¬µÄÊ±ºòÒâÎ¶²»ÔÊÐíVPSSÊ¹ÓÃÍâ²¿Ö¡´æ*/
+    /*ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ÎªSTOP×´Ì¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Î¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½VPSSÊ¹ï¿½ï¿½ï¿½â²¿Ö¡ï¿½ï¿½*/
     if (VDEC_EXTBUFFER_STATE_START != pstVpssChan->stPort[0].stBufVpssInst.enExtBufferState)
     {
         VDEC_CHAN_USE_UP(&s_stVdecDrv.astChanEntity[i]);
         return HI_FAILURE;
     }
 
-    /*»ñÈ¡Ö¡´æ*/
+    /*ï¿½ï¿½È¡Ö¡ï¿½ï¿½*/
     if (VDEC_VPSS_BYPASSMODE_ENABLE != pstVpssChan->enVideoBypass)
     {
         if (pstVpssChan->stPort[j].stBufVpssInst.u32FrmBufSize < pstMMZ_Buffer->VDECBuf_frm.u32Size)
@@ -1158,15 +1158,15 @@ static HI_S32 BUFMNG_VPSS_RecBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, BUF_VPSS_S
     pos = pstVpssChan->stPort[j].stBufVpssInst.stVpssBufAvailableList.next;
     pstTarget = list_entry(pos, BUFMNG_VPSS_NODE_S, node);
     pstTarget->enFrameBufferState = HI_DRV_VDEC_BUF_STATE_IN_VPSS;
-    /*É¾³ýstVpssBufAvailableListÉÏµÄpos½Úµã*/
+    /*É¾ï¿½ï¿½stVpssBufAvailableListï¿½Ïµï¿½posï¿½Úµï¿½*/
     list_del_init(pos);
     pstTarget->bBufUsed = HI_TRUE;
-    /*½«pos½ÚµãÌí¼Óµ½stVpssBufUnAvailableListÉÏÈ¥*/
+    /*ï¿½ï¿½posï¿½Úµï¿½ï¿½ï¿½ï¿½Óµï¿½stVpssBufUnAvailableListï¿½ï¿½È¥*/
     list_add_tail(pos, &(pstVpssChan->stPort[j].stBufVpssInst.stVpssBufUnAvailableList));
 
     memcpy(&pstMMZ_Buffer->VDECBuf_frm, &pstTarget->VDECBuf_frm, sizeof(VDEC_BUFFER_S));
 
-    //µ± µØÖ·Îª-1Ê±£¬±íÊ¾ÉÏ²ãÎ´·ÖÅämetabuf,µ«»¹ÊÇ°Ñ½á¹¹Ìå´«¸øvpss£¬¸øvpss×öÅÐ¶Ï
+    //ï¿½ï¿½ ï¿½ï¿½Ö·Îª-1Ê±ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ï²ï¿½Î´ï¿½ï¿½ï¿½ï¿½metabuf,ï¿½ï¿½ï¿½ï¿½ï¿½Ç°Ñ½á¹¹ï¿½å´«ï¿½ï¿½vpssï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½ï¿½Ð¶ï¿½
     if (pstTarget->VDECBuf_meta.u32StartPhyAddr == 0xffffffff)
     {
         HI_WARN_VDEC("meta buf not alloc!\n");
@@ -1225,7 +1225,7 @@ static HI_S32 BUFMNG_VPSS_RelBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, HI_DRV_VID
 
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
-    /*²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -1242,8 +1242,8 @@ static HI_S32 BUFMNG_VPSS_RelBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, HI_DRV_VID
     }
     else
     {
-        /*ÊÍ·ÅÖ¡´æ*/
-        //pos´ÓstVpssBufUnAvailableListµÄnext¿ªÊ¼
+        /*ï¿½Í·ï¿½Ö¡ï¿½ï¿½*/
+        //posï¿½ï¿½stVpssBufUnAvailableListï¿½ï¿½nextï¿½ï¿½Ê¼
         BUFMNG_SpinLockIRQ(&pstVpssChan->stPort[j].stBufVpssInst.stUnAvailableListLock);
         list_for_each_safe(pos, n, &(pstVpssChan->stPort[j].stBufVpssInst.stVpssBufUnAvailableList))
         {
@@ -1255,15 +1255,15 @@ static HI_S32 BUFMNG_VPSS_RelBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, HI_DRV_VID
 #ifdef VFMW_VPSS_BYPASS_EN
                 if (pstVpssChan->enVideoBypass == VDEC_VPSS_BYPASSMODE_ENABLE)
                 {
-                    //Èç¹ûÊÇVPSS bypass Í¨Â·ÕÒµ½metadata¶ÔÓ¦µÄÎïÀíÖ¡´æµØÖ·À´½øÐÐ»¹Ö¡
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½VPSS bypass Í¨Â·ï¿½Òµï¿½metadataï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½Ö¡
                     //pstPrivFrame = (HI_DRV_VIDEO_FRAME_S *)phys_to_virt(pstTarget->VDECBuf_meta.u32StartPhyAddr);
                     pstPrivFrame = (HI_DRV_VIDEO_FRAME_S*)pstTarget->VDECBuf_meta.pu8StartVirAddr;
                     if (pstPrivFrame)
                     {
-                        /*ÔÝÊ±´æ´¢metadataÖÐµÄÕæÕýVFMW´«³öµÄÖ¡ÐÅÏ¢½á¹¹Ìå£¬ÒÔ±¸ÏÂÃæ»¹Ö¡Ö®ÓÃ£¬´Ë´¦²»ÄÜÓÐËø£¬²»ÄÜÖ±½ÓÔÚ´Ë»¹Ö¡*/
+                        /*ï¿½ï¿½Ê±ï¿½æ´¢metadataï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½VFMWï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ï¢ï¿½á¹¹ï¿½å£¬ï¿½Ô±ï¿½ï¿½ï¿½ï¿½æ»¹Ö¡Ö®ï¿½Ã£ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ú´Ë»ï¿½Ö¡*/
                         memcpy(&stPrivFrmInfo, pstPrivFrame, sizeof(HI_DRV_VIDEO_FRAME_S));
 
-                        /*¼°Ê±Çå³ýmetadataÀïÃæµÄÖ¡ÐÅÏ¢£¬±ÜÃâÍâ²¿ÎóÅÐ¶Ï*/
+                        /*ï¿½ï¿½Ê±ï¿½ï¿½ï¿½metadataï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²¿ï¿½ï¿½ï¿½Ð¶ï¿½*/
                         memset(pstPrivFrame, 0 , sizeof(HI_DRV_VIDEO_FRAME_S));
                         need_release_frm = HI_TRUE;
                     }
@@ -1276,14 +1276,14 @@ static HI_S32 BUFMNG_VPSS_RelBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, HI_DRV_VID
                 pstTarget->bBufUsed = HI_FALSE;
                 pstTarget->enFrameBufferState = HI_DRV_VDEC_BUF_STATE_IN_VDEC_EMPTY;
 
-                /*É¾³ýstVpssBufUnAvailableListÉÏµÄpos½Úµã*/
+                /*É¾ï¿½ï¿½stVpssBufUnAvailableListï¿½Ïµï¿½posï¿½Úµï¿½*/
                 if (pstVpssChan->stPort[j].stBufVpssInst.pstUnAvailableListPos == pos)
                 {
                     pstVpssChan->stPort[j].stBufVpssInst.pstUnAvailableListPos = pos->prev;
                 }
 
                 list_del_init(pos);
-                /*½«pos½ÚµãÌí¼Óµ½stVpssBufAvailableListÉÏÈ¥*/
+                /*ï¿½ï¿½posï¿½Úµï¿½ï¿½ï¿½ï¿½Óµï¿½stVpssBufAvailableListï¿½ï¿½È¥*/
                 list_add_tail(&(pstTarget->node), &(pstVpssChan->stPort[j].stBufVpssInst.stVpssBufAvailableList));
                 break;
             }
@@ -1296,7 +1296,7 @@ static HI_S32 BUFMNG_VPSS_RelBuffer(HI_HANDLE hVpss, HI_HANDLE hPort, HI_DRV_VID
 #ifdef VFMW_VPSS_BYPASS_EN
      if (pstVpssChan->enVideoBypass == VDEC_VPSS_BYPASSMODE_ENABLE && need_release_frm)
     {
-        /*´Ë´¦ÏòVFMW»¹Ö¡ add by sdk*/
+        /*ï¿½Ë´ï¿½ï¿½ï¿½VFMWï¿½ï¿½Ö¡ add by sdk*/
         s32Ret = VDEC_Chan_VpssRlsFrmBuf(hVpss, &stPrivFrmInfo);
         if (HI_SUCCESS != s32Ret)
         {
@@ -1354,7 +1354,7 @@ static HI_S32 VDEC_VpssNewImageEvent(HI_HANDLE hVpss, HI_HANDLE hPort, HI_DRV_VI
 
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
-    /*²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -1952,7 +1952,7 @@ static HI_S32 VDEC_Event_UsrData(VDEC_CHANNEL_S* pstChan, HI_HANDLE hHandle, HI_
         }
 
         /* Discard if the buffer of user data full */
-        /* CNcomment: Èç¹ûÓÃ»§Êý¾ÝbufferÂú¾ÍÖ±½Ó¶ªÆú */
+        /* CNcomment: ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½bufferï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó¶ï¿½ï¿½ï¿½ */
         u32WriteID = pstChan->pstUsrData->u32WriteID;
         u32ReadID = pstChan->pstUsrData->u32ReadID;
 
@@ -2098,7 +2098,7 @@ static HI_S32 VDEC_Event_RatioNotZero(VDEC_CHANNEL_S* pstChan, HI_HANDLE hHandle
     VDEC_ASSERT_RETURN(pstChan != HI_NULL, HI_FAILURE);
 
     pstChan->u32ErrRatio = *(HI_U32*)pArgs;
-    pstChan->stStatInfo.u32VdecDecErrFrame++;//Í³¼Æ´íÎóÖ¡Êý
+    pstChan->stStatInfo.u32VdecDecErrFrame++;//Í³ï¿½Æ´ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
 
     return HI_SUCCESS;
 }
@@ -2248,7 +2248,7 @@ static HI_S32 VDEC_Event_ReleaseFrameBufOnly(VDEC_CHANNEL_S* pstChan, HI_HANDLE 
         if (pstChan->stFrameBufferRecord[u32Index].enFrameBufferNodeStatus != DRV_VDEC_BUFFER_STATUS_BUTT &&
             pstChan->stFrameBufferRecord[u32Index].stFrameBuffer.u32StartPhyAddr == RelsePhyAddr)
         {
-            pstChan->stFrameBufferRecord[u32Index].bWaitRelease = HI_TRUE;    //½ÚµãÖ¡´æµÈ´ýÊÍ·Å
+            pstChan->stFrameBufferRecord[u32Index].bWaitRelease = HI_TRUE;    //ï¿½Úµï¿½Ö¡ï¿½ï¿½È´ï¿½ï¿½Í·ï¿½
             break;
         }
     }
@@ -2393,7 +2393,7 @@ static HI_S32 VDEC_EventHandle(HI_S32 s32ChanID, HI_S32 s32EventType, HI_VOID* p
 }
 
 /**************************************************************/
-/**************¿ìÍËÊ±VDEC´ÓVPSSÊÕµ½µÄÖ¡×öµ¹Ðò´¦Àí**************/
+/**************ï¿½ï¿½ï¿½ï¿½Ê±VDECï¿½ï¿½VPSSï¿½Õµï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½**************/
 /**************************************************************/
 HI_S32 FastbackwardCheckForNewIFrame(HI_VDEC_PRIV_FRAMEINFO_S* pstPrivInfo, HI_HANDLE hHandle)
 {
@@ -2854,7 +2854,7 @@ FN_VPSSEVENT_HANDLER VpssEvent_Get_Handler(HI_U32 Code)
 }
 
 //add by sdk
-/*vpss »Øµ÷º¯Êý*/
+/*vpss ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½*/
 static HI_S32 VDEC_VpssEventHandle(HI_HANDLE hVdec, HI_DRV_VPSS_EVENT_E enEventID, HI_VOID* pstArgs)
 {
     HI_S32 s32Ret;
@@ -3230,7 +3230,7 @@ static HI_VOID GetCMPInfo(VDEC_CHANNEL_S *pstChan, HI_CHIP_TYPE_E enChipType, HI
         EnVcmp  = 1;
     }
 
-    /*¸ù¾ÝMaskCtrlWordµÄµÚ3±ÈÌØÎ»¾ö¶¨ÊÇ·ñ¹Ø±ÕÑ¹Ëõ¹¦ÄÜ*/
+    /*ï¿½ï¿½ï¿½ï¿½MaskCtrlWordï¿½Äµï¿½3ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Ø±ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     if (MaskCtrlWord & 0x4)
     {
         EnVcmp = 2;
@@ -3257,7 +3257,7 @@ static HI_VOID SetHDRAttr(VDEC_CHANNEL_S *pstChan, VDEC_CHAN_CFG_S *pstVdecChanC
        {
            HI_ERR_VDEC("hdr info error!");
        }
-       //¸³Öµµ¥Á÷£¬Ë«Á÷ÐÅÏ¢
+       //ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë«ï¿½ï¿½ï¿½ï¿½Ï¢
        if (HI_UNF_AVPLAY_HDR_STREAM_TYPE_DL_SINGLE_VES == pstChan->stVdecHdrAttr.AvplayHDRAttr.enHDRStreamType || HI_UNF_AVPLAY_HDR_STREAM_TYPE_SL_VES == pstChan->stVdecHdrAttr.AvplayHDRAttr.enHDRStreamType)
        {
            pstVdecChanCfg->ves_imp = DV_SINGLE_VES_IMP;
@@ -3270,7 +3270,7 @@ static HI_VOID SetHDRAttr(VDEC_CHANNEL_S *pstChan, VDEC_CHAN_CFG_S *pstVdecChanC
        {
            pstVdecChanCfg->ves_imp = DV_MAX_VES_IMP;
        }
-       //¸³Öµµ¥²ã£¬Ë«²ãÐÅÏ¢
+       //ï¿½ï¿½Öµï¿½ï¿½ï¿½ã£¬Ë«ï¿½ï¿½ï¿½ï¿½Ï¢
        if (HI_UNF_AVPLAY_HDR_STREAM_TYPE_SL_VES == pstChan->stVdecHdrAttr.AvplayHDRAttr.enHDRStreamType)
        {
            pstVdecChanCfg->layer_imp = DV_SINGLE_LAYER_IMP;
@@ -4424,7 +4424,7 @@ static HI_S32 VDEC_Chan_RlsStrmBuf(HI_S32 hHandle, STREAM_DATA_S* pstPacket)
     return VDEC_RlsStrmBuf((HI_HANDLE)hHandle, pstPacket, HI_FALSE);
 }
 //add by sdk
-/*Ìá¹©¸øvoÊÕÖ¡µÄº¯Êý*/
+/*ï¿½á¹©ï¿½ï¿½voï¿½ï¿½Ö¡ï¿½Äºï¿½ï¿½ï¿½*/
 static HI_S32 VDEC_Chan_VOAcqFrame(HI_HANDLE hPort, HI_DRV_VIDEO_FRAME_S* pstVpssFrame)
 {
     HI_S32 s32Ret;
@@ -4435,7 +4435,7 @@ static HI_S32 VDEC_Chan_VOAcqFrame(HI_HANDLE hPort, HI_DRV_VIDEO_FRAME_S* pstVps
         return HI_FAILURE;
     }
 
-    /*µ÷ÓÃvpssµÄ»ñÈ¡Ö¡´æº¯Êý,ÒªÈ·¶¨vpssÊÍ·Åº¯Êý³É¹¦·µ»ØµÄÊÇHI_SUCCESS*/
+    /*ï¿½ï¿½ï¿½ï¿½vpssï¿½Ä»ï¿½È¡Ö¡ï¿½æº¯ï¿½ï¿½,ÒªÈ·ï¿½ï¿½vpssï¿½Í·Åºï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½HI_SUCCESS*/
 #ifdef VFMW_VPSS_BYPASS_EN
     BUFMNG_SpinLockIRQ(&s_stVdecDrv.stRemainFrmList.stIrq);
 #endif
@@ -4464,7 +4464,7 @@ HI_S32 HI_VDEC_Chan_VOAcqFrame(HI_HANDLE hPort, HI_DRV_VIDEO_FRAME_S* pstVpssFra
     }
     return s32Ret;
 }
-/*Ìá¹©¸øvoÊÍ·ÅÖ¡µÄº¯Êý*/
+/*ï¿½á¹©ï¿½ï¿½voï¿½Í·ï¿½Ö¡ï¿½Äºï¿½ï¿½ï¿½*/
 static HI_S32 VDEC_Chan_VORlsFrame(HI_HANDLE hPort, HI_DRV_VIDEO_FRAME_S* pstVpssFrame)
 {
     HI_S32 s32Ret;
@@ -4522,7 +4522,7 @@ static HI_S32 VDEC_Chan_VORlsFrame(HI_HANDLE hPort, HI_DRV_VIDEO_FRAME_S* pstVps
     }
     else
     {
-        /*µ÷ÓÃvpssµÄÊÍ·ÅÖ¡´æº¯Êý*/
+        /*ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½ï¿½Í·ï¿½Ö¡ï¿½æº¯ï¿½ï¿½*/
         s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssRelPortFrame)(hPort, pstVpssFrame);
     }
 
@@ -4739,7 +4739,7 @@ static HI_S32 VDEC_Chan_VOChangeWinInfo(HI_HANDLE hPort, HI_DRV_WIN_PRIV_INFO_S*
     }
 
     VDEC_ConvertWinInfo(hPort, &stVpssPortCfg, pstWinInfo);
-    /*ÖØÐÂÉèÖÃPORTÊôÐÔ*/
+    /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½PORTï¿½ï¿½ï¿½ï¿½*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssSetPortCfg)(hPort, &stVpssPortCfg);
     return s32Ret;
 }
@@ -4759,7 +4759,7 @@ HI_S32 HI_VDEC_Chan_VOChangeWinInfo(HI_HANDLE hPort, HI_DRV_WIN_PRIV_INFO_S* pst
     return s32Ret;
 }
 //add by sdk
-/*´´½¨vpss*/
+/*ï¿½ï¿½ï¿½ï¿½vpss*/
 static HI_S32 VDEC_Chan_CreateVpss(HI_HANDLE hVdec, HI_HANDLE* phVpss)
 {
     HI_S32 s32Ret;
@@ -4788,7 +4788,7 @@ static HI_S32 VDEC_Chan_CreateVpss(HI_HANDLE hVdec, HI_HANDLE* phVpss)
         return HI_FAILURE;
     }
 
-    /*ÏòÉÏ·µ»Ø´´½¨µÄvpss¾ä±ú*/
+    /*ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½ï¿½*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssCreateVpss)(&stVpssCfg, phVpss);
 
     if (HI_SUCCESS != s32Ret)
@@ -4805,7 +4805,7 @@ static HI_S32 VDEC_Chan_CreateVpss(HI_HANDLE hVdec, HI_HANDLE* phVpss)
         //HI_WARN_VDEC("call down_interruptible err!\n");
     //}
 
-    /*±£´ævpss¾ä±ú*/
+    /*ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½ï¿½*/
     s_stVdecDrv.astChanEntity[hVdec].stVpssChan.hVpss = *phVpss;
     up(&s_stVdecDrv.stSem);
 
@@ -4815,7 +4815,7 @@ static HI_S32 VDEC_Chan_CreateVpss(HI_HANDLE hVdec, HI_HANDLE* phVpss)
 
     s_stVdecDrv.astChanEntity[hVdec].stVpssChan.enVideoBypass = VDEC_VPSS_BYPASSMODE_BUTT;
 
-    /*×¢²ávpss»Øµ÷º¯Êý*/
+    /*×¢ï¿½ï¿½vpssï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssRegistHook)(*phVpss, hVdec, VDEC_VpssEventHandle);
 
     if (HI_SUCCESS != s32Ret)
@@ -4898,7 +4898,7 @@ static HI_S32 VDEC_Chan_CreatePort(HI_HANDLE hVpss, HI_HANDLE* phPort, VDEC_PORT
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -4948,7 +4948,7 @@ static HI_S32 VDEC_Chan_CreatePort(HI_HANDLE hVpss, HI_HANDLE* phPort, VDEC_PORT
 #endif
 
     /*get defualt port cfg*/
-    /*CNcomment:´´½¨port²Ù×÷£¬µ÷ÓÃvpss´´½¨portº¯Êý£¬²¢ÔÚvdec¶Ë×ö¼ÇÂ¼*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½portï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½ï¿½ï¿½portï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssGetDefaultPortCfg)(&stVpssPortCfg);
 
     if (HI_SUCCESS != s32Ret)
@@ -4963,7 +4963,7 @@ static HI_S32 VDEC_Chan_CreatePort(HI_HANDLE hVpss, HI_HANDLE* phPort, VDEC_PORT
         stVpssPortCfg.stBufListCfg.eBufType = HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE;
     }
     /*create port*/
-    /*CNcomment:´´½¨port*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½port*/
     else if ( HI_DRV_VDEC_BUF_VPSS_ALLOC_MANAGE == pstVpssChan->enFrameBuffer)
     {
         stVpssPortCfg.stBufListCfg.eBufType = HI_DRV_VPSS_BUF_VPSS_ALLOC_MANAGE;
@@ -4995,7 +4995,7 @@ static HI_S32 VDEC_Chan_CreatePort(HI_HANDLE hVpss, HI_HANDLE* phPort, VDEC_PORT
 
     if (HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE == stVpssPortCfg.stBufListCfg.eBufType)
     {
-        stVpssPortCfg.s32OutputWidth = 0;    // ¿í¸ßÉèÎª0±íÊ¾¸ù¾ÝÊäÈë×ÔÊÊÓ¦ÅäÖÃ
+        stVpssPortCfg.s32OutputWidth = 0;    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª0ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
         stVpssPortCfg.s32OutputHeight = 0;
     }
 
@@ -5009,7 +5009,7 @@ static HI_S32 VDEC_Chan_CreatePort(HI_HANDLE hVpss, HI_HANDLE* phPort, VDEC_PORT
     }
 
     /*save port handle*/
-    /*CNcomment:vdec¶Ë¼ÇÂ¼port¾ä±ú*/
+    /*CNcomment:vdecï¿½Ë¼ï¿½Â¼portï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (HI_INVALID_HANDLE == pstVpssChan->stPort[j].hPort)
@@ -5032,7 +5032,7 @@ static HI_S32 VDEC_Chan_CreatePort(HI_HANDLE hVpss, HI_HANDLE* phPort, VDEC_PORT
         pstVpssChan->stPort[j].bufferType = stVpssPortCfg.stBufListCfg.eBufType;
 
         /*init the vpss buffer*/
-        /*CNcomment:Èç¹ûÓÉvdecÀ´¹ÜÀívpssµÄÖ¡´æÔò½øÐÐÖ¡´æµÄ³õÊ¼»¯*/
+        /*CNcomment:ï¿½ï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ä³ï¿½Ê¼ï¿½ï¿½*/
         if (HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE == stVpssPortCfg.stBufListCfg.eBufType)
         {
             pstVpssChan->stPort[j].stBufVpssInst.enFrameBuffer = pstVpssChan->enFrameBuffer;
@@ -5056,7 +5056,7 @@ static HI_S32 VDEC_Chan_DestroyPort(HI_HANDLE hVpss, HI_HANDLE hPort)
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -5083,7 +5083,7 @@ static HI_S32 VDEC_Chan_DestroyPort(HI_HANDLE hVpss, HI_HANDLE hPort)
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
     /*find port*/
-    /*CNcomment:²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -5107,7 +5107,7 @@ static HI_S32 VDEC_Chan_DestroyPort(HI_HANDLE hVpss, HI_HANDLE hPort)
         pstVpssChan->stPort[j].s32PortTmpListPos = 0;
 
         /*call vpss funtion to destory port*/
-        /*CNcomment:µ÷ÓÃvpss½Ó¿ÚÏú»Ùport*/
+        /*CNcomment:ï¿½ï¿½ï¿½ï¿½vpssï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½port*/
         s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssDestroyPort)(hPort);
 
         if (HI_SUCCESS != s32Ret)
@@ -5141,7 +5141,7 @@ static HI_S32 VDEC_Chan_EnablePort(HI_HANDLE hVpss, HI_HANDLE hPort )
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -5168,7 +5168,7 @@ static HI_S32 VDEC_Chan_EnablePort(HI_HANDLE hVpss, HI_HANDLE hPort )
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
     /*enable port*/
-    /*CNcomment:²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -5211,7 +5211,7 @@ static HI_S32 VDEC_Chan_DisablePort(HI_HANDLE hVpss, HI_HANDLE hPort )
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -5238,7 +5238,7 @@ static HI_S32 VDEC_Chan_DisablePort(HI_HANDLE hVpss, HI_HANDLE hPort )
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
     /*disenable port,find port*/
-    /*CNcomment:²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -5355,7 +5355,7 @@ static HI_S32 VDEC_Chan_SetPortType(HI_HANDLE hVpss, HI_HANDLE hPort, VDEC_PORT_
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -5382,7 +5382,7 @@ static HI_S32 VDEC_Chan_SetPortType(HI_HANDLE hVpss, HI_HANDLE hPort, VDEC_PORT_
     pstVpssChan = &(s_stVdecDrv.astChanEntity[i].stVpssChan);
 
     /*set main port,find port*/
-    /*CNcomment:²éÕÒportÊÇ·ñ´æÔÚ*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½portï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
     for (j = 0; j < VDEC_MAX_PORT_NUM; j++)
     {
         if (hPort == pstVpssChan->stPort[j].hPort)
@@ -5679,7 +5679,7 @@ static HI_S32 VDEC_Chan_SetExtBuffer(HI_HANDLE hVpss, VDEC_BUFFER_ATTR_PRI_S* ps
     }
 #endif
 
-    /*ÍøÂç²¥·Å³¡¾°£¬bufferType == HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE Ê±,start vpss µÄÊ±»úÐèÒªÉèÖÃÔÚÅäÖÃÁËbypass²ßÂÔÖ®ºó add by sdk */
+    /*ï¿½ï¿½ï¿½ç²¥ï¿½Å³ï¿½ï¿½ï¿½ï¿½ï¿½bufferType == HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE Ê±,start vpss ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½bypassï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ add by sdk */
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssSendCommand)(pstVpssChan->hVpss, HI_DRV_VPSS_USER_COMMAND_START, NULL);
     if (HI_SUCCESS != s32Ret)
     {
@@ -5689,7 +5689,7 @@ static HI_S32 VDEC_Chan_SetExtBuffer(HI_HANDLE hVpss, VDEC_BUFFER_ATTR_PRI_S* ps
 
     if (HI_DRV_VDEC_BUF_USER_ALLOC_MANAGE == s_stVdecDrv.astChanEntity[i].stVpssChan.enFrameBuffer)
     {
-        //Ö»Ö§³ÖÃ¿´ÎÅäµÄbuf´óÐ¡Ò»Ñù
+        //Ö»Ö§ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½bufï¿½ï¿½Ð¡Ò»ï¿½ï¿½
         if (0 != pstBufVpssInst->u32BufNum && pstBufferAttr->u32BufSize != pstBufVpssInst->u32FrmBufSize)
         {
             HI_ERR_VDEC("the buffer size if not same! the size should FrmBuf:%d MetaBuf:%d but you put FrmBuf:%d MetaBuf:%d u32BufNum:%d\n", \
@@ -5697,7 +5697,7 @@ static HI_S32 VDEC_Chan_SetExtBuffer(HI_HANDLE hVpss, VDEC_BUFFER_ATTR_PRI_S* ps
             return HI_FAILURE;
         }
 
-        //µÚÒ»´ÎÍâ²¿°ÑbufÉèÖÃ½øÀ´Ê±£¬°Ñ´óÐ¡¼ÇÂ¼ÏÂÀ´
+        //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½â²¿ï¿½ï¿½bufï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ñ´ï¿½Ð¡ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
         if (0 == pstBufVpssInst->u32BufNum)
         {
             pstBufVpssInst->u32FrmBufSize = pstBufferAttr->u32BufSize;
@@ -5973,7 +5973,7 @@ static HI_S32 VDEC_Chan_SetResolution(HI_HANDLE hVpss, VDEC_RESOLUTION_ATTR_S  s
 
     pstChan = s_stVdecDrv.astChanEntity[i].pstChan;
 
-    //0±íÊ¾½«vdec¼ÇÂ¼µÄ·Ö±æÂÊÐÅÏ¢Çå0£¬ÆäÓàÇé¿ö±íÊ¾ÉèÖÃvpssµÄÊä³ö¿í¸ß
+    //0ï¿½ï¿½Ê¾ï¿½ï¿½vdecï¿½ï¿½Â¼ï¿½Ä·Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if (0 == stResolution.s32Height && 0 == stResolution.s32Width)
     {
         pstChan->stLastFrm.stDispRect.s32Height = stResolution.s32Height;
@@ -6061,7 +6061,7 @@ static HI_S32 VDEC_Chan_GetLeftStreamFrm(HI_HANDLE hHandle, HI_U32* pLeftFrm)
 
         *pLeftFrm = (stStatus.u32PutOK > pstChan->stStatInfo.u32TotalVfmwOutFrame) ? \
                     (stStatus.u32PutOK - pstChan->stStatInfo.u32TotalVfmwOutFrame) : \
-                     0;//½ö½öÓÃÓÚ°´Ö¡ËÍÁ÷²¢Ã¿Ö¡ºóÔö¼ÓÖ¡½áÊøÂëµÄ³¡¾°
+                     0;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú°ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½
     }
     else
     {
@@ -6088,7 +6088,7 @@ static HI_S32 VDEC_Chan_SetFrmPackingType(HI_HANDLE hVpss, HI_UNF_VIDEO_FRAME_PA
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -6157,7 +6157,7 @@ static HI_S32 VDEC_Chan_GetFrmPackingType(HI_HANDLE hVpss, HI_UNF_VIDEO_FRAME_PA
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -6273,7 +6273,7 @@ static HI_S32 VDEC_Chan_GetPortParam(HI_HANDLE hVpss, HI_HANDLE hPort, VDEC_PORT
     }
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -6297,7 +6297,7 @@ static HI_S32 VDEC_Chan_GetPortParam(HI_HANDLE hVpss, HI_HANDLE hPort, VDEC_PORT
         return HI_FAILURE;
     }
 
-    /*Ö÷ÒªÊÇ¸øvoÌá¹©»ñÈ¡/ÊÍ·ÅÖ¡´æµÄº¯ÊýºÍwininfo¸Ä±äµÄ´¦Àíº¯Êý,»ñÈ¡Ö¡´æµÄº¯ÊýÖ»ÊÇÎªÁËºÍÊÍ·ÅÅä¶Ô*/
+    /*ï¿½ï¿½Òªï¿½Ç¸ï¿½voï¿½á¹©ï¿½ï¿½È¡/ï¿½Í·ï¿½Ö¡ï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½wininfoï¿½Ä±ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½È¡Ö¡ï¿½ï¿½Äºï¿½ï¿½ï¿½Ö»ï¿½ï¿½Îªï¿½Ëºï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½*/
     pstPortParam->pfVOAcqFrame = VDEC_Chan_VOAcqFrame;
     pstPortParam->pfVORlsFrame = VDEC_Chan_VORlsFrame;
     pstPortParam->pfVOSendWinInfo = VDEC_Chan_VOChangeWinInfo;
@@ -6471,7 +6471,7 @@ static HI_S32 VDEC_Chan_AllPortHaveDate(HI_HANDLE hVpss)
     VDEC_VPSSCHANNEL_S* pstVpssChan = HI_NULL;
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -6496,7 +6496,7 @@ static HI_S32 VDEC_Chan_AllPortHaveDate(HI_HANDLE hVpss)
             {
                 BUFMNG_SpinLockIRQ(&pstVpssChan->stPort[j].stBufVpssInst.stUnAvailableListLock);
 
-                /*Ê×ÏÈÅÐ¶ÏÊÇ²»ÊÇËùÓÐµÄÓÐÐ§port¶ÓÁÐÉÏ¶¼ÓÐÊý¾Ý£¬Ö»ÒªÓÐÒ»¸öÃ»ÓÐÔòÍË³ö*/
+                /*ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ð§portï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Ö»Òªï¿½ï¿½Ò»ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½*/
                 if (pstVpssChan->stPort[j].stBufVpssInst.pstUnAvailableListPos->next
                     != &pstVpssChan->stPort[j].stBufVpssInst.stVpssBufUnAvailableList && (pstVpssChan->stPort[j].stBufVpssInst.u32AvaiableFrameCnt > 0))
                 {
@@ -6656,7 +6656,7 @@ static HI_S32 RecvVpssMasterProcess( VDEC_VPSSCHANNEL_S *pstVpssChan,
         }
     }
 
-    /*µ÷ÓÃvpss½Ó¿Ú»ñÈ¡Ö÷portÊý¾Ý*/
+    /*ï¿½ï¿½ï¿½ï¿½vpssï¿½Ó¿Ú»ï¿½È¡ï¿½ï¿½portï¿½ï¿½ï¿½ï¿½*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssGetPortFrame)(hMASTER, &pstFrm->stFrame[pstFrm->u32FrmNum].stFrameVideo);
 
     if (HI_SUCCESS != s32Ret)
@@ -6703,7 +6703,7 @@ static HI_S32 RecvVpssSlaveProcess(VDEC_VPSSCHANNEL_S *pstVpssChan,
         }
     }
 
-    /*µ÷ÓÃvpss½Ó¿Ú»ñÈ¡´ÓportÊý¾Ý*/
+    /*ï¿½ï¿½ï¿½ï¿½vpssï¿½Ó¿Ú»ï¿½È¡ï¿½ï¿½portï¿½ï¿½ï¿½ï¿½*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssGetPortFrame)(hSLAVE, &pstFrm->stFrame[pstFrm->u32FrmNum].stFrameVideo);
 
     if (HI_SUCCESS != s32Ret)
@@ -6775,7 +6775,7 @@ static HI_S32 RecvVpssGetData(VDEC_VPSSCHANNEL_S *pstVpssChan,
         {
             if (HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE == pstVpssChan->stPort[j].bufferType)
             {
-                /*´ÓvdecÎ¬»¤µÄ¶ÓÁÐÖÐ»ñÈ¡Êý¾Ý*/
+                /*ï¿½ï¿½vdecÎ¬ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½Ð»ï¿½È¡ï¿½ï¿½ï¿½ï¿½*/
                 BUFMNG_SpinLockIRQ(&pstVpssChan->stPort[j].stBufVpssInst.stUnAvailableListLock);
 
                 if (pstVpssChan->stPort[j].stBufVpssInst.u32AvaiableFrameCnt <= 0)
@@ -6817,7 +6817,7 @@ static HI_S32 RecvVpssGetData(VDEC_VPSSCHANNEL_S *pstVpssChan,
     return HI_SUCCESS;
 }
 //add by sdk
-/*AvplayÊÕÖ¡£¬vdecÖ±½ÓÔÚvpssÖÐÈ¡*/
+/*Avplayï¿½ï¿½Ö¡ï¿½ï¿½vdecÖ±ï¿½ï¿½ï¿½ï¿½vpssï¿½ï¿½È¡*/
 static HI_S32 VDEC_Chan_RecvVpssFrmBuf(HI_HANDLE hVpss, HI_DRV_VIDEO_FRAME_PACKAGE_S* pstFrm, HI_U32 TimeOut)
 {
     HI_S32                      s32Ret;
@@ -6846,7 +6846,7 @@ static HI_S32 VDEC_Chan_RecvVpssFrmBuf(HI_HANDLE hVpss, HI_DRV_VIDEO_FRAME_PACKA
     pstFrm->u32FrmNum = 0;
 
     /*find astChanEntity by vpss handle*/
-    /*CNcomment:Ê×ÏÈÓ¦¸ÃÕÒµ½hVpss¶ÔÓ¦µÄÊÇµÚ¼¸¸öastChanEntity*/
+    /*CNcomment:ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½Òµï¿½hVpssï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÇµÚ¼ï¿½ï¿½ï¿½astChanEntity*/
     for (i = 0; i < HI_VDEC_MAX_INSTANCE_NEW; i++)
     {
         if (hVpss == s_stVdecDrv.astChanEntity[i].stVpssChan.hVpss)
@@ -7448,8 +7448,8 @@ static HI_VOID ConvertFrm_GetFrmType(HI_UNF_VCODEC_TYPE_E enType,
                                      IMAGE* pstImage,
                                      HI_DRV_VIDEO_FRAME_S* pstFrame)
 {
-    /* vfmw½âÂë³öÀ´µÄFPÐÅÏ¢²»ÍâÍ¸£¬Í³Ò»ÓÉÉÏ²ãÉèÖÃ
-       MVC´«µÝµÄÊÇÁ½Ö¡µØÖ·£¬»¹ÊÇ±£Áô */
+    /* vfmwï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FPï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½Í³Ò»ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½ï¿½ï¿½
+       MVCï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½ */
     if (HI_UNF_VCODEC_TYPE_MVC == enType)
     {
         switch (pstImage->eFramePackingType)
@@ -7814,7 +7814,7 @@ HI_S32 VDEC_ResetChanFrmBuf(HI_S32 hHandle)
 
     for (i = 0; i < VDEC_MAX_BUFFER_RECORD; i++)
     {
-        /*´Ë´¦ÎÞÐè¹ØÐÄÊÇ·ñÓÐspecialÖ¡£¬ÒòÎª´ËÇ°¶¼ÒÑ¾­°ÑspecialÖ¡¶¼¼ÇÂ¼µ½È«¾ÖµÄÊý×éÀïÃæÁË*/
+        /*ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½specialÖ¡ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½specialÖ¡ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½È«ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
         memset(&pstChan->stFrameBufferRecord[i], 0, sizeof(CHAN_FRAME_BUFFER_S));
         pstChan->stFrameBufferRecord[i].enFrameBufferNodeStatus = DRV_VDEC_BUFFER_STATUS_BUTT;
         pstChan->stFrameBufferRecord[i].enHdrBufferNodeStatus   = DRV_VDEC_BUFFER_STATUS_BUTT;
@@ -8064,7 +8064,7 @@ static HI_S32 VDEC_RlsSpecialFrame(VDEC_CHANNEL_S* pstChan)
                 break;
             }
         }
-        if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enFrameBufferNodeStatus) //Ô¤·ÖÅäµÄ½Úµã£¬Í¨¹ýÔ¤·ÖÅäº¯ÊýÊÍ·Å
+        if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enFrameBufferNodeStatus) //Ô¤ï¿½ï¿½ï¿½ï¿½Ä½Úµã£¬Í¨ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½äº¯ï¿½ï¿½ï¿½Í·ï¿½
         {
             s32Ret = VDEC_Chan_ReleasePreMem(&stMemFrameBuffer);
             if (HI_SUCCESS != s32Ret)
@@ -8079,7 +8079,7 @@ static HI_S32 VDEC_RlsSpecialFrame(VDEC_CHANNEL_S* pstChan)
             HI_DRV_VDEC_Release(&stMemFrameBuffer);
         }
 
-        if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enHdrBufferNodeStatus) //Ô¤·ÖÅäµÄ½Úµã£¬Í¨¹ýÔ¤·ÖÅäº¯ÊýÊÍ·Å
+        if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enHdrBufferNodeStatus) //Ô¤ï¿½ï¿½ï¿½ï¿½Ä½Úµã£¬Í¨ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½äº¯ï¿½ï¿½ï¿½Í·ï¿½
         {
             s32Ret = VDEC_Chan_ReleasePreMem(&stMemHdrBuffer);
             if (HI_SUCCESS != s32Ret)
@@ -8093,7 +8093,7 @@ static HI_S32 VDEC_RlsSpecialFrame(VDEC_CHANNEL_S* pstChan)
             HI_DRV_VDEC_UnmapAndRelease(&stMemHdrBuffer);
         }
 
-        //Ë¢ÐÂ´Ë¼ÇÂ¼½ÚµãµÄ×´Ì¬Îª³õÊ¼×´Ì¬
+        //Ë¢ï¿½Â´Ë¼ï¿½Â¼ï¿½Úµï¿½ï¿½×´Ì¬Îªï¿½ï¿½Ê¼×´Ì¬
         memset(&pstChan->stFrameBufferRecord[i], 0, sizeof(CHAN_FRAME_BUFFER_S));
         pstChan->stFrameBufferRecord[i].enFrameBufferNodeStatus = DRV_VDEC_BUFFER_STATUS_BUTT;
         pstChan->stFrameBufferRecord[i].enHdrBufferNodeStatus   = DRV_VDEC_BUFFER_STATUS_BUTT;
@@ -8629,7 +8629,7 @@ static HI_S32 VDEC_RecvFrm(HI_HANDLE hHandle, VDEC_CHANNEL_S* pstChan, HI_DRV_VI
     pstFrame->bIsFirstIFrame = HI_FALSE;
 
     /*Record the interval of I frames and the output time of the first I frame*/
-    /*CNcomment: ¼ÇÂ¼IÖ¡¼ä¸ôºÍ»»Ì¨ºóµÚÒ»¸öIÖ¡½âÂëÊä³öÊ±¼ä */
+    /*CNcomment: ï¿½ï¿½Â¼IÖ¡ï¿½ï¿½ï¿½ï¿½Í»ï¿½Ì¨ï¿½ï¿½ï¿½Ò»ï¿½ï¿½IÖ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ */
     if (RecvFrm_IFrameCheck(&stImage))
     {
         HI_DRV_STAT_Event(STAT_EVENT_IFRAMEINTER, pstFrame->u32Pts);
@@ -9085,7 +9085,7 @@ static HI_S32 VDEC_Chan_VpssRlsFrmBuf(VPSS_HANDLE hVpss, HI_DRV_VIDEO_FRAME_S*  
 
             if ((HI_SUCCESS != s32Ret))
             {
-                return HI_SUCCESS;  //´ËÊ±ÓÐ¿ÉÄÜÍ¨µÀÒÑ¾­±»ÊÍ·Å
+                return HI_SUCCESS;  //ï¿½ï¿½Ê±ï¿½Ð¿ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Í·ï¿½
             }
 
             {
@@ -9266,7 +9266,7 @@ static inline HI_VOID VDEC_YUVFormat_UNF2VFMW(HI_DRV_PIX_FORMAT_E enVideo, YUV_F
             break;
     }
 }
-//´Ëº¯ÊýÒÑ¾­²»ÓÃ£¬±àÒëÓÐ¾¯¸æ,Ö±½Ó¸Éµô,±ÜÃâÆäËûÄ£¿é¿ÉÄÜ»¹¿ÉÄÜÓÐµ÷ÓÃ´Ëº¯ÊýµÄµØ·½Îª±ÜÃâ±àÒë±¨´í£¬ÏÈ½«º¯ÊýÄÚ´æÊµÏÖ¸Éµô
+//ï¿½Ëºï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½ï¿½ï¿½,Ö±ï¿½Ó¸Éµï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ã´Ëºï¿½ï¿½ï¿½ï¿½ÄµØ·ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë±¨ï¿½ï¿½ï¿½ï¿½ï¿½È½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Êµï¿½Ö¸Éµï¿½
 //warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
 HI_S32 HI_DRV_VDEC_BlockToLine(HI_S32 hHandle, HI_DRV_VDEC_BTL_S* pstBTL)
 {
@@ -9772,11 +9772,11 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
     pstChan->stOption.Purpose = PURPOSE_DECODE;
     pstChan->stOption.MemAllocMode = MODE_PART_BY_SDK;
     pstChan->stProbeStreamInfo.bProbeCodecTypeChangeFlag = HI_FALSE;
-    pstChan->stOption.u32DynamicFrameStoreAllocEn = ((MaskCtrlWord & 0x1) == 1) ? 0 : s_stVdecDrv.astChanEntity[hHandle].u32DynamicFsEn; //sdk Ê¹ÄÜ¶¯Ì¬·ÖÅä¹¦ÄÜ
-    pstChan->stOption.s32ExtraFrameStoreNum = PLUS_FS_NUM + 1;//sdk PLUS_FS_NUM + 1:Á÷³©²¥·Å·ÀÖ¹×èÈû
-    pstChan->stOption.s32DelayTime = 0;//sdk ¶¯Ì¬·ÖÅäÖ¡´æÊ±£¬Èô·ÖÅä²»µ½ÄÚ´ævfmwµÈ´ýµÄÊ±¼ä
-    pstChan->stOption.u32CfgFrameNum = 0;//sdk ÅäÖÃÖ¡Êý
-    pstChan->stOption.u32MaxMemUse = -1;//sdk×î´ó¿ÉÓÃÖ¡´æ
+    pstChan->stOption.u32DynamicFrameStoreAllocEn = ((MaskCtrlWord & 0x1) == 1) ? 0 : s_stVdecDrv.astChanEntity[hHandle].u32DynamicFsEn; //sdk Ê¹ï¿½Ü¶ï¿½Ì¬ï¿½ï¿½ï¿½ä¹¦ï¿½ï¿½
+    pstChan->stOption.s32ExtraFrameStoreNum = PLUS_FS_NUM + 1;//sdk PLUS_FS_NUM + 1:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å·ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
+    pstChan->stOption.s32DelayTime = 0;//sdk ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä²»ï¿½ï¿½ï¿½Ú´ï¿½vfmwï¿½È´ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+    pstChan->stOption.u32CfgFrameNum = 0;//sdk ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
+    pstChan->stOption.u32MaxMemUse = -1;//sdkï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
 
     pstChan->stOption.s32MaxSliceNum = 136;
     pstChan->stOption.s32MaxSpsNum = 32;
@@ -9838,7 +9838,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
         stMemConfig.u32TotalSize = 1024;
     }
 
-    if (stMemConfig.u32TotalSize > 1536 && stMemConfig.u32TotalSize <= 2048)//2GÄÚ´æÏÂ½âÂë²ÎÊýÅäÖÃ
+    if (stMemConfig.u32TotalSize > 1536 && stMemConfig.u32TotalSize <= 2048)//2Gï¿½Ú´ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstChan->stOption.s32MaxRefFrameNum = HI_VIDEO_MAX_REF_FRAME_NUM_IN_2048;
         pstChan->stOption.s32DisplayFrameNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_2048 - HI_VDEC_BUFFER_FRAME;
@@ -9847,7 +9847,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
         pstChan->stOption.s32ExtraFrameStoreNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_2048;
         pstChan->stOption.u32MaxMemUse = HI_VIDEO_MAX_VDH_BUF_IN_2048 * 1024 * 1024;
     }
-    else if (stMemConfig.u32TotalSize > 768 && stMemConfig.u32TotalSize <= 1024)//1GÄÚ´æÏÂ½âÂë²ÎÊýÅäÖÃ
+    else if (stMemConfig.u32TotalSize > 768 && stMemConfig.u32TotalSize <= 1024)//1Gï¿½Ú´ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstChan->stOption.s32MaxRefFrameNum = HI_VIDEO_MAX_REF_FRAME_NUM_IN_1024;
         pstChan->stOption.s32DisplayFrameNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_1024 - HI_VDEC_BUFFER_FRAME;
@@ -9856,7 +9856,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
         pstChan->stOption.s32ExtraFrameStoreNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_1024;
         pstChan->stOption.u32MaxMemUse = HI_VIDEO_MAX_VDH_BUF_IN_1024 * 1024 * 1024;
     }
-    else if (stMemConfig.u32TotalSize > 512 && stMemConfig.u32TotalSize <= 768)//768MÄÚ´æÏÂ½âÂë²ÎÊýÅäÖÃ
+    else if (stMemConfig.u32TotalSize > 512 && stMemConfig.u32TotalSize <= 768)//768Mï¿½Ú´ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstChan->stOption.s32MaxRefFrameNum = HI_VIDEO_MAX_REF_FRAME_NUM_IN_768;
         pstChan->stOption.s32DisplayFrameNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_768 - HI_VDEC_BUFFER_FRAME;
@@ -9869,7 +9869,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
            pstChan->stOption.s32SCDBufSize = 10 * 1024 * 1024;
         }
     }
-    else if (stMemConfig.u32TotalSize > 256 && stMemConfig.u32TotalSize <= 512)//512MÄÚ´æÏÂ½âÂë²ÎÊýÅäÖÃ
+    else if (stMemConfig.u32TotalSize > 256 && stMemConfig.u32TotalSize <= 512)//512Mï¿½Ú´ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstChan->stOption.s32MaxRefFrameNum = HI_VIDEO_MAX_REF_FRAME_NUM_IN_512;
         pstChan->stOption.s32DisplayFrameNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_512 - HI_VDEC_BUFFER_FRAME;
@@ -9883,7 +9883,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
             pstChan->stOption.s32SCDBufSize = 5 * 1024 * 1024;
         }
     }
-    else if (stMemConfig.u32TotalSize <= 256)//256MÄÚ´æ½âÂë²ÎÊýÅäÖÃ
+    else if (stMemConfig.u32TotalSize <= 256)//256Mï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstChan->stOption.s32MaxRefFrameNum = HI_VIDEO_MAX_REF_FRAME_NUM_IN_256;
         pstChan->stOption.s32DisplayFrameNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_256 - HI_VDEC_BUFFER_FRAME;
@@ -9893,7 +9893,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
         pstChan->stOption.u32MaxMemUse = HI_VIDEO_MAX_VDH_BUF_IN_256 * 1024 * 1024;
         pstChan->stOption.u32DynamicFrameStoreAllocEn = 1;
     }
-    else //Ä¬ÈÏÊ¹ÓÃ1GÄÚ´æÏÂ½âÂë²ÎÊýÅäÖÃ
+    else //Ä¬ï¿½ï¿½Ê¹ï¿½ï¿½1Gï¿½Ú´ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstChan->stOption.s32MaxRefFrameNum = HI_VIDEO_MAX_REF_FRAME_NUM_IN_1024;
         pstChan->stOption.s32DisplayFrameNum = HI_VIDEO_MAX_DISP_FRAME_NUM_IN_1024 - HI_VDEC_BUFFER_FRAME;
@@ -9904,7 +9904,7 @@ static HI_S32 VDEC_Chan_InitParam(HI_HANDLE hHandle, HI_UNF_AVPLAY_OPEN_OPT_S* p
     }
 #endif
 
-    //ÔÚÃ»´ò¿ªDFSµÄÊ±ºò£¬¶ÔÓÚMVCµÄÁ÷Ö±½ÓÊ¹ÓÃmenuconfigÖÐµÄÖ¡´æÅäÖÃÑ¡Ïî£¬»áµ¼ÖÂÓÐÐ©MVCµÄÁ÷ÒòÖ¡´æ²»¹»¶ø²»ÄÜ²¥·Å¡£Èç¹ûÔÚmenuconfigÖÐ¸ü¸Ä£¬ÓÖ»áµ¼ÖÂÃ¿¸öÍ¨µÀ¶¼·ÖÅä¹ý¶àÖ¡´æ£¬¶ø³öÏÖÖ¡´æ²»¹»µÄÇé¿ö¡£°´ÕÕ²úÆ·½¨ÒéÎ´´ò¿ªDFSÊ±ÔÚµ×²ãÐ´ËÀ¡£
+    //ï¿½ï¿½Ã»ï¿½ï¿½DFSï¿½ï¿½Ê±ï¿½ò£¬¶ï¿½ï¿½ï¿½MVCï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Ê¹ï¿½ï¿½menuconfigï¿½Ðµï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½î£¬ï¿½áµ¼ï¿½ï¿½ï¿½ï¿½Ð©MVCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½æ²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½ï¿½Å¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½menuconfigï¿½Ð¸ï¿½ï¿½Ä£ï¿½ï¿½Ö»áµ¼ï¿½ï¿½Ã¿ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½æ²»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ²ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½DFSÊ±ï¿½Úµ×²ï¿½Ð´ï¿½ï¿½ï¿½ï¿½
     if ((1 != pstChan->stOption.u32DynamicFrameStoreAllocEn) && (CAP_LEVEL_MVC_FHD == enCapToFmw))
     {
         pstChan->stOption.s32MaxRefFrameNum = 16;
@@ -10280,7 +10280,7 @@ static HI_S32 VDEC_Chan_GetMemSize(HI_HANDLE hHandle)
         return HI_FAILURE;
     }
 
-    /* Hevc¼ÆËãÄÚ´æ¹«Ê½²»Ò»Ñù£¬ÔÚGetMemSizeµ÷ÓÃÇ°£¬Í¨¹ý´«µÝÒ»¸öHEVCµÄÄÜÁ¦¼¯ÀàÐÍÀ´Ê¶±ð */
+    /* Hevcï¿½ï¿½ï¿½ï¿½ï¿½Ú´æ¹«Ê½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GetMemSizeï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½HEVCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ */
     if (HI_UNF_VCODEC_TYPE_HEVC == pstChan->stCurCfg.enType)
     {
         switch (pstChan->enCapToFmw)
@@ -10458,11 +10458,11 @@ HI_S32 VDEC_Chan_AllocVFMWMem(HI_HANDLE hHandle)
     pstChan = s_stVdecDrv.astChanEntity[hHandle].pstChan;
     VDEC_ASSERT_RETURN(pstChan != HI_NULL, HI_FAILURE);
 
-    /*1:»ñÈ¡Í¨µÀËùÐèÄÚ´æ*/
+    /*1:ï¿½ï¿½È¡Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½*/
     s32Ret = VDEC_Chan_GetMemSize(hHandle);
     VDEC_ASSERT_RETURN(s32Ret == HI_SUCCESS, HI_FAILURE);
 
-    /*2:·ÖÅäÍ¨µÀËùÐèÄÚ´æ*/
+    /*2:ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½*/
 #ifdef HI_TEE_SUPPORT
     pstChan->stOption.s32IsSecMode = (HI_TRUE == pstChan->bTvp) ? 1 : 0;
     if (1 == pstChan->stOption.s32IsSecMode)
@@ -10509,7 +10509,7 @@ HI_S32 VDEC_Chan_AllocVFMWMem(HI_HANDLE hHandle)
                 pstChan->stEOSBuffer.u32Size = HI_VDEC_EOS_MEM_SIZE;
             }
 
-            /*pstChan->stSCDMMZBuf.u32SizeDµÄ´óÐ¡¾ÍÊÇ´Óvfmw»ñÈ¡µÄ´óÐ¡:pstChan->stMemSize.ScdDetailMem*/
+            /*pstChan->stSCDMMZBuf.u32SizeDï¿½Ä´ï¿½Ð¡ï¿½ï¿½ï¿½Ç´ï¿½vfmwï¿½ï¿½È¡ï¿½Ä´ï¿½Ð¡:pstChan->stMemSize.ScdDetailMem*/
             pstChan->stOption.MemDetail.ChanMemScd.Length  = pstChan->stSCDMMZBuf.u32Size;
             pstChan->stOption.MemDetail.ChanMemScd.PhyAddr = pstChan->stSCDMMZBuf.u32StartPhyAddr;
             pstChan->stOption.MemDetail.ChanMemScd.VirAddr = (HI_U64)(HI_SIZE_T)(pstChan->stSCDMMZBuf.pu8StartVirAddr);
@@ -10517,7 +10517,7 @@ HI_S32 VDEC_Chan_AllocVFMWMem(HI_HANDLE hHandle)
         }
 
         /* Context memory allocated by VFMW */
-        /* CNcomment: Õâ²¿·ÖÓÉvfmw×Ô¼º½øÐÐ·ÖÅä£¬scdºÍvdhµÄÄÚ´æÓÉvdec½øÐÐ·ÖÅä*/
+        /* CNcomment: ï¿½â²¿ï¿½ï¿½ï¿½ï¿½vfmwï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ð·ï¿½ï¿½ä£¬scdï¿½ï¿½vdhï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½Ð·ï¿½ï¿½ï¿½*/
         pstChan->stOption.MemDetail.ChanMemCtx.Length  = 0;
         pstChan->stOption.MemDetail.ChanMemCtx.PhyAddr = 0;
         pstChan->stOption.MemDetail.ChanMemCtx.VirAddr = HI_NULL;
@@ -10531,7 +10531,7 @@ HI_S32 VDEC_Chan_AllocVFMWMem(HI_HANDLE hHandle)
             memset(&stMemBuffer, 0, sizeof(stMemBuffer));
             stMemBuffer.u32Size = u32VDHSize;
 
-            if (1 != pstChan->stOption.u32DynamicFrameStoreAllocEn) //sdk ²ÉÓÃ¶¯Ì¬·ÖÅäµÄ·½°¸£¬Ô¤·ÖÅäÔÚÕâÀïÓÉÓÚ²»ÖªµÀÕæÕýÐèÒªµÄÖ¡´æ´óÐ¡£¬ËùÒÔ²»ÄÜÈ¥Ô¤·Ö½Úµã¡£
+            if (1 != pstChan->stOption.u32DynamicFrameStoreAllocEn) //sdk ï¿½ï¿½ï¿½Ã¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ö¡ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½È¥Ô¤ï¿½Ö½Úµã¡£
             {
                 s32Ret = VDEC_Chan_FindPreMem(&stMemBuffer);
             }
@@ -10542,7 +10542,7 @@ HI_S32 VDEC_Chan_AllocVFMWMem(HI_HANDLE hHandle)
 
             if (HI_SUCCESS == s32Ret)
             {
-                /* CNcomment:½âÂë²ÉÓÃÔ¤·ÖÅäÄÚ´æµÄ·½Ê½£¬ËùÒÔ½«Ô¤·ÖÅäÄÚ´æµÄ´óÐ¡·ÖÅä¸ø½âÂë£¬¶ø²»ÊÇ°ÑÆäÐèÒªµÄ´óÐ¡¸³Öµ*/
+                /* CNcomment:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ä·ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½Ä´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ä´ï¿½Ð¡ï¿½ï¿½Öµ*/
                 pstChan->stVDHMMZBuf.u32Size  = u32VDHSize;
                 pstChan->stVDHMMZBuf.u32StartPhyAddr = stMemBuffer.u32StartPhyAddr;
                 pstChan->stVDHMMZBuf.pu8StartVirAddr = stMemBuffer.pu8StartVirAddr;
@@ -10550,7 +10550,7 @@ HI_S32 VDEC_Chan_AllocVFMWMem(HI_HANDLE hHandle)
             else
 #endif
             {
-                if (1 == pstChan->stOption.u32DynamicFrameStoreAllocEn) //Èç¹û²ÉÓÃ¶¯Ì¬Ö¡´æµÄ·½°¸,ÔòÔÚÕâÀï²»ÐèÒªÁËÕû¿éÉêÇëÁË sdk//
+                if (1 == pstChan->stOption.u32DynamicFrameStoreAllocEn) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½Ì¬Ö¡ï¿½ï¿½Ä·ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï²»ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ sdk//
                 {
                     pstChan->stVDHMMZBuf.u32Size = 0;
                     pstChan->stVDHMMZBuf.u32StartPhyAddr = HI_NULL;
@@ -10643,7 +10643,7 @@ HI_S32 VDEC_Chan_FreeVFMWMem(HI_HANDLE hHandle)
     pstChan->stEOSBuffer.pu8StartVirAddr = 0;
     pstChan->stEOSBuffer.u32Size = 0;
     /*release the memory alloc by vdec*/
-    /*CN:ÊÍ·Å¶¯Ì¬ÉêÇëµÄÄÚ´æ,410¶¯Ì¬ÄÚ´æÊÇÔÚvdecÀïÃæÉêÇëµÄ£¬ËùÒÔÔÚvdecÀïÃæÊÍ·Å*/
+    /*CN:ï¿½Í·Å¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½,410ï¿½ï¿½Ì¬ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½*/
     s32Ret = VDEC_ReleaseMemForDecoder(hHandle);
     if (HI_SUCCESS != s32Ret)
     {
@@ -10777,7 +10777,7 @@ static HI_S32 VDEC_RlsFrm_bypass(VDEC_CHANNEL_S *pstChan, HI_DRV_VIDEO_FRAME_S *
     return HI_SUCCESS;
 }
 
-//¹é»¹ÓÉVDECËù³ÖÓÐµÄÖ¡´æ
+//ï¿½é»¹ï¿½ï¿½VDECï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ö¡ï¿½ï¿½
 static HI_S32 VDEC_Rls_Frm_Occupied_by_Vdec(HI_HANDLE hHandle)
 {
     HI_S32 s32Ret = HI_SUCCESS;
@@ -10803,8 +10803,8 @@ static HI_S32 VDEC_Rls_Frm_Occupied_by_Vdec(HI_HANDLE hHandle)
 
 
 
-    /*ÊÍ·ÅÖ¡´æ*/
-    //pos´ÓstVpssBufUnAvailableListµÄnext¿ªÊ¼
+    /*ï¿½Í·ï¿½Ö¡ï¿½ï¿½*/
+    //posï¿½ï¿½stVpssBufUnAvailableListï¿½ï¿½nextï¿½ï¿½Ê¼
     BUFMNG_SpinLockIRQ(&pstVpssChan->stPort[0].stBufVpssInst.stUnAvailableListLock);
 
     if (list_empty(&pstVpssChan->stPort[0].stBufVpssInst.stVpssBufUnAvailableList)
@@ -10818,11 +10818,11 @@ static HI_S32 VDEC_Rls_Frm_Occupied_by_Vdec(HI_HANDLE hHandle)
     {
         pstTarget = list_entry(pos, BUFMNG_VPSS_NODE_S, node);
 
-        //Èç¹û¸ÃbufÓÉVDEC³ÖÓÐ£¬Ôò°üº¬ÁËÖ¡´æ£¬seekÊ±ÐèÒªÊÍ·Å
+        //ï¿½ï¿½ï¿½ï¿½ï¿½bufï¿½ï¿½VDECï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½æ£¬seekÊ±ï¿½ï¿½Òªï¿½Í·ï¿½
         if (pstTarget->enFrameBufferState == HI_DRV_VDEC_BUF_STATE_IN_VDEC_FULL
             && pstVpssChan->enVideoBypass == VDEC_VPSS_BYPASSMODE_ENABLE)
         {
-            //Èç¹ûÊÇVPSS bypass Í¨Â·ÕÒµ½metadata¶ÔÓ¦µÄÎïÀíÖ¡´æµØÖ·À´½øÐÐ»¹Ö¡
+            //ï¿½ï¿½ï¿½ï¿½ï¿½VPSS bypass Í¨Â·ï¿½Òµï¿½metadataï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½Ö¡
             pstPrivFrame = (HI_DRV_VIDEO_FRAME_S*)pstTarget->VDECBuf_meta.pu8StartVirAddr;
             if (pstPrivFrame)
             {
@@ -10846,14 +10846,14 @@ static HI_S32 VDEC_Rls_Frm_Occupied_by_Vdec(HI_HANDLE hHandle)
             pstTarget->bBufUsed = HI_FALSE;
             pstTarget->enFrameBufferState = HI_DRV_VDEC_BUF_STATE_IN_VDEC_EMPTY;
 
-            /*É¾³ýstVpssBufUnAvailableListÉÏµÄpos½Úµã*/
+            /*É¾ï¿½ï¿½stVpssBufUnAvailableListï¿½Ïµï¿½posï¿½Úµï¿½*/
             if (pstVpssChan->stPort[0].stBufVpssInst.pstUnAvailableListPos == pos)
             {
                 pstVpssChan->stPort[0].stBufVpssInst.pstUnAvailableListPos = pos->prev;
             }
 
             list_del_init(pos);
-            /*½«pos½ÚµãÌí¼Óµ½stVpssBufAvailableListÉÏÈ¥*/
+            /*ï¿½ï¿½posï¿½Úµï¿½ï¿½ï¿½ï¿½Óµï¿½stVpssBufAvailableListï¿½ï¿½È¥*/
             list_add_tail(&(pstTarget->node), &(pstVpssChan->stPort[0].stBufVpssInst.stVpssBufAvailableList));
         }
     }
@@ -11222,7 +11222,7 @@ HI_S32 HI_DRV_VDEC_ChanStart(HI_HANDLE hHandle)
     if (HI_SUCCESS != s32Ret)
     {
         HI_ERR_VDEC("Chan %d SetAttr err!\n", hHandle);
-        goto error_1;   // ÊÍ·ÅÒÑ¾­ÉêÇëµÄÄÚ´æ
+        goto error_1;   // ï¿½Í·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½
     }
 
     /* Lock */
@@ -11231,7 +11231,7 @@ HI_S32 HI_DRV_VDEC_ChanStart(HI_HANDLE hHandle)
     if (HI_SUCCESS != s32Ret)
     {
         HI_INFO_VDEC("Lock %d err!\n", hHandle);
-        goto error_1;   // ÊÍ·ÅÒÑ¾­ÉêÇëµÄÄÚ´æ
+        goto error_1;   // ï¿½Í·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½
     }
 
     /* Check and get pstChan pointer */
@@ -11280,7 +11280,7 @@ HI_S32 HI_DRV_VDEC_ChanStart(HI_HANDLE hHandle)
     USRDATA_Start(hHandle);
 #endif
 
-    /*ÍøÂç²¥·Å³¡¾°£¬bufferType == HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE Ê±,start vpss µÄÊ±»úÐèÒªÉèÖÃÔÚÅäÖÃÁËbypass²ßÂÔÖ®ºó add by sdk */
+    /*ï¿½ï¿½ï¿½ç²¥ï¿½Å³ï¿½ï¿½ï¿½ï¿½ï¿½bufferType == HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE Ê±,start vpss ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½bypassï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ add by sdk */
     if ((pstVpssChan->stPort[0].bufferType != HI_DRV_VPSS_BUF_USER_ALLOC_MANAGE) || (pstVpssChan->enVideoBypass != VDEC_VPSS_BYPASSMODE_BUTT))
     {
         s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssSendCommand)(s_stVdecDrv.astChanEntity[hHandle].stVpssChan.hVpss, HI_DRV_VPSS_USER_COMMAND_START, NULL);
@@ -13080,7 +13080,7 @@ HI_S32 HI_DRV_VDEC_DecodeIFrame(HI_HANDLE hHandle, HI_UNF_AVPLAY_I_FRAME_S* pstS
 #ifdef HI_TEE_SUPPORT
     if (HI_TRUE == pstChan->bTvp)
     {
-        /*ÐèÒªÊµÏÖÒ»¸ö°²È«¿½±´°²È«°²È«µÄ½Ó¿Ú*/
+        /*ï¿½ï¿½ÒªÊµï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½È«ï¿½Ä½Ó¿ï¿½*/
         //memcpy((HI_U8 *)pstChan->stIFrame.stMMZBuf.pu8StartVirAddr, pstStreamInfo->pu8Addr, pstStreamInfo->u32BufSize);
     }
     else
@@ -13148,8 +13148,8 @@ HI_S32 HI_DRV_VDEC_DecodeIFrame(HI_HANDLE hHandle, HI_UNF_AVPLAY_I_FRAME_S* pstS
     /* Here we invoke USE_UP function to release the atomic number, so that the VFMW can decode
       by invoking the interface of get stream, the VDEC_Event_Handle function can also hHandle
       EVNT_NEW_IMAGE */
-    /*CNcomment: ´Ë´¦µ÷ÓÃUSE_UPÊÍ·ÅËø ÒÔÊ¹ VFMW ¿ÉÒÔµ÷ÓÃ»ñÈ¡ÂëÁ÷½Ó¿Ú ½øÐÐ½âÂë
-      VDEC_Event_Handle ¿ÉÒÔ´¦Àí EVNT_NEW_IMAGE ÊÂ¼þ */
+    /*CNcomment: ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½USE_UPï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¹ VFMW ï¿½ï¿½ï¿½Ôµï¿½ï¿½Ã»ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½Ð½ï¿½ï¿½ï¿½
+      VDEC_Event_Handle ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ EVNT_NEW_IMAGE ï¿½Â¼ï¿½ */
     VDEC_CHAN_USE_UP(&s_stVdecDrv.astChanEntity[hHandle]);
 
     /* wait for vdec process complete */
@@ -13159,7 +13159,7 @@ HI_S32 HI_DRV_VDEC_DecodeIFrame(HI_HANDLE hHandle, HI_UNF_AVPLAY_I_FRAME_S* pstS
     }
 
     (s_stVdecDrv.pVfmwFunc->pfnVfmwControl)(pstChan->hChan, VDEC_CID_STOP_CHAN, HI_NULL, 0);
-    /*ÉèÖÃÍ¨µÀ×´Ì¬Óë¶¯Ì¬Ö¡´æÏß³Ì»¥³â*/
+    /*ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½×´Ì¬ï¿½ë¶¯Ì¬Ö¡ï¿½ï¿½ï¿½ß³Ì»ï¿½ï¿½ï¿½*/
     down(&s_stVdecDrv.stSem);
     pstChan->enCurState = VDEC_CHAN_STATE_STOP;
     memset(&pstChan->stVFMWReportFrameInfo, 0, sizeof(VFMW_REPORT_FRAME_BUFFER_INFO_S));
@@ -14588,7 +14588,7 @@ static HI_S32 VDEC_Ioctl_CreateVpss(struct file*  filp, unsigned int cmd, void* 
     s32Ret = VDEC_Chan_CreateVpss(hHandle, &hOuthandle);
     if (s32Ret == HI_SUCCESS)
     {
-        *((HI_HANDLE*)arg) = hOuthandle;  //½«vpssµÄ¾ä±ú·µ»Ø£¬¹©ÓÃ»§Ì¬´úÂëÖÐÊ¹ÓÃ
+        *((HI_HANDLE*)arg) = hOuthandle;  //ï¿½ï¿½vpssï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½
     }
 
     return s32Ret;
@@ -15386,7 +15386,7 @@ HI_S32 VDEC_VPSS_Init(HI_VOID)
     //HI_U32 i,j;
     HI_S32 s32Ret;
     /*init vpss*/
-    /*CNcomment:¶Ôvpss³õÊ¼»¯*/
+    /*CNcomment:ï¿½ï¿½vpssï¿½ï¿½Ê¼ï¿½ï¿½*/
     s32Ret = (s_stVdecDrv.pVpssFunc->pfnVpssGlobalInit)();
     return s32Ret;
 }
@@ -15415,14 +15415,14 @@ static HI_S32 VDEC_ReleaseMemForDecoder(HI_HANDLE hHandle)
 
     for (i = 0; i < VDEC_MAX_BUFFER_RECORD; i++)
     {
-        //½Úµã¼ÇÂ¼µÄÖ¡´æÃ»ÓÐ±»ºó¼¶Õ¼ÓÃ£¬Ö±½ÓÊÍ·Å
+        //ï¿½Úµï¿½ï¿½Â¼ï¿½ï¿½Ö¡ï¿½ï¿½Ã»ï¿½Ð±ï¿½ï¿½ï¿½Õ¼ï¿½Ã£ï¿½Ö±ï¿½ï¿½ï¿½Í·ï¿½
 #ifdef VFMW_VPSS_BYPASS_EN   //specialFrameExist->specialFrameNum    bSpecialFrameCanRls
         if (!((s_stVdecDrv.stRemainFrmList.s32Num != 0) && (VDEC_IsSpecialFrm(&pstChan->stFrameBufferRecord[i].stFrameBuffer))))
 #else
         if (!((pstChan->specialFrameExist == 1) && (pstChan->specialFramePhyAddr == pstChan->stFrameBufferRecord[i].stFrameBuffer.u32StartPhyAddr)))
 #endif
         {
-            //1:ÊÍ·ÅÖ¡´æ½Úµã
+            //1:ï¿½Í·ï¿½Ö¡ï¿½ï¿½Úµï¿½
             if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enFrameBufferNodeStatus)
             {
                 s32Ret = VDEC_Chan_ReleasePreMem(&pstChan->stFrameBufferRecord[i].stFrameBuffer);
@@ -15438,7 +15438,7 @@ static HI_S32 VDEC_ReleaseMemForDecoder(HI_HANDLE hHandle)
             }
 
         #ifdef HI_HDR_SUPPORT
-            //2:ÊÍ·Åhdr½Úµã
+            //2:ï¿½Í·ï¿½hdrï¿½Úµï¿½
             if (pstChan->stVdecHdrAttr.enVdecHDRType != HI_VDEC_HDR_CHAN_TYPE_BUTT)
             {
                 if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enHdrBufferNodeStatus)
@@ -15457,7 +15457,7 @@ static HI_S32 VDEC_ReleaseMemForDecoder(HI_HANDLE hHandle)
             }
         #endif
 
-            //3:ÊÍ·Åpmv½Úµã
+            //3:ï¿½Í·ï¿½pmvï¿½Úµï¿½
             if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enPmvBufferNodeStatus)
             {
                 s32Ret = VDEC_Chan_ReleasePreMem(&pstChan->stFrameBufferRecord[i].stPmvBuffer);
@@ -15472,7 +15472,7 @@ static HI_S32 VDEC_ReleaseMemForDecoder(HI_HANDLE hHandle)
                 HI_DRV_VDEC_ReleaseMem(&pstChan->stFrameBufferRecord[i].stPmvBuffer, pstChan->bTvp, HI_TRUE);
             }
 
-            //4:¸´Î»×ÜÖ¡´æ×´Ì¬
+            //4:ï¿½ï¿½Î»ï¿½ï¿½Ö¡ï¿½ï¿½×´Ì¬
             s32Ret = VDEC_DelFrmBufRec(hHandle, i);
             if (HI_SUCCESS != s32Ret)
             {
@@ -15482,7 +15482,7 @@ static HI_S32 VDEC_ReleaseMemForDecoder(HI_HANDLE hHandle)
         }
         else
         {
-            //ºó¼¶²»Ê¹ÓÃpmvÊý¾Ý£¬Ö±½ÓÊÍ·Å
+            //ï¿½ó¼¶²ï¿½Ê¹ï¿½ï¿½pmvï¿½ï¿½ï¿½Ý£ï¿½Ö±ï¿½ï¿½ï¿½Í·ï¿½
             if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pstChan->stFrameBufferRecord[i].enPmvBufferNodeStatus)
             {
                 s32Ret = VDEC_Chan_ReleasePreMem(&pstChan->stFrameBufferRecord[i].stPmvBuffer);
@@ -15556,7 +15556,7 @@ static HI_VOID GetAllocMemInfo(VDEC_CHANNEL_S* pstChan, VDEC_AllocMem_Info_S *ps
     HI_U32 u32Index = 0;
     HI_U32 u32CfgCnt = 0;
 
-    //¼ÆËã´ËÍ¨µÀ»¹ÐèÒªÅäÖÃµÄÖ¡´æ£¬pmv£¬hdr bufferµÄ¸öÊý
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ãµï¿½Ö¡ï¿½æ£¬pmvï¿½ï¿½hdr bufferï¿½Ä¸ï¿½ï¿½ï¿½
     if(pstChan->stVFMWReportFrameInfo.u32AllocFrameOnly == 0)
     {
         if (pstChan->stVFMWReportFrameInfo.u32ImageNum + pstChan->stOption.s32ExtraFrameStoreNum >= pstChan->stVFMWConfiguredBufferNum.u32ImageNum)
@@ -15571,7 +15571,7 @@ static HI_VOID GetAllocMemInfo(VDEC_CHANNEL_S* pstChan, VDEC_AllocMem_Info_S *ps
     }
     else
     {
-        //VP9 ¶¯Ì¬Ö¡´æÊ±VFMW ÉÏ±¨×ÜÖ¡´æÊý
+        //VP9 ï¿½ï¿½Ì¬Ö¡ï¿½ï¿½Ê±VFMW ï¿½Ï±ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½
         if(pstChan->stVFMWReportFrameInfo.u32ImageNumOnly > 0)
         {
             if(pstChan->stVFMWReportFrameInfo.u32ImageSizeOnly == pstChan->stVFMWReportFrameInfo.u32ImageSize)
@@ -15582,7 +15582,7 @@ static HI_VOID GetAllocMemInfo(VDEC_CHANNEL_S* pstChan, VDEC_AllocMem_Info_S *ps
             {
                 for(u32Index=0; u32Index<VDEC_MAX_BUFFER_RECORD; u32Index++)
                 {
-                    //²éÕÒ¸Ã·Ö±æÂÊÒÑ¾­ÅäÖÃµÄÖ¡´æ
+                    //ï¿½ï¿½ï¿½Ò¸Ã·Ö±ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ãµï¿½Ö¡ï¿½ï¿½
                     if(pstChan->stFrameBufferRecord[u32Index].enFrameBufferNodeStatus != DRV_VDEC_BUFFER_STATUS_BUTT &&
                        pstChan->stFrameBufferRecord[u32Index].stFrameBuffer.u32Size == pstChan->stVFMWReportFrameInfo.u32ImageSizeOnly &&
                        pstChan->stFrameBufferRecord[u32Index].bConfigured == HI_TRUE &&
@@ -15641,7 +15641,7 @@ static HI_VOID AllocFrameMem(VDEC_CHANNEL_S* pstChan,
     HI_S32 s32Ret = HI_SUCCESS;
 
     pstMemBuffer->u32Size = pstChan->stVFMWReportFrameInfo.u32ImageSize;
-    //ÓÐÔ¤·ÖÅäµÄ»°ÏÈ´ÓÔ¤·ÖÅäÀïÃæÄÃÖ¡´æÊý¾Ý£¬Ã»ÓÐµÄ»°²ÉÓÃ¶¯Ì¬·ÖÅä
+    //ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½È´ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Ã»ï¿½ÐµÄ»ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 #ifdef HI_TEE_SUPPORT
 
     if (HI_TRUE == pstChan->bTvp)
@@ -15657,32 +15657,32 @@ static HI_VOID AllocFrameMem(VDEC_CHANNEL_S* pstChan,
 
     if (HI_SUCCESS != s32Ret)
     {
-        //Ô¤·ÖÅä·ÖÅä²»µ½µÄ»°Ö±½Ó´ÓÏµÍ³ÀïÃæ·ÖÅä
+        //Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä²»ï¿½ï¿½ï¿½Ä»ï¿½Ö±ï¿½Ó´ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         s32Ret = HI_DRV_VDEC_AllocMem("VFMW_FRM_BUF", NULL, pstMemBuffer->u32Size, 0, pstMemBuffer, pstChan->bTvp, g_bMapFrmEnable);
 
         if (HI_SUCCESS != s32Ret)
         {
             HI_WARN_VDEC("no memory !\n");
-            //×´Ì¬ÎªBUTT±íÊ¾´Ë½Úµã¼ÇÂ¼µÄÖ¡´æÐÅÏ¢ÎÞÐ§
+            //×´Ì¬ÎªBUTTï¿½ï¿½Ê¾ï¿½Ë½Úµï¿½ï¿½Â¼ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ð§
             pstFrameBuf->enBufNodeStatus = DRV_VDEC_BUFFER_STATUS_BUTT;
             pstAllocMemInfo->bAllocFrameBuffer = HI_FALSE;
-            return; //·ÀÖ¹Frame·ÖÅäÊ§°Ü£¬¼ÌÐø·ÖÅämetadataÓëpmv£¬¶ø¸ÃÄÚ´æÓÖ²»»áÅäÖÃÏÂÈ¥£¬µ¼ÖÂmetadataÓëpmvÎÞ·¨ÊÍ·Å¡£
+            return; //ï¿½ï¿½Ö¹Frameï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½metadataï¿½ï¿½pmvï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½metadataï¿½ï¿½pmvï¿½Þ·ï¿½ï¿½Í·Å¡ï¿½
         }
         else
         {
-            //×´Ì¬ÎªSYSALLOC±íÊ¾´Ë½Úµã¼ÇÂ¼µÄÖ¡´æÐÅÏ¢ÓÐÐ§£¬ÇÒÄÚ´æÀ´×Ô¶¯Ì¬·ÖÅä
+            //×´Ì¬ÎªSYSALLOCï¿½ï¿½Ê¾ï¿½Ë½Úµï¿½ï¿½Â¼ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
             pstFrameBuf->enBufNodeStatus = DRV_VDEC_BUFFER_STATUS_SYSALLOC;
             pstAllocMemInfo->bAllocFrameBuffer = HI_TRUE;
         }
     }
     else
     {
-        //×´Ì¬ÎªPREALLOC±íÊ¾½Úµã¼ÇÂ¼µÄÖ¡´æÐÅÏ¢ÓÐÐ§£¬ÇÒÄÚ´æÀ´×ÔÔ¤·ÖÅä
+        //×´Ì¬ÎªPREALLOCï¿½ï¿½Ê¾ï¿½Úµï¿½ï¿½Â¼ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
         pstFrameBuf->enBufNodeStatus = DRV_VDEC_BUFFER_STATUS_PREALLOC;
         pstAllocMemInfo->bAllocFrameBuffer = HI_TRUE;
     }
 
-    //¼ÇÂ¼Ö¡´æÐÅÏ¢µ½¾Ö²¿±äÁ¿stFrameBufÖÐ£¬ÅäÖÃ¸øvfmw
+    //ï¿½ï¿½Â¼Ö¡ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½stFrameBufï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmw
     pstFrameBuf->u32StartPhyAddr = pstMemBuffer->u32StartPhyAddr;
     pstFrameBuf->u64StartVirAddr = (HI_U64)(HI_SIZE_T)pstMemBuffer->pu8StartVirAddr;
     pstFrameBuf->u32Size         = pstMemBuffer->u32Size;
@@ -15698,13 +15698,13 @@ static HI_VOID AllocMetadataMem(VDEC_CHANNEL_S* pstChan,
 {
     HI_S32 s32Ret = HI_SUCCESS;
 
-    //2:·ÖÅähdr metadata buffer
+    //2:ï¿½ï¿½ï¿½ï¿½hdr metadata buffer
     if (pstAllocMemInfo->u32NeededHdrMetadataNum != 0)
     {
 
         memset(pstMemBuffer, 0, sizeof(VDEC_BUFFER_S));
         pstMemBuffer->u32Size = pstChan->stVFMWReportFrameInfo.u32HdrMetadataSize;
-        //hdr metadataÐÅÏ¢Ö±½Ó´ÓÏµÍ³ÀïÃæ¶¯Ì¬·ÖÅä£¬ÒòÎªvoÒªÓÃ´ËÆ¬bufferÓ³ÉäÓÃ»§Ì¬ÐéÄâµØÖ·£¬Èç¹û´«µÝµÄÎïÀíµØÖ·²»ÊÇÖ±½Ó´ÓÏµÍ³ÀïÃæ·ÖÅäµÄ»°£¬»áÓ³ÉäÊ§°Ü
+        //hdr metadataï¿½ï¿½Ï¢Ö±ï¿½Ó´ï¿½ÏµÍ³ï¿½ï¿½ï¿½æ¶¯Ì¬ï¿½ï¿½ï¿½ä£¬ï¿½ï¿½ÎªvoÒªï¿½Ã´ï¿½Æ¬bufferÓ³ï¿½ï¿½ï¿½Ã»ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ýµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó´ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½ï¿½Ê§ï¿½ï¿½
         s32Ret = HI_DRV_VDEC_AllocMem("VFMW_HDR_BUF", NULL, pstMemBuffer->u32Size, 0, pstMemBuffer, HI_FALSE, HI_TRUE);
 
         if (HI_SUCCESS != s32Ret)
@@ -15722,7 +15722,7 @@ static HI_VOID AllocMetadataMem(VDEC_CHANNEL_S* pstChan,
                 HI_DRV_VDEC_ReleaseMem(pstMemBuffer, pstChan->bTvp, HI_FALSE);
             }
 
-            return;//·ÀÖ¹metadata·ÖÅäÊ§°Ü£¬¼ÌÐø·ÖÅäpmv£¬¶ø¸ÃÄÚ´æÓÖ²»»áÅäÖÃÏÂÈ¥£¬µ¼ÖÂframeÓëpmvÎÞ·¨ÊÍ·Å¡£
+            return;//ï¿½ï¿½Ö¹metadataï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pmvï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½frameï¿½ï¿½pmvï¿½Þ·ï¿½ï¿½Í·Å¡ï¿½
         }
         else
         {
@@ -15730,7 +15730,7 @@ static HI_VOID AllocMetadataMem(VDEC_CHANNEL_S* pstChan,
             pstAllocMemInfo->bAllocHdrMetadataBuffer = HI_TRUE;
         }
 
-        //¼ÇÂ¼metadataÐÅÏ¢µ½¾Ö²¿±äÁ¿stFrameBufÖÐ£¬ÅäÖÃ¸øvfmw
+        //ï¿½ï¿½Â¼metadataï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½stFrameBufï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmw
         pstFrameBuf->u32HdrMetadataStartPhyAddr = pstMemBuffer->u32StartPhyAddr;
         pstFrameBuf->u64HdrMetadataStartVirAddr = (HI_U64)(HI_SIZE_T)pstMemBuffer->pu8StartVirAddr;
         pstFrameBuf->u32HdrMetadataSize         = pstMemBuffer->u32Size;
@@ -15751,12 +15751,12 @@ static HI_VOID AllocPmvMem(VDEC_CHANNEL_S* pstChan,
 {
     HI_S32 s32Ret = HI_SUCCESS;
 
-    //Èç¹ûpmvµÄbufferÒÑ¾­ÅäÖÃÍê³ÉÔò²»¼ÌÐøÉêÇë£¬pmvµÄbuffer¸öÊýÎª²Î¿¼Ö¡+1£¬±ÈÖ¡´æbufferµÄ¸öÊýÉÙ
+    //ï¿½ï¿½ï¿½pmvï¿½ï¿½bufferï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò²»¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬pmvï¿½ï¿½bufferï¿½ï¿½ï¿½ï¿½Îªï¿½Î¿ï¿½Ö¡+1ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½bufferï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½
     if (pstAllocMemInfo->u32NeededPmvNum != 0)
     {
         memset(pstMemBuffer, 0, sizeof(VDEC_BUFFER_S));
         pstMemBuffer->u32Size = pstChan->stVFMWReportFrameInfo.u32PmvSize;
-        //ÓÐÔ¤·ÖÅäµÄ»°ÏÈ´ÓÔ¤·ÖÅäÀïÃæÄÃÖ¡´æÊý¾Ý£¬Ã»ÓÐµÄ»°²ÉÓÃ¶¯Ì¬·ÖÅä
+        //ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½È´ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Ã»ï¿½ÐµÄ»ï¿½ï¿½ï¿½ï¿½Ã¶ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 #ifdef HI_TEE_SUPPORT
         if (HI_TRUE == pstChan->bTvp)
         {
@@ -15770,7 +15770,7 @@ static HI_VOID AllocPmvMem(VDEC_CHANNEL_S* pstChan,
 
         if (HI_SUCCESS != s32Ret)
         {
-            //Ô¤·ÖÅä·ÖÅä²»µ½µÄ»°Ö±½Ó´ÓÏµÍ³ÀïÃæ·ÖÅä
+            //Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä²»ï¿½ï¿½ï¿½Ä»ï¿½Ö±ï¿½Ó´ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         #ifdef HI_TEE_SUPPORT
             if (HI_TRUE == pstChan->bTvp)
             {
@@ -15790,7 +15790,7 @@ static HI_VOID AllocPmvMem(VDEC_CHANNEL_S* pstChan,
             if (HI_SUCCESS != s32Ret)
             {
                 HI_WARN_VDEC("no memory !\n");
-                //ÎÞÐ§½Úµã
+                //ï¿½ï¿½Ð§ï¿½Úµï¿½
                 pstFrameBuf->enBufPmvNodeStatus = DRV_VDEC_BUFFER_STATUS_BUTT;
                 pstAllocMemInfo->bAllocPmvBuffer = HI_FALSE;
 
@@ -15814,19 +15814,19 @@ static HI_VOID AllocPmvMem(VDEC_CHANNEL_S* pstChan,
             }
             else
             {
-                //ÓÐÐ§½Úµã£¬ÄÚ´æÀ´×ÔÏµÍ³¶¯Ì¬·ÖÅä
+                //ï¿½ï¿½Ð§ï¿½Úµã£¬ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
                 pstFrameBuf->enBufPmvNodeStatus = DRV_VDEC_BUFFER_STATUS_SYSALLOC;
                 pstAllocMemInfo->bAllocPmvBuffer = HI_TRUE;
             }
         }
         else
         {
-            //ÓÐÐ§½Úµã£¬ÄÚ´æÀ´×ÔÔ¤·ÖÅä
+            //ï¿½ï¿½Ð§ï¿½Úµã£¬ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
             pstFrameBuf->enBufPmvNodeStatus = DRV_VDEC_BUFFER_STATUS_PREALLOC;
             pstAllocMemInfo->bAllocPmvBuffer = HI_TRUE;
         }
 
-        //¼ÇÂ¼pmvÐÅÏ¢µ½¾Ö²¿±äÁ¿stFrameBufÖÐ£¬ÅäÖÃ¸øvfmw
+        //ï¿½ï¿½Â¼pmvï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½stFrameBufï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmw
         pstFrameBuf->u32PmvStartPhyAddr = pstMemBuffer->u32StartPhyAddr;
         pstFrameBuf->u64PmvStartVirAddr = (HI_U64)(HI_SIZE_T)pstMemBuffer->pu8StartVirAddr;
         pstFrameBuf->u32PmvSize         = pstMemBuffer->u32Size;
@@ -15863,7 +15863,7 @@ static HI_VOID SetAndRecodrMem(HI_HANDLE hHandle,
     HI_S32 s32Ret = HI_SUCCESS;
     HI_U32 u32Index = 0;
 
-    //Í¬Ê±·ÖÅäµ½frame,pmv,hdr½Úµã²Å¾ÍÅäÖÃ¸øvfmw,µ«ÊÇÈç¹ûpmv½ÚµãÒÑ¾­ÅäÖÃ¹»ÁË£¬´Ë´ÎÅäÖÃÔò²»ÐèÒªÅäÖÃpmv½Úµã
+    //Í¬Ê±ï¿½ï¿½ï¿½äµ½frame,pmv,hdrï¿½Úµï¿½Å¾ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmw,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pmvï¿½Úµï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½Ë£ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½pmvï¿½Úµï¿½
     if (CheckIsAllMemReady(pstAllocMemInfo))
     {
         s32Ret = VDEC_AddFrmBufRec(hHandle, pstFrameBuf, &u32Index);
@@ -15892,7 +15892,7 @@ static HI_VOID SetAndRecodrMem(HI_HANDLE hHandle,
         }
         else
         {
-            //¼ÇÂ¼´Ë½ÚµãÐÅÏ¢ÐÅÏ¢¿ÉÓÃ£¬ÏÂ´ÎÔÙÅäÖÃ¸øvfmw
+            //ï¿½ï¿½Â¼ï¿½Ë½Úµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ã£ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmw
             if (u32Index < VDEC_MAX_BUFFER_RECORD)
             {
                 pstChan->stFrameBufferRecord[u32Index].bConfigured = HI_FALSE;
@@ -15942,7 +15942,7 @@ static HI_S32 VDEC_AllocMemForDecoder(HI_HANDLE hHandle)
 
     if (pstChan->stVFMWReportFrameInfo.u32AllocFrameOnly == 1)
     {
-        //¶¯Ì¬ÊÍ·ÅVP9 Ö¡´æ
+        //ï¿½ï¿½Ì¬ï¿½Í·ï¿½VP9 Ö¡ï¿½ï¿½
         for (u32Index = 0; u32Index < VDEC_MAX_BUFFER_RECORD; u32Index++)
         {
             if (pstChan->stFrameBufferRecord[u32Index].enFrameBufferNodeStatus != DRV_VDEC_BUFFER_STATUS_BUTT &&
@@ -15971,16 +15971,16 @@ static HI_S32 VDEC_AllocMemForDecoder(HI_HANDLE hHandle)
         s32Ret = VDEC_SetChanControlState(hHandle, ALLOC_FRAME_BUF_TO_CHAN);
         VDEC_ASSERT_RETURN(s32Ret == HI_SUCCESS, s32Ret);
 
-        //Èç¹ûÍ¨µÀµÚÒ»´Î»òÕßÐèÒªÖØÐÂÅäÖÃÖ¡´æ£¬ÔòÏÈÇå¿Õ½ÚµãÐÅÏ¢£¬²¢ÊÍ·ÅÉÏÒ»´ÎÅäÖÃµÄÖ¡´æ
+        //ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½Úµï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½Ö¡ï¿½ï¿½
         if (0 == pstChan->stVFMWConfiguredBufferNum.u32ImageNum && pstChan->stVFMWReportFrameInfo.u32AllocFrameOnly == 0)
         {
-            //Í¨µÀÅäÖÃÐÂÖ¡´æÊý¾ÝÖ®Ç°ÊÍ·ÅÉÏÒ»¸ö·Ö±æÂÊ·ÖÅäÏÂÀ´µÄÖ¡´æ
+            //Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½Í·ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Ê·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
             s32Ret = VDEC_ReleaseMemForDecoder(hHandle);
             if (HI_SUCCESS != s32Ret)
             {
                 HI_ERR_VDEC("VDEC_ReleaseMemForDecoder err! return:%#x .\n", s32Ret);
             }
-            // Çå¿ÕÍ¨µÀÀïÖ¡´æ·ÖÅäµÄ¼ÇÂ¼,µ«ÊÇ²»Çå³ý±ä·Ö±æÂÊÖ®Ç°±»ºó¼¶Õ¼ÓÃµÄÖ¡
+            // ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â¼,ï¿½ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ö®Ç°ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½Ãµï¿½Ö¡
             s32Ret = VDEC_ResetChanFrmBuf(hHandle);
 
             if (HI_SUCCESS != s32Ret)
@@ -16000,15 +16000,15 @@ static HI_S32 VDEC_AllocMemForDecoder(HI_HANDLE hHandle)
                 break;
             }
 
-            //ÏÈ¼ì²éÒ»ÏÂÓÐÃ»ÓÐ¿ÉÒÔÖ±½ÓÅäÖÃ¸øvfmwµÄ½Úµã£¬ÓÐµÄ»°Ö±½ÓÅäÖÃ
+            //ï¿½È¼ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð¿ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmwï¿½Ä½Úµã£¬ï¿½ÐµÄ»ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             s32Ret = VDEC_SetUseableBufferToDecoder(hHandle);
             if (s32Ret == HI_SUCCESS)
             {
                 continue;
             }
 
-            //Èç¹ûÃ»ÓÐ¿ÉÒÔÖ±½ÓÅäÖÃ¸øvfmwµÄ½Úµã£¬ÔòÐÂ·ÖÅä
-            //1:·ÖÅäÖ¡´æbuffer
+            //ï¿½ï¿½ï¿½Ã»ï¿½Ð¿ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½vfmwï¿½Ä½Úµã£¬ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½
+            //1:ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½buffer
             memset(&stMemBuffer, 0, sizeof(VDEC_BUFFER_S));
             memset(&stFrameBuf, 0, sizeof(FRAME_BUF_S));
 
@@ -16039,7 +16039,7 @@ static SINT32 VdecTaskFunc(VOID* param)   //sdk
     HI_CHIP_VERSION_E       enChipVersion   = HI_CHIP_VERSION_V100;
     HI_U32                  b98mv200Vp9burst = 0;
 #endif
-    u32TaskRunFlag = 1;//±êÊ¶Task¿ªÊ¼ÔË×ª£¬·ÀÖ¹task»¹Ã»ÓÐ¿ªÊ¼run¾Í±»Ç¿ÖÆcloseµ¼ÖÂ¹Ò×¡
+    u32TaskRunFlag = 1;//ï¿½ï¿½Ê¶Taskï¿½ï¿½Ê¼ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ö¹taskï¿½ï¿½Ã»ï¿½Ð¿ï¿½Ê¼runï¿½Í±ï¿½Ç¿ï¿½ï¿½closeï¿½ï¿½ï¿½Â¹ï¿½×¡
 
     while (1)
     {
@@ -16968,7 +16968,7 @@ HI_S32 VDEC_DRV_Init(HI_VOID)
         return ret;
     }
 
-    /*MCEÁ÷³Ì£¬ÔÚÕâÀï³õÊ¼»¯bypassÏà¹Ø±äÁ¿*/
+    /*MCEï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½bypassï¿½ï¿½Ø±ï¿½ï¿½ï¿½*/
 #ifdef VFMW_VPSS_BYPASS_EN
     VDEC_DRV_SpecialFrmListInit();
 #endif
@@ -17406,7 +17406,7 @@ static HI_VOID BUFMNG_VDEC_List_Deinit(VDEC_List_S* pList)
         {
             HI_DRV_VDEC_ReleaseMem(&pSpecialFrmRec->frmBufRec, HI_FALSE, g_bMapFrmEnable);
         }
-        //Çå¿Õ¸Ã½ÚµãÄÚÈÝ£¬ÊÓÎª¿ÕÏÐ½Úµã
+        //ï¿½ï¿½Õ¸Ã½Úµï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ð½Úµï¿½
         memset(pSpecialFrmRec, 0, sizeof(VDEC_SPECIAL_FRM_INFO_S));
         pSpecialFrmRec->enbufferNodeStatus = DRV_VDEC_BUFFER_STATUS_BUTT;
         pSpecialFrmRec->enhdrNodeStatus   = DRV_VDEC_BUFFER_STATUS_BUTT;
@@ -17520,7 +17520,7 @@ static HI_S32 BUFMNG_VDEC_List_Del(VDEC_List_S* pList, HI_U32 u32Index)
     BUFMNG_SpinLockIRQ(&pList->stIrq);
     pSpecialFrmRec = &pList->stSpecialFrmRec[u32Index];
 
-    //Çå¿Õ¸Ã½ÚµãÄÚÈÝ£¬ÊÓÎª¿ÕÏÐ½Úµã
+    //ï¿½ï¿½Õ¸Ã½Úµï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ð½Úµï¿½
     memset(pSpecialFrmRec, 0, sizeof(VDEC_SPECIAL_FRM_INFO_S));
     pSpecialFrmRec->enbufferNodeStatus = DRV_VDEC_BUFFER_STATUS_BUTT;
     pSpecialFrmRec->enhdrNodeStatus    = DRV_VDEC_BUFFER_STATUS_BUTT;
@@ -17535,8 +17535,8 @@ static HI_S32 BUFMNG_VDEC_List_Del(VDEC_List_S* pList, HI_U32 u32Index)
 }
 
 /******************************************************/
-/***         ÄÚ²¿È«¾Ö»¹Ö¡½Ó¿Ú                       ***/
-/** ¸Ãº¯ÊýÊÇÄÚ²¿vdecÏß³Ìµ÷ÓÃ                        ***/
+/***         ï¿½Ú²ï¿½È«ï¿½Ö»ï¿½Ö¡ï¿½Ó¿ï¿½                       ***/
+/** ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½vdecï¿½ß³Ìµï¿½ï¿½ï¿½                        ***/
 /******************************************************/
 HI_S32 VDEC_DRV_GlobalRelFrmInter(HI_U32 u32Index)
 {
@@ -17560,7 +17560,7 @@ HI_S32 VDEC_DRV_GlobalRelFrmInter(HI_U32 u32Index)
 #ifdef HI_TEE_SUPPORT
     if (HI_TRUE == pSpecialFrmRec->bIsSecFrm)
     {
-        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmRec->enbufferNodeStatus)   /*¶¯Ì¬ÉêÇë*/
+        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmRec->enbufferNodeStatus)   /*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½*/
         {
             HI_DRV_VDEC_Release_TVP(&pSpecialFrmRec->frmBufRec);
         }
@@ -17568,18 +17568,18 @@ HI_S32 VDEC_DRV_GlobalRelFrmInter(HI_U32 u32Index)
     else
 #endif
     {
-        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmRec->enbufferNodeStatus)   /*¶¯Ì¬ÉêÇë*/
+        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmRec->enbufferNodeStatus)   /*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½*/
         {
             HI_DRV_VDEC_ReleaseMem(&pSpecialFrmRec->frmBufRec, HI_FALSE, g_bMapFrmEnable);
         }
         else
         {
-            /*Ô¤·ÖÅä*/
+            /*Ô¤ï¿½ï¿½ï¿½ï¿½*/
             VDEC_Chan_ReleasePreMem(&pSpecialFrmRec->frmBufRec);
         }
     }
 
-    if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmRec->enhdrNodeStatus)  /*¶¯Ì¬ÉêÇë*/
+    if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmRec->enhdrNodeStatus)  /*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½*/
     {
         HI_DRV_VDEC_UnmapAndRelease(&pSpecialFrmRec->hdrBufRec);
     }
@@ -17593,8 +17593,8 @@ HI_S32 VDEC_DRV_GlobalRelFrmInter(HI_U32 u32Index)
 }
 
 /******************************************************/
-/***             È«¾Ö»¹Ö¡½Ó¿Ú                       ***/
-/** ´Ë´¦ÊäÈëµÄ pstFrame Ó¦¶ÔÓ¦metadataÇ¿×ªÖÐµÄÐÅÏ¢  ***/
+/***             È«ï¿½Ö»ï¿½Ö¡ï¿½Ó¿ï¿½                       ***/
+/** ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ pstFrame Ó¦ï¿½ï¿½Ó¦metadataÇ¿×ªï¿½Ðµï¿½ï¿½ï¿½Ï¢  ***/
 /******************************************************/
 HI_S32 HI_DRV_VDEC_GlobalRelFrm(HI_DRV_VIDEO_FRAME_S* pstFrame)
 {
@@ -17620,7 +17620,7 @@ HI_S32 HI_DRV_VDEC_GlobalRelFrm(HI_DRV_VIDEO_FRAME_S* pstFrame)
 #ifdef HI_TEE_SUPPORT
     if (HI_TRUE == pSpecialFrmInfo->bIsSecFrm)
     {
-        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmInfo->enbufferNodeStatus)   /*¶¯Ì¬ÉêÇë*/
+        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmInfo->enbufferNodeStatus)   /*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½*/
         {
             HI_DRV_VDEC_Release_TVP(&pSpecialFrmInfo->frmBufRec);
         }
@@ -17628,24 +17628,24 @@ HI_S32 HI_DRV_VDEC_GlobalRelFrm(HI_DRV_VIDEO_FRAME_S* pstFrame)
     else
 #endif
     {
-        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmInfo->enbufferNodeStatus)   /*¶¯Ì¬ÉêÇë*/
+        if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmInfo->enbufferNodeStatus)   /*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½*/
         {
             HI_DRV_VDEC_ReleaseMem(&pSpecialFrmInfo->frmBufRec, HI_FALSE, g_bMapFrmEnable);
         }
         else
         {
-            /*Ô¤·ÖÅä*/
+            /*Ô¤ï¿½ï¿½ï¿½ï¿½*/
             VDEC_Chan_ReleasePreMem(&pSpecialFrmInfo->frmBufRec);
         }
     }
 
-    if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmInfo->enhdrNodeStatus)     /*¶¯Ì¬ÉêÇë*/
+    if (DRV_VDEC_BUFFER_STATUS_SYSALLOC == pSpecialFrmInfo->enhdrNodeStatus)     /*ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½*/
     {
         HI_DRV_VDEC_UnmapAndRelease(&pSpecialFrmInfo->hdrBufRec);
     }
     else if (DRV_VDEC_BUFFER_STATUS_PREALLOC == pSpecialFrmInfo->enhdrNodeStatus)
     {
-        /*Ô¤·ÖÅä*/
+        /*Ô¤ï¿½ï¿½ï¿½ï¿½*/
         VDEC_Chan_ReleasePreMem(&pSpecialFrmInfo->hdrBufRec);
     }
 
@@ -17657,7 +17657,7 @@ HI_S32 HI_DRV_VDEC_GlobalRelFrm(HI_DRV_VIDEO_FRAME_S* pstFrame)
 
 
 /******************************************************/
-/***            ²éÑ¯ÊÇ·ñbypass                      ***/
+/***            ï¿½ï¿½Ñ¯ï¿½Ç·ï¿½bypass                      ***/
 /**                                                 ***/
 /******************************************************/
 HI_S32 HI_DRV_VDEC_GetVideoBypassInfo(HI_HANDLE hHandle, HI_BOOL* pbVideoBypass)
@@ -17722,8 +17722,8 @@ HI_S32 HI_DRV_VDEC_GetVideoBypassInfo(HI_HANDLE hHandle, HI_BOOL* pbVideoBypass)
 
 
 /******************************************************/
-/***            »ñÈ¡specialÖ¡ÐÅÏ¢                   ***/
-/** Ìá¹©¸ø vdec_ctrl ²é¿´procÐÅÏ¢µÄº¯Êý             ***/
+/***            ï¿½ï¿½È¡specialÖ¡ï¿½ï¿½Ï¢                   ***/
+/** ï¿½á¹©ï¿½ï¿½ vdec_ctrl ï¿½é¿´procï¿½ï¿½Ï¢ï¿½Äºï¿½ï¿½ï¿½             ***/
 /******************************************************/
 HI_S32 VDEC_DRV_GetSpecialFrmInfo(VDEC_SPECIAL_FRM_PROC_S* pstSpecialFrmInfo)
 {
@@ -17756,8 +17756,8 @@ HI_S32 VDEC_DRV_GetSpecialFrmInfo(VDEC_SPECIAL_FRM_PROC_S* pstSpecialFrmInfo)
 }
 
 /******************************************************/
-/***            ³õÊ¼»¯specialFrame Á´±í             ***/
-/** ²åkoµÄÊ±ºò³õÊ¼»¯                                ***/
+/***            ï¿½ï¿½Ê¼ï¿½ï¿½specialFrame ï¿½ï¿½ï¿½ï¿½             ***/
+/** ï¿½ï¿½koï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½                                ***/
 /******************************************************/
 HI_VOID VDEC_DRV_SpecialFrmListInit(HI_VOID)
 {
@@ -17768,8 +17768,8 @@ HI_VOID VDEC_DRV_SpecialFrmListInit(HI_VOID)
 }
 
 /******************************************************/
-/***          È¥³õÊ¼»¯specialFrame Á´±í             ***/
-/** Ð¶ÔØkoµÄÊ±ºòÈ¥³õÊ¼»¯                            ***/
+/***          È¥ï¿½ï¿½Ê¼ï¿½ï¿½specialFrame ï¿½ï¿½ï¿½ï¿½             ***/
+/** Ð¶ï¿½ï¿½koï¿½ï¿½Ê±ï¿½ï¿½È¥ï¿½ï¿½Ê¼ï¿½ï¿½                            ***/
 /******************************************************/
 HI_VOID VDEC_DRV_SpecialFrmListDeinit(HI_VOID)
 {

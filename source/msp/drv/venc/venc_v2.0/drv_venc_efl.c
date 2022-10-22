@@ -105,11 +105,11 @@ enum
 
 enum
 {
-    VEDU_CAP_LEVEL_QCIF = 0, /**<The resolution of the picture to be decoded is less than or equal to 176x144.*/ /**<CNcomment: ½âÂëµÄÍ¼Ïñ´óÐ¡²»³¬¹ý176*144 */
-    VEDU_CAP_LEVEL_CIF  = 1,      /**<The resolution of the picture to be decoded less than or equal to 352x288.*/ /**<CNcomment: ½âÂëµÄÍ¼Ïñ´óÐ¡²»³¬¹ý352*288 */
-    VEDU_CAP_LEVEL_D1   = 2,       /**<The resolution of the picture to be decoded less than or equal to 720x576.*/ /**<CNcomment: ½âÂëµÄÍ¼Ïñ´óÐ¡²»³¬¹ý720*576 */
-    VEDU_CAP_LEVEL_720P = 3,     /**<The resolution of the picture to be decoded is less than or equal to 1280x720.*/ /**<CNcomment: ½âÂëµÄÍ¼Ïñ´óÐ¡²»³¬¹ý1280*720 */
-    VEDU_CAP_LEVEL_1080P = 4,   /**<The resolution of the picture to be decoded is less than or equal to 1920x1080.*/ /**<CNcomment: ½âÂëµÄÍ¼Ïñ´óÐ¡²»³¬¹ý1920*1080 */
+    VEDU_CAP_LEVEL_QCIF = 0, /**<The resolution of the picture to be decoded is less than or equal to 176x144.*/ /**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½176*144 */
+    VEDU_CAP_LEVEL_CIF  = 1,      /**<The resolution of the picture to be decoded less than or equal to 352x288.*/ /**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½352*288 */
+    VEDU_CAP_LEVEL_D1   = 2,       /**<The resolution of the picture to be decoded less than or equal to 720x576.*/ /**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½720*576 */
+    VEDU_CAP_LEVEL_720P = 3,     /**<The resolution of the picture to be decoded is less than or equal to 1280x720.*/ /**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1280*720 */
+    VEDU_CAP_LEVEL_1080P = 4,   /**<The resolution of the picture to be decoded is less than or equal to 1920x1080.*/ /**<CNcomment: ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1920*1080 */
     VEDU_CAP_LEVEL_BUTT
 } ;
 
@@ -350,7 +350,8 @@ HI_S32 VENC_DRV_GetEncodePara(VeduEfl_EncPara_S *pEncPara, VeduEfl_EncIn_S *pEnc
 
 HI_BOOL IsChipIDV500R001(HI_CHIP_TYPE_E enChipType, HI_CHIP_VERSION_E enChipVersion)
 {
-    if (((enChipType == HI_CHIP_TYPE_HI3798M) && (enChipVersion == HI_CHIP_VERSION_V300)) ||
+    if (((enChipType == HI_CHIP_TYPE_HI3798M) && (enChipVersion == HI_CHIP_VERSION_V310)) ||
+        ((enChipType == HI_CHIP_TYPE_HI3798M) && (enChipVersion == HI_CHIP_VERSION_V300)) ||
         ((enChipType == HI_CHIP_TYPE_HI3796M) && (enChipVersion == HI_CHIP_VERSION_V200)))
     {
         return HI_TRUE;
@@ -654,7 +655,7 @@ static HI_U32 H264e_MakeSlcHdr(HI_U32* pHdrBuf, HI_U32* pReorderBuf, HI_U32* pMa
     return (HI_U32)bitPara;
 }
 
-/*»ñÈ¡VPSÓï·¨ÐÅÏ¢*/
+/*ï¿½ï¿½È¡VPSï¿½ï·¨ï¿½ï¿½Ï¢*/
 static HI_U32 H265e_MakeVPS(HI_U8 *pVPSBuf, const VeduEfl_H265e_VPS_S *pVPS)
 {
     HI_U32 code;
@@ -671,7 +672,7 @@ static HI_U32 H265e_MakeVPS(HI_U8 *pVPSBuf, const VeduEfl_H265e_VPS_S *pVPS)
     VENC_DRV_BsPutBits31(&BS, 0, 4);           //video_parameter_set_id = 0  u(4)
     VENC_DRV_BsPutBits31(&BS, 3, 2);           //vps_reserved_three_2bits = 3  u(2)
     VENC_DRV_BsPutBits31(&BS, 0, 6);           //vps_max_layers_minus1 = 0   u(6)
-    VENC_DRV_BsPutBits31(&BS, 0, 3);           //vps_max_sub_layers_minus1 = 0»ò1  u(3)   ¿ª´óÐ¡P£¬È¡ÖµÎª1£»·ñÔòÈ¡ÖµÎª0
+    VENC_DRV_BsPutBits31(&BS, 0, 3);           //vps_max_sub_layers_minus1 = 0ï¿½ï¿½1  u(3)   ï¿½ï¿½ï¿½ï¿½Ð¡Pï¿½ï¿½È¡ÖµÎª1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ÖµÎª0
     VENC_DRV_BsPutBits31(&BS, 1, 1);           //vps_temporal_id_nesting_flag = 1 u(1)
     VENC_DRV_BsPutBits31(&BS, 0xffff, 16);     //vps_reserved_ffff_16bits = 0xffff u(16)
 
@@ -726,7 +727,7 @@ static HI_U32 H265e_MakeVPS(HI_U8 *pVPSBuf, const VeduEfl_H265e_VPS_S *pVPS)
     return (HI_U32)BS.totalBits;
 }
 
-/*»ñÈ¡SPSÓï·¨ÐÅÏ¢*/
+/*ï¿½ï¿½È¡SPSï¿½ï·¨ï¿½ï¿½Ï¢*/
 static HI_U32 H265e_MakeSPS(HI_U8 *pSPSBuf, const VeduEfl_H265e_SPS_S *pSPS)
 {
     HI_U32 code;
@@ -879,7 +880,7 @@ static HI_U32 H265e_MakeSPS(HI_U8 *pSPSBuf, const VeduEfl_H265e_SPS_S *pSPS)
     return (HI_U32)BS.totalBits;
 }
 
-/*»ñÈ¡PPSÓï·¨ÐÅÏ¢*/
+/*ï¿½ï¿½È¡PPSï¿½ï·¨ï¿½ï¿½Ï¢*/
 
 static HI_U32 H265e_MakePPS(HI_U8 *pPPSBuf, const VeduEfl_H265e_PPS_S *pPPS)
 {
@@ -1707,7 +1708,7 @@ static HI_U32 Convert_PIX_Format(HI_DRV_PIX_FORMAT_E oldFormat,HI_U32 flag)
    return Ret;
 }
 
-static HI_S32 QuickEncode_Process(VeduEfl_EncPara_S* EncHandle, HI_HANDLE GetImgHhd)         //³É¹¦È¡Ö¡·µ»Ø HI_SUCCESS,Á¬Ò»´Î¶¼È¡²»³É¹¦·µ»ØHI_FAILURE
+static HI_S32 QuickEncode_Process(VeduEfl_EncPara_S* EncHandle, HI_HANDLE GetImgHhd)         //ï¿½É¹ï¿½È¡Ö¡ï¿½ï¿½ï¿½ï¿½ HI_SUCCESS,ï¿½ï¿½Ò»ï¿½Î¶ï¿½È¡ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½HI_FAILURE
 {
     HI_BOOL bLastFrame = HI_FALSE;
     HI_DRV_VIDEO_FRAME_S stImage_temp;
@@ -3276,7 +3277,7 @@ static HI_VOID VENC_DRV_EflIntraFrmRateChange( VeduEfl_EncPara_S *pEncPara,HI_U3
 
 /******************************************************************************
 Function   :
-Description: »ñÈ¡¾¡Á¿¿É¿¿µÄÊäÈëÖ¡ÂÊ Óë¶ÔÓ¦µÄÊä³öÖ¡ÂÊ ²¢×öÏàÓ¦µÄ´¦Àí
+Description: ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ä´ï¿½ï¿½ï¿½
 Calls      :
 Input      :
 Output     :
@@ -3297,7 +3298,7 @@ static HI_VOID GetFrmRate_Attach( VeduEfl_EncPara_S *pEncPara,HI_UNF_VENC_CHN_AT
     }
     else
     {
-        if (pEncPara->LastFrmRate[5] == 0)  /*Ç°6 Ö¡»¹Ã»ÓÐÂú£¬Ò»Ö±ÏàÐÅ×î´óµÄÄÇ¸öÖ¡ÂÊ*/
+        if (pEncPara->LastFrmRate[5] == 0)  /*Ç°6 Ö¡ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¸ï¿½Ö¡ï¿½ï¿½*/
         {
             max1 = D_VENC_RC_MAX3(pEncPara->LastFrmRate[0], pEncPara->LastFrmRate[1], pEncPara->LastFrmRate[2]);
             max2 = D_VENC_RC_MAX3(pEncPara->LastFrmRate[3], pEncPara->LastFrmRate[4], pEncPara->LastFrmRate[5]);
@@ -3309,7 +3310,7 @@ static HI_VOID GetFrmRate_Attach( VeduEfl_EncPara_S *pEncPara,HI_UNF_VENC_CHN_AT
             {
                 newViFrmRate = pEncPara->stRc.ViFrmRate;
             }
-            else if (pEncPara->LastSecInputFrmRate[1] != 0) /*Ç°2sÖ¡ÂÊ¶¼Í³¼Æ³öÀ´ÁË*/
+            else if (pEncPara->LastSecInputFrmRate[1] != 0) /*Ç°2sÖ¡ï¿½Ê¶ï¿½Í³ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½*/
             {
                 diff1 = D_VENC_RC_ABS(pEncPara->LastSecInputFrmRate[0], pEncPara->LastSecInputFrmRate[1]);
                 if ( diff1 <= 3)
@@ -3321,11 +3322,11 @@ static HI_VOID GetFrmRate_Attach( VeduEfl_EncPara_S *pEncPara,HI_UNF_VENC_CHN_AT
                     newViFrmRate = pEncPara->LastSecInputFrmRate[0];
                 }
             }
-            else if (pEncPara->LastSecInputFrmRate[0] != 0)  /*Ç°1sÖ¡ÂÊÒÑ¾­Í³¼Æ³öÀ´*/
+            else if (pEncPara->LastSecInputFrmRate[0] != 0)  /*Ç°1sÖ¡ï¿½ï¿½ï¿½Ñ¾ï¿½Í³ï¿½Æ³ï¿½ï¿½ï¿½*/
             {
                 newViFrmRate = pEncPara->LastSecInputFrmRate[0];
             }
-            else  /*µÚÒ»sµÄÖ¡ÂÊ»¹Ã»ÓÐÍ³¼Æ³öÀ´*/
+            else  /*ï¿½ï¿½Ò»sï¿½ï¿½Ö¡ï¿½Ê»ï¿½Ã»ï¿½ï¿½Í³ï¿½Æ³ï¿½ï¿½ï¿½*/
             {
                 max1 = D_VENC_RC_MAX3(pEncPara->LastFrmRate[0], pEncPara->LastFrmRate[1], pEncPara->LastFrmRate[2]);
                 max2 = D_VENC_RC_MAX3(pEncPara->LastFrmRate[3], pEncPara->LastFrmRate[4], pEncPara->LastFrmRate[5]);
@@ -3724,10 +3725,10 @@ static HI_VOID VENC_DRV_EflQueryChn_X_Stride(VeduEfl_EncIn_S* pEncIn, VeduEfl_En
 {
     if (pEncPara->stHal.YuvStoreType == VENC_STORE_PLANNAR)
     {
-       pEncIn->BusViV = pEncPara->stImage.stBufAddr[0].u32PhyAddr_Cr;//pEncPara->stImage.u32CAddr;      //Ä¿Ç°Ö¡ÐÅÏ¢½á¹¹ÌåÈ±ÉÙ¸Ã½á¹¹,planer¸ñÊ½Ê±ÐèÒª£»
+       pEncIn->BusViV = pEncPara->stImage.stBufAddr[0].u32PhyAddr_Cr;//pEncPara->stImage.u32CAddr;      //Ä¿Ç°Ö¡ï¿½ï¿½Ï¢ï¿½á¹¹ï¿½ï¿½È±ï¿½Ù¸Ã½á¹¹,planerï¿½ï¿½Ê½Ê±ï¿½ï¿½Òªï¿½ï¿½
     }
 
-    if ((pEncPara->stHal.YuvStoreType == VENC_STORE_SEMIPLANNAR) && (VENC_YUV_422 == pEncPara->YuvSampleType))  /*==Ç¿ÖÆ°ÑSEMIPLANAR_422 µ±semiplaner 420±àÂë*/
+    if ((pEncPara->stHal.YuvStoreType == VENC_STORE_SEMIPLANNAR) && (VENC_YUV_422 == pEncPara->YuvSampleType))  /*==Ç¿ï¿½Æ°ï¿½SEMIPLANAR_422 ï¿½ï¿½semiplaner 420ï¿½ï¿½ï¿½ï¿½*/
     {
         pEncIn->ViYStride = pEncPara->stImage.stBufAddr[0].u32Stride_Y;
         pEncIn->ViCStride = pEncPara->stImage.stBufAddr[0].u32Stride_C * 2;
@@ -4536,7 +4537,7 @@ HI_S32 VEDU_DRV_RCProcessOfRecoding(VeduEfl_EncPara_S *pEncPara, VeduEfl_EncIn_S
 
 static HI_VOID VENC_DRV_GetLastFrmInfo(VeduEfl_EncPara_S* pEncPara, VeduEfl_EncIn_S* pEncIn)
 {
-    if (pEncPara->stImage.u32TunnelPhyAddr)      //´ýÃ÷È·!!
+    if (pEncPara->stImage.u32TunnelPhyAddr)      //ï¿½ï¿½ï¿½ï¿½È·!!
     {
         pEncPara->stRc.LowDlyMod = HI_TRUE;
         pEncIn->TunlCellAddr = pEncPara->stImage.u32TunnelPhyAddr;
@@ -4552,10 +4553,10 @@ static HI_VOID VENC_DRV_GetLastFrmInfo(VeduEfl_EncPara_S* pEncPara, VeduEfl_EncI
 
     if (pEncPara->stHal.YuvStoreType == VENC_STORE_PLANNAR)
     {
-        pEncIn->BusViV = pEncPara->stImage.stBufAddr[0].u32PhyAddr_Cr;//pEncPara->stImage.u32CAddr;      //Ä¿Ç°Ö¡ÐÅÏ¢½á¹¹ÌåÈ±ÉÙ¸Ã½á¹¹,planer¸ñÊ½Ê±ÐèÒª£»
+        pEncIn->BusViV = pEncPara->stImage.stBufAddr[0].u32PhyAddr_Cr;//pEncPara->stImage.u32CAddr;      //Ä¿Ç°Ö¡ï¿½ï¿½Ï¢ï¿½á¹¹ï¿½ï¿½È±ï¿½Ù¸Ã½á¹¹,planerï¿½ï¿½Ê½Ê±ï¿½ï¿½Òªï¿½ï¿½
     }
 
-    if ((pEncPara->stHal.YuvStoreType == VENC_STORE_SEMIPLANNAR) && (pEncPara->YuvSampleType == VENC_YUV_422))  /*==Ç¿ÖÆ°ÑSEMIPLANAR_422 µ±semiplaner 420±àÂë*/
+    if ((pEncPara->stHal.YuvStoreType == VENC_STORE_SEMIPLANNAR) && (pEncPara->YuvSampleType == VENC_YUV_422))  /*==Ç¿ï¿½Æ°ï¿½SEMIPLANAR_422 ï¿½ï¿½semiplaner 420ï¿½ï¿½ï¿½ï¿½*/
     {
         pEncIn->ViYStride = pEncPara->stImage.stBufAddr[0].u32Stride_Y;
         pEncIn->ViCStride = pEncPara->stImage.stBufAddr[0].u32Stride_C * 2;
@@ -4602,10 +4603,10 @@ static HI_VOID VENC_DRV_GetLastFrmInfo_OMX(VeduEfl_EncPara_S* pEncPara, VeduEfl_
 
     if (pEncPara->stHal.YuvStoreType == VENC_STORE_PLANNAR)
     {
-        pEncIn->BusViV = pEncIn->BusViY + pEncPara->stImage_OMX.offset_YCr;//pEncPara->stImage_OMX.strideC*pEncPara->stImage_OMX.picHeight /2;//pEncPara->stImage.u32CAddr;      //Ä¿Ç°Ö¡ÐÅÏ¢½á¹¹ÌåÈ±ÉÙ¸Ã½á¹¹,planer¸ñÊ½Ê±ÐèÒª£»
+        pEncIn->BusViV = pEncIn->BusViY + pEncPara->stImage_OMX.offset_YCr;//pEncPara->stImage_OMX.strideC*pEncPara->stImage_OMX.picHeight /2;//pEncPara->stImage.u32CAddr;      //Ä¿Ç°Ö¡ï¿½ï¿½Ï¢ï¿½á¹¹ï¿½ï¿½È±ï¿½Ù¸Ã½á¹¹,planerï¿½ï¿½Ê½Ê±ï¿½ï¿½Òªï¿½ï¿½
     }
 
-    if ((pEncPara->stHal.YuvStoreType == VENC_STORE_SEMIPLANNAR) && (VENC_YUV_422 == pEncPara->YuvSampleType)) /*==Ç¿ÖÆ°ÑSEMIPLANAR_422 µ±semiplaner 420±àÂë*/
+    if ((pEncPara->stHal.YuvStoreType == VENC_STORE_SEMIPLANNAR) && (VENC_YUV_422 == pEncPara->YuvSampleType)) /*==Ç¿ï¿½Æ°ï¿½SEMIPLANAR_422 ï¿½ï¿½semiplaner 420ï¿½ï¿½ï¿½ï¿½*/
     {
         pEncIn->ViYStride = pEncPara->stImage_OMX.strideY;
         pEncIn->ViCStride = pEncPara->stImage_OMX.strideC * 2;
@@ -4702,7 +4703,7 @@ static HI_VOID VENC_DRV_EflTask( HI_VOID )
     HI_BOOL bTmpValue = HI_FALSE;
     VeduIpCtx.TaskRunning = 1;
 
-    /* ³õÊ¼»¯µÈ´ý¶ÓÁÐÍ·*/
+    /* ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½Í·*/
     VENC_DRV_OsalInitEvent(&g_VENC_Event, 0);
 
     /* wait for venc start */
@@ -5859,7 +5860,7 @@ HI_S32 VENC_DRV_DbgWriteYUV(HI_DRV_VIDEO_FRAME_S *pstFrame,HI_CHAR *pFileName)
             return HI_FAILURE;
         }
 
-        /*Ð´ Y Êý¾Ý*/
+        /*Ð´ Y ï¿½ï¿½ï¿½ï¿½*/
         for (i=0; i<pstFrame->u32Height; i++)
         {
             memcpy(pu8Ydata,ptr,sizeof(HI_U8)*pstFrame->stBufAddr[0].u32Stride_Y);
@@ -5876,7 +5877,7 @@ HI_S32 VENC_DRV_DbgWriteYUV(HI_DRV_VIDEO_FRAME_S *pstFrame,HI_CHAR *pFileName)
         ptr = (unsigned char *)phys_to_virt(pstFrame->stBufAddr[0].u32PhyAddr_C);
 #endif
 
-        /* U V Êý¾Ý ×ª´æ*/
+        /* U V ï¿½ï¿½ï¿½ï¿½ ×ªï¿½ï¿½*/
         for (i=0; i<pstFrame->u32Height/2; i++)
         {
             for (j=0; j<pstFrame->u32Width/2; j++)

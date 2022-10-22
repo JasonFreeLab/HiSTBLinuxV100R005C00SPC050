@@ -650,6 +650,12 @@ hi3798mv2x_config: unconfig
 	@echo "CFG_REG_END    = 10304"  >> platform.mk
 	@$(MKCONFIG) $(@:_config=) arm hi3798mv2x hi3798mv2x
 
+hi3798mv310_config: unconfig
+	@echo "CFG_REG_START  = 64"   > platform.mk
+	@echo "CFG_REG_LENGTH = 10240"  >> platform.mk
+	@echo "CFG_REG_END    = 10304"  >> platform.mk
+	@$(MKCONFIG) $(@:_config=) arm hi3798mv310 hi3798mv310
+
 hi3796mv200_config: unconfig
 	@echo "CFG_REG_START  = 64"   > platform.mk
 	@echo "CFG_REG_LENGTH = 10240"  >> platform.mk

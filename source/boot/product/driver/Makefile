@@ -34,7 +34,7 @@ endif
 ifeq ($(CFG_HI_ADVCA_SUPPORT), y)
 	objects += cipher
 	objects += pmoc
-	ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3796mv100 hi3798mv100 hi3798cv200 hi3798mv200_a hi3798mv200 hi3798mv300),)
+	ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3796mv100 hi3798mv100 hi3798cv200 hi3798mv200_a hi3798mv200 hi3798mv300 hi3798mv310),)
 		objects += advca
 	else
 		ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716mv410 hi3716mv420),)

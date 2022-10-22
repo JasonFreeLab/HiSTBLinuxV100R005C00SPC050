@@ -1568,9 +1568,11 @@ static int himciv300_pltm_resume(struct platform_device *pdev)
 static const struct of_device_id
 himciv300_match[] __maybe_unused = {
 	{ .compatible = "hi3798mv200,himciv200", },
+	{ .compatible = "hi3798mv300,himciv200", },
 	{ .compatible = "hi3796mv200,himciv200", },
 #ifndef CONFIG_TEE
 	{ .compatible = "hi3798mv200,himciv300_sd", },
+	{ .compatible = "hi3798mv300,himciv300_sd", },
 #endif
 	{},
 };

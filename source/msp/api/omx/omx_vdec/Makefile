@@ -10,7 +10,7 @@ endif
 #=======================================
 #	local varibale
 #=======================================
-ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),) 
+ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),) 
 objects := omx_vdec_v1.0
 else
 objects := omx_vdec_v2.0

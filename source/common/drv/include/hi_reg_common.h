@@ -13,7 +13,7 @@
 #include "./hi3798mv100/hi_reg_vpss.h"
 #include "./hi3798mv100/hi_reg_vdp.h"
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
 #include "./hi3798mv200/hi_reg_sys.h"
 #include "./hi3798mv200/hi_reg_peri.h"

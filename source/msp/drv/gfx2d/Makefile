@@ -59,7 +59,7 @@ GFX2D_CFLAGS = -DHWC_VERSION=0x400
 GFX2D_VER_DIR = v1
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200), )
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200), )
 GFX2D_CFLAGS = -DHWC_VERSION=0x500 -DGFX2D_SYNC_TDE -I$(MSP_DIR)/api/tde/include
 GFX2D_VER_DIR = v2
 endif

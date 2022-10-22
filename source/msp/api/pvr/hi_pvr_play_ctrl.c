@@ -171,14 +171,14 @@ static HI_S32 PVRTplayShowProc(HI_PROC_SHOW_BUFFER_S* pstBuf, HI_VOID* pPrivData
             HI_PROC_Printf(pstBuf, "\tStatus                    :0x%x\n", pstFBAttr->s32FFFBStatus);
         }
 
-        HI_PROC_Printf(pstBuf, "\tDecodec ability           :%d\n", pstFBAttr->u32DecodeAblity / (1920 * 1080)); /*Ð¾Æ¬½âÂëÄÜÁ¦ (1SÄÚÄÜ½âÂë¶àÉÙÖ¡È«¸ßÇåÂëÁ÷)*/
+        HI_PROC_Printf(pstBuf, "\tDecodec ability           :%d\n", pstFBAttr->u32DecodeAblity / (1920 * 1080)); /*Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (1Sï¿½ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)*/
         HI_PROC_Printf(pstBuf, "\tWidth                     :%d\n", pstFBAttr->u32Width);
         HI_PROC_Printf(pstBuf, "\tHeight                    :%d\n", pstFBAttr->u32Heigth);
         HI_PROC_Printf(pstBuf, "\tDisp Frame buffer         :%d\n", pstFBAttr->u32DispFrmBufNum);
         HI_PROC_Printf(pstBuf, "\tVO Frame buffer           :%d\n", pstFBAttr->u32VoUsedFrmBufNum);
-        HI_PROC_Printf(pstBuf, "\tOri frame rate            :%d\n", pstFBAttr->u32SourceFrameRate);/*ÂëÁ÷Ô­Ê¼Ö¡ÂÊ*/
-        HI_PROC_Printf(pstBuf, "\tVO In FrmRate(Int:dec)    :%d:%d\n", pstFBAttr->u32VoRate / 1000, pstFBAttr->u32VoRate % 1000); /*¼ÆËã³öÀ´µÄÓÃÓÚÉèÖÃ¸øVOµÄÊäÈëÖ¡ÂÊµÄÕûÊýºÍÐ¡ÊýÖµ*/
-        HI_PROC_Printf(pstBuf, "\tMax Dec Frm Num 1s        :%d\n", pstFBAttr->u32MaxDecFrmNum1S);/*Õë¶Ô±¾ÌõÂëÁ÷1S ½âÂëÆ÷ÄÜ½âÂëµÄ×î´óÖ¡Êý*/
+        HI_PROC_Printf(pstBuf, "\tOri frame rate            :%d\n", pstFBAttr->u32SourceFrameRate);/*ï¿½ï¿½ï¿½ï¿½Ô­Ê¼Ö¡ï¿½ï¿½*/
+        HI_PROC_Printf(pstBuf, "\tVO In FrmRate(Int:dec)    :%d:%d\n", pstFBAttr->u32VoRate / 1000, pstFBAttr->u32VoRate % 1000); /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½VOï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Öµ*/
+        HI_PROC_Printf(pstBuf, "\tMax Dec Frm Num 1s        :%d\n", pstFBAttr->u32MaxDecFrmNum1S);/*ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1S ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½*/
         HI_PROC_Printf(pstBuf, "\tIDR flag                  :%d\n", pstFBAttr->stVdecCtrlInfo.u32IDRFlag);
         HI_PROC_Printf(pstBuf, "\tB frame ref flag          :%d\n", pstFBAttr->stVdecCtrlInfo.u32BFrmRefFlag);
         HI_PROC_Printf(pstBuf, "\tContinuous flag           :%d\n", pstFBAttr->stVdecCtrlInfo.u32ContinuousFlag);
@@ -197,7 +197,7 @@ static HI_S32 PVRTplayShowProc(HI_PROC_SHOW_BUFFER_S* pstBuf, HI_VOID* pPrivData
                 {
                     HI_PROC_Printf(pstBuf, "\tDisplay distance          :%d\n", pstBKInfo->u32DispDistance);
                     HI_PROC_Printf(pstBuf, "\tFrmCnt not disp From Last :%d\n", pstBKInfo->u32FrmRemainsBeforeThisGop);
-                    /*ÒÔÏÂÁ½ÌõÐÅÏ¢Îª0µÄÊ±ºò£¬-2* ¿ìÍË»á»­ÃæÃ»ÓÐÏÔÊ¾»òÕß ¾²Ö¡*/
+                    /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Îª0ï¿½ï¿½Ê±ï¿½ï¿½-2* ï¿½ï¿½ï¿½Ë»á»­ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¡*/
                     HI_PROC_Printf(pstBuf, "\tDisplay enable(this gop)  :%d\n", pstBKInfo->stFrmTag.u32DispEnableFlag);
                     HI_PROC_Printf(pstBuf, "\tVdec FBOptimizeFlag(Should be 1)  :%d\n", pstFBAttr->stVdecCtrlInfo.u32BackwardOptimizeFlag);
                 }
@@ -205,14 +205,14 @@ static HI_S32 PVRTplayShowProc(HI_PROC_SHOW_BUFFER_S* pstBuf, HI_VOID* pPrivData
         }
         HI_PROC_Printf(pstBuf, "\n");
         HI_PROC_Printf(pstBuf, "\t---PVR Extract Frm info---\n");
-        HI_PROC_Printf(pstBuf, "\tExtract or not            :%d\n", pstFBAttr->bPVRExtract);/*PVR ÊÇ·ñ½øÐÐÌôÖ¡*/
+        HI_PROC_Printf(pstBuf, "\tExtract or not            :%d\n", pstFBAttr->bPVRExtract);/*PVR ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡*/
         if (pstFBAttr->bPVRExtract)
         {
-            HI_PROC_Printf(pstBuf, "\tEntry frame num           :%d\n", pstFBAttr->u32EntryFrameNum);/*ÏÂÒ»´Î½øÈëSmoothµÄÖ¡ */
-            HI_PROC_Printf(pstBuf, "\tTry frame cnt             :%d\n", pstFBAttr->u32TryFrameCnt);/*±¾´ÎÌôÖ¡·¶Î§*/
-            HI_PROC_Printf(pstBuf, "\tStart frame num           :%d\n", pstFBAttr->u32StartFrmNum);/*±¾´ÎÌôÖ¡·¶Î§µÄÆðÊ¼Ö¡ºÅ*/
-            HI_PROC_Printf(pstBuf, "\tEnd frame num             :%d\n", pstFBAttr->u32EndFrmNum);/*±¾´ÎÌôÖ¡·¶Î§µÄ½áÊøÖ¡ºÅ*/
-            HI_PROC_Printf(pstBuf, "\tframe cnt to send         :%d\n", (pstPvrFetchRes->u32TotalFrameNum + u32SpeedRate - 1) / u32SpeedRate); /*±¾´ÎÓ¦¸ÃÌô³öÀ´ËÍ½âÂëµÄÖ¡Êý*/
+            HI_PROC_Printf(pstBuf, "\tEntry frame num           :%d\n", pstFBAttr->u32EntryFrameNum);/*ï¿½ï¿½Ò»ï¿½Î½ï¿½ï¿½ï¿½Smoothï¿½ï¿½Ö¡ */
+            HI_PROC_Printf(pstBuf, "\tTry frame cnt             :%d\n", pstFBAttr->u32TryFrameCnt);/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Î§*/
+            HI_PROC_Printf(pstBuf, "\tStart frame num           :%d\n", pstFBAttr->u32StartFrmNum);/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Î§ï¿½ï¿½ï¿½ï¿½Ê¼Ö¡ï¿½ï¿½*/
+            HI_PROC_Printf(pstBuf, "\tEnd frame num             :%d\n", pstFBAttr->u32EndFrmNum);/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½Î§ï¿½Ä½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½*/
+            HI_PROC_Printf(pstBuf, "\tframe cnt to send         :%d\n", (pstPvrFetchRes->u32TotalFrameNum + u32SpeedRate - 1) / u32SpeedRate); /*ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½*/
 
             {
                 HI_PROC_Printf(pstBuf, "\tTotal frame num           :%d\n", pstPvrFetchRes->u32TotalFrameNum);
@@ -1219,7 +1219,7 @@ STATIC INLINE HI_S32 PVRPlaySendToTsBuffer(PVR_PLAY_CHN_S* pChnAttr, HI_U64 u64R
         return HI_ERR_PVR_PLAY_INVALID_TSBUFFER;
     }
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     if ((HI_TRUE == pChnAttr->bSecTsBuffer) && (HI_UNF_PVR_SECURE_MODE_TEE == pChnAttr->stUserCfg.enSecureMode))
     {
 
@@ -1287,7 +1287,7 @@ STATIC INLINE HI_S32 PVRPlaySendToTsBuffer(PVR_PLAY_CHN_S* pChnAttr, HI_U64 u64R
         &&  (HI_UNF_PVR_PLAY_STATE_STEPF != pChnAttr->enState))
     {
 #ifdef HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
         if ((HI_TRUE == pChnAttr->bSecTsBuffer) && (HI_UNF_PVR_SECURE_MODE_TEE == pChnAttr->stUserCfg.enSecureMode))
         {
             HI_PVR_TeePlayProcTsData(u32PhyAddr, u32CipherHead, u32HeadToAdd, u32BytesSend - u32CipherEnd - u32EndToAdd, u32EndToAdd);
@@ -1437,7 +1437,7 @@ STATIC HI_S32 PVRPlaySendPrivatePacketToTsBuffer(PVR_PLAY_CHN_S* pChnAttr, HI_U3
         }
     }
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     if ((HI_TRUE == pChnAttr->bSecTsBuffer) && (HI_UNF_PVR_SECURE_MODE_TEE == pChnAttr->stUserCfg.enSecureMode))
     {
 
@@ -2036,7 +2036,7 @@ static INLINE HI_VOID PVRPlayAnalysisHevcStream(PVR_PLAY_CHN_S* pChnAttr)
         u32StartFrm = PVR_Index_GetNextFrameNum(u32StartFrm, &pChnAttr->IndexHandle->stCycMgr);
     }
 
-    /**CNComment:HEVC¸ñÊ½ÏÂÒÔÏÂÖµ¶¼²»»á±»Ê¹ÓÃ*/
+    /**CNComment:HEVCï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½á±»Ê¹ï¿½ï¿½*/
     pChnAttr->stFBAttr.stVdecCtrlInfo.u32BFrmRefFlag = 0;
     pChnAttr->stFBAttr.stVdecCtrlInfo.u32IDRFlag = 0;
     pChnAttr->stFBAttr.bNoPFrame = HI_FALSE;
@@ -3393,7 +3393,7 @@ HI_S32 PVRPlaySmoothInit(PVR_PLAY_CHN_S** ppChnAttr)
         HI_ERR_PVR("NULL pointer error, pstFBAttr->pChnAttr is NULL\n");
         return HI_FAILURE;
     }
-    /*1. ¿ì½ø¿ìÍË¿ØÖÆ½á¹¹Ìå³õÊ¼»¯*/
+    /*1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½Æ½á¹¹ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½*/
     pstFBAttr = &(pstChnAttr->stFBAttr);
     memset(pstFBAttr, 0x0, sizeof(HI_PVR_SMOOTH_PARA_S));
     pstFBAttr->enSpeed = HI_UNF_PVR_PLAY_SPEED_BUTT;
@@ -3692,7 +3692,7 @@ STATIC void* PVRPlayMainRoutine(void* args)
         PVR_UNLOCK(&(pChnAttr->stPlayChnMutex));
         PVR_USLEEP(1000);
     }
-    //Ö÷Ïß³Ì½áÊø£¬ÊÍ·Åsmooth×ÊÔ´£¬·ÀÖ¹ÄÚ´æÐ¹Â¶
+    //ï¿½ï¿½ï¿½ß³Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½smoothï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½Ú´ï¿½Ð¹Â¶
     HI_PVR_SmoothExit(&pChnAttr->stFBAttr);
 
     if (NULL != g_pvrfpSend)
@@ -3706,9 +3706,9 @@ STATIC void* PVRPlayMainRoutine(void* args)
 }
 
 #ifdef PVR_PID_CHANGE_SUPPORT
-/*CNcomment: »Ø·ÅÊ±PID·¢Éú¸Ä±ä£¬Îª±£Ö¤ÉÙ¶ªÊ§Êý¾Ý£¬ÐèÒªµÈ´ýÉÏ¸öPIDµÄÊý¾ÝÏûºÄµ½Ò»¶¨Ë®ÏßÊ±²ÅÇÐ»»£¬
-                    ÔÚÕâ¸öµÈ´ý¹ý³ÌÖÐ»á½«Í¨µÀÊôÐÔbChangePIDÖÃÎªHI_TRUE£¬½øÐÐseek£¬pause£¬resume¼°¿ì½ø¿ìÍË£¬ÖðÖ¡²¥·ÅµÈ²Ù×÷Ê±
-                    ·µ»ØHI_ERR_PVR_NOT_SUPPORT¡£Ö§³ÖstopÍ¨µÀ*/
+/*CNcomment: ï¿½Ø·ï¿½Ê±PIDï¿½ï¿½ï¿½ï¿½ï¿½Ä±ä£¬Îªï¿½ï¿½Ö¤ï¿½Ù¶ï¿½Ê§ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Òªï¿½È´ï¿½ï¿½Ï¸ï¿½PIDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½Ë®ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½
+                    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»á½«Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½bChangePIDï¿½ï¿½ÎªHI_TRUEï¿½ï¿½ï¿½ï¿½ï¿½ï¿½seekï¿½ï¿½pauseï¿½ï¿½resumeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ÅµÈ²ï¿½ï¿½ï¿½Ê±
+                    ï¿½ï¿½ï¿½ï¿½HI_ERR_PVR_NOT_SUPPORTï¿½ï¿½Ö§ï¿½ï¿½stopÍ¨ï¿½ï¿½*/
 static HI_S32 PVRPlayWaitCurrentDataConsume(PVR_PLAY_CHN_S *pChnAttr)
 {
     HI_S32 s32Ret = HI_SUCCESS;
@@ -3718,15 +3718,15 @@ static HI_S32 PVRPlayWaitCurrentDataConsume(PVR_PLAY_CHN_S *pChnAttr)
     HI_U32 u32LastVidPts = 0;
     HI_U32 u32WaitAvplaySyncTime = 0;
     HI_U32 u32SpeedRate = 0;
-    HI_U32 u32TimeOutMinMs = 1 * 1000; //µÈ´ýÊ±¼äµÄ×îÐ¡»ùÊý
+    HI_U32 u32TimeOutMinMs = 1 * 1000; //ï¿½È´ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
     HI_UNF_AVPLAY_STATUS_INFO_S stStatusInfo;
     PVR_INDEX_HANDLE hIndex = pChnAttr->IndexHandle;
 
-    /*»ñÈ¡µ±Ç°²¥·ÅÖ¡µÄÐÅÏ¢*/
+    /*ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½Ï¢*/
     PVR_Index_GetIndexInfo(pChnAttr->IndexHandle, &hIndex->stCurPlayFrame, PVR_INDEX_DISP_TIME, &u32CurPlayFrmDisp);
     PVR_Index_GetIndexInfo(pChnAttr->IndexHandle, &hIndex->stCurPlayFrame, PVR_INDEX_PTS, &u32CurPlayFrmPts);
 
-    /*µ±Ç°²¥·ÅPIDÖÐÎ´²¥·ÅÍêµÄÊ±¼ä³¤¶È*/
+    /*ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½PIDï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä³¤ï¿½ï¿½*/
     u32SpeedRate = abs(pChnAttr->enSpeed) / HI_UNF_PVR_PLAY_SPEED_NORMAL;
     u32TimeOutMinMs = u32TimeOutMinMs * u32SpeedRate;
     u32WaitLastPidPlayTimeMs = abs(pChnAttr->u32CurPlayTimeMs - u32CurPlayFrmDisp) / u32SpeedRate;
@@ -4062,7 +4062,7 @@ HI_S32 HI_PVR_PlayCreateChn(HI_U32* pChn, const HI_UNF_PVR_PLAY_ATTR_S* pAttr, H
     HI_S32 ret;
     PVR_PLAY_CHN_S* pChnAttr = NULL;
 #ifdef HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     HI_UNF_DMX_TSBUF_STATUS_S stStatus;
 #endif
 #endif
@@ -4108,7 +4108,7 @@ HI_S32 HI_PVR_PlayCreateChn(HI_U32* pChn, const HI_UNF_PVR_PLAY_ATTR_S* pAttr, H
     pChnAttr->u32CurPlayTimeMs = 0;
 
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     pChnAttr->bSecTsBuffer = HI_FALSE;
 #endif
 #endif
@@ -4121,7 +4121,7 @@ HI_S32 HI_PVR_PlayCreateChn(HI_U32* pChn, const HI_UNF_PVR_PLAY_ATTR_S* pAttr, H
         goto ErrorExit;
     }
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     ret = HI_UNF_DMX_GetTSBufferStatus(hTsBuffer, &stStatus);
     if (HI_SUCCESS != ret)
     {
@@ -4199,7 +4199,7 @@ ErrorExit:
         pChnAttr->IndexHandle = NULL;
     }
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined (CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined (CHIP_TYPE_hi3796mv200)
     if ((HI_TRUE == pChnAttr->bSecTsBuffer)
         && (HI_UNF_PVR_SECURE_MODE_TEE == pChnAttr->stUserCfg.enSecureMode)
         && (HI_NULL != pChnAttr->stReeBuf.pUserAddr)
@@ -4269,7 +4269,7 @@ HI_S32 HI_PVR_PlayDestroyChn(HI_U32 u32Chn)
     pChnAttr->IndexHandle = NULL;
 
 #ifdef  HI_TEE_PVR_SUPPORT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     if ((HI_TRUE == pChnAttr->bSecTsBuffer)
         && (HI_UNF_PVR_SECURE_MODE_TEE == pChnAttr->stUserCfg.enSecureMode)
         && (HI_NULL != pChnAttr->stReeBuf.pUserAddr)

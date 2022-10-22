@@ -85,7 +85,7 @@ config HI_BENCH_SUPPORT
 config HI_UNIFIED_BOOT_SUPPORT
     bool "Support Unified Boot"
     default y
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200 || ((HI3716MV410 || HI3716MV420) && ADVCA_NAGRA )
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200 || ((HI3716MV410 || HI3716MV420) && ADVCA_NAGRA )
     help
       Unified boot support one boot.bin run on several different boards with same chiptype.
       Say y here if you want to use unified boot.
@@ -93,7 +93,7 @@ config HI_UNIFIED_BOOT_SUPPORT
 config HI_BOOT_USB_SUPPORT
     bool "Support Usb Drivers"
     default n if (HI3716MV410 || HI3716MV420)
-    default y if (HI3798MV100 || HI3796MV100 || HI3716DV100 || HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200)
+    default y if (HI3798MV100 || HI3796MV100 || HI3716DV100 || HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200)
     depends on HI_UBOOT_SUPPORT
     help
       Say y here if you want to support usb for boot.
@@ -292,7 +292,7 @@ config HI_GPIO_RECOVERY_SUPPORT
 
 config HI_IDWORD_LOCK_SUPPORT
     bool "Enable ID word lock Support"
-    depends on ANDROID_PRODUCT && (HI3798MV200 || HI3798MV300)
+    depends on ANDROID_PRODUCT && (HI3798MV200 || HI3798MV300 || HI3798MV310)
     default n
 
 endmenu

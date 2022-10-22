@@ -246,7 +246,7 @@ static void hi_mci_init_card(struct himci_host *host)
 	/* clear MMC host intr */
 	himci_writel(ALL_INT_CLR, host->base + MCI_RINTSTS);
 
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	/* set card read threshold */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
 	tmp_reg |= RW_THRESHOLD_SIZE;
@@ -277,7 +277,7 @@ static void hi_mci_init_card(struct himci_host *host)
 	himci_writel(BURST_SIZE | RX_WMARK | TX_WMARK, host->base + MCI_FIFOTH);
 
 	/* only for FPGA */
-#ifdef CONFIG_HI3798MV2X_FPGA
+#if defined CONFIG_HI3798MV2X_FPGA || defined CONFIG_HI3798MV379MV310_FPGA
 	unsigned int drv, sap;
 	drv = 0x1;
 	sap = 0x1;//S28:0x0(0) 0x1(45) 0x2(90) 0x3(135),T28:0x0(0) 0x1(90) 0x2(180) 0x3(270)
@@ -789,7 +789,7 @@ static void hi_mci_set_ios(struct mmc *mmc)
 
 	/* set cardthrctl reg */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	tmp_reg = RW_THRESHOLD_SIZE;
 #else
 	if (mmc->timing == MMC_TIMING_MMC_HS200)
@@ -814,7 +814,7 @@ static void hi_mci_prepare_hs400(struct mmc *mmc)
 
 	/* set cardthrctl reg */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	tmp_reg = RW_THRESHOLD_SIZE;
 #else
 	tmp_reg = READ_THRESHOLD_SIZE;
@@ -914,7 +914,7 @@ tuning_out:
 		if((!datastrobe)&&(raise_point == min)&&(fall_point == max-1)) {
 			if (tuning_count < 10) {
 				goto tuning_start;
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 			} else if ((mmc->timing == MMC_TIMING_MMC_HS400) && (tuning_count < 20)) {
 				tmp_reg = himci_readl(reg_addr);
 				tmp_reg |= EMMC_CLK_MODE;
@@ -942,7 +942,7 @@ tuning_out:
 				return -1;
 			}
 		}
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 		if (phase_180 == 1) {
 			if (value < 2)
 				value = 6;
@@ -1071,12 +1071,12 @@ static int hi_mci_initialize(bd_t * bis)
 	mmc->host_caps = MMC_MODE_HS | MMC_MODE_HS_52MHz
 		| MMC_MODE_4BIT | MMC_MODE_8BIT | MMC_MODE_CMD23;
 
-#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	mmc->host_caps |= MMC_MODE_DDR_52MHz;
 #endif
-#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	mmc->iovoltage = get_mmc_io_voltage();
-#ifndef CONFIG_ARCH_HI3798MV2X
+#ifndef CONFIG_ARCH_HI3798MV2X && ndef(CONFIG_ARCH_HI3798MV310)
 	if (mmc->iovoltage == EMMC_IO_VOL_1_8V) {
 		mmc->host_caps |= MMC_MODE_HS200 | MMC_MODE_HS400;
 #ifdef CONFIG_EMMC_PARAM_TAG
@@ -1137,7 +1137,7 @@ void check_ext_csd(struct mmc *mmc)
 
 
 #if defined(CONFIG_ARCH_S40) || defined(CONFIG_ARCH_S5) || defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE)\
-	|| defined(CONFIG_ARCH_HI3716MV410) || defined(CONFIG_ARCH_HI3716MV420N) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+	|| defined(CONFIG_ARCH_HI3716MV410) || defined(CONFIG_ARCH_HI3716MV420N) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 
 	/*
 	 * only s40 Architecture support reset pin
@@ -1310,7 +1310,7 @@ static void print_mmcinfo(struct mmc *mmc)
 	printf("    Mode:        %s\n", ((mmc->timing == MMC_TIMING_MMC_HS400) ? "HS400":
 		((mmc->timing == MMC_TIMING_MMC_HS200)?"HS200":
 		(mmc->timing == MMC_TIMING_UHS_DDR50)?"DDR50":"HighSpeed")));
-#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	printf("    Voltage:     %sV\n", (mmc->iovoltage == EMMC_IO_VOL_1_8V)?"1.8":"3.3");
 #endif
 	printf("    Bus Width:   %dbit\n", mmc->bus_width);

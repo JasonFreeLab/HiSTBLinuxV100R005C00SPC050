@@ -29,6 +29,11 @@ extern unsigned int get_mmc_io_voltage(void);
 #  include "himciv300_hi3798mv2x.c"
 #endif
 
+#if defined(CONFIG_ARCH_HI3798MV310)
+extern unsigned int get_mmc_io_voltage(void);
+#  include "himciv300_hi3798mv310.c"
+#endif
+
 #if defined(CONFIG_ARCH_HI3796MV2X)
 extern unsigned int get_mmc_io_voltage(void);
 #  include "himciv300_hi3796mv2x.c"
@@ -271,7 +276,7 @@ static void hi_mci_init_card(struct himci_host *host)
 	himci_writel(BURST_SIZE | RX_WMARK | TX_WMARK, host->base + MCI_FIFOTH);
 
 	/* only for FPGA */
-#ifdef CONFIG_HI3798MV2X_FPGA
+#if defined CONFIG_HI3798MV2X_FPGA || defined(CONFIG_HI3798MV310_FPGA)
 	unsigned int drv, sap;
 	drv = 0x1;
 	sap = 0x1;//S28:0x0(0) 0x1(45) 0x2(90) 0x3(135),T28:0x0(0) 0x1(90) 0x2(180) 0x3(270)
@@ -801,7 +806,7 @@ static void hi_mci_set_ios(struct mmc *mmc)
 
 	/* set cardthrctl reg */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	tmp_reg = RW_THRESHOLD_SIZE;
 #else
 	if (mmc->timing == MMC_TIMING_MMC_HS200)
@@ -826,7 +831,7 @@ static void hi_mci_prepare_hs400(struct mmc *mmc)
 
 	/* set cardthrctl reg */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	tmp_reg = RW_THRESHOLD_SIZE;
 #else
 	tmp_reg = READ_THRESHOLD_SIZE;
@@ -916,12 +921,12 @@ static int hi_mci_initialize(bd_t * bis)
 	else
 		mmc->timing = MMC_TIMING_LEGACY;
 
-#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 //#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
 	if (_HI3798M_V300 != get_chipid())
 		mmc->host_caps |= MMC_MODE_DDR_52MHz;
 #endif
-#if ((defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)) && !defined(CHIP_TYPE_hi3798mv200_a))
+#if ((defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)) && !defined(CHIP_TYPE_hi3798mv200_a))
 	mmc->iovoltage = get_mmc_io_voltage();
 #ifndef CONFIG_ARCH_HI3796MV2X
 	if ((mmc->iovoltage == EMMC_IO_VOL_1_8V) && (_HI3798M_V300 != get_chipid())) {

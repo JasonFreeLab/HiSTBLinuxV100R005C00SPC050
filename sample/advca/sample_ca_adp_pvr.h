@@ -61,6 +61,7 @@ extern "C" {
     || defined(CHIP_TYPE_hi3798cv200)\
     || defined(CHIP_TYPE_hi3798mv200)\
     || defined(CHIP_TYPE_hi3798mv300)\
+    || defined(CHIP_TYPE_hi3798mv310)\
     || defined(CHIP_TYPE_hi3798mv200_a)\
     || defined(CHIP_TYPE_hi3716mv420)
 #define PVR_DMX_PORT_ID_DVB HI_UNF_DMX_PORT_TSI_0

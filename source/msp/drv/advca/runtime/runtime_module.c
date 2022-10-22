@@ -123,6 +123,7 @@ extern "C"{
     || defined(CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200) \
     || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310) \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
 #define HI_REG_WRITE32(addr, val) (*(volatile unsigned int*)(addr) = (val))

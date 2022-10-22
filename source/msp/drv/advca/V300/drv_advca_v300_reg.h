@@ -35,29 +35,30 @@ extern "C"{
 #define OTP_V200_CRG_ADDR 0xF8A220C0
 #endif
 
-#define CA_V300_CONFIG_STATE           (CA_V300_BASE_ADDR + 0x00)//ÅäÖÃ×´Ì¬¼Ä´æÆ÷
-#define CA_V300_CSA2_CTRL              (CA_V300_BASE_ADDR + 0x04)//CSA¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_R2R_CTRL               (CA_V300_BASE_ADDR + 0x08)//R2R¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_SP_CTRL                (CA_V300_BASE_ADDR + 0x0C)//SP¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_CSA3_CTRL              (CA_V300_BASE_ADDR + 0x10)//CSA¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_LP_CTRL                (CA_V300_BASE_ADDR + 0x14)//LP¿ØÖÆ¼Ä´æÆ÷¡£
-#define CA_V300_BL_CTRL_DEC            (CA_V300_BASE_ADDR + 0x18)//BootLoader½âÃÜ¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_BL_CTRL_ENC            (CA_V300_BASE_ADDR + 0x1C)//BootLoader¼ÓÃÜ¿ØÖÆ¼Ä´æÆ÷
+#define CA_V300_CONFIG_STATE           (CA_V300_BASE_ADDR + 0x00)//ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CSA2_CTRL              (CA_V300_BASE_ADDR + 0x04)//CSAï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_R2R_CTRL               (CA_V300_BASE_ADDR + 0x08)//R2Rï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_SP_CTRL                (CA_V300_BASE_ADDR + 0x0C)//SPï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CSA3_CTRL              (CA_V300_BASE_ADDR + 0x10)//CSAï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_LP_CTRL                (CA_V300_BASE_ADDR + 0x14)//LPï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½
+#define CA_V300_BL_CTRL_DEC            (CA_V300_BASE_ADDR + 0x18)//BootLoaderï¿½ï¿½ï¿½Ü¿ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_BL_CTRL_ENC            (CA_V300_BASE_ADDR + 0x1C)//BootLoaderï¿½ï¿½ï¿½Ü¿ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
 
-#define CA_V300_CA_NOMAL_DIN0          (CA_V300_BASE_ADDR + 0x20)//Key LadderÊäÈë´ý½âÃÜÊý¾Ý0¼Ä´æÆ÷
-#define CA_V300_CA_NOMAL_DIN1          (CA_V300_BASE_ADDR + 0x24)//Key LadderÊäÈë´ý½âÃÜÊý¾Ý1¼Ä´æÆ÷
-#define CA_V300_CA_NOMAL_DIN2          (CA_V300_BASE_ADDR + 0x28)//Key LadderÊäÈë´ý½âÃÜÊý¾Ý2¼Ä´æÆ÷
-#define CA_V300_CA_NOMAL_DIN3          (CA_V300_BASE_ADDR + 0x2C)//Key LadderÊäÈë´ý½âÃÜÊý¾Ý3¼Ä´æÆ÷
+#define CA_V300_CA_NOMAL_DIN0          (CA_V300_BASE_ADDR + 0x20)//Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_NOMAL_DIN1          (CA_V300_BASE_ADDR + 0x24)//Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_NOMAL_DIN2          (CA_V300_BASE_ADDR + 0x28)//Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_NOMAL_DIN3          (CA_V300_BASE_ADDR + 0x2C)//Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½Ä´ï¿½ï¿½ï¿½
 
-#define CA_V300_CA_SECURE_DIN0         (CA_V300_BASE_ADDR + 0x1A0)//secure Key LadderÊäÈë´ý½âÃÜÊý¾Ý0¼Ä´æÆ÷
-#define CA_V300_CA_SECURE_DIN1         (CA_V300_BASE_ADDR + 0x1A4)//secure Key LadderÊäÈë´ý½âÃÜÊý¾Ý1¼Ä´æÆ÷
-#define CA_V300_CA_SECURE_DIN2         (CA_V300_BASE_ADDR + 0x1A8)//secure Key LadderÊäÈë´ý½âÃÜÊý¾Ý2¼Ä´æÆ÷
-#define CA_V300_CA_SECURE_DIN3         (CA_V300_BASE_ADDR + 0x1AC)//secure Key LadderÊäÈë´ý½âÃÜÊý¾Ý3¼Ä´æÆ÷
+#define CA_V300_CA_SECURE_DIN0         (CA_V300_BASE_ADDR + 0x1A0)//secure Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_SECURE_DIN1         (CA_V300_BASE_ADDR + 0x1A4)//secure Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_SECURE_DIN2         (CA_V300_BASE_ADDR + 0x1A8)//secure Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_SECURE_DIN3         (CA_V300_BASE_ADDR + 0x1AC)//secure Key Ladderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3ï¿½Ä´ï¿½ï¿½ï¿½
 
 
 #if   (defined(CHIP_TYPE_hi3798cv200) && !defined(HI_TEE_SUPPORT))  \
    || (defined(CHIP_TYPE_hi3798mv200) && !defined(HI_TEE_SUPPORT))  \
    || (defined(CHIP_TYPE_hi3798mv300) && !defined(HI_TEE_SUPPORT))  \
+   || (defined(CHIP_TYPE_hi3798mv310) && !defined(HI_TEE_SUPPORT))  \
    || (defined(CHIP_TYPE_hi3798mv200_a) && !defined(HI_TEE_SUPPORT))
 #define CA_V300_CA_DIN0                (CA_V300_CA_SECURE_DIN0)
 #define CA_V300_CA_DIN1                (CA_V300_CA_SECURE_DIN1)
@@ -69,34 +70,34 @@ extern "C"{
 #define CA_V300_CA_DIN2                (CA_V300_CA_NOMAL_DIN2)
 #define CA_V300_CA_DIN3                (CA_V300_CA_NOMAL_DIN3)
 #endif
-#define CA_V300_STB_KEY_CTRL           (CA_V300_BASE_ADDR + 0x34)//STB KEY¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_CA_STATE               (CA_V300_BASE_ADDR + 0x38)//CAÄ£¿é×´Ì¬¼Ä´æÆ÷
-#define CA_V300_LEVEL_REG              (CA_V300_BASE_ADDR + 0x3C)//keyladder ¼¶Êý¼Ä´æÆ÷
-#define CA_V300_CHECKSUM_FLAG          (CA_V300_BASE_ADDR + 0x40)//secret keyµÄchecksum±êÖ¾Î»
-#define CA_V300_CA_VERSION             (CA_V300_BASE_ADDR + 0x44)//Key LadderÄ£¿é°æ±¾ºÅ¼Ä´æÆ÷
-#define CA_V300_CA_INT_RAW             (CA_V300_BASE_ADDR + 0x48)//Key LadderÄ£¿éÔ­Ê¼ÖÐ¶Ï×´Ì¬¼Ä´æÆ÷
-#define CA_V300_SECURE_BOOT_STATE      (CA_V300_BASE_ADDR + 0x4C)//°²È«Æô¶¯×´Ì¬¼Ä´æÆ÷
-#define CA_V300_LP_PARAMETER_BASE      (CA_V300_BASE_ADDR + 0x50)//parameter¼Ä´æÆ÷
-#define CA_V300_BLK_ENC_RSLT           (CA_V300_BASE_ADDR + 0x60)//BLK¼ÓÃÜ½á¹û¼Ä´æÆ÷
-#define CA_V300_GDRM_CTRL              (CA_V300_BASE_ADDR + 0x70)//GOOGLE DRM¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_DCAS_CTRL              (CA_V300_BASE_ADDR + 0x74)//¿ÉÏÂÔØCA¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_DEBUG_INFO             (CA_V300_BASE_ADDR + 0x78)//debugÐÅÏ¢¼Ä´æÆ÷
-#define CA_V300_VERSION                (CA_V300_BASE_ADDR + 0x7C)//°æ±¾¼Ä´æÆ÷
-#define CA_V300_DA_NOUCE               (CA_V300_BASE_ADDR + 0x80)//½âÃÜµÄÈÏÖ¤ÃÜÔ¿¼Ä´æÆ÷
-#define CA_V300_TEST_KEY               (CA_V300_BASE_ADDR + 0x90)//²âÊÔÃÜÔ¿¼Ä´æÆ÷
-#define CA_V300_TEST_RESULT            (CA_V300_BASE_ADDR + 0xA0)//²âÊÔ½á¹û¼Ä´æÆ÷
-#define CA_V300_KEY_DOUT               (CA_V300_BASE_ADDR + 0xB0)//ÖÐ¼äÔËËã½á¹û¼Ä´æÆ÷
-#define CA_V300_MISC_CTRL              (CA_V300_BASE_ADDR + 0xC0)//misc¿ØÖÆ¼Ä´æÆ÷
-#define CA_V300_GDRM_FLAG              (CA_V300_BASE_ADDR + 0xc4)//Google DRM flag ¼Ä´æÆ÷
+#define CA_V300_STB_KEY_CTRL           (CA_V300_BASE_ADDR + 0x34)//STB KEYï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_STATE               (CA_V300_BASE_ADDR + 0x38)//CAÄ£ï¿½ï¿½×´Ì¬ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_LEVEL_REG              (CA_V300_BASE_ADDR + 0x3C)//keyladder ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CHECKSUM_FLAG          (CA_V300_BASE_ADDR + 0x40)//secret keyï¿½ï¿½checksumï¿½ï¿½Ö¾Î»
+#define CA_V300_CA_VERSION             (CA_V300_BASE_ADDR + 0x44)//Key LadderÄ£ï¿½ï¿½æ±¾ï¿½Å¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_CA_INT_RAW             (CA_V300_BASE_ADDR + 0x48)//Key LadderÄ£ï¿½ï¿½Ô­Ê¼ï¿½Ð¶ï¿½×´Ì¬ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_SECURE_BOOT_STATE      (CA_V300_BASE_ADDR + 0x4C)//ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_LP_PARAMETER_BASE      (CA_V300_BASE_ADDR + 0x50)//parameterï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_BLK_ENC_RSLT           (CA_V300_BASE_ADDR + 0x60)//BLKï¿½ï¿½ï¿½Ü½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_GDRM_CTRL              (CA_V300_BASE_ADDR + 0x70)//GOOGLE DRMï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_DCAS_CTRL              (CA_V300_BASE_ADDR + 0x74)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½CAï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_DEBUG_INFO             (CA_V300_BASE_ADDR + 0x78)//debugï¿½ï¿½Ï¢ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_VERSION                (CA_V300_BASE_ADDR + 0x7C)//ï¿½æ±¾ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_DA_NOUCE               (CA_V300_BASE_ADDR + 0x80)//ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Ô¿ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_TEST_KEY               (CA_V300_BASE_ADDR + 0x90)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_TEST_RESULT            (CA_V300_BASE_ADDR + 0xA0)//ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_KEY_DOUT               (CA_V300_BASE_ADDR + 0xB0)//ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+#define CA_V300_MISC_CTRL              (CA_V300_BASE_ADDR + 0xC0)//miscï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
+#define CA_V300_GDRM_FLAG              (CA_V300_BASE_ADDR + 0xc4)//Google DRM flag ï¿½Ä´ï¿½ï¿½ï¿½
 #define CA_V300_CFG_CMAC_CTRL          (CA_V300_BASE_ADDR + 0xCC)//OTP Configuration CMAC control
-#define CA_V300_GDRM_ENC_REST0         (CA_V300_BASE_ADDR + 0xD0)//Google DRMµÄdevice keyµÄ¼ÓÃÜ½á¹û¼Ä´æÆ÷0¡£
-#define CA_V300_GDRM_ENC_REST1         (CA_V300_BASE_ADDR + 0xD4)//Google DRMµÄdevice keyµÄ¼ÓÃÜ½á¹û¼Ä´æÆ÷1¡£
-#define CA_V300_GDRM_ENC_REST2         (CA_V300_BASE_ADDR + 0xD8)//Google DRMµÄdevice keyµÄ¼ÓÃÜ½á¹û¼Ä´æÆ÷2¡£
-#define CA_V300_GDRM_ENC_REST3         (CA_V300_BASE_ADDR + 0xDC)//Google DRMµÄdevice keyµÄ¼ÓÃÜ½á¹û¼Ä´æÆ÷3¡£
+#define CA_V300_GDRM_ENC_REST0         (CA_V300_BASE_ADDR + 0xD0)//Google DRMï¿½ï¿½device keyï¿½Ä¼ï¿½ï¿½Ü½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½0ï¿½ï¿½
+#define CA_V300_GDRM_ENC_REST1         (CA_V300_BASE_ADDR + 0xD4)//Google DRMï¿½ï¿½device keyï¿½Ä¼ï¿½ï¿½Ü½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½1ï¿½ï¿½
+#define CA_V300_GDRM_ENC_REST2         (CA_V300_BASE_ADDR + 0xD8)//Google DRMï¿½ï¿½device keyï¿½Ä¼ï¿½ï¿½Ü½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½2ï¿½ï¿½
+#define CA_V300_GDRM_ENC_REST3         (CA_V300_BASE_ADDR + 0xDC)//Google DRMï¿½ï¿½device keyï¿½Ä¼ï¿½ï¿½Ü½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½3ï¿½ï¿½
 #define CA_V300_CFG_CMAC_OUT           (CA_V300_BASE_ADDR + 0xF0)//OTP Configuration CMAC output
 #define CA_V300_TA_KL_CTRL             (CA_V300_BASE_ADDR + 0x100)//TA keyladder control register
 #define CA_V300_IVRK_CTRL              (CA_V300_BASE_ADDR + 0x10C)//tweaked CSA3 IV/RK control register
-#define CA_V300_CAUK_CTRL              (CA_V300_BASE_ADDR + 0x110)//CAUK¿ØÖÆ¼Ä´æÆ÷
+#define CA_V300_CAUK_CTRL              (CA_V300_BASE_ADDR + 0x110)//CAUKï¿½ï¿½ï¿½Æ¼Ä´ï¿½ï¿½ï¿½
 #define CA_V300_KL_SEC_EN              (CA_V300_BASE_ADDR + 0x200) // secure keyladder enable
 #define CA_V300_KL_EN_MASK             (0x00007FFF) // all keyladder set to secure keyladder
 
@@ -452,7 +453,7 @@ typedef union CA_V300_CFG_CBC_MAC_U
 {
     struct
     {
-    	HI_U32  start      : 8; //[7:0] //Ð´Æô¶¯¼ÆËã
+    	HI_U32  start      : 8; //[7:0] //Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         HI_U32  reserved   : 24;
     }bits;
     HI_U32 u32;

@@ -341,8 +341,9 @@ int ADVCA_PM_Resume(PM_BASEDEV_S *pdev)
     || defined(CHIP_TYPE_hi3716mv410)   \
     || defined(CHIP_TYPE_hi3716mv420)   \
     || defined(CHIP_TYPE_hi3798cv200)   \
-    || defined(CHIP_TYPE_hi3798mv200) \
-    || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv200)   \
+    || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
     Config_LPC_Setting();
 #endif
@@ -398,7 +399,7 @@ static PM_BASEOPS_S ca_drvops =
 
 /*****************************************************************************
  Prototype    :
- Description  : CAÄ£¿é proc º¯Êý
+ Description  : CAÄ£ï¿½ï¿½ proc ï¿½ï¿½ï¿½ï¿½
  Input        : None
  Output       : None
  Return Value : None
@@ -408,7 +409,7 @@ extern HI_S32 DRV_ADVCA_GetChipVersion(HI_CHIP_TYPE_E *penChipType, HI_CHIP_VERS
 
 /*****************************************************************************
  Prototype    :
- Description  : CAÄ£¿é ×¢²áº¯Êý
+ Description  : CAÄ£ï¿½ï¿½ ×¢ï¿½áº¯ï¿½ï¿½
  Input        : None
  Output       : None
  Return Value : None
@@ -454,8 +455,9 @@ HI_S32 ADVCA_DRV_ModeInit(HI_VOID)
     || defined(CHIP_TYPE_hi3716mv410)   \
     || defined(CHIP_TYPE_hi3716mv420)   \
     || defined(CHIP_TYPE_hi3798cv200)   \
-    || defined(CHIP_TYPE_hi3798mv200) \
-    || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv200)   \
+    || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
     ret = RuntimeModule_Init();
     if (ret != HI_SUCCESS)
@@ -501,8 +503,9 @@ HI_VOID ADVCA_DRV_ModeExit(HI_VOID)
     || defined(CHIP_TYPE_hi3716mv410)   \
     || defined(CHIP_TYPE_hi3716mv420)   \
     || defined(CHIP_TYPE_hi3798cv200)   \
-    || defined(CHIP_TYPE_hi3798mv200) \
-    || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv200)   \
+    || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a)
     RuntimeModule_Exit();
 #endif

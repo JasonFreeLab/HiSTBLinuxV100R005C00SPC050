@@ -3,7 +3,7 @@ CFG_HI_SAMPLE_CFLAGS := -Werror -Wall
 
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3716dv100),)
 CFG_HI_SAMPLE_CFLAGS += -mcpu=cortex-a7
-else ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+else ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 CFG_HI_SAMPLE_CFLAGS += -mcpu=cortex-a53
 else
 CFG_HI_SAMPLE_CFLAGS += -mcpu=cortex-a9

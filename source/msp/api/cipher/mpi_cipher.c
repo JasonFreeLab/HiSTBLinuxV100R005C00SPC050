@@ -3353,7 +3353,7 @@ static HI_S32 CIPHER_RsaRandomNumber(HI_VOID *param, HI_U8 *rng, size_t size)
 
     for(i=0; i<size; i+=4)
     {
-#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)|| defined (CHIP_TYPE_hi3798mv200_a)
+#if defined (CHIP_TYPE_hi3716mv410) || defined (CHIP_TYPE_hi3716mv420) || defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined (CHIP_TYPE_hi3798mv200_a)
         u32Randnum = *(volatile unsigned int *)( pu32RngBase + 0x04);
 #else
         HI_U32 u32RngStat;

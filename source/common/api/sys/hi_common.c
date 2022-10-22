@@ -293,7 +293,7 @@ HI_S32 HI_SYS_GetVersion(HI_SYS_VERSION_S *pstVersion)
     pstVersion->enChipTypeSoft = HI_CHIP_TYPE_HI3796C;
 #elif defined(CHIP_TYPE_hi3798cv100) || defined(CHIP_TYPE_hi3798cv200)
     pstVersion->enChipTypeSoft = HI_CHIP_TYPE_HI3798C;
-#elif defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     pstVersion->enChipTypeSoft = HI_CHIP_TYPE_HI3798M;
 #elif defined(CHIP_TYPE_hi3798mv200_a)
     pstVersion->enChipTypeSoft = HI_CHIP_TYPE_HI3798M_A;

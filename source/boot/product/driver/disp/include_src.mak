@@ -29,7 +29,7 @@ SRC     += $(wildcard $(DISP_DIR)/$(DRIVER_PATH)/hal/$(HAL_DIR)/hal_specific_rwz
 SRC     += $(wildcard $(DISP_DIR)/$(DRIVER_PATH)/hal/$(HAL_DIR)/hal_xdr_policy.c)
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 SRC     += $(wildcard $(DISP_DIR)/$(DRIVER_PATH)/component/drv_com_logo.c)
 SRC     += $(wildcard $(DISP_DIR)/$(DRIVER_PATH)/hal/$(HAL_DIR)/hal_specific/vdp_hal_intf.c)
 SRC     += $(wildcard $(DISP_DIR)/$(DRIVER_PATH)/hal/$(HAL_DIR)/hal_specific/vdp_software_selfdefine.c)

@@ -31,7 +31,7 @@ LIB_EXTRACT = $(shell if [ -f $(3) ] ; then \
     fi)
 
 CA_DRV_FRAMEWORK_VERSION := V200
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3716mv410 hi3716mv420 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3716mv410 hi3716mv420 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
     CA_DRV_FRAMEWORK_VERSION := V100
 endif
 
@@ -287,7 +287,7 @@ endif
 ifeq ($(CFG_HI_CHIP_TYPE), hi3798cv200)
 GFX2D_VERSION : = -DHWC_VERSION=0x400
 endif
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200), )
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200), )
 GFX2D_VERSION := -DHWC_VERSION=0x500
 endif
 CFLAGS += $(GFX2D_VERSION)
@@ -472,7 +472,7 @@ SRCS += ao/render/render_proc.c
 endif
 
 #--------------- VDEC ------------------
-ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifeq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 VDEC_VER := vdec_v1.0
 VFMW_VER := vfmw_v4.0
 else
@@ -717,7 +717,7 @@ SRCS += pvr/hi_pvr_fifo.c \
         pvr/hi_pvr_smooth_ctrl.c
 
 ifeq ($(CFG_HI_TEE_SUPPORT),y)
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 CFLAGS += -DHI_TEE_PVR_SUPPORT
 SRCS += pvr/hi_pvr_tee.c
 endif

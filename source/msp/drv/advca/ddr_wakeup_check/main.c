@@ -38,8 +38,8 @@ typedef enum hiUNF_ADVCA_VENDORID_E
 #define reg_set(addr, val) (*(volatile unsigned int *)(addr) = (val))
 #endif
 
-//UART1 UART_DR:UART_DR ÎªUART Êý¾Ý¼Ä´æÆ÷£¬´æ·Å½ÓÊÕÊý¾ÝºÍ·¢ËÍÊý¾Ý
-//[7:0] RW data ½ÓÊÕÊý¾ÝºÍ·¢ËÍÊý¾Ý¡£
+//UART1 UART_DR:UART_DR ÎªUART ï¿½ï¿½ï¿½Ý¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÝºÍ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//[7:0] RW data ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÝºÍ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
 #if   defined (CHIP_TYPE_hi3716mv410) \
    || defined (CHIP_TYPE_hi3716mv420) \
    || defined (CHIP_TYPE_hi3716cv200) \
@@ -50,6 +50,7 @@ typedef enum hiUNF_ADVCA_VENDORID_E
    || defined (CHIP_TYPE_hi3798cv200) \
    || defined(CHIP_TYPE_hi3798mv200) \
    || defined(CHIP_TYPE_hi3798mv300) \
+   || defined(CHIP_TYPE_hi3798mv310) \
    || defined(CHIP_TYPE_hi3798mv200_a)
 #define OTP_BASE_ADDR_P     0xf8ab0000
 #define DDR_CHECK_ADDR_SECTOR    	0xf8407818
@@ -125,6 +126,7 @@ int main(void)
    || defined (CHIP_TYPE_hi3798cv200) \
    || defined(CHIP_TYPE_hi3798mv200) \
    || defined(CHIP_TYPE_hi3798mv300) \
+   || defined(CHIP_TYPE_hi3798mv310) \
    || defined(CHIP_TYPE_hi3798mv200_a)		
 		reg_set(SC_GEN59,*(unsigned int*)(u8Digest + 0x0));//HASH[0]
 		reg_set(SC_GEN59 + 0x4,*(unsigned int*)(u8Digest + 0x4));//HASH[1]

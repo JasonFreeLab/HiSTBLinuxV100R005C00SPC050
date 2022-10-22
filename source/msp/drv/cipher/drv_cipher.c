@@ -1471,6 +1471,7 @@ startPhyAddr
     || defined(CHIP_TYPE_hi3798mv100)    \
     || defined (CHIP_TYPE_hi3798mv200)   \
     || defined (CHIP_TYPE_hi3798mv300)   \
+    || defined (CHIP_TYPE_hi3798mv310)   \
     || defined (CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100)    \
     || defined (CHIP_TYPE_hi3798cv200_a) \
@@ -2871,41 +2872,41 @@ static HI_VOID s_DRV_CIPHER_FormatHDCPKey(HI_UNF_HDCP_DECRYPT_S *pSrcKey, HI_U8 
 }
 
 /**********************************************************************
-    DCPÉêÇëµÄ¶ÀÁ¢µÄHDCP keyÔ­Ê¼¸ñÊ½£¬¹²308Bytes£º
-    0~4    KSV  ¹Ì¶¨Îª "02000000"    Key Selection Vector use to communicate between HDMI Transmitter and Receiver.
-    5~7         ¹Ì¶¨Îª "000000"
+    DCPï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½HDCP keyÔ­Ê¼ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½308Bytesï¿½ï¿½
+    0~4    KSV  ï¿½Ì¶ï¿½Îª "02000000"    Key Selection Vector use to communicate between HDMI Transmitter and Receiver.
+    5~7         ï¿½Ì¶ï¿½Îª "000000"
     8~287     Device Private Key    Secret data
     288~307    Reserved    No use
 
-    HISI HDCP Key¹¤¾ß½«ÉêÇëµ½µÄKeyÖØÐÂ·â×°£¬Éú³ÉÐÂµÄkeyÎÄ¼þ´óÐ¡Îª384¸ö×Ö½Ú£¬¸÷×Ö¶ÎÒâÒåÈçÏÂ£º
-    µÚ0~7(8)×Ö½Ú      £ºº£Ë¼±ê¼ÇÎ»£ºHISI_xxx
-    µÚ8~15(8)×Ö½Ú     £º¹¤¾ß°æ±¾ºÅ£ºV0000001
-    µÚ16~47(32)×Ö½Ú   £º¿Í»§µÄIDºÅ£ºxxxxxxxx
-    µÚ48~367(320)×Ö½Ú £º¼ÓÃÜºóµÄ320bytes HDCP key(16×Ö½Ú¶ÔÆë)¡£
-    µÚ368~384(16)×Ö½Ú £ººóÐøÊ¹ÓÃ£¬ÔÝ¶¨ÎªËæ»úÊý¡£
+    HISI HDCP Keyï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½Keyï¿½ï¿½ï¿½Â·ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½keyï¿½Ä¼ï¿½ï¿½ï¿½Ð¡Îª384ï¿½ï¿½ï¿½Ö½Ú£ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â£ï¿½
+    ï¿½ï¿½0~7(8)ï¿½Ö½ï¿½      ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½Î»ï¿½ï¿½HISI_xxx
+    ï¿½ï¿½8~15(8)ï¿½Ö½ï¿½     ï¿½ï¿½ï¿½ï¿½ï¿½ß°æ±¾ï¿½Å£ï¿½V0000001
+    ï¿½ï¿½16~47(32)ï¿½Ö½ï¿½   ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½IDï¿½Å£ï¿½xxxxxxxx
+    ï¿½ï¿½48~367(320)ï¿½Ö½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Üºï¿½ï¿½320bytes HDCP key(16ï¿½Ö½Ú¶ï¿½ï¿½ï¿½)ï¿½ï¿½
+    ï¿½ï¿½368~384(16)ï¿½Ö½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã£ï¿½ï¿½Ý¶ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    Ð¾Æ¬ÉÏ¼ÓÃÜ´æ·Åµ½ÎÄ¼þÖÐµÄHDCP Key¸ñÊ½
+    Ð¾Æ¬ï¿½Ï¼ï¿½ï¿½Ü´ï¿½Åµï¿½ï¿½Ä¼ï¿½ï¿½Ðµï¿½HDCP Keyï¿½ï¿½Ê½
     head              HDMIIP_HDCPKey                 CRC32_0 CRC32_1
     |-------|-----------------------------------------|------|------|
     |4bytes-|-----------------Encrypt(320bytes)-------|-4byte|-4byte|
 
     total: 332
 
-    Head¸ñÊ½£º4 byte
+    Headï¿½ï¿½Ê½ï¿½ï¿½4 byte
     B0[7..6] key type, 00: otp root key, 01: hisi defined 10: host root key
-    B1:      ¹Ì¶¨Îª0x00;
-    B2~B3:   ¹Ì¶¨Îª"HI"
+    B1:      ï¿½Ì¶ï¿½Îª0x00;
+    B2~B3:   ï¿½Ì¶ï¿½Îª"HI"
 
-    HDCPKey ¸ñÊ½£º320 byte
-    B0:      ¹Ì¶¨Îª0x00;
-    B1~B5:   KSV (DCP×éÖ¯ÉêÇëµÄHDCP KeyÖÐÌáÈ¡£©
-    B6~B7:   HDCPKeyµÄCRC16£¬²»°üÀ¨B6~B8.
-    B8£º     ¹Ì¶¨Îª0xa8;
-    B9~B288: Device Private Key (DCP×éÖ¯ÉêÇëµÄHDCP KeyÖÐÌáÈ¡£©
-    B289~B319: Ìî³äÎª 0x14, 0xf7, 0x61, 0x03, 0xb7, 0x59, 0x45, 0xe3, 0x0c, 0x7d, 0xb4, 0x45, 0x19, 0xea, 0x8f, 0xd2,0x89, 0xee, 0xbd, 0x90, 0x21, 0x8b, 0x05, 0xe0,0x4e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    HDCPKey ï¿½ï¿½Ê½ï¿½ï¿½320 byte
+    B0:      ï¿½Ì¶ï¿½Îª0x00;
+    B1~B5:   KSV (DCPï¿½ï¿½Ö¯ï¿½ï¿½ï¿½ï¿½ï¿½HDCP Keyï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½
+    B6~B7:   HDCPKeyï¿½ï¿½CRC16ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B6~B8.
+    B8ï¿½ï¿½     ï¿½Ì¶ï¿½Îª0xa8;
+    B9~B288: Device Private Key (DCPï¿½ï¿½Ö¯ï¿½ï¿½ï¿½ï¿½ï¿½HDCP Keyï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½
+    B289~B319: ï¿½ï¿½ï¿½Îª 0x14, 0xf7, 0x61, 0x03, 0xb7, 0x59, 0x45, 0xe3, 0x0c, 0x7d, 0xb4, 0x45, 0x19, 0xea, 0x8f, 0xd2,0x89, 0xee, 0xbd, 0x90, 0x21, 0x8b, 0x05, 0xe0,0x4e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 
-    CRC32_0£º  ¼ÓÃÜÇ°HDCPKeyµÄCRC32
-    CRC32_1£º  Head+HDCPKey+CRC32_0µÄCRC32
+    CRC32_0ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½Ç°HDCPKeyï¿½ï¿½CRC32
+    CRC32_1ï¿½ï¿½  Head+HDCPKey+CRC32_0ï¿½ï¿½CRC32
 */
 static HI_S32 s_DRV_CIPHER_DecryptHDCPKeyBeforeFormat(HI_UNF_HDCP_HDCPKEY_S *pSrcKey,  HI_UNF_HDCP_DECRYPT_S *pDstkey)
 {
@@ -2929,14 +2930,14 @@ static HI_S32 s_DRV_CIPHER_DecryptHDCPKeyBeforeFormat(HI_UNF_HDCP_HDCPKEY_S *pSr
     memset(&CipherCtrl, 0, sizeof(CipherCtrl));
     pu8EncryptKey = pSrcKey->key.EncryptData.u8EncryptKey;
 
-    pu8EncryptKey+=8; //Ìø¹ýº£Ë¼±ê¼ÇÎ»£ºHISI_xxx
+    pu8EncryptKey+=8; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½Î»ï¿½ï¿½HISI_xxx
     if( memcmp("V0000001", pu8EncryptKey, 8) != 0 )
     {
         HI_ERR_CIPHER("EncryptKey check version failed\n");
         return HI_FAILURE;
     }
-    pu8EncryptKey+=8; //Ìø¹ýº£Ë¼±ê¼ÇÎ»£ºHISI_xxx
-    pu8EncryptKey+=32; //Ìø¹ý¿Í»§µÄIDºÅ£ºxxxxxxxx
+    pu8EncryptKey+=8; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½ï¿½Î»ï¿½ï¿½HISI_xxx
+    pu8EncryptKey+=32; //ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½IDï¿½Å£ï¿½xxxxxxxx
 
     memcpy((HI_U8 *)CipherCtrl.u32Key, "zhong", 5);
 

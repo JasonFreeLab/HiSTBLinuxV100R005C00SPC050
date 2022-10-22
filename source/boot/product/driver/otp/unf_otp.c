@@ -73,7 +73,7 @@ HI_S32 HI_UNF_OTP_GetTrustZoneStat(HI_BOOL *pbEnable)
 #endif
 }
 
-#if defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 HI_S32 HI_OTP_LockIdWord(HI_VOID)
 {
     HI_S32 ret = 0;

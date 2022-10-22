@@ -882,7 +882,7 @@ startPhyAddr
 	|| defined (CHIP_TYPE_hi3798cv200_a) || defined (CHIP_TYPE_hi3798cv200_b) \
 	|| defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) \
 	|| defined (CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) \
-	|| defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+	|| defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 	HAL_Cipher_EnableAllSecChn();
 #endif
     return HI_SUCCESS;

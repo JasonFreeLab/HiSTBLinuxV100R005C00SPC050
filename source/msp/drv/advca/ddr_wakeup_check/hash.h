@@ -20,6 +20,7 @@ typedef enum
    || defined (CHIP_TYPE_hi3798cv200) \
    || defined(CHIP_TYPE_hi3798mv200) \
    || defined(CHIP_TYPE_hi3798mv300) \
+   || defined(CHIP_TYPE_hi3798mv310) \
    || defined(CHIP_TYPE_hi3798mv200_a)
 #define HASH_REG_BASE           (0xf9a10000)  /* hash reg base: 0xf9a1_0000*/
 #define HASH_REG_CRG            (0xf8a220c4)  /* hash crg reg base: 0xf8a22000*/

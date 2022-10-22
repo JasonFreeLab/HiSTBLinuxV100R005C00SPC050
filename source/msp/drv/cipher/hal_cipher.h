@@ -53,6 +53,7 @@ extern "C" {
    || (defined (CHIP_TYPE_hi3716dv100) && !defined (HI_TEE_SUPPORT)) \
    || (defined (CHIP_TYPE_hi3798mv200) && !defined (HI_TEE_SUPPORT)) \
    || (defined (CHIP_TYPE_hi3798mv300) && !defined (HI_TEE_SUPPORT)) \
+   || (defined (CHIP_TYPE_hi3798mv310) && !defined (HI_TEE_SUPPORT)) \
    || (defined (CHIP_TYPE_hi3798mv200_a) && !defined (HI_TEE_SUPPORT)) \
    || defined (CHIP_TYPE_hi3796mv200) \
    || defined (CHIP_TYPE_hi3798cv200_a) \
@@ -70,6 +71,7 @@ extern "C" {
    || defined (CHIP_TYPE_hi3716dv100)   \
    || defined (CHIP_TYPE_hi3798mv200)   \
    || defined (CHIP_TYPE_hi3798mv300) 	\
+   || defined (CHIP_TYPE_hi3798mv310) 	\
    || defined (CHIP_TYPE_hi3798mv200_a)    \
    || defined (CHIP_TYPE_hi3798cv200)
 #define  CIPHER_IRQ_NUMBER                      (75 + 32)
@@ -94,6 +96,7 @@ extern "C" {
 #if defined (CHIP_TYPE_hi3798cv200) \
 || defined (CHIP_TYPE_hi3798mv200) \
 || defined (CHIP_TYPE_hi3798mv300) \
+|| defined (CHIP_TYPE_hi3798mv310) \
 || defined (CHIP_TYPE_hi3798mv200_a) \
 || defined(NOCS3_0_SUPPORT)
 #define CIPHER_MHASH_SUPPORT

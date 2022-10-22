@@ -29,7 +29,7 @@ extern "C" {
 
 #define HI_STD_I2C_NUM  2
 
-#elif  defined(CHIP_TYPE_hi3719mv100) || defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100)|| defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif  defined(CHIP_TYPE_hi3719mv100) || defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100)|| defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 
 #define HI_STD_I2C_NUM  3
 
@@ -54,18 +54,18 @@ extern "C" {
 #define HI_ERR_I2C_READ_ACK_ERR                     (HI_S32)(0x8044000A)
 
 /**Inter-integrated (I2C) channel used by the tuner*/
-/**CNcomment:TUNER使用的I2C通道*/
+/**CNcomment:TUNER使锟矫碉拷I2C通锟斤拷*/
 #define HI_I2C_MAX_LENGTH  2048
 
 #if 0
 typedef enum hiUNF_TUNER_I2cChannel
 {
-    HI_UNF_I2C_CHANNEL_0 = 0, /**<I2C channel 0*/                               /**<CNcomment:I2C通道0*/
-    HI_UNF_I2C_CHANNEL_1, /**<I2C channel 1*/                               /**<CNcomment:I2C通道1*/
-    HI_UNF_I2C_CHANNEL_2, /**<I2C channel 2*/                               /**<CNcomment:I2C通道2*/
-    HI_UNF_I2C_CHANNEL_3, /**<I2C channel 3*/                               /**<CNcomment:I2C通道3*/
-    HI_UNF_I2C_CHANNEL_4, /**<I2C channel 4*/                               /**<CNcomment:I2C通道3*/
-    HI_UNF_I2C_CHANNEL_MAX /**<Invalid value*/                               /**<CNcomment:非法边界值*/
+    HI_UNF_I2C_CHANNEL_0 = 0, /**<I2C channel 0*/                               /**<CNcomment:I2C通锟斤拷0*/
+    HI_UNF_I2C_CHANNEL_1, /**<I2C channel 1*/                               /**<CNcomment:I2C通锟斤拷1*/
+    HI_UNF_I2C_CHANNEL_2, /**<I2C channel 2*/                               /**<CNcomment:I2C通锟斤拷2*/
+    HI_UNF_I2C_CHANNEL_3, /**<I2C channel 3*/                               /**<CNcomment:I2C通锟斤拷3*/
+    HI_UNF_I2C_CHANNEL_4, /**<I2C channel 4*/                               /**<CNcomment:I2C通锟斤拷3*/
+    HI_UNF_I2C_CHANNEL_MAX /**<Invalid value*/                               /**<CNcomment:锟角凤拷锟竭斤拷值*/
 } HI_UNF_TUNER_I2C_CHANNEL_E;
 #endif
 

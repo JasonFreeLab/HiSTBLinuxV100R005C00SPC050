@@ -115,6 +115,10 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),
 BOOTCONFIG := hi3798mv2x
 endif
 
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+BOOTCONFIG := hi3798mv310
+endif
+
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv200),)
 BOOTCONFIG := hi3796mv200
 endif
@@ -179,6 +183,9 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200),)
 endif
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),)
     MKFLAGS += MACH=hi3798mv2x
+endif
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+    MKFLAGS += MACH=hi3798mv310
 endif
 
     MKFLAGS += CHIP_TYPE=$(CFG_HI_CHIP_TYPE)

@@ -158,7 +158,7 @@ static PHY_HWSPEC_S s_stPhyHWSpecTab[] =
     {{165001, 340000}, { 0,  0,  0,  0, 22, 40, 40, 40,  0,  0,  0,  0, 20, 20, 20, 20, PHY_RPRE_50, PHY_RPRE_50, PHY_RPRE_50, PHY_RPRE_50, PHY_RPRE_83, PHY_RPRE_83, PHY_RPRE_83, PHY_RPRE_83, PHY_RTERM_MODE_LOAD  , 0x0d, PHY_RTERM_MODE_LOAD  , 0x4d, PHY_RTERM_MODE_LOAD  , 0x4d, PHY_RTERM_MODE_LOAD  , 0x4d,      0}},
     {{340001, 600000}, { 0,  0,  0,  0, 22, 40, 40, 40,  0,  0,  0,  0, 20, 20, 20, 20, PHY_RPRE_50, PHY_RPRE_50, PHY_RPRE_50, PHY_RPRE_50, PHY_RPRE_83, PHY_RPRE_83, PHY_RPRE_83, PHY_RPRE_83, PHY_RTERM_MODE_LOAD  , 0x00, PHY_RTERM_MODE_LOAD  , 0xb0, PHY_RTERM_MODE_LOAD  , 0xb0, PHY_RTERM_MODE_LOAD  , 0xb0,      0}},
 };
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 static PHY_HWSPEC_S s_stPhyHWSpecTab_98mv200[] =
 {
 /****|-TmdsclkRange---||---DeIMain----||-iMain/0.5mA--||---DeIPre---- ||-iPre/0.25mA--||----------------DeRPre/Ohm------------------------||----------------RPre/Ohm-------------------------||------------------------RTerm------------------------------------------------------------------------------------------------|**
@@ -211,7 +211,7 @@ static PHY_SSC_S s_stPhySscCfgTab[] =
     {{250001, 300000}, { 40, 45000}},  //0.4%
     {{300001, 600000}, {  0,     0}},  //0
 };
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 static PHY_SSC_S s_stPhySscCfgTab_98mv200[] =
 {
     {{ 25000,  70000}, {  0,     0}},  //0ppm
@@ -225,6 +225,18 @@ static PHY_SSC_S s_stPhySscCfgTab_98mv200[] =
     {{300001, 600000}, {  0,     0}},  //0
 };
 static PHY_SSC_S s_stPhySscCfgTab_98mv300[] =
+{
+    {{ 25000,  70000}, {  0,     0}},  //0ppm
+    {{ 70001,  90000}, {350, 45000}},  //0.35%=3500ppm
+    {{ 90001, 110000}, {270, 45000}},  //0.27%
+    {{110001, 145000}, {220, 45000}},  //0.22%
+    {{145001, 180000}, {150, 45000}},  //0.15%
+    {{180001, 220000}, {110, 45000}},  //0.11%
+    {{220001, 250000}, { 95, 45000}},  //0.095%
+    {{250001, 300000}, { 50, 45000}},  //0.00%
+    {{300001, 600000}, {  0,     0}},  //0
+};
+static PHY_SSC_S s_stPhySscCfgTab_98mv310[] =
 {
     {{ 25000,  70000}, {  0,     0}},  //0ppm
     {{ 70001,  90000}, {350, 45000}},  //0.35%=3500ppm
@@ -337,7 +349,7 @@ static PHY_HWSPEC_CFG_S *PhyHWSpecDataGet(HI_U32 u32TmdsClk)
     PHY_HWSPEC_S        *pstPhyHWSpec = HI_NULL;
     HI_U32              u32ArraySize = 0;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     pstPhyHWSpec     = &s_stPhyHWSpecTab_98mv200[0];
     u32ArraySize     = PHY_ARRAY_SIZEOF(s_stPhyHWSpecTab_98mv200);
 #else
@@ -363,7 +375,7 @@ static PHY_HWSPEC_ENHANCE_CFG_S *PhyHWEnhanceSpecDataGet(HI_U32 u32TmdsClk)
     PHY_HWSPEC_ENHANCE_S *pstPhyHWEnhanceSpec = HI_NULL;
     HI_U32               u32ArraySize = 0;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     pstPhyHWEnhanceSpec = &s_stPhyHWSpecTab_98mv300[0];
     u32ArraySize        = PHY_ARRAY_SIZEOF(s_stPhyHWSpecTab_98mv300);
 #endif
@@ -386,8 +398,13 @@ static PHY_SSC_CFG_S *PhySscDataGet(HI_U32 u32TmdsClk)
     PHY_SSC_S           *pstPhySsc = HI_NULL;
     HI_U32              u32ArraySize = 0;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
-    if (HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
+    if (HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+    {
+        pstPhySsc    = &s_stPhySscCfgTab_98mv310[0];
+        u32ArraySize = PHY_ARRAY_SIZEOF(s_stPhySscCfgTab_98mv310);
+    }
+    else if (HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )
     {
         pstPhySsc    = &s_stPhySscCfgTab_98mv300[0];
         u32ArraySize = PHY_ARRAY_SIZEOF(s_stPhySscCfgTab_98mv300);
@@ -665,7 +682,8 @@ HI_S32 HAL_HDMI_PhyReset(HI_VOID)
 
     HAL_HDMI_PhyOeSet(HI_FALSE);
     HAL_HDMI_PhyPowerSet(HI_FALSE);
-   DRV_HDMI_ProdCrgPhyResetSet(HI_TRUE);
+
+   DRV_HDMI_ProdCrgPhyResetSet(HI_TRUE);
 #endif
 
     return HI_SUCCESS;
@@ -834,7 +852,8 @@ HI_S32 HAL_HDMI_PhyTmdsSet(HDMI_PHY_TMDS_CFG_S *pstHdmiTmdsCfg)
 
     u32LogicVersion = DRV_HDMI_ProdChipGet();
     /* phy soft reset */
-    if ( HDMI_CHIP_HI3798MV300 == u32LogicVersion
+    if ( HDMI_CHIP_HI3798MV310 == u32LogicVersion
+        || HDMI_CHIP_HI3798MV300 == u32LogicVersion
         || HDMI_CHIP_HI3796MV200 == u32LogicVersion)
     {
         PhySWReset(HI_TRUE);
@@ -879,7 +898,15 @@ HI_S32 HAL_HDMI_PhySpecSet(HDMI_PHY_HWSPEC_CFG_S * pstHdmiSpecCfg)
     PHY_NULL_CHK(pstHdmiSpecCfg);
 
     /* set HardWare Specification */
-    if (HDMI_CHIP_HI3798MV300 != DRV_HDMI_ProdChipGet())
+    if (HDMI_CHIP_HI3798MV310 != DRV_HDMI_ProdChipGet())
+    {
+        pstPhyHWSpecCfgTmp =  pstHdmiSpecCfg->stHDMIPhySpec.bHWSpecDebugEn ? \
+                                &pstHdmiSpecCfg->stHDMIPhySpec.stPhyHWSpecCfg: \
+                                PhyHWSpecDataGet(pstHdmiSpecCfg->u32TmdsClk);
+        PHY_NULL_CHK(pstPhyHWSpecCfgTmp);
+        s32Ret = PhyHWSpecSet(pstPhyHWSpecCfgTmp);
+    }
+    else if (HDMI_CHIP_HI3798MV300 != DRV_HDMI_ProdChipGet())
     {
         pstPhyHWSpecCfgTmp =  pstHdmiSpecCfg->stHDMIPhySpec.bHWSpecDebugEn ? \
                                 &pstHdmiSpecCfg->stHDMIPhySpec.stPhyHWSpecCfg: \

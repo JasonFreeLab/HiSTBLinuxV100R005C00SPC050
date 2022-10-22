@@ -675,7 +675,7 @@ HI_S32 DRV_GPIO_SetOutputType(HI_U32 u32GpioNo, HI_UNF_GPIO_OUTPUTTYPE_E  enOutp
 
     //FIXME hi3798cv200 no such register SC_GPIO_OD_CTRL
 #elif defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200) \
-   || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+   || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     return HI_SUCCESS;
 #else
     return HI_ERR_GPIO_NOT_SUPPORT;
@@ -728,7 +728,7 @@ HI_S32 DRV_GPIO_GetOutputType(HI_U32 u32GpioNo, HI_UNF_GPIO_OUTPUTTYPE_E  *penOu
 
     //FIXME hi3798cv200 no such register SC_GPIO_OD_CTRL
 #elif defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200) \
-   || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+   || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     return HI_SUCCESS;
 #else
     return HI_ERR_GPIO_NOT_SUPPORT;

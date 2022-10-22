@@ -42,7 +42,8 @@ static struct switch_dev  s_stSwitchDev =
 #endif
 
 //static struct semaphore s_HdmiMutex;
-HI_HDMI_DECLARE_MUTEX(s_HdmiMutex);
+HI_HDMI_DECLARE_MUTEX(s_HdmiMutex);
+
 
 #define HDMI_PROCESS0_NOIOCTLCMD     0x5a5a5a5a
 
@@ -3911,7 +3912,7 @@ HI_S32 DRV_HDMI_CecEnableSet(HDMI_DEVICE_S* pstHdmiDev, HI_BOOL bEnable)
 
 #endif
 
-#if defined(CHIP_TYPE_hi3796mv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3796mv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 static HI_VOID HdmiCpuSwitchInfoSet(HDMI_DEVICE_S* pstHdmiDev)
 {
     HDMI_MCU_INFO_S stCpuMcuSwitch = {0};
@@ -4564,7 +4565,7 @@ static HI_S32 HdmiCmdProcess0(HI_U32 cmd, HI_VOID *arg, HI_BOOL bUser)
             pstHdmiDev->stHdcpInfo.bHdcp22LoadCode = HI_FALSE;
             pstHdmiDev->stHdcpInfo.bHdcp14LoadKey  = HI_FALSE;
 #endif
-#if defined(CHIP_TYPE_hi3796mv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3796mv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
             HdmiCpuSwitchInfoSet(pstHdmiDev);
 #endif
             s32Ret = HI_SUCCESS;

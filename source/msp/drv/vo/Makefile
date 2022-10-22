@@ -148,6 +148,10 @@ ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv300)
 HAL_DIR := 98mv200
 endif
 
+ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv310)
+HAL_DIR := 98mv310
+endif
+
 ifeq ($(CFG_HI_CHIP_TYPE), hi3796mv200)
 HAL_DIR := 96mv200
 endif
@@ -156,7 +160,7 @@ ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv200_a)
 HAL_DIR := 98mv200_a
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 EXTRA_CFLAGS += -DFPGA_98CV200
 #ifdef CFG_HI_SMMU_SUPPORT
 ifeq ($(CFG_HI_SMMU_SUPPORT),y)
@@ -202,7 +206,7 @@ VO_SRCS += $(wildcard $(VO_DIR)/$(VO_VER)/*.c)
 VO_SRCS += $(wildcard $(VO_DIR)/$(VO_VER)/com/*.c)
 VO_SRCS += $(wildcard $(VO_DIR)/$(VO_VER)/drv/*.c)
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 EXTRA_CFLAGS += -I$(VO_DIR)/$(VO_VER)/hal/$(HAL_DIR)/hal_specific
 VO_SRCS += $(wildcard $(VO_DIR)/$(VO_VER)/component/*.c)
 VO_SRCS += $(wildcard $(VO_DIR)/$(VO_VER)/hal/$(HAL_DIR)/hal_specific/*.c)

@@ -30,7 +30,7 @@ static struct eth_config {
 	char phyintf[32];
 } eth_config;
 
-static int hi3798cv2x_phyinf[] = {/* array index is the hw config */
+static int hi3798mv2x_phyinf[] = {/* array index is the hw config */
 	[0] = ETH_PHY_MII,
 	[1] = ETH_PHY_RGMII,
 	[3] = ETH_PHY_UNKNOWN,
@@ -306,8 +306,8 @@ static void set_hi3798mv2x_eth_phyintf(u32 regval)
 	}
 
 	snprintf(eth_config.phyintf, sizeof(eth_config.phyintf), "%s,%s",
-		 ethphy_intfname(hi3798cv2x_phyinf[phy0intf]),
-		 ethphy_intfname(hi3798cv2x_phyinf[phy1intf]));
+		 ethphy_intfname(hi3798mv2x_phyinf[phy0intf]),
+		 ethphy_intfname(hi3798mv2x_phyinf[phy1intf]));
 
 }
 

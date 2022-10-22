@@ -109,7 +109,7 @@ endif
 ####################################################################
 # sel-develop HDMI2.0 start
 ####################################################################
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 CFLAGS 	 += -DHDMI_SUPPORT_LOGIC_HISIV100
 EMI_DIR	 := hal/emi
 CTRL_DIR := hal/ctrl/hisiv100
@@ -125,7 +125,7 @@ PHY_DIR  := hal/phy/hisiv100
 HDMI_PRODUCT := product/hi3796mv200
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3796mv200 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hifonev300 hifonev200 hi3798mv200 hi3798mv300 hi3798mv310 hi3796mv200 hi3798mv200_a),)
 #LINUX_VERSION := osal/hisiv200
 CFLAGS 	 += -I.
 CFLAGS 	 += -Ihal
@@ -136,6 +136,9 @@ CFLAGS   += -I$(BOOT_DIR)/include
 CFLAGS	 += -I$(SDK_DIR)/source/common/include
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv300),)
 CFLAGS	 += -I$(SDK_DIR)/source/common/drv/include/hi3798mv200
+else
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+CFLAGS	 += -I$(SDK_DIR)/source/common/drv/include/hi3798mv310
 else
 CFLAGS	 += -I$(SDK_DIR)/source/common/drv/include/$(CFG_HI_CHIP_TYPE)
 endif

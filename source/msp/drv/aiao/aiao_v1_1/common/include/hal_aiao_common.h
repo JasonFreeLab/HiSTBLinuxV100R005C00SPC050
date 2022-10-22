@@ -61,7 +61,7 @@ History       :
 #endif
 #elif defined(CHIP_TYPE_hi3798cv200)
 #define AIAO_PLL_933MHZ     //98cv200 EPLL 933.888M
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 /* HiFoneV310B02(hi3798mv300) use g_u32MclkPLLTab_MV300 AIAO_PLL_860MHZ */
 #define AIAO_PLL_750MHZ 1
 #elif defined(CHIP_TYPE_hi3796mv200)

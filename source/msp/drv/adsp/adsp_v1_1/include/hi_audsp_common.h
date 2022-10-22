@@ -78,6 +78,7 @@ extern "C" {
     || defined(CHIP_TYPE_hi3716mv410)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
 #ifdef HI_FPGA
@@ -164,7 +165,7 @@ dsp running(code&data) memory DSP_DDR_DMAREMAP_BEG_ADDR~DSP_DDR_DMAREMAP_END_ADD
 
 #define DSP_DDR_DMAREMAP_BEG_ADDR  0x00000000    /* 512M,(0x00000000~0x1fffffff) */
 #define DSP_DDR_DMAREMAP_END_ADDR  0x20000000    /* 512M, 0x20000000 */
-#define DSP_DDR_DMAREMAP_MAP_ADDR  0xc0000000    /* 6*512M£¬must sure dsp never use this phy addr(0xc0000000~0xdfffffff) */
+#define DSP_DDR_DMAREMAP_MAP_ADDR  0xc0000000    /* 6*512Mï¿½ï¿½must sure dsp never use this phy addr(0xc0000000~0xdfffffff) */
 
 #define DSP_DEBUG_REG_NUM 4
 #define DSP_PRIVDEBUG_REG_NUM 4
@@ -285,7 +286,7 @@ typedef struct
 } S_ADSP_CHN_REGS_TYPE;
 
 /** Audio DSP Code definition*/
-/** CNcomment:ÒôÆµ´¦ÀíÆ÷Ä£¿é´úÂë±êÊ¶¶¨Òå */
+/** CNcomment:ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½ */
 typedef enum hiADSP_CODEID_E
 {
     /* dsp manage module */
@@ -341,11 +342,11 @@ typedef struct
 } S_AOE_ADDR_TYPE;
 
 /*
- * ×÷ÓÃ: ADSP_WriteAddr½«µØÖ·Ð´Èë¼Ä´æÆ÷£¬ADSP_ReadAddr´Ó¼Ä´æÆ÷ÖÐÈ¡³öµØÖ·
- * addrÖ§³ÖÀàÐÍ: 1¡¢HI_VOID* 2¡¢32Î»ÎïÀíµØÖ· 3¡¢ÄÚºËÐéÄâµØÖ·(32Î»ÏµÍ³ÖÐÎª32bit£¬64Î»ÏµÍ³ÖÐÎª64bit)
- * reg±ØÐëÎªS_AOE_ADDR_TYPE½á¹¹ÌåÀàÐÍ
+ * ï¿½ï¿½ï¿½ï¿½: ADSP_WriteAddrï¿½ï¿½ï¿½ï¿½Ö·Ð´ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ADSP_ReadAddrï¿½Ó¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ö·
+ * addrÖ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: 1ï¿½ï¿½HI_VOID* 2ï¿½ï¿½32Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö· 3ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·(32Î»ÏµÍ³ï¿½ï¿½Îª32bitï¿½ï¿½64Î»ÏµÍ³ï¿½ï¿½Îª64bit)
+ * regï¿½ï¿½ï¿½ï¿½ÎªS_AOE_ADDR_TYPEï¿½á¹¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
-/* Ê¹ÓÃÖÐ¼ä±äÁ¿´«µÝ64Î»ÐéÄâµØÖ·£¬±ÜÃâ³öÏÖÇ¿ÖÆÊ¹ÓÃÊ±µÄ¶ÔÆëÎÊÌâ */
+/* Ê¹ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½64Î»ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ê¹ï¿½ï¿½Ê±ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 #define ADSP_WriteAddr(addr, reg) \
     do { \
         S_AOE_ADDR_TYPE reg_tmp = {0x0, 0x0}; \

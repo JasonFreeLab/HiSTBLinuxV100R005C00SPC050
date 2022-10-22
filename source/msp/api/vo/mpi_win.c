@@ -2547,9 +2547,10 @@ HI_S32 HI_MPI_WIN_GetUnloadTimes(HI_HANDLE hWin, HI_U32 *pu32Time)
 
 #elif defined(CHIP_TYPE_hi3798mv200)\
 		|| defined(CHIP_TYPE_hi3798mv300) \
-        || defined(CHIP_TYPE_hi3796mv200)\
-        || defined(CHIP_TYPE_hi3798cv100)\
-        || defined(CHIP_TYPE_hi3798cv200)\
+        || defined(CHIP_TYPE_hi3798mv310) \
+        || defined(CHIP_TYPE_hi3796mv200) \
+        || defined(CHIP_TYPE_hi3798cv100) \
+        || defined(CHIP_TYPE_hi3798cv200) \
         || defined(CHIP_TYPE_hi3798mv200_a)
 
 #define VDEC_CAPABILITY_WIDTH   4096

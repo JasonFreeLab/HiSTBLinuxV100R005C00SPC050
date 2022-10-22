@@ -276,6 +276,7 @@ void boot_suspend(void)
 #elif  defined(CHIP_TYPE_hi3796mv200)  \
     || defined(CHIP_TYPE_hi3798mv200)  \
     || defined(CHIP_TYPE_hi3798mv300)  \
+    || defined(CHIP_TYPE_hi3798mv310)  \
     || defined(CHIP_TYPE_hi3796mv200)
         break;
 #else

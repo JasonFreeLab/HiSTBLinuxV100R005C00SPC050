@@ -101,6 +101,7 @@ HI_VOID HI_DRV_SYS_GetChipVersion(HI_CHIP_TYPE_E *penChipType, HI_CHIP_VERSION_E
 #elif defined(CHIP_TYPE_hi3798cv200)   \
    || defined(CHIP_TYPE_hi3798mv200)   \
    || defined(CHIP_TYPE_hi3798mv300)   \
+   || defined(CHIP_TYPE_hi3798mv310)   \
    || defined(CHIP_TYPE_hi3798mv200_a) \
    || defined(CHIP_TYPE_hi3796mv200)
    switch (g_pstRegSysCtrl->SC_SYSID)
@@ -198,7 +199,7 @@ HI_S32 HI_DRV_SYS_GetChipPackageType(HI_CHIP_PACKAGE_TYPE_E *penPackageType)
         *penPackageType = HI_CHIP_PACKAGE_TYPE_BGA_19_19;
         return HI_SUCCESS;
     }
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     if ((0x37986200 == g_pstRegSysCtrl->SC_SYSID) || (0x37980210 == g_pstRegSysCtrl->SC_SYSID) || (0x37988200 == g_pstRegSysCtrl->SC_SYSID))
     {
         *penPackageType = HI_CHIP_PACKAGE_TYPE_BGA_14_14;
@@ -284,7 +285,7 @@ HI_S32 HI_DRV_SYS_GetHdrSupport(HI_U32 *pu32Support)
             *pu32Support = 0x0;
             break;
     }
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     switch(g_pstRegPeri->PERI_SOC_FUSE_0.bits.otp_hdr_ctrl)
     {
         case 0x0:
@@ -314,7 +315,7 @@ HI_S32 HI_DRV_SYS_GetDolbyvisionSupport(HI_U32 *pu32Support)
             *pu32Support = 0x0;
             break;
     }
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     switch(g_pstRegPeri->PERI_SOC_FUSE_0.bits.otp_hdr_ctrl)
     {
         case 0x0:
@@ -365,6 +366,7 @@ HI_S32 HI_DRV_SYS_GetAdvcaSupport(HI_U32 *pu32Support)
     || defined(CHIP_TYPE_hi3798mv100)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || ((defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420)) \
          && !defined(HI_ADVCA_TYPE_NAGRA))
@@ -431,6 +433,7 @@ HI_S32 HI_DRV_SYS_GetMemConfig(HI_SYS_MEM_CONFIG_S *pstConfig)
 #define SC_SYSID_OFFSET 0xee0
 #if defined(CHIP_TYPE_hi3798mv200)    \
  || defined(CHIP_TYPE_hi3798mv300)    \
+ || defined(CHIP_TYPE_hi3798mv310)	  \
  || defined(CHIP_TYPE_hi3798mv200_a)
 #define OTP_MAP_LOTID0    0x170
 #define OTP_MAP_LOTID4    0x174
@@ -446,6 +449,7 @@ HI_S32 HI_DRV_SYS_GetMemConfig(HI_SYS_MEM_CONFIG_S *pstConfig)
 
 #if defined(CHIP_TYPE_hi3798mv200)    \
  || defined(CHIP_TYPE_hi3798mv300)    \
+ || defined(CHIP_TYPE_hi3798mv310)	  \
  || defined(CHIP_TYPE_hi3798mv200_a)  \
  || defined(CHIP_TYPE_hi3796mv200)    \
  || (defined(CHIP_TYPE_hi3716mv410) && defined(NOCS3_0_SUPPORT)) \
@@ -538,6 +542,7 @@ HI_S32 HI_DRV_SYS_Get32DieID(HI_U32 *pu32dieid)
 {
 #if defined(CHIP_TYPE_hi3798mv200)    \
  || defined(CHIP_TYPE_hi3798mv300)    \
+ || defined(CHIP_TYPE_hi3798mv310)	  \
  || defined(CHIP_TYPE_hi3798mv200_a)  \
  || defined(CHIP_TYPE_hi3796mv200)
 
@@ -707,8 +712,8 @@ HI_S32 HI_DRV_SYS_GetCPUSecureMode(HI_BOOL *bSecure)
 #endif
 }
 
-/*pu32Value: 0普通模式，非0特殊模式；*/
-/*EPLL0 地址是0xF8A22030  0x12560418表示特殊模式，其他表示普通模式*/
+/*pu32Value: 0锟斤拷通模式锟斤拷锟斤拷0锟斤拷锟斤拷模式锟斤拷*/
+/*EPLL0 锟斤拷址锟斤拷0xF8A22030  0x12560418锟斤拷示锟斤拷锟斤拷模式锟斤拷锟斤拷锟斤拷锟斤拷示锟斤拷通模式*/
 HI_S32 HI_DRV_SYS_GetFlag(HI_U32 *pu32Value)
 {
     HI_U32 u32RegValue = 0;
@@ -719,7 +724,8 @@ HI_S32 HI_DRV_SYS_GetFlag(HI_U32 *pu32Value)
     }
 
 #if defined(CHIP_TYPE_hi3798mv200)   \
-   || defined(CHIP_TYPE_hi3798mv300)
+   || defined(CHIP_TYPE_hi3798mv300) \
+   || defined(CHIP_TYPE_hi3798mv310)
     HI_REG_READ((HI_VOID *)g_pstRegCrg + 0x30, u32RegValue);
 
     if (0x12560418 == (u32RegValue & 0xffffffff))

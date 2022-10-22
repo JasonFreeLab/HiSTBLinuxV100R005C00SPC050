@@ -263,8 +263,8 @@ static HI_S32 VDEC_VPSSCMD(HI_HANDLE hVdec, VPSS_CMD_E enCMD, HI_VOID* pstParam)
     {
         return HI_ERR_VDEC_INVALID_PARA;
     }
-    /*vpssµÄ´´½¨ÊÇÔÚHI_MPI_VDEC_SetChanAttrº¯ÊýÖÐÖ´ÐÐµÄ,²¢ÔÚ´´½¨µÄÊ±ºò½«vpss¾ä±ú±£´æÔÚpstVdec->hVpssÖÐ*/
-    /*ÔÚvdecÍ¨µÀÉÏ´´½¨port£¬Ó¦¸ÃÊÇÍ¨¹ývdec¾ä±úÕÒµ½Õâ¸övdec¶ÔÓ¦µÄvpss¾ä±ú*/
+    /*vpssï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½HI_MPI_VDEC_SetChanAttrï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ðµï¿½,ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½vpssï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pstVdec->hVpssï¿½ï¿½*/
+    /*ï¿½ï¿½vdecÍ¨ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½portï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½vdecï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½vdecï¿½ï¿½Ó¦ï¿½ï¿½vpssï¿½ï¿½ï¿½*/
 
     hVpss = pstVdec->hVpss;
     if (HI_INVALID_HANDLE == hVpss)
@@ -644,7 +644,7 @@ static HI_VOID VDEC_MarkCodecFrm(VDEC_INST_S *pstVdec, HI_CODEC_FRAME_S *pCodecF
         return;
     }
 
-    #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+    #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     if (pstFrmGet->u32LineNumPhyAddr != 0)
     {
         g_lowDelayLinePhyAddr[HI_CODEC_INST_HANDLE(pstVdec->hCodecInst)] = pstFrmGet->u32LineNumPhyAddr;
@@ -654,7 +654,7 @@ static HI_VOID VDEC_MarkCodecFrm(VDEC_INST_S *pstVdec, HI_CODEC_FRAME_S *pCodecF
 
         if (g_lowDelayLineVirAddr[HI_CODEC_INST_HANDLE(pstVdec->hCodecInst)] != HI_NULL)
         {
-            //Ã¿Ö¡µÄÐÐºÅ¿Õ¼ä´óÐ¡Îª32×Ö½Ú
+            //Ã¿Ö¡ï¿½ï¿½ï¿½ÐºÅ¿Õ¼ï¿½ï¿½Ð¡Îª32ï¿½Ö½ï¿½
             memset((HI_VOID*)(HI_ULONG)g_lowDelayLineVirAddr[HI_CODEC_INST_HANDLE(pstVdec->hCodecInst)], 0, 32);
         }
     }
@@ -1880,7 +1880,7 @@ HI_S32 HI_MPI_VDEC_ReceiveFrame(HI_HANDLE hVdec, HI_DRV_VIDEO_FRAME_PACKAGE_S *p
         return HI_ERR_VDEC_INVALID_PARA;
     }
     /*get port frames*/
-    /*CNcomment:Ö÷ÒªÊÇ´Ó¶ÔÓ¦µÄPORTµÄ¶ÓÁÐÀïÃæÈ¡¶«Î÷*/
+    /*CNcomment:ï¿½ï¿½Òªï¿½Ç´Ó¶ï¿½Ó¦ï¿½ï¿½PORTï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½*/
     VdecRecvOpt.TimeOut = TimeOut;
     VdecRecvOpt.pVidFrmPakage = pFrmPack;
     s32Ret = VDEC_VPSSCMD(hVdec, VPSS_CMD_RECEIVEFRAME, (HI_VOID*)(&VdecRecvOpt));

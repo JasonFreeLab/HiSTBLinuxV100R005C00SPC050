@@ -47,7 +47,7 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200),)
 CHIP := 3798cv200
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
 CHIP := 3798mv200
 endif
 

@@ -50,7 +50,9 @@ config  HI3798MV100
 config  HI3798MV200
     bool "hi3798mv200"
 config  HI3798MV300
-    bool "hi3798mv300"	
+    bool "hi3798mv300"
+config  HI3798MV310
+    bool "hi3798mv310"
 config  HI3798MV200_A
     bool "hi3798mv200_a"
 config  HI3796MV100
@@ -70,6 +72,7 @@ config  HI_CHIP_TYPE
     default hi3798mv100     if HI3798MV100
     default hi3798mv200     if HI3798MV200
     default hi3798mv300     if HI3798MV300
+    default hi3798mv310     if HI3798MV310
     default hi3798mv200_a   if HI3798MV200_A
     default hi3796mv100     if HI3796MV100
     default hi3796mv200     if HI3796MV200
@@ -85,7 +88,7 @@ config  HI_NVR_SUPPORT
 
 config  HI_DONGLE_SUPPORT
     bool "Dongle Board Support"
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310
     default n
     help
         This option should be choose when dongle board is supported.
@@ -102,7 +105,7 @@ config  HI_32BIT_SYSTEM
 
 config  HI_64BIT_SYSTEM
     bool "64bit system"
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200
 endchoice
 
 choice
@@ -145,7 +148,7 @@ config  ARM_HISTBV310_LINUX
 
 config  ARM_HISTBV320_LINUX
     bool "arm-histbv320-linux"
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200 || ((HI3716MV410 || HI3716MV420) && ADVCA_NAGRA)
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200 || ((HI3716MV410 || HI3716MV420) && ADVCA_NAGRA)
 endchoice
 
 config  HI_ARM_TOOLCHAINS_NAME
@@ -175,12 +178,12 @@ config  HI_OUT_DIR
 
 config  HI_SMMU_SUPPORT
     bool
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200
     default y
 
 config  HI_HDR_SUPPORT
     bool
-    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV200_A || HI3796MV200
+    depends on HI3798CV200 || HI3798MV200 || HI3798MV300 || HI3798MV310 || HI3798MV200_A || HI3796MV200
     default y
 
 config  HI_HDR_DOLBYVISION_SUPPORT

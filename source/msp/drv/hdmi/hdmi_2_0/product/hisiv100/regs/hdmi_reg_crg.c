@@ -47,6 +47,11 @@ int REG_HDMI_CRG_reg_Init(void)
         return HI_FAILURE;
     }
 
+    if( HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+    {
+        REG_HDMI_SYSCTRL_reg_Init();
+    }
+
     if( HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )
     {
         REG_HDMI_SYSCTRL_reg_Init();
@@ -61,6 +66,11 @@ int REG_HDMI_CRG_reg_DeInit(void)
     {
         HDMI_IO_UNMAP(s_pstRegCrg);    
         s_pstRegCrg = HI_NULL;
+    }
+
+    if( HDMI_CHIP_HI3798MV310 == DRV_HDMI_ProdChipGet() )
+    {
+        REG_HDMI_SYSCTRL_reg_DeInit();
     }
 
     if( HDMI_CHIP_HI3798MV300 == DRV_HDMI_ProdChipGet() )

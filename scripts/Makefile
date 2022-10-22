@@ -25,7 +25,7 @@ ifeq ($(CFG_HI_CHIP_TYPE), hi3716mv410)
 JPGE_SUPPORT := n
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 USB3_SUPPORT := y
 endif
 
@@ -237,7 +237,7 @@ ifeq ($(CFG_HI_DVFS_CPU_SUPPORT),y)
     ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3716mv410 hi3716mv420),)
 		$(AT)echo "echo 1000000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" >> $(HI_MODULE_DIR)/load
     endif
-    ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+    ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 		$(AT)echo "echo 1200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" >> $(HI_MODULE_DIR)/load
     endif
 
@@ -267,7 +267,7 @@ ifeq ($(CFG_HI_GPU_MALI450_SUPPORT), y)
 endif
 
 ifeq ($(CFG_HI_DONGLE_SUPPORT),y)
-    ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300),)
+    ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310),)
 		$(AT)echo "echo 400000 > /sys/module/mali/parameters/mali_dvfs_max_frequency " >> $(HI_MODULE_DIR)/load
     endif
 endif
