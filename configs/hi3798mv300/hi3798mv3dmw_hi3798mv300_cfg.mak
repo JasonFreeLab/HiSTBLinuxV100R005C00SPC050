@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # SDK version: KERNELVERSION
-# Sun Oct  9 15:14:57 2022
+# Sun Oct 23 00:57:19 2022
 #
 
 #
@@ -17,6 +17,7 @@ CFG_HI_ENG_MODE=y
 # CFG_HI3798MV100 is not set
 # CFG_HI3798MV200 is not set
 CFG_HI3798MV300=y
+# CFG_HI3798MV310 is not set
 # CFG_HI3798MV200_A is not set
 # CFG_HI3796MV100 is not set
 # CFG_HI3796MV200 is not set
@@ -619,7 +620,7 @@ CFG_HI_LIBCPP_SUPPORT=y
 CFG_HI_ROOTFS_STRIP=y
 CFG_HI_ROOTFS_INSTALL_SHARED_LIBS=y
 # CFG_HI_ROOTFS_CRAMFS is not set
-CFG_HI_ROOTFS_SQUASHFS=y
+# CFG_HI_ROOTFS_SQUASHFS is not set
 CFG_HI_ROOTFS_EXT4=y
 CFG_HI_EMMC_ROOTFS_SIZE=256
 
