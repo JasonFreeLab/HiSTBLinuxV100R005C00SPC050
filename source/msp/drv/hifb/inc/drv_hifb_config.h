@@ -11,7 +11,7 @@ File Name           : hifb_config.h
 Version             : Initial Draft
 Author              :
 Created             : 2015/09/09
-Description         : ËùÓÐÐÅÏ¢µÄ±ä»¯¶¼ÔÚÕâÒ»¸öÎÄ¼þÖÐÌåÏÖ£¬ÆäËüµÄ±£³Ö²»¶¯
+Description         : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä±ä»¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½ï¿½Ö²ï¿½ï¿½ï¿½
 Function List       :
 History             :
 Date                       Author                   Modification
@@ -53,37 +53,37 @@ Date                       Author                   Modification
 
 
 /**
- ** Ã¿¸ö¼Ä´æÆ÷µÄÆ«ÒÆµØÖ·
+ ** Ã¿ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Æ«ï¿½Æµï¿½Ö·
  **/
 #define CONFIG_HIFB_CHN_OFFSET          0x400
 #define CONFIG_HIFB_WBC_OFFSET          0x400
 
 #if defined(CHIP_TYPE_hi3798cv200)    || defined(CHIP_TYPE_hi3798mv200)   \
 || defined(CHIP_TYPE_hi3798mv200_a)  || defined(CHIP_TYPE_hi3796mv200)	\
-|| defined(CHIP_TYPE_hi3798mv300)
+|| defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     #define CONFIG_HIFB_GFX_OFFSET     0x200
     #define CONFIG_HIFB_GP_OFFSET      0x800
 #else
-    #define CONFIG_HIFB_GFX_OFFSET     0x800             /** Í¼²ã   **/
-    #define CONFIG_HIFB_GP_OFFSET      0x800              /** Í¼²ãGP **/
+    #define CONFIG_HIFB_GFX_OFFSET     0x800             /** Í¼ï¿½ï¿½   **/
+    #define CONFIG_HIFB_GP_OFFSET      0x800              /** Í¼ï¿½ï¿½GP **/
 #endif
 
 #define CONFIG_VDP_SIZE                0xfff0
 
 
 /**
- ** VDP¼Ä´æÆ÷»ùµØÖ·
+ ** VDPï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
  **/
 #if defined(CHIP_TYPE_hi3798cv200)   || defined(CHIP_TYPE_hi3798mv200)   \
  || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)	 \
- || defined(CHIP_TYPE_hi3798mv300)
-    /** 0XB208Í¼ÐÎºÍÊÓÆÁµþ¼Ó¼Ä´æÆ÷ **/
+ || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
+    /** 0XB208Í¼ï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼Ä´ï¿½ï¿½ï¿½ **/
     #define CONFIG_VDP_REG_BASEADDR                         (0xf8cc0000)
     #define CONFIG_HIFB_HD0_REG_BASEADDR                (0xf8cc7000)
     /** sd0 -> fb4 **/
     #define CONFIG_HIFB_SD_LOGO_REG_BASEADDR            (0xf8cc7800)
     #define CONFIG_HIFB_WBC_SLAYER_REG_BASEADDR         (0xf8cc7800)
-    /** WBC_GP0Í¬Ô´»ØÐ´ 0xf8cc9400**/
+    /** WBC_GP0Í¬Ô´ï¿½ï¿½Ð´ 0xf8cc9400**/
     #define CONFIG_HIFB_WBC_GP0_REG_BASEADDR            (0xf8cc9400)
 
 #elif defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420)
@@ -96,14 +96,14 @@ Date                       Author                   Modification
     #define CONFIG_VDP_REG_BASEADDR                         (0xf8cc0000)
     #define CONFIG_HIFB_HD0_REG_BASEADDR                (0xf8cc6000)
     /**
-     ** (CONFIG_HIFB_HD0_REG_BASEADDR + 3 * OPTM_GFX_OFFSET) ±êÇå²ãLOGO SD1(Ë«ÏÔ¹¦ÄÜG3->G5)
+     ** (CONFIG_HIFB_HD0_REG_BASEADDR + 3 * OPTM_GFX_OFFSET) ï¿½ï¿½ï¿½ï¿½ï¿½LOGO SD1(Ë«ï¿½Ô¹ï¿½ï¿½ï¿½G3->G5)
      **/
     #define CONFIG_HIFB_SD_LOGO_REG_BASEADDR            (0xf8cc7800)
     /**
-     ** (CONFIG_HIFB_SD0_REG_BASEADDR + 4*OPTM_GFX_OFFSET) Í¬Ô´»ØÐ´Ê¹ÓÃ±êÇå²ãG4
+     ** (CONFIG_HIFB_SD0_REG_BASEADDR + 4*OPTM_GFX_OFFSET) Í¬Ô´ï¿½ï¿½Ð´Ê¹ï¿½Ã±ï¿½ï¿½ï¿½ï¿½G4
      **/
     #define CONFIG_HIFB_WBC_SLAYER_REG_BASEADDR         (0xf8cc8000)
-    /** WBC_GP0Í¬Ô´»ØÐ´ 0xf8cca800**/
+    /** WBC_GP0Í¬Ô´ï¿½ï¿½Ð´ 0xf8cca800**/
     #define CONFIG_HIFB_WBC_GP0_REG_BASEADDR            (0xf8cca800)
 #endif
 
@@ -116,19 +116,19 @@ Date                       Author                   Modification
 
 
 /**
- **ÊÇ·ñÖ§³Ö½«¸ßÇåÍ¨µÀÍ¼²ã3¹ÒÔØµ½±êÇåÍ¨µÀ±ä³ÉÍ¼²ã5
+ **ï¿½Ç·ï¿½Ö§ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½Í¼ï¿½ï¿½3ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½5
  **/
 #if defined(CHIP_TYPE_hi3716cv200)
-    /** Ö§³ÖË«ÏÔ¹¦ÄÜTC **/
+    /** Ö§ï¿½ï¿½Ë«ï¿½Ô¹ï¿½ï¿½ï¿½TC **/
     #define CONFIG_HIFB_GFX3_TO_GFX5
 #endif
 
 /**
  ** ZME COEF
- ** ´¦ÀíË®Æ½¾«¶È²éÑ¯
- ** 98MV100/HIFONE-STB: Ë®Æ½¾«¶È²éÑ¯ÊÇ°´ÕÕ20bit
- ** ÆäËü: Ë®Æ½¾«¶È²éÑ¯ÊÇ°´ÕÕ12bit
- ** ±¾À´ÊÇ°´ÕÕ12bit¼ÆËãµÄ£¬°´ÕÕÕâ¸öÔÙ½øÐÐÆ«ÒÆ
+ ** ï¿½ï¿½ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½È²ï¿½Ñ¯
+ ** 98MV100/HIFONE-STB: Ë®Æ½ï¿½ï¿½ï¿½È²ï¿½Ñ¯ï¿½Ç°ï¿½ï¿½ï¿½20bit
+ ** ï¿½ï¿½ï¿½ï¿½: Ë®Æ½ï¿½ï¿½ï¿½È²ï¿½Ñ¯ï¿½Ç°ï¿½ï¿½ï¿½12bit
+ ** ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½12bitï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½
  **/
 #if    defined(CHIP_TYPE_hi3798mv100)   \
     || defined(CHIP_TYPE_hi3796mv100)   \
@@ -136,6 +136,7 @@ Date                       Author                   Modification
     || defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3716mv410)   \
@@ -145,7 +146,7 @@ Date                       Author                   Modification
     #define CONFIG_HIFB_PRECISION_ZMERATIONH_12BITOFFSET          0
 #endif
 /**
- ** Ë®Æ½·½ÏòÍ¬Ê±¾ßÓÐÐÐºÍÁÐËõ·Å
+ ** Ë®Æ½ï¿½ï¿½ï¿½ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ðºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  **/
 #if    defined(CHIP_TYPE_hi3798mv100)   \
     || defined(CHIP_TYPE_hi3796mv100)   \
@@ -153,6 +154,8 @@ Date                       Author                   Modification
     || defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300) 	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
+    || defined(CHIP_TYPE_hi3798mv310) 	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3716mv410)   \
     || defined(CHIP_TYPE_hi3796mv200)   \
@@ -168,6 +171,8 @@ Date                       Author                   Modification
     || defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
+    || defined(CHIP_TYPE_hi3798mv310) 	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3716mv410)   \
@@ -181,51 +186,51 @@ Date                       Author                   Modification
 
 
 /**
- ** GPÖ§³ÖµÄÍ¼ÐÎ²ã¸öÊý
+ ** GPÖ§ï¿½Öµï¿½Í¼ï¿½Î²ï¿½ï¿½ï¿½ï¿½
  **/
 #if     defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100) \
      || defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420)
     #define CONFIG_HIFB_GP0_SUPPORT_GFX_COUNT          2 /** (G0 G1) **/
     #define CONFIG_HIFB_GP1_SUPPORT_GFX_COUNT          1 /** (G4)    **/
 #elif defined(CHIP_TYPE_hi3798cv200)
-    #define CONFIG_HIFB_GP0_SUPPORT_GFX_COUNT          3 /** (G0 G1 G3) **//** G2²»Ö§³Ö **/
+    #define CONFIG_HIFB_GP0_SUPPORT_GFX_COUNT          3 /** (G0 G1 G3) **//** G2ï¿½ï¿½Ö§ï¿½ï¿½ **/
     #define CONFIG_HIFB_GP1_SUPPORT_GFX_COUNT          1 /** (G4) **/
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     #define CONFIG_HIFB_GP0_SUPPORT_GFX_COUNT          2 /** (G0 G1) **/
     #define CONFIG_HIFB_GP1_SUPPORT_GFX_COUNT          1 /** (G4) **/
 #else
     #define CONFIG_HIFB_GP0_SUPPORT_GFX_COUNT          3 /** (G0 G1 G2)  **/
-    #define CONFIG_HIFB_GP1_SUPPORT_GFX_COUNT          2 /** (G3(±äG5) G4 G5) **/
+    #define CONFIG_HIFB_GP1_SUPPORT_GFX_COUNT          2 /** (G3(ï¿½ï¿½G5) G4 G5) **/
 #endif
 
 
 #if defined(CHIP_TYPE_hi3798mv100)  || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100)   \
  || defined(CHIP_TYPE_hi3716mv410)  || defined(CHIP_TYPE_hi3716mv420)
-    /** ÏÈ´¹Ö±ºóË®Æ½ **/
+    /** ï¿½È´ï¿½Ö±ï¿½ï¿½Ë®Æ½ **/
     #define CONFIG_HIFB_ZME_ORDER_VH
 #elif  defined(CHIP_TYPE_hi3798cv200)   || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)	\
-    || defined(CHIP_TYPE_hi3798mv300)
-    /** ÏÈË®Æ½ºó´¹Ö± **/
+    || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
+    /** ï¿½ï¿½Ë®Æ½ï¿½ï¿½Ö± **/
     #define CONFIG_HIFB_ZME_ORDER_HV
 #else
-    /** ÏÈË®Æ½ºó´¹Ö± **/
+    /** ï¿½ï¿½Ë®Æ½ï¿½ï¿½Ö± **/
     #define CONFIG_HIFB_ZME_ORDER_HV
 #endif
 
 
 
 /**
- ** ±êÇå²ãÊ¹ÓÃµÄLOGOÍ¼²ã£¬ÕâÀïÒªÓÃ"\"£¬²»È»»á¶¨Òå´íÎó
+ ** ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½LOGOÍ¼ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½"\"ï¿½ï¿½ï¿½ï¿½È»ï¿½á¶¨ï¿½ï¿½ï¿½ï¿½ï¿½
  **/
 #if defined(CHIP_TYPE_hi3798mv100)   || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100)   \
  || defined(CHIP_TYPE_hi3716mv410)   || defined(CHIP_TYPE_hi3716mv420)   \
  || defined(CHIP_TYPE_hi3798cv200)   || defined(CHIP_TYPE_hi3798mv200)   \
  || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)	 \
- ||	defined(CHIP_TYPE_hi3798mv300)
+ ||	defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     /**
-     ** ÊÇ·ñÐèÒª³éÐÐ´¦Àí£¬Ö»ºÍÐÔÄÜÓÐ¹Ø£¬ºÍ¹¦ÄÜÃ»ÓÐ¹ØÏµ£¬Âß¼­Ëõ·Å¶¼Ö§³Ö
-     ** ÐÔÄÜ²»¹»¾ÍÓÃ³éÐÐ
+     ** ï¿½Ç·ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹Ø£ï¿½ï¿½Í¹ï¿½ï¿½ï¿½Ã»ï¿½Ð¹ï¿½Ïµï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½Å¶ï¿½Ö§ï¿½ï¿½
+     ** ï¿½ï¿½ï¿½Ü²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½
      **/
     #define CONFIG_HIFB_EXTRACE_DISABLE
 #endif
@@ -237,6 +242,7 @@ Date                       Author                   Modification
     || defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3716mv410)   \
@@ -268,8 +274,8 @@ Date                       Author                   Modification
     #endif
 #else
     /**
-     **¿ª»úlogo±È½ÏÄÑ³öÏÖµÍ´ø¿í£¬ËùÒÔ¶¼Ö§³Ö£¬·½±ãÆ½»¬¹ý¶É
-     **µ¥Í¼²ã·½°¸¸ÄÁËÖ®ºóÕâ¸öµØ·½¿ÉÒÔÈ¥µô£¬·½±ã´úÂëÍ³Ò»
+     **ï¿½ï¿½ï¿½ï¿½logoï¿½È½ï¿½ï¿½Ñ³ï¿½ï¿½ÖµÍ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½Ö§ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+     **ï¿½ï¿½Í¼ï¿½ã·½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³Ò»
      **/
     #define CONFIG_HIFB_HD1_LAYER_16BIT_FMT            1
     #define CONFIG_HIFB_HD1_LAYER_24BIT_FMT            1
@@ -282,7 +288,7 @@ Date                       Author                   Modification
 
 
 /**
- **ÅÐ¶ÏÍ¼²ãÊÇ·ñÖ§³Ö
+ **ï¿½Ð¶ï¿½Í¼ï¿½ï¿½ï¿½Ç·ï¿½Ö§ï¿½ï¿½
  **/
 #if    defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100) \
     || defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420)
@@ -313,7 +319,7 @@ Date                       Author                   Modification
     #define CONFIG_HIFB_AD2_LAYER_SUPPORT                  HI_FALSE
     #define CONFIG_HIFB_AD3_LAYER_SUPPORT                  HI_FALSE
     #define CONFIG_HIFB_CURSOR_LAYER_SUPPORT               HI_FALSE
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     #define CONFIG_HIFB_HD0_LAYER_SUPPORT                  HI_TRUE
     #define CONFIG_HIFB_HD1_LAYER_SUPPORT                  HI_TRUE
     #define CONFIG_HIFB_HD2_LAYER_SUPPORT                  HI_FALSE
@@ -344,7 +350,7 @@ Date                       Author                   Modification
 #endif
 
 /**
- **ÅÐ¶ÏÑ¹Ëõ½âÑ¹ÊÇ·ñÖ§³Ö
+ **ï¿½Ð¶ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½Ç·ï¿½Ö§ï¿½ï¿½
  **/
 #if    defined(CHIP_TYPE_hi3798mv100)    \
     || defined(CHIP_TYPE_hi3796mv100)    \
@@ -352,6 +358,7 @@ Date                       Author                   Modification
     || defined(CHIP_TYPE_hi3798cv200)    \
     || defined(CHIP_TYPE_hi3798mv200)    \
     || defined(CHIP_TYPE_hi3798mv300)	 \
+    || defined(CHIP_TYPE_hi3798mv310)	 \
     || defined(CHIP_TYPE_hi3798mv200_a)  \
     || defined(CHIP_TYPE_hi3796mv200)    \
     || defined(CHIP_TYPE_hi3716mv410)    \
@@ -387,7 +394,7 @@ Date                       Author                   Modification
 
 #if   defined(CHIP_TYPE_hi3798cv200)   || defined(CHIP_TYPE_hi3798mv200) \
    || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200) \
-   || defined(CHIP_TYPE_hi3798mv300)
+   || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     #define CONFIG_HIFB_HD_LAYER_MAXWIDTH         1920
     #define CONFIG_HIFB_HD_LAYER_MAXHEIGHT        1920/** support vr fmt defined by customer self **/
     #define CONFIG_HIFB_SD_LAYER_MAXWIDTH         720
@@ -418,7 +425,7 @@ Date                       Author                   Modification
 
 #if   defined(CHIP_TYPE_hi3798cv200)   || defined(CHIP_TYPE_hi3798mv200)   \
    || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)   \
-   || defined(CHIP_TYPE_hi3798mv300)
+   || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     #define GFX_CONFIG_GP0_MZE_VSP_2TAB_EN
 #endif
 
@@ -427,7 +434,7 @@ Date                       Author                   Modification
 
 #if   defined(CHIP_TYPE_hi3798cv200)   || defined(CHIP_TYPE_hi3798mv200)  \
    || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)  \
-   || defined(CHIP_TYPE_hi3798mv300)
+   || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
       #define CONFIG_HIFB_MMU_SUPPORT
 #endif
 
