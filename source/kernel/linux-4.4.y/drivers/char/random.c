@@ -921,7 +921,8 @@ void add_interrupt_randomness(int irq, int irq_flags)
 	add_interrupt_bench(cycles);
 
 	if ((fast_pool->count < 64) &&
-	    !time_after(now, fast_pool->last + HZ))
+	    !time_after(now, fast_pool->last + HZ) &&
+        nonblocking_pool.initialized)
 		return;
 
 	r = nonblocking_pool.initialized ? &input_pool : &nonblocking_pool;

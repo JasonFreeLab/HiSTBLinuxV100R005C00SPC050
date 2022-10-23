@@ -36,7 +36,7 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716cv200 hi3716mv400 hi3718cv100 hi3
 HAL_DIR  := hifb_v1_0
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 HAL_DIR  := hifb_v2_0
 endif
 
@@ -108,7 +108,7 @@ ifeq ($(CFG_HI_FB2_SMMU_SUPPORT),y)
 EXTRA_CFLAGS += -DCONFIG_GFX_HI_FB2_SMMU_SUPPORT
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 EXTRA_CFLAGS += -DCONFIG_GFX_PQ
 endif
 
