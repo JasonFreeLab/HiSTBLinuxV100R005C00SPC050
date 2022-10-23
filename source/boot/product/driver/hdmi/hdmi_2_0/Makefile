@@ -142,6 +142,7 @@ CFLAGS	 += -I$(SDK_DIR)/source/common/drv/include/hi3798mv310
 else
 CFLAGS	 += -I$(SDK_DIR)/source/common/drv/include/$(CFG_HI_CHIP_TYPE)
 endif
+endif
 CFLAGS	 += -I$(PRODUCT_DIR)/logo/include
 CFLAGS	 += -I$(PRODUCT_DIR)/driver/graphic/include
 CFLAGS	 += -I$(PRODUCT_DIR)/driver/hdmi/hdmi_2_0
