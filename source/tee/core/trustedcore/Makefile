@@ -24,6 +24,13 @@ export CFG_HI_TEE_SMMU_SUPPORT := y
 export CFG_HI_TEE_EMPTYDRM_SUPPORT := n
 endif
 
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+export PLATFORM_CHIP_NAME := hi3798mv310
+export CFG_HI_TEE_SEC_TIMER_SUPPORT := y
+export CFG_HI_TEE_SMMU_SUPPORT := y
+export CFG_HI_TEE_EMPTYDRM_SUPPORT := n
+endif
+
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv100 hi3796mv100 hi3716dv100),)
 export PLATFORM_CHIP_NAME := hi3798mx
 export CFG_HI_TEE_SEC_TIMER_SUPPORT := n
@@ -83,6 +90,8 @@ endif
 
 BINARY_RELEASE_HI3796MV200 := y
 BINARY_RELEASE_HI3798MV200 := n
+BINARY_RELEASE_HI3798MV300 := n
+BINARY_RELEASE_HI3798MV310 := n
 BINARY_RELEASE_HI3798CV200 := n
 
 ifeq ($(BINARY_RELEASE_HI3796MV200),y)
@@ -109,6 +118,34 @@ endif
 
 ifeq ($(BINARY_RELEASE_HI3798MV200),y)
     ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv200)
+        TEE_OS_BINARY_RELEASE := true
+
+        ifeq ($(CFG_HI_CPU_ARCH),arm64)
+            VER := 64bit
+        else
+            VER := 32bit
+        endif
+
+        SOS_IMG_DIR := $(HI_TEE_OS_DIR)/images/$(CFG_HI_CHIP_TYPE)/basic/$(VER)/$(CFG_HI_TVP_MEM_LAYOUT)
+    endif
+endif
+
+ifeq ($(BINARY_RELEASE_HI3798MV300),y)
+    ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv300)
+        TEE_OS_BINARY_RELEASE := true
+
+        ifeq ($(CFG_HI_CPU_ARCH),arm64)
+            VER := 64bit
+        else
+            VER := 32bit
+        endif
+
+        SOS_IMG_DIR := $(HI_TEE_OS_DIR)/images/$(CFG_HI_CHIP_TYPE)/basic/$(VER)/$(CFG_HI_TVP_MEM_LAYOUT)
+    endif
+endif
+
+ifeq ($(BINARY_RELEASE_HI3798MV310),y)
+    ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv310)
         TEE_OS_BINARY_RELEASE := true
 
         ifeq ($(CFG_HI_CPU_ARCH),arm64)

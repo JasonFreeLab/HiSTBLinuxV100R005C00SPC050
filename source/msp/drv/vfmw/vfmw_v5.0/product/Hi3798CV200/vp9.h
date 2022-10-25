@@ -41,7 +41,7 @@ typedef Vp9_TreeIndex *pVp9_Tree;
     (((value) + (1 << ((n) - 1))) >> (n))
 
 #ifdef VFMW_STB_PRODUCT
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
 #define CALC_HEAD_STRIDE(w) ((((((w) + 2047) / 2048) * 2048) / 64) / 2)
 #else
 #define CALC_HEAD_STRIDE(w) ((((((w) + 511) / 512) * 512) / 64) * 2)

@@ -27,7 +27,7 @@ EXTRA_CFLAGS += -I$(COMMON_UNF_INCLUDE)                 \
                 -I$(MSP_DIR)/api/tde/include            \
                 -I$(MSP_DIR)/drv/pm
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv200),)
-EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51_96mv200
+        EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51_96mv200
 else
 	ifeq ($(CFG_HI_TEE_MCU_SUPPORT),y)
 		EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51_98mv200_ultra
@@ -35,9 +35,13 @@ else
 	else
 		ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300),)
 			EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51_98mv200
-		else
-			EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51
-		endif
+                else
+                        ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+			        EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51_98mv310
+		        else
+			        EXTRA_CFLAGS += -I$(COMPONENT_DIR)/pm/c51
+		        endif
+                endif
 	endif
 endif
 

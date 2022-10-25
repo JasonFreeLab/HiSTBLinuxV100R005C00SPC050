@@ -44,7 +44,7 @@
 #define DMX_DESCRAMBLER_TYPE_CSA3_SUPPORT
 #define DMX_DESCRAMBLER_TYPE_SPE_V2_SUPPORT
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define DMX_SET_BASE                    0xF9C00000
 
 #define DMX_MMU_VERSION_2

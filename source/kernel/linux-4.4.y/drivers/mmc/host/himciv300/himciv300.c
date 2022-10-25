@@ -1325,7 +1325,7 @@ static int __init himciv300_pltm_probe(struct platform_device *pdev)
 	of_property_read_u32(np, "caps2", &mmc->caps2);
 	of_property_read_u32(np, "max-frequency", &mmc->f_max);
 
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	/* not support sdio3.0 on hi3798mv200 DMS board sdio0 */
 	{
 		void __iomem *reg_board_type;
@@ -1569,10 +1569,12 @@ static const struct of_device_id
 himciv300_match[] __maybe_unused = {
 	{ .compatible = "hi3798mv200,himciv200", },
 	{ .compatible = "hi3798mv300,himciv200", },
+	{ .compatible = "hi3798mv310,himciv200", },
 	{ .compatible = "hi3796mv200,himciv200", },
 #ifndef CONFIG_TEE
 	{ .compatible = "hi3798mv200,himciv300_sd", },
 	{ .compatible = "hi3798mv300,himciv300_sd", },
+	{ .compatible = "hi3798mv310,himciv300_sd", },
 #endif
 	{},
 };

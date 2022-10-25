@@ -11,7 +11,7 @@
  */
 
 #include <linux/delay.h>
-#include <dt-bindings/clock/hi3798mv200-clock.h>
+#include <dt-bindings/clock/hi3798mv310-clock.h>
 #include <linux/hikapi.h>
 
 #include <linux/of.h>
@@ -218,7 +218,7 @@ static unsigned long hisi_gpu_clk_get_rate(struct clk_hw *hw)
 
 static void hisi_gpu_pmc_node_create(void)
 {
-	pmc_node = of_find_compatible_node(NULL, NULL, "hisilicon,hi3798mv200-volt");
+	pmc_node = of_find_compatible_node(NULL, NULL, "hisilicon,hi3798mv310-volt");
 	if (NULL == pmc_node) {
 		CLOCK_ERROR_INFO();
 		return;

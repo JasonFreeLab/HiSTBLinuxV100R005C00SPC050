@@ -201,6 +201,20 @@ endif
 endif
 BOOTCONFIG_FILE     := hi3798mv2x
 endif
+
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+ifeq ($(findstring skb,$(CFG_HI_BOOT_REG_NAME)), skb)
+CONFIG_NET_HIGMACV300 := 1
+else
+ifeq ($(findstring ts,$(CFG_HI_BOOT_REG_NAME)), ts)
+CONFIG_NET_HIGMACV300 := 1
+else
+CONFIG_USB_HOST_ETHER := 1
+CONFIG_NET_HISFV300 := 1
+endif
+endif
+BOOTCONFIG_FILE     := hi3798mv310
+endif
 #+++++++++++++++++++++ADVCA compile options+++++++++++++++++++++++++++++++++++++++++++++
 ifneq ($(BOOT_ADVCA_PROGRAMMER),y)
     ifeq ($(CFG_HI_ADVCA_SUPPORT),y)

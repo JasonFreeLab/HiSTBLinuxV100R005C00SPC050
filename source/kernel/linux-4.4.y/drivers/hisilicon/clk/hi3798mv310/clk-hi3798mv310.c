@@ -300,4 +300,4 @@ static void __init hi3798mv310_clocks_init(struct device_node *np)
 	hiclk_clocks_init(np, hiclks_hw, ARRAY_SIZE(hiclks_hw),
 		CLK_MAX >> 2, &clk_ops_hi3798mv310);
 }
-CLK_OF_DECLARE(fixed_clock, "hi3798mv200.clock", hi3798mv310_clocks_init);
+CLK_OF_DECLARE(fixed_clock, "hi3798mv310.clock", hi3798mv310_clocks_init);

@@ -554,6 +554,7 @@ static HI_S32  c51_loadCode(HI_VOID)
 #if    defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
     g_pstRegSysCtrl->SC_GENm[12] = (g_enChipType | (g_enChipID << 16) | (bAdvca << 8));
@@ -613,6 +614,7 @@ static HI_S32  c51_loadPara(HI_VOID)
 #if    defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)
         if (g_u8UsbWakeUpMask & 0x01)
@@ -687,6 +689,7 @@ static HI_S32  c51_loadPara(HI_VOID)
 #if    defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
     g_pstRegSysCtrl->SC_GENm[12] = (g_enChipType | (g_enChipID << 16) | (bAdvca << 8));
@@ -784,7 +787,7 @@ static HI_S32  c51_loadPara(HI_VOID)
     g_pstRegSysCtrl->SC_GEN55 = irValhigh[4];
     g_pstRegSysCtrl->SC_GEN56 = irVallow[5];
     g_pstRegSysCtrl->SC_GEN57 = irValhigh[5];
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
   #ifdef HI_TEE_SUPPORT
     if (g_u8FwEnable || g_u8EthWakeUpEnable)
     {
@@ -977,7 +980,7 @@ static HI_S32 c51_suspend (PM_BASEDEV_S *pdev, pm_message_t state)
     }
 #endif
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #ifdef HI_TEE_MCU_SUPPORT
     if (!wdgon)
     {
@@ -991,7 +994,7 @@ static HI_S32 c51_suspend (PM_BASEDEV_S *pdev, pm_message_t state)
 #endif
 
     /* save the chip corner type */
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     g_corner_type = (g_pstRegSysCtrl->SC_GENm[17] >> 24) & 0xff;
 #else
     g_corner_type = (g_pstRegSysCtrl->SC_GEN17 >> 24) & 0xff;
@@ -1004,7 +1007,7 @@ static HI_S32 c51_suspend (PM_BASEDEV_S *pdev, pm_message_t state)
 static HI_S32 c51_resume_early(PM_BASEDEV_S *pdev)
 {
     /* restore the chip corner type */
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     g_pstRegSysCtrl->SC_GENm[17] = ((g_pstRegSysCtrl->SC_GENm[17] & 0xffffff) | (g_corner_type << 24));
 #else
     g_pstRegSysCtrl->SC_GEN17 = ((g_pstRegSysCtrl->SC_GEN17 & 0xffffff) | (g_corner_type << 24));
@@ -1018,7 +1021,7 @@ static HI_S32 c51_resume(PM_BASEDEV_S *pdev)
 {
 #ifdef HI_DVFS_CPU_SUPPORT
     HI_U32 v;
- #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+ #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     U_PERI_CRG18 unTmpValue;
  #endif
 #endif
@@ -1034,7 +1037,7 @@ static HI_S32 c51_resume(PM_BASEDEV_S *pdev)
 #endif
 
 #ifdef HI_DVFS_CPU_SUPPORT
- #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+ #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
     unTmpValue.u32 = g_pstRegCrg->PERI_CRG18.u32;
 
     /* config the clock source is APLL */
@@ -1221,7 +1224,7 @@ static HI_VOID c51_GetWakeUpParam(C51_PMOC_VAL_S *pmocVal)
 
 static HI_S32 c51_GetStandbyPeriod(HI_U32 *pu32StandbyPeriod)
 {
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)) && defined(HI_TEE_SUPPORT)
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)) && defined(HI_TEE_SUPPORT)
     if (g_pstRegSysCtrl->SC_GENy[29] < C51_PMOC_WAKEUP_BUTT)
     {
         *pu32StandbyPeriod = g_pstRegSysCtrl->SC_GENy[30];
@@ -1252,7 +1255,7 @@ static HI_S32 c51_GetStandbyPeriod(HI_U32 *pu32StandbyPeriod)
 
 static HI_S32 c51_GetWakeUpMode(C51_WAKEUP_MODE_S * psWakeUpMode)
 {
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)) && defined(HI_TEE_SUPPORT)
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300 || defined(CHIP_TYPE_hi3798mv310))) && defined(HI_TEE_SUPPORT)
     psWakeUpMode->enWakeUpMode = g_pstRegSysCtrl->SC_GENy[29];
     if (C51_PMOC_WAKEUP_IR == psWakeUpMode->enWakeUpMode)
     {
@@ -1311,7 +1314,7 @@ static HI_S32 c51_GetWakeUpMode(C51_WAKEUP_MODE_S * psWakeUpMode)
 
 static HI_S32 c51_CleanWakeUpMode(HI_VOID)
 {
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)) && defined(HI_TEE_SUPPORT)
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)) && defined(HI_TEE_SUPPORT)
     g_pstRegSysCtrl->SC_GENy[27] = 0xffffffff;
     g_pstRegSysCtrl->SC_GENy[28] = 0xffffffff;
     g_pstRegSysCtrl->SC_GENy[29] = 0xffffffff;
@@ -1712,7 +1715,7 @@ HI_U32 PMParseValue(HI_U8* pu8Value)
 
 /***********************************************************************/
 /*entrance of function controled by the proc file system*/
-/*CNcomment:Í¨¹ýprocÎÄ¼þÏµÍ³½øÐÐ¿ØÖÆµÄº¯ÊýÈë¿Ú*/
+/*CNcomment:Í¨ï¿½ï¿½procï¿½Ä¼ï¿½ÏµÍ³ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ÆµÄºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 static HI_S8 g_s8KeyLedType[5][16] = {
     "74HC164", "PT6961", "CT1642", "PT6964", "FD650"
 };
@@ -1899,7 +1902,7 @@ extern HI_U32 HAL_OTP_V200_Read(HI_U32 addr);
 void mpu_init_temperature(void)
 {
     /* Init tsensor */
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     HI_REG_WRITE32(PERI_PMC10, 0x72);
 #else
     HI_REG_WRITE32(PERI_PMC10, 0x07200000);
@@ -1928,7 +1931,7 @@ void mpu_get_temperature(HI_S16 * ps16Temp)
         return;
     }
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     HI_REG_WRITE32(PERI_PMC10, 0x72);
     for (j = 0; j < 4; j++)
     {
@@ -1956,6 +1959,7 @@ void mpu_get_temperature(HI_S16 * ps16Temp)
 #if    defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)   \
     || defined(CHIP_TYPE_hi3796mv200)
     if ((HI_CHIP_TYPE_HI3798M == g_enChipType) && (HI_CHIP_VERSION_V300 == g_enChipID))
     {
@@ -2357,6 +2361,7 @@ HI_S32 temperature_control_thread(void *Arg)
 #if defined(CHIP_TYPE_hi3798cv200) \
 || defined(CHIP_TYPE_hi3798mv200)  \
 || defined(CHIP_TYPE_hi3798mv300)  \
+|| defined(CHIP_TYPE_hi3798mv310)   \
 || defined(CHIP_TYPE_hi3798mv200_a)\
 || defined(CHIP_TYPE_hi3796mv200)
     g_pstRegSysCtrl->SC_GENm[13] = TEMP_STATUS_NORMAL;
@@ -2408,6 +2413,7 @@ HI_S32 temperature_control_thread(void *Arg)
 #if defined(CHIP_TYPE_hi3798cv200) \
 || defined(CHIP_TYPE_hi3798mv200)  \
 || defined(CHIP_TYPE_hi3798mv300)  \
+|| defined(CHIP_TYPE_hi3798mv310)   \
 || defined(CHIP_TYPE_hi3798mv200_a)\
 || defined(CHIP_TYPE_hi3796mv200)
             if (TEMP_STATUS_NORMAL != g_pstRegSysCtrl->SC_GENm[13])
@@ -2435,6 +2441,7 @@ HI_S32 temperature_control_thread(void *Arg)
 #if defined(CHIP_TYPE_hi3798cv200) \
 || defined(CHIP_TYPE_hi3798mv200)  \
 || defined(CHIP_TYPE_hi3798mv300)  \
+|| defined(CHIP_TYPE_hi3798mv310)   \
 || defined(CHIP_TYPE_hi3798mv200_a)\
 || defined(CHIP_TYPE_hi3796mv200)
                 g_pstRegSysCtrl->SC_GENm[13] = TEMP_STATUS_NORMAL;
@@ -2458,6 +2465,7 @@ HI_S32 temperature_control_thread(void *Arg)
 #if defined(CHIP_TYPE_hi3798cv200) \
 || defined(CHIP_TYPE_hi3798mv200)  \
 || defined(CHIP_TYPE_hi3798mv300)  \
+|| defined(CHIP_TYPE_hi3798mv310)   \
 || defined(CHIP_TYPE_hi3798mv200_a)\
 || defined(CHIP_TYPE_hi3796mv200)
                 g_pstRegSysCtrl->SC_GENm[13] = TEMP_STATUS_CONTROL;
@@ -2496,6 +2504,7 @@ HI_S32 temperature_control_thread(void *Arg)
 #if defined(CHIP_TYPE_hi3798cv200) \
 || defined(CHIP_TYPE_hi3798mv200)  \
 || defined(CHIP_TYPE_hi3798mv300)  \
+|| defined(CHIP_TYPE_hi3798mv310)   \
 || defined(CHIP_TYPE_hi3798mv200_a)\
 || defined(CHIP_TYPE_hi3796mv200)
                 g_pstRegSysCtrl->SC_GENm[13] = TEMP_STATUS_CONTROL;
@@ -2526,6 +2535,7 @@ HI_S32 temperature_control_thread(void *Arg)
 #if defined(CHIP_TYPE_hi3798cv200) \
 || defined(CHIP_TYPE_hi3798mv200)  \
 || defined(CHIP_TYPE_hi3798mv300)  \
+|| defined(CHIP_TYPE_hi3798mv310)   \
 || defined(CHIP_TYPE_hi3798mv200_a)
                     g_pstRegSysCtrl->SC_GENm[13] = TEMP_STATUS_STANDBY;
 #elif defined(CHIP_TYPE_hi3796mv200)
@@ -2625,21 +2635,21 @@ static HI_S32 COREProcRead(struct seq_file *p, HI_VOID *v)
 
     PROC_PRINT(p, "CORE: volt = %d(mv)\n", u32CoreVolt);
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32VoltMin = (g_pstRegSysCtrl->SC_GENm[17] >> 16) & 0xff;
 #else
     u32VoltMin = (g_pstRegSysCtrl->SC_GEN17 >> 16) & 0xff;
 #endif
     u32VoltMin = CORE_VMAX - ((u32VoltMin - 1) * PWM_STEP) / PWM_CLASS;
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32VoltMax = g_pstRegSysCtrl->SC_GENm[17] & 0xff;
 #else
     u32VoltMax = g_pstRegSysCtrl->SC_GEN17 & 0xff;
 #endif
     u32VoltMax = CORE_VMAX - ((u32VoltMax - 1) * PWM_STEP) / PWM_CLASS;
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32VoltMid = (g_pstRegSysCtrl->SC_GENm[17] >> 8) & 0xff;
 #else
     u32VoltMid = (g_pstRegSysCtrl->SC_GEN17 >> 8) & 0xff;
@@ -2812,6 +2822,7 @@ HI_S32 PMOC_DRV_ModInit(HI_VOID)
 #if    defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
         g_pstRegSysCtrl->SC_GENx[3] = 0;

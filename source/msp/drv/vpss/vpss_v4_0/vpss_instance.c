@@ -981,7 +981,7 @@ HI_BOOL VPSS_INST_CheckAllDone(VPSS_INSTANCE_S *pstInstance)
     }
 
     VPSS_CHECK_NULL(stInIntf.pfnGetProcessImage);
-    // TODO:´Ë´¦·µ»ØÖµÓÐÎÊÌâ
+    // TODO:ï¿½Ë´ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /*
      *check image all done
      */
@@ -1488,7 +1488,7 @@ HI_S32 VPSS_INST_DestoryPort(VPSS_INSTANCE_S *pstInstance, VPSS_HANDLE hPort)
         return HI_FAILURE;
     }
 
-    //    msleep(100);/*ÔÝÊ±¹æ±ÜÊÍ·Åbuffer±»ÖÐ¶Ï´ò¶ÏµÄÇé¿ö*/
+    //    msleep(100);/*ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Í·ï¿½bufferï¿½ï¿½ï¿½Ð¶Ï´ï¿½Ïµï¿½ï¿½ï¿½ï¿½*/
     VPSS_TRANS_FB_Reset(&(pstInstance->stInEntity.stTransFbInfo));
 
     VPSS_FB_DelInit(&(pstPort->stFrmInfo));
@@ -1791,7 +1791,7 @@ HI_S32 VPSS_INST_RelPortFrame(VPSS_INSTANCE_S *pstInstance, VPSS_HANDLE hPort, H
 {
     VPSS_PORT_S *pstPort;
     VPSS_FB_INFO_S *pstFrameList;
-#if (defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
+#if (defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
     HI_DRV_VIDEO_PRIVATE_S *pstPriv;
 #endif
     HI_S32 s32Ret;
@@ -1819,7 +1819,7 @@ HI_S32 VPSS_INST_RelPortFrame(VPSS_INSTANCE_S *pstInstance, VPSS_HANDLE hPort, H
 
     //4K@60 DTV
     //if(VPSS_TRANS_FB_NeedTrans(&(pstInstance->stInEntity.stTransFbInfo),pstFrame))
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     pstPriv = (HI_DRV_VIDEO_PRIVATE_S *)pstFrame->u32Priv;
     if (pstPriv->bByPassVpss == HI_TRUE)
     {
@@ -2616,13 +2616,13 @@ HI_VOID VPSS_INST_SetOutFrameInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, VPSS_
     }
 
 #ifdef ZME_2L_TEST
-    if (HI_TRUE == pstPort->bNeedZME2L) //Èç¹ûÐèÒª¶þ¼¶Ëõ·Å£¬²»Òª²ÉÓÃ×îÖÕportÊä³ö¿í¸ß
+    if (HI_TRUE == pstPort->bNeedZME2L) //ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½portï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstFrm->u32Width  = u32SrcW;
         pstFrm->u32Height = u32SrcH;
     }
 #ifndef VPSS_HAL_WITH_CBB
-    else if (HI_TRUE == pstPort->bNeedRotate) //Èç¹ûÐèÒªÐý×ª£¬²»Òª²ÉÓÃ×îÖÕportÊä³ö¿í¸ß
+    else if (HI_TRUE == pstPort->bNeedRotate) //ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½portï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         pstFrm->u32Width  = u32SrcW;
         pstFrm->u32Height = u32SrcH;
@@ -2761,7 +2761,7 @@ HI_VOID VPSS_INST_SetOutFrameInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, VPSS_
     pstFrm->u32Circumrotate = 0;
     pstFrm->bToFlip_V = 0;
 
-    //:TODO:ÏÈ¼òµ¥ÊµÏÖstLbxInfo
+    //:TODO:ï¿½È¼ï¿½Êµï¿½ï¿½stLbxInfo
     pstFrm->stLbxInfo.s32X = 0;
     pstFrm->stLbxInfo.s32Y = 0;
     pstFrm->stLbxInfo.s32Width  = u32DstW;
@@ -2799,7 +2799,7 @@ HI_VOID VPSS_INST_SetOutFrameInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, VPSS_
                       pstFrm->u32AspectHeight, pstFrm->stDispRect.s32Height);
     }
 
-    /* Ìî³äµØÖ·ÐÅÏ¢ */
+    /* ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ï¢ */
     u32PhyAddr = pstBuf->stMemBuf.u32StartPhyAddr;
     u32Stride  = pstBuf->u32Stride;
 
@@ -3023,7 +3023,7 @@ HI_VOID VPSS_INST_SetRotationOutFrameInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortI
                       pstFrm->u32AspectHeight, pstFrm->stDispRect.s32Height);
     }
 
-    /* Ìî³äµØÖ·ÐÅÏ¢ */
+    /* ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ï¢ */
     u32PhyAddr = pstBuf->stMemBuf.u32StartPhyAddr;
     u32Stride  = pstBuf->u32Stride;
 
@@ -3117,7 +3117,7 @@ HI_VOID VPSS_INST_GetInCrop(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S *
     pstInCropRect->s32Width  = u32SrcW;
     pstInCropRect->s32Height = u32SrcH;
 
-#if 0 //´ò¿ªÏÂÃæ°´ÕÕPort CropµÄ¹¦ÄÜ·ÖÖ§
+#if 0 //ï¿½ï¿½ï¿½ï¿½ï¿½æ°´ï¿½ï¿½Port Cropï¿½Ä¹ï¿½ï¿½Ü·ï¿½Ö§
     if (pstInst->stProcCtrl.bUseCropRect)
     {
         HI_DRV_CROP_RECT_S *pCrpRct;
@@ -3278,7 +3278,7 @@ HI_VOID VPSS_INST_GetVideoRect(VPSS_INSTANCE_S *pstInst,
     }
 
 #ifdef ZME_2L_TEST
-    if (HI_TRUE == pstInst->stPort[PortId].bNeedZME2L) //Èç¹ûÐèÒª¶þ¼¶Ëõ·Å£¬½«Êä³ö¿í¸ßÅäÖÃÎª»º´æ¿í¸ß
+    if (HI_TRUE == pstInst->stPort[PortId].bNeedZME2L) //ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         u32DstW = pstInst->stPort[PortId].u32ZME1LWidth;
         u32DstH = pstInst->stPort[PortId].u32ZME1LHeight;
@@ -3670,7 +3670,7 @@ HI_VOID VPSS_INST_LBX_DET(VPSS_LBX_DET_S *pstLbxDet, HI_U32 u32sttWbcInfo)
     HI_U32 i;
     S_VPSSWB_REGS_TYPE *psttwbcInfo;
 
-    /* »ñÈ¡¼Ä´æÆ÷µÄLBXÐÅÏ¢, Ö»¿´×óÑÛµÄÍ³¼ÆÐÅÏ¢ */
+    /* ï¿½ï¿½È¡ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½LBXï¿½ï¿½Ï¢, Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ûµï¿½Í³ï¿½ï¿½ï¿½ï¿½Ï¢ */
     psttwbcInfo = (S_VPSSWB_REGS_TYPE *)u32sttWbcInfo;
 
     pstLbxDet->u32valid_top   = psttwbcInfo->LBD_INFO_0.bits.lbd_fix_top;
@@ -3714,12 +3714,12 @@ HI_VOID VPSS_INST_GetLbxInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S 
     HI_RECT_S stInRect;
 #if 0
     HI_RECT_S stVideoRect;
-    HI_DRV_CROP_RECT_S stLdb;  /* Ó²¼þ¼ì²âµÄ½á¹û */
-    HI_DRV_CROP_RECT_S stCrop; /* ÓÃ»§ÅäÖÃµÄCROP */
-    HI_DRV_CROP_RECT_S stLeave;/* Ó²¼þ¼ì²â¼õÈ¥CROPÊ£ÏÂµÄ²¿·Ö */
-    HI_DRV_CROP_RECT_S stCalc; /* ¾­¹ýËõ·ÅÖ®ºóµÄLBX */
-    HI_DRV_CROP_RECT_S stAdd;  /* ÓÃ»§ÐÂ¼ÓµÄLBX */
-    HI_DRV_CROP_RECT_S stFinal;/* ×îÖÕµÄLBX */
+    HI_DRV_CROP_RECT_S stLdb;  /* Ó²ï¿½ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ */
+    HI_DRV_CROP_RECT_S stCrop; /* ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ãµï¿½CROP */
+    HI_DRV_CROP_RECT_S stLeave;/* Ó²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥CROPÊ£ï¿½ÂµÄ²ï¿½ï¿½ï¿½ */
+    HI_DRV_CROP_RECT_S stCalc; /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½LBX */
+    HI_DRV_CROP_RECT_S stAdd;  /* ï¿½Ã»ï¿½ï¿½Â¼Óµï¿½LBX */
+    HI_DRV_CROP_RECT_S stFinal;/* ï¿½ï¿½ï¿½Õµï¿½LBX */
 #endif
     VPSS_IN_STREAM_INFO_S stInfo;
     VPSS_IN_INTF_S stIntf = {0};
@@ -3771,7 +3771,7 @@ HI_VOID VPSS_INST_GetLbxInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S 
     VPSS_PRINT_RECT("stLdb", stLdb);
 
 
-    /* »ñÈ¡²Ã¼ôµÄÐÅÏ¢ */
+    /* ï¿½ï¿½È¡ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ */
     stCrop.u32TopOffset  = (HI_U32)stInRect.s32Y;
     stCrop.u32LeftOffset = (HI_U32)stInRect.s32X;
     stCrop.u32BottomOffset
@@ -3781,7 +3781,7 @@ HI_VOID VPSS_INST_GetLbxInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S 
 
     VPSS_PRINT_RECT("stCrop", stCrop);
 
-    /* Ê£ÓàµÄLBXÐÅÏ¢ */
+    /* Ê£ï¿½ï¿½ï¿½LBXï¿½ï¿½Ï¢ */
     stLeave.u32TopOffset    = VPSS_SAVE_SUB(stLdb.u32TopOffset, stCrop.u32TopOffset);
     stLeave.u32LeftOffset   = VPSS_SAVE_SUB(stLdb.u32LeftOffset, stCrop.u32LeftOffset);
     stLeave.u32BottomOffset = VPSS_SAVE_SUB(stLdb.u32BottomOffset, stCrop.u32BottomOffset);
@@ -3789,7 +3789,7 @@ HI_VOID VPSS_INST_GetLbxInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S 
 
     VPSS_PRINT_RECT("stLeave", stLeave);
 
-    /* ¼ÆËãËõ·ÅÖ®ºóµÄLBXÐÅÏ¢ */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½LBXï¿½ï¿½Ï¢ */
     VPSS_INST_GetVideoRect(pstInst, PortId, &stInRect, &stVideoRect);
 
     stCalc.u32TopOffset    = (stLeave.u32TopOffset * (HI_U32)stVideoRect.s32Height * 1024 + 512)
@@ -3803,7 +3803,7 @@ HI_VOID VPSS_INST_GetLbxInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S 
 
     VPSS_PRINT_RECT("stCalc", stCalc);
 
-    /* ÐÂ¼ÓµÄLBXÐÅÏ¢ */
+    /* ï¿½Â¼Óµï¿½LBXï¿½ï¿½Ï¢ */
     stAdd.u32TopOffset  = (HI_U32)stVideoRect.s32Y;
     stAdd.u32LeftOffset = (HI_U32)stVideoRect.s32X;
     stAdd.u32BottomOffset
@@ -3812,7 +3812,7 @@ HI_VOID VPSS_INST_GetLbxInfo(VPSS_INSTANCE_S *pstInst, HI_U32 PortId, HI_RECT_S 
         = VPSS_SAVE_SUB(u32DstW, ((HI_U32)stVideoRect.s32X + (HI_U32)stVideoRect.s32Width));
     VPSS_PRINT_RECT("stAdd", stAdd);
 
-    /* ×îÖÕµÄLBXÐÅÏ¢ */
+    /* ï¿½ï¿½ï¿½Õµï¿½LBXï¿½ï¿½Ï¢ */
     stFinal.u32TopOffset    = stCalc.u32TopOffset + stAdd.u32TopOffset;
     stFinal.u32LeftOffset   = stCalc.u32LeftOffset + stAdd.u32LeftOffset;
     stFinal.u32BottomOffset = stCalc.u32BottomOffset + stAdd.u32BottomOffset;

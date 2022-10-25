@@ -8,7 +8,7 @@ extern "C" {
 /*Die Code*/
 HI_VOID VPSS_STTINFO_CalDieBufSize(HI_U32 *pSize, HI_U32 *pStride, HI_U32 u32Width, HI_U32 u32Heigth)
 {
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     *pStride = (((u32Width * 4) / 8 + 15) / 16) * 16;
     *pStride = HI_ALIGN_8BIT_YSTRIDE(*pStride);
     *pSize = (*pStride) * u32Heigth / 2;
@@ -272,7 +272,7 @@ HI_U32 VPSS_STTINFO_GetNrTotalBufSize(VPSS_NR_ATTR_S *pstAttr, HI_U32 u32NodeBuf
 
 HI_VOID VPSS_STTINFO_CalNrBufSize(HI_U32 *pSize, HI_U32 *pStride, VPSS_NR_ATTR_S *pstAttr)
 {
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     *pStride = ((pstAttr->u32Width * 5 + 7) / 8 + 15) & 0xfffffff0;
     *pStride = HI_ALIGN_8BIT_YSTRIDE(*pStride);
     *pSize = (*pStride) * pstAttr->u32Height;
@@ -504,7 +504,7 @@ HI_S32 VPSS_STTINFO_NrGetInfo(VPSS_NRMADINFO_S *pstNrMadInfo,
             pstRefNodeData = list_entry(pstRefNode, VPSS_NR_DATA_S, node);
             pstNrMadCfg->u32Tnrmad_raddr = pstRefNodeData->u32PhyAddr;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
             pstNrMadCfg->u32Snrmad_raddr = pstNrMadCfg->u32Tnrmad_raddr;
             pstRefNode = pstNrMadInfo->pstFirstRef->prev;
             pstRefNodeData = list_entry(pstRefNode, VPSS_NR_DATA_S, node);

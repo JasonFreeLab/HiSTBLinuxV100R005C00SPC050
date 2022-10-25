@@ -56,12 +56,12 @@ HI_S32 PQ_MNG_InitSnr(PQ_PARAM_S *pstPqParam, HI_BOOL bDefault)
         return HI_FAILURE;
     }
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     PQ_TABLE_InitPhyList(u32HandleNo, HI_PQ_MODULE_SNR, SOURCE_MODE_NO, OUTPUT_MODE_NO);
 #elif defined(CHIP_TYPE_hi3796mv200)
     PQ_TABLE_InitPhyList(u32HandleNo, HI_PQ_MODULE_SNR, SOURCE_MODE_SD, OUTPUT_MODE_NO);
 #endif
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) ||defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) ||defined(CHIP_TYPE_hi3796mv200)
     PQ_HAL_SetSNRRatioMap(u32HandleNo);
 #endif
     PQ_HAL_SetSnrMidStr(0);

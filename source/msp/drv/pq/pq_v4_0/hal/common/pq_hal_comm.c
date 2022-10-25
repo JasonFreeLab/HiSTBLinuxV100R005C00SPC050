@@ -29,22 +29,22 @@
 
 #ifndef HI_BUILD_IN_BOOT
 
-/* VPSS/VDP ±¾µØ¼Ä´æÆ÷£¬ÓÃÓÚ³õÊ¼»¯²ÎÊý*/
+/* VPSS/VDP ï¿½ï¿½ï¿½Ø¼Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 static S_CAS_REGS_TYPE *sg_pstVPSSRegLocal = NULL;
 static S_VDP_REGS_TYPE *sg_pstVDPRegLocal  = NULL;
 
-/* VPSS/VDP ÐéÄâ¼Ä´æÆ÷£¬ÓÃÓÚÅäÖÃ²ÎÊý*/
+/* VPSS/VDP ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½*/
 static S_CAS_REGS_TYPE    *sg_pstVPSSRegMem[VPSS_HANDLE_NUM]    = {NULL};
 static S_VPSSWB_REGS_TYPE *sg_pstVPSSWbcRegMem[VPSS_HANDLE_NUM] = {NULL};
 static S_VDP_REGS_TYPE    *sg_pstVDPRegMem = NULL;
 
-/* PQ HAL³õÊ¼»¯±êÖ¾Î»*/
+/* PQ HALï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ö¾Î»*/
 static HI_BOOL sg_bHALInit = HI_FALSE;
 
-/* ´òÓ¡Ê¹ÄÜ¿ª¹Ø */
+/* ï¿½ï¿½Ó¡Ê¹ï¿½Ü¿ï¿½ï¿½ï¿½ */
 static HI_U32 sg_PrintType = PQ_PRN_NOTHING;
 
-/* ´òÓ¡ÖÐ¼ä½á¹ûµÄÔÝ´æÇøÓò */
+/* ï¿½ï¿½Ó¡ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ */
 static HI_S8  sg_PrintMsg[1024];
 
 #if defined(CHIP_TYPE_hi3798cv200)
@@ -53,9 +53,9 @@ S_VDP_REGS_TYPE *g_pstIPSelVdpAlg = HI_NULL;
 #endif
 
 /**
- \brief ³õÊ¼»¯HALÄ£¿é£¬ÉêÇë±¾µØ¼Ä´æÆ÷ÄÚ´æ;
+ \brief ï¿½ï¿½Ê¼ï¿½ï¿½HALÄ£ï¿½é£¬ï¿½ï¿½ï¿½ë±¾ï¿½Ø¼Ä´ï¿½ï¿½ï¿½ï¿½Ú´ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
@@ -101,9 +101,9 @@ HI_S32  PQ_HAL_Init(HI_VOID)
 }
 
 /**
- \brief È¥³õÊ¼»¯HALÄ£¿é,ÊÍ·Å±¾µØ¼Ä´æÆ÷ÄÚ´æ;
+ \brief È¥ï¿½ï¿½Ê¼ï¿½ï¿½HALÄ£ï¿½ï¿½,ï¿½Í·Å±ï¿½ï¿½Ø¼Ä´ï¿½ï¿½ï¿½ï¿½Ú´ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
@@ -158,12 +158,12 @@ HI_VOID PQ_HAL_CopyRegBySize(HI_U32 *pDstReg, HI_U32 *pSrcReg, HI_U32 u32RegSize
 
 
 /**
- \brief ¸üÐÂVPSS PQ;
+ \brief ï¿½ï¿½ï¿½ï¿½VPSS PQ;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
- \param[in] *pDstVpssAddr  :Ä¿±êµØÖ·
- \param[in] *pSrcVpssAddr  :Ô´µØÖ·
+ \param[in] *pDstVpssAddr  :Ä¿ï¿½ï¿½ï¿½Ö·
+ \param[in] *pSrcVpssAddr  :Ô´ï¿½ï¿½Ö·
  \retval ::HI_SUCCESS
 
  */
@@ -192,7 +192,7 @@ HI_VOID PQ_HAL_UpdateVpssPQ(S_CAS_REGS_TYPE *pDstVpssAddr, S_CAS_REGS_TYPE *pSrc
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_DBD_THDEDGE),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_DBD_THDEDGE), u32ByteSize / 4);
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_DB_CTRL, VPSS_DB_LUT6);
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_DB_CTRL),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_DB_CTRL), u32ByteSize / 4);
@@ -220,7 +220,7 @@ HI_VOID PQ_HAL_UpdateVpssPQ(S_CAS_REGS_TYPE *pDstVpssAddr, S_CAS_REGS_TYPE *pSrc
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_DM_DIR),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_DM_DIR), u32ByteSize / 4);
 
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_DM_DIR, VPSS_DM_LUT11);
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_DM_DIR),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_DM_DIR), u32ByteSize / 4);
@@ -242,7 +242,7 @@ HI_VOID PQ_HAL_UpdateVpssPQ(S_CAS_REGS_TYPE *pDstVpssAddr, S_CAS_REGS_TYPE *pSrc
     /* DEI */
 #if defined(CHIP_TYPE_hi3798cv200)
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_DIECTRL, VPSS_DIEMCGBMCOEF1);
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_DIECTRL, VPSS_DIEKMAG2);
 #endif
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_DIECTRL),
@@ -272,7 +272,7 @@ HI_VOID PQ_HAL_UpdateVpssPQ(S_CAS_REGS_TYPE *pDstVpssAddr, S_CAS_REGS_TYPE *pSrc
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_TNR_CLUT10, VPSS_TNR_CLUT67 );
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_TNR_CLUT10),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_TNR_CLUT10), u32ByteSize / 4);
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_TNR_CONTRL, VPSS_TNR_CMOTIONSTR_LUT31 );
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_TNR_CONTRL),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_TNR_CONTRL), u32ByteSize / 4);
@@ -302,7 +302,7 @@ HI_VOID PQ_HAL_UpdateVpssPQ(S_CAS_REGS_TYPE *pDstVpssAddr, S_CAS_REGS_TYPE *pSrc
     u32ByteSize = VPSS_PQ_REG_SIZE(COLOR_BASED_LUT_01a, COLOR_BASED_LUT_16d);
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->COLOR_BASED_LUT_01a),
                          (HI_VOID *)(&pSrcVpssAddr->COLOR_BASED_LUT_01a), u32ByteSize / 4);
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     u32ByteSize = VPSS_PQ_REG_SIZE(VPSS_SNR_ENABLE, MOTION_EDGE_LUT_32);
     PQ_HAL_CopyRegBySize((HI_VOID *)(&pDstVpssAddr->VPSS_SNR_ENABLE),
                          (HI_VOID *)(&pSrcVpssAddr->VPSS_SNR_ENABLE), u32ByteSize / 4);
@@ -366,12 +366,12 @@ HI_VOID PQ_HAL_UpdateVpssPQ(S_CAS_REGS_TYPE *pDstVpssAddr, S_CAS_REGS_TYPE *pSrc
 
 
 /**
- \brief ¸üÐÂVDP PQ;
+ \brief ï¿½ï¿½ï¿½ï¿½VDP PQ;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
- \param[in] *pDstVdpAddr  :Ä¿±êµØÖ·
- \param[in] *pSrcVdpAddr  :Ô´µØÖ·
+ \param[in] *pDstVdpAddr  :Ä¿ï¿½ï¿½ï¿½Ö·
+ \param[in] *pSrcVdpAddr  :Ô´ï¿½ï¿½Ö·
  \retval ::HI_SUCCESS
 
  */
@@ -491,12 +491,12 @@ HI_VOID PQ_HAL_UpdateVdpPQ(S_VDP_REGS_TYPE *pDstVdpAddr, S_VDP_REGS_TYPE *pSrcVd
 }
 
 /**
- \brief ¸üÐÂVPSS¼Ä´æÆ÷;
+ \brief ï¿½ï¿½ï¿½ï¿½VPSSï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
- \param[in] u32HandleNo  :VPSSÍ¨µÀºÅ
- \param[in] *pstVPSSReg  :ÓÉÇý¶¯´«¹ýÀ´µÄ¼Ä´æÆ÷Ö¸Õë
+ \param[in] u32HandleNo  :VPSSÍ¨ï¿½ï¿½ï¿½ï¿½
+ \param[in] *pstVPSSReg  :ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  \retval ::HI_SUCCESS
 
@@ -531,11 +531,11 @@ HI_S32 PQ_HAL_UpdateVpssReg(HI_U32 u32HandleNo, S_CAS_REGS_TYPE *pstVPSSReg, S_V
 }
 
 /**
- \brief ¸üÐÂVDP¼Ä´æÆ÷;
+ \brief ï¿½ï¿½ï¿½ï¿½VDPï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
- \param[in] *pstVDPReg  :ÓÉÇý¶¯´«¹ýÀ´µÄVPSS¼Ä´æÆ÷Ö¸Õë
+ \param[in] *pstVDPReg  :ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½VPSSï¿½Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  \retval ::HI_SUCCESS
 
@@ -559,9 +559,9 @@ HI_S32 PQ_HAL_UpdateVdpReg(S_VDP_REGS_TYPE *pstVDPReg)
 }
 
 /**
- \brief ¼ì²éVPSSµ±Ç°u32HandleNo¶ÔÓ¦ÐéÄâ¼Ä´æÆ÷ÊÇ·ñÓÐÐ§;
+ \brief ï¿½ï¿½ï¿½VPSSï¿½ï¿½Ç°u32HandleNoï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð§;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
 
@@ -585,9 +585,9 @@ HI_BOOL PQ_HAL_CheckVpssValid(HI_U32 u32HandleNo)
 }
 
 /**
- \brief ¼ì²éVDP¼Ä´æÆ÷ÊÇ·ñÓÐÐ§;
+ \brief ï¿½ï¿½ï¿½VDPï¿½Ä´ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð§;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
@@ -605,13 +605,13 @@ HI_BOOL PQ_HAL_CheckVdpValid(HI_VOID)
 }
 
 /**
- \brief »ñÈ¡VPSSµ±Ç°¼Ä´æÆ÷;
+ \brief ï¿½ï¿½È¡VPSSï¿½ï¿½Ç°ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
 
- \retval ::VPSS¼Ä´æÆ÷Ö¸Õë
+ \retval ::VPSSï¿½Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  */
 S_CAS_REGS_TYPE *PQ_HAL_GetVpssReg(HI_U32 u32HandleNo)
@@ -638,9 +638,9 @@ S_CAS_REGS_TYPE *PQ_HAL_GetVpssReg(HI_U32 u32HandleNo)
 
 
 /**
- \brief »ñÈ¡VPSS WBC INFO;
+ \brief ï¿½ï¿½È¡VPSS WBC INFO;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
 
@@ -671,13 +671,13 @@ S_VPSSWB_REGS_TYPE *PQ_HAL_GetVpssWbcReg(HI_U32 u32HandleNo)
 
 
 /**
- \brief »ñÈ¡VDPµ±Ç°¼Ä´æÆ÷;
+ \brief ï¿½ï¿½È¡VDPï¿½ï¿½Ç°ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
- \retval ::VDP¼Ä´æÆ÷Ö¸Õë
+ \retval ::VDPï¿½Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  */
 S_VDP_REGS_TYPE *PQ_HAL_GetVdpReg(HI_VOID)
@@ -698,9 +698,9 @@ S_VDP_REGS_TYPE *PQ_HAL_GetVdpReg(HI_VOID)
 
 
 /**
- \brief Ð´¼Ä´æÆ÷;
+ \brief Ð´ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
  \param[in] u32RegAddr
@@ -747,7 +747,7 @@ HI_S32 PQ_HAL_WriteRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 u32Val
     return HI_SUCCESS;
 }
 
-/* ¶Á¼Ä´æÆ÷ */
+/* ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ */
 HI_S32 PQ_HAL_ReadRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 *pu32Value)
 {
     S_CAS_REGS_TYPE *pstVPSSReg = HI_NULL;
@@ -786,7 +786,7 @@ HI_S32 PQ_HAL_ReadRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 *pu32Va
     return HI_SUCCESS;
 }
 
-/* °´ÕÕÆðÊ¼BITÎ»¸´ÖÆU32²ÎÊý */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼BITÎ»ï¿½ï¿½ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½ */
 HI_VOID PQ_HAL_CopyU32ByBit(HI_U32 u32Src, HI_U32 u32SrcStartBit, HI_U32 *pu32Dst, HI_U32 u32DstStartBit, HI_U32 u32Num)
 {
     HI_U32 u32SrcTmp = 0;
@@ -800,22 +800,22 @@ HI_VOID PQ_HAL_CopyU32ByBit(HI_U32 u32Src, HI_U32 u32SrcStartBit, HI_U32 *pu32Ds
         return;
     }
 
-    /* ±£´æsrcÐèÒª¿½±´µÄu32Num¸öbits£¬²¢ÒÆ¶¯µ½dstÖ¸¶¨µÄÎ»ÖÃ; ½«¸ßÎ»Çå0 */
+    /* ï¿½ï¿½ï¿½ï¿½srcï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½u32Numï¿½ï¿½bitsï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½dstÖ¸ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½; ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½0 */
     u32SrcTmp = u32Src << (32 - u32SrcStartBit - u32Num);
 
-    /* ½«Ö¸¶¨µÄu32NumÎ»ÒÆµ½µÍbitÎ»ÉÏ */
+    /* ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½u32NumÎ»ï¿½Æµï¿½ï¿½ï¿½bitÎ»ï¿½ï¿½ */
     u32SrcTmp = u32SrcTmp >> (32 - u32Num);
     u32SrcTmp = u32SrcTmp << u32DstStartBit;
 
-    /* ±£´ædstµÄ0bitµ½u32DstStartBitÎ» */
-    u32DstTmpLow = *pu32Dst << (32 - u32DstStartBit); /* ½«¸ßÎ»Çå0 */
+    /* ï¿½ï¿½ï¿½ï¿½dstï¿½ï¿½0bitï¿½ï¿½u32DstStartBitÎ» */
+    u32DstTmpLow = *pu32Dst << (32 - u32DstStartBit); /* ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½0 */
     u32DstTmpLow = u32DstTmpLow >> (32 - u32DstStartBit);
 
-    /* ±£´ædstµÄu32DstStartBit + u32NumÎ»µ½32bit */
+    /* ï¿½ï¿½ï¿½ï¿½dstï¿½ï¿½u32DstStartBit + u32NumÎ»ï¿½ï¿½32bit */
     u32DstTmpHigh = *pu32Dst >> (u32DstStartBit + u32Num);
     u32DstTmpHigh = u32DstTmpHigh << (u32DstStartBit + u32Num);
 
-    /* ¼ÆËã½á¹û */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     u32DstTmp = u32DstTmpHigh | u32SrcTmp | u32DstTmpLow;
     *pu32Dst = u32DstTmp;
 
@@ -823,9 +823,9 @@ HI_VOID PQ_HAL_CopyU32ByBit(HI_U32 u32Src, HI_U32 u32SrcStartBit, HI_U32 *pu32Ds
 }
 
 /**
- \brief ¸ù¾ÝbitÎ»¸üÐÂU32²ÎÊý
+ \brief ï¿½ï¿½ï¿½ï¿½bitÎ»ï¿½ï¿½ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] pulData,ucBitNo;
 
@@ -851,9 +851,9 @@ HI_VOID  PQ_HAL_U32SetBit( HI_U32 *pulData, HI_U8 ucBitNo)
 }
 
 /**
- \brief ½«U32¶ÔÓ¦µÄbitÎ»ÇåÁã
+ \brief ï¿½ï¿½U32ï¿½ï¿½Ó¦ï¿½ï¿½bitÎ»ï¿½ï¿½ï¿½ï¿½
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] pulData,ucBitNo;
 
@@ -879,9 +879,9 @@ HI_VOID PQ_HAL_U32ClearBit( HI_U32 *pulData, HI_U8 ucBitNo)
 }
 
 /**
- \brief ´ÓU32²ÎÊý¸ù¾Ý×î¸ßÎ»ºÍ×îµÍ»ñÈ¡¶ÔÓ¦µÄÖµ
+ \brief ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Í»ï¿½È¡ï¿½ï¿½Ó¦ï¿½ï¿½Öµ
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in]  ulData,  ucMaxBit,  ucMinBit;
 
@@ -915,9 +915,9 @@ HI_U32 PQ_HAL_GetU32ByBit( HI_U32 ulData, HI_U8 ucMaxBit, HI_U8 ucMinBit)
 }
 
 /**
- \brief ¸ù¾Ý×î¸ßÎ»ºÍ×îµÍÎ»ÉèÖÃU32²ÎÊý¶ÔÓ¦µÄÖµ
+ \brief ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Öµ
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] pulData, ucMaxBit, ucMinBit, ulValue;
 
@@ -992,13 +992,13 @@ HI_S32 PQ_HAL_PrintMsg(HI_U32 type, const HI_S8 *format, ...)
     va_list args;
     HI_S32  nTotalChar = 0;
 
-    /* ÐÅÏ¢ÀàÐÍ¹ýÂË */
-    if ((PQ_PRN_ALWS != type) && (0 == (sg_PrintType & type))) /* ¸ÃÀà±ð´òÓ¡Ã»ÓÐ´ò¿ª */
+    /* ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½ */
+    if ((PQ_PRN_ALWS != type) && (0 == (sg_PrintType & type))) /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡Ã»ï¿½Ð´ï¿½ */
     {
         return HI_FAILURE;
     }
 
-    /* ½«ÐÅÏ¢´òÓ¡³É×Ö·û´® */
+    /* ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ */
     va_start( args, format );
     nTotalChar = HI_OSAL_Vsnprintf( sg_PrintMsg, sizeof(sg_PrintMsg), format, args );
     va_end( args );

@@ -39,7 +39,7 @@ extern "C" {
 #define REG_OFFSET_ADDR_MASK   0x0000ffff
 
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define VPSS_HANDLE_NUM    33
 #elif defined(CHIP_TYPE_hi3796mv200)
 #define VPSS_HANDLE_NUM    36
@@ -103,42 +103,42 @@ extern "C" {
 #define pqprint(type, fmt, arg...)
 #endif
 
-/*PQ Bin ModuleÀàÐÍ*/
+/*PQ Bin Moduleï¿½ï¿½ï¿½ï¿½*/
 typedef enum hiPQ_PRN_TYPE_E
 {
-    PQ_PRN_NOTHING  = 0,          /*²»´òÓ¡ÐÅÏ¢£¬³õÊ¼»¯Ê±Ê¹ÓÃ*/
-    PQ_PRN_FATAL    = 0x1,        /*ÖÂÃüÒì³££¨fatal error£©£¬±ÈÈçÎ´ÖªÒì³£*/
-    PQ_PRN_ERROR    = 0x2,        /*Ò»°ãÒì³££¨error£©£¬±ÈÈçÓï·¨´íÎó*/
-    PQ_PRN_WARNING  = 0x4,        /*¸æ¾¯Òì³£*/
-    PQ_PRN_INFO     = 0x8,        /*Í¨ÖªÐÅÏ¢*/
-    PQ_PRN_DBG      = 0x10,       /*µ÷ÊÔÐÅÏ¢*/
+    PQ_PRN_NOTHING  = 0,          /*ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Ê±Ê¹ï¿½ï¿½*/
+    PQ_PRN_FATAL    = 0x1,        /*ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½fatal errorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´Öªï¿½ì³£*/
+    PQ_PRN_ERROR    = 0x2,        /*Ò»ï¿½ï¿½ï¿½ì³£ï¿½ï¿½errorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï·¨ï¿½ï¿½ï¿½ï¿½*/
+    PQ_PRN_WARNING  = 0x4,        /*ï¿½æ¾¯ï¿½ì³£*/
+    PQ_PRN_INFO     = 0x8,        /*Í¨Öªï¿½ï¿½Ï¢*/
+    PQ_PRN_DBG      = 0x10,       /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢*/
 
-    PQ_PRN_VPSS     = 0x20,       /*VPSS µ÷ÊÔÐÅÏ¢*/
-    PQ_PRN_VDP      = 0x40,       /*VDP µ÷ÊÔÐÅÏ¢*/
-    PQ_PRN_TABLE    = 0x80,       /*PQ Table µ÷ÊÔÐÅÏ¢´òÓ¡*/
+    PQ_PRN_VPSS     = 0x20,       /*VPSS ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢*/
+    PQ_PRN_VDP      = 0x40,       /*VDP ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢*/
+    PQ_PRN_TABLE    = 0x80,       /*PQ Table ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
 
-    PQ_PRN_DEI      = 0x100,      /*DEI Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_FMD_READ = 0x200,      /*FMD_READ Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_FMD_CALC = 0x400,      /*FMD_CALC Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_HSHARPEN = 0x800,      /*HSHARPEN Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_DNR      = 0x1000,     /*DNR Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_DCI      = 0x2000,     /*DCI Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_ACM      = 0x4000,     /*ACM Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_SHARPEN  = 0x10000,    /*SHARPEN Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_SR       = 0x20000,    /*SR Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_DB_READ  = 0x40000,    /*DB_READ Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_DB_CALC  = 0x80000,    /*DB_CALC Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_DM       = 0x100000,   /*DM Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_CSC      = 0x200000,   /*CSC Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_ZME      = 0x400000,   /*ZME Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_TNR      = 0x800000,   /*TNR Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_SNR      = 0x1000000,   /*SNR Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_VPSSCSC  = 0x2000000,   /*VPSS CSC Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_VPSSGAMMA= 0x4000000,  /*VPSS GAMMA Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_VDP4KSNR = 0x8000000,  /*VDP 4K SNR Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
-    PQ_PRN_HDR      = 0x10000000,   /*HDR Ëã·¨µ÷ÊÔÐÅÏ¢´òÓ¡*/
+    PQ_PRN_DEI      = 0x100,      /*DEI ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_FMD_READ = 0x200,      /*FMD_READ ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_FMD_CALC = 0x400,      /*FMD_CALC ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_HSHARPEN = 0x800,      /*HSHARPEN ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_DNR      = 0x1000,     /*DNR ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_DCI      = 0x2000,     /*DCI ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_ACM      = 0x4000,     /*ACM ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_SHARPEN  = 0x10000,    /*SHARPEN ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_SR       = 0x20000,    /*SR ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_DB_READ  = 0x40000,    /*DB_READ ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_DB_CALC  = 0x80000,    /*DB_CALC ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_DM       = 0x100000,   /*DM ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_CSC      = 0x200000,   /*CSC ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_ZME      = 0x400000,   /*ZME ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_TNR      = 0x800000,   /*TNR ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_SNR      = 0x1000000,   /*SNR ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_VPSSCSC  = 0x2000000,   /*VPSS CSC ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_VPSSGAMMA= 0x4000000,  /*VPSS GAMMA ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_VDP4KSNR = 0x8000000,  /*VDP 4K SNR ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
+    PQ_PRN_HDR      = 0x10000000,   /*HDR ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¡*/
 	
-    PQ_PRN_ALWS     = 0xffffffff  /*²»ÊÜ¿Ø´òÓ¡*/
+    PQ_PRN_ALWS     = 0xffffffff  /*ï¿½ï¿½ï¿½Ü¿Ø´ï¿½Ó¡*/
 } PQ_PRN_TYPE_E;
 
 typedef enum hiPQ_HAL_LAYER_VP_E
@@ -190,9 +190,9 @@ HI_S32  PQ_HAL_AllocAndMap(const char *bufname, char *zone_name, HI_U32 u32Size,
 HI_VOID PQ_HAL_UnmapAndRelease(PQ_MMZ_BUF_S *pstMBuf);
 
 /**
- \brief ³õÊ¼»¯HALÄ£¿é£¬ÉêÇë±¾µØ¼Ä´æÆ÷ÄÚ´æ;
+ \brief ï¿½ï¿½Ê¼ï¿½ï¿½HALÄ£ï¿½é£¬ï¿½ï¿½ï¿½ë±¾ï¿½Ø¼Ä´ï¿½ï¿½ï¿½ï¿½Ú´ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
@@ -202,9 +202,9 @@ HI_VOID PQ_HAL_UnmapAndRelease(PQ_MMZ_BUF_S *pstMBuf);
 HI_S32 PQ_HAL_Init(HI_VOID);
 
 /**
- \brief È¥³õÊ¼»¯HALÄ£¿é,ÊÍ·Å±¾µØ¼Ä´æÆ÷ÄÚ´æ;
+ \brief È¥ï¿½ï¿½Ê¼ï¿½ï¿½HALÄ£ï¿½ï¿½,ï¿½Í·Å±ï¿½ï¿½Ø¼Ä´ï¿½ï¿½ï¿½ï¿½Ú´ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
@@ -214,12 +214,12 @@ HI_S32 PQ_HAL_Init(HI_VOID);
 HI_S32 PQ_HAL_Deinit(HI_VOID);
 
 /**
- \brief ¸üÐÂVPSS¼Ä´æÆ÷;
+ \brief ï¿½ï¿½ï¿½ï¿½VPSSï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
- \param[in] u32HandleNo  : VPSSÍ¨µÀºÅ
- \param[in] *pstVPSSReg  : ÓÉÇý¶¯´«¹ýÀ´µÄ¼Ä´æÆ÷Ö¸Õë
+ \param[in] u32HandleNo  : VPSSÍ¨ï¿½ï¿½ï¿½ï¿½
+ \param[in] *pstVPSSReg  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  \retval ::HI_SUCCESS
 
@@ -228,11 +228,11 @@ HI_S32 PQ_HAL_UpdateVpssReg(HI_U32 u32HandleNo, S_CAS_REGS_TYPE *pstVPSSReg, S_V
 
 
 /**
- \brief ¸üÐÂVDP¼Ä´æÆ÷;
+ \brief ï¿½ï¿½ï¿½ï¿½VDPï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
- \param[in] *pstVDPReg  : ÓÉÇý¶¯´«¹ýÀ´µÄVPSS¼Ä´æÆ÷Ö¸Õë
+ \param[in] *pstVDPReg  : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½VPSSï¿½Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  \retval ::HI_SUCCESS
 
@@ -241,9 +241,9 @@ HI_S32 PQ_HAL_UpdateVdpReg(S_VDP_REGS_TYPE *pstVDPReg);
 
 
 /**
- \brief ¼ì²éVPSSµ±Ç°u32HandleNo¶ÔÓ¦ÐéÄâ¼Ä´æÆ÷ÊÇ·ñÓÐÐ§;
+ \brief ï¿½ï¿½ï¿½VPSSï¿½ï¿½Ç°u32HandleNoï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð§;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
 
@@ -253,9 +253,9 @@ HI_S32 PQ_HAL_UpdateVdpReg(S_VDP_REGS_TYPE *pstVDPReg);
 HI_BOOL PQ_HAL_CheckVpssValid(HI_U32 u32HandleNo);
 
 /**
- \brief ¼ì²éVDP¼Ä´æÆ÷ÊÇ·ñÓÐÐ§;
+ \brief ï¿½ï¿½ï¿½VDPï¿½Ä´ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð§;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
@@ -265,21 +265,21 @@ HI_BOOL PQ_HAL_CheckVpssValid(HI_U32 u32HandleNo);
 HI_BOOL PQ_HAL_CheckVdpValid(HI_VOID);
 
 /**
- \brief »ñÈ¡VPSSµ±Ç°¼Ä´æÆ÷;
+ \brief ï¿½ï¿½È¡VPSSï¿½ï¿½Ç°ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
 
- \retval ::VPSS¼Ä´æÆ÷Ö¸Õë
+ \retval ::VPSSï¿½Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  */
 S_CAS_REGS_TYPE *PQ_HAL_GetVpssReg(HI_U32 u32HandleNo);
 
 /**
- \brief »ñÈ¡VPSS WBC INFO;
+ \brief ï¿½ï¿½È¡VPSS WBC INFO;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
 
@@ -289,21 +289,21 @@ S_CAS_REGS_TYPE *PQ_HAL_GetVpssReg(HI_U32 u32HandleNo);
 S_VPSSWB_REGS_TYPE *PQ_HAL_GetVpssWbcReg(HI_U32 u32HandleNo);
 
 /**
- \brief »ñÈ¡VDPµ±Ç°¼Ä´æÆ÷;
+ \brief ï¿½ï¿½È¡VDPï¿½ï¿½Ç°ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] none
 
- \retval ::VDP¼Ä´æÆ÷Ö¸Õë
+ \retval ::VDPï¿½Ä´ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 
  */
 S_VDP_REGS_TYPE *PQ_HAL_GetVdpReg(HI_VOID);
 
 /**
- \brief Ð´¼Ä´æÆ÷;
+ \brief Ð´ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
  \param[in] u32RegAddr
@@ -315,9 +315,9 @@ S_VDP_REGS_TYPE *PQ_HAL_GetVdpReg(HI_VOID);
 HI_S32 PQ_HAL_WriteRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 u32Value);
 
 /**
- \brief ¶Á¼Ä´æÆ÷;
+ \brief ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32HandleNo
  \param[in] u32RegAddr
@@ -329,9 +329,9 @@ HI_S32 PQ_HAL_WriteRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 u32Val
 HI_S32 PQ_HAL_ReadRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 *pu32Value);
 
 /**
- \brief °´ÕÕÆðÊ¼BITÎ»¸´ÖÆU32²ÎÊý;
+ \brief ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼BITÎ»ï¿½ï¿½ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½;
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] u32Src
  \param[in] u32SrcStartBit
@@ -345,9 +345,9 @@ HI_S32 PQ_HAL_ReadRegister(HI_U32 u32HandleNo, HI_U32 u32RegAddr, HI_U32 *pu32Va
 HI_VOID PQ_HAL_CopyU32ByBit(HI_U32 u32Src, HI_U32 u32SrcStartBit, HI_U32 *pu32Dst, HI_U32 u32DstStartBit, HI_U32 u32Num);
 
 /**
- \brief ¸ù¾ÝbitÎ»¸üÐÂU32²ÎÊý
+ \brief ï¿½ï¿½ï¿½ï¿½bitÎ»ï¿½ï¿½ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[out] pulData,;
  \param[in] ucBitNo
@@ -358,9 +358,9 @@ HI_VOID PQ_HAL_CopyU32ByBit(HI_U32 u32Src, HI_U32 u32SrcStartBit, HI_U32 *pu32Ds
 HI_VOID  PQ_HAL_U32SetBit( HI_U32 *pulData, HI_U8 ucBitNo);
 
 /**
- \brief ½«U32¶ÔÓ¦µÄbitÎ»ÇåÁã
+ \brief ï¿½ï¿½U32ï¿½ï¿½Ó¦ï¿½ï¿½bitÎ»ï¿½ï¿½ï¿½ï¿½
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[out] pulData,;
  \param[in] ucBitNo
@@ -371,9 +371,9 @@ HI_VOID  PQ_HAL_U32SetBit( HI_U32 *pulData, HI_U8 ucBitNo);
 HI_VOID PQ_HAL_U32ClearBit( HI_U32 *pulData, HI_U8 ucBitNo);
 
 /**
- \brief ´ÓU32²ÎÊý¸ù¾Ý×î¸ßÎ»ºÍ×îµÍ»ñÈ¡¶ÔÓ¦µÄÖµ
+ \brief ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Í»ï¿½È¡ï¿½ï¿½Ó¦ï¿½ï¿½Öµ
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in]  ulData,  ucMaxBit,  ucMinBit;
 
@@ -383,9 +383,9 @@ HI_VOID PQ_HAL_U32ClearBit( HI_U32 *pulData, HI_U8 ucBitNo);
 HI_U32 PQ_HAL_GetU32ByBit( HI_U32 ulData, HI_U8 ucMaxBit, HI_U8 ucMinBit);
 
 /**
- \brief ¸ù¾Ý×î¸ßÎ»ºÍ×îµÍÎ»ÉèÖÃU32²ÎÊý¶ÔÓ¦µÄÖµ
+ \brief ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½U32ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Öµ
  \attention \n
-  ÎÞ
+  ï¿½ï¿½
 
  \param[in] pulData, ucMaxBit, ucMinBit, ulValue;
 

@@ -39,6 +39,7 @@ static DEFINE_SPINLOCK(mpu_clock_lock);
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)   \
     || defined(CHIP_TYPE_hi3796mv200)
 #define MAX_FREQ 1600000
 #else
@@ -66,6 +67,7 @@ CPU_VF_S cpu_freq_hpm_table[MAX_FREQ_NUM] =
     && (!defined(CHIP_TYPE_hi3798mv200_a)) \
     && (!defined(CHIP_TYPE_hi3798mv200))  \
     && (!defined(CHIP_TYPE_hi3798mv300))  \
+    && (!defined(CHIP_TYPE_hi3798mv310))  \
     && (!defined(CHIP_TYPE_hi3796mv200))
     {1000000, HI_VDD_MPU_OPP4_HPM, HI_VDD_MPU_OPP4_VMIN, HI_VDD_MPU_OPP4_UV},
 #endif
@@ -83,6 +85,7 @@ CPU_VF_S cpu_freq_hpm_table[MAX_FREQ_NUM] =
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)   \
     || defined(CHIP_TYPE_hi3796mv200)
     {1600000, HI_VDD_MPU_OPP7_HPM, HI_VDD_MPU_OPP7_VMIN, HI_VDD_MPU_OPP7_UV},
 #endif
@@ -101,7 +104,7 @@ CPU_HPM_S cpu_hpm_table[MAX_FREQ_NUM] =
 };
 #endif
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 CPU_VF_S cpu_freq_hpm_table_300[MAX_FREQ_NUM] =
 {
     { 400000, HI_VDD_MPU_OPP1_HPM_300, HI_VDD_MPU_OPP1_VMIN_300, HI_VDD_MPU_OPP1_UV_300},
@@ -130,7 +133,7 @@ static int cpu_init_hpm(unsigned int rate, unsigned int offset)
     unsigned int i;
     unsigned int corner_type;
 
- #if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+ #if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     corner_type = (g_pstRegSysCtrl->SC_GENm[17] >> 24) & 0xff;
  #else
     corner_type = (g_pstRegSysCtrl->SC_GEN17 >> 24) & 0xff;
@@ -196,7 +199,7 @@ static int cpu_init_hpm(unsigned int rate, unsigned int offset)
    #else
             if ((HI_CHIP_TYPE_HI3798M == g_enChipType) && (HI_CHIP_VERSION_V300 == g_enChipID))
             {
-   #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+   #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
                 cur_cpu_hpm = cpu_freq_hpm_table_300[i].hpmrecord + g_u8CpuHpmOffset + offset;
    #endif
             }
@@ -212,7 +215,7 @@ static int cpu_init_hpm(unsigned int rate, unsigned int offset)
             regval |= (cur_cpu_hpm << 12);
             HI_REG_WRITE32(PERI_PMC33, regval);
 
-   #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+   #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
             if ((HI_CHIP_TYPE_HI3798M == g_enChipType) && (HI_CHIP_VERSION_V300 == g_enChipID))
             {
                 /* set up limit and down limit */
@@ -273,6 +276,7 @@ struct clk mpu_ck = {
 #if     defined(CHIP_TYPE_hi3798cv200)  \
     ||  defined(CHIP_TYPE_hi3798mv200)  \
     ||  defined(CHIP_TYPE_hi3798mv300)  \
+    ||  defined(CHIP_TYPE_hi3798mv310)  \
     ||  defined(CHIP_TYPE_hi3798mv200_a)\
     ||  defined(CHIP_TYPE_hi3796mv200)
 static unsigned int g_postdiv1;
@@ -385,7 +389,7 @@ static int mpu_clk_set_rate(struct clk *clk, unsigned int rate)
 
     spin_lock_irqsave(&mpu_ck.spinlock, flag);
     clk->rate = rate;
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200) 
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200) 
     g_pstRegSysCtrl->SC_GENx[2] = rate;
 #else
     g_pstRegSysCtrl->SC_GEN26 = rate;

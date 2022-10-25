@@ -19,7 +19,7 @@
 #include <linux/clk.h>
 #include <debug.h>
 
-#if defined(CONFIG_ARCH_HI3798MV2X) && defined(CONFIG_TEE)
+#if (defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)) && defined(CONFIG_TEE)
 
 #include "../version.h"
 #undef  pr_fmt
@@ -59,6 +59,10 @@ extern u32 emmc_boot_tuning_phase;
 
 #if defined(CONFIG_ARCH_HI3798MV2X)
 #include "himci_hi3798mv2x.c"
+#endif
+
+#if defined(CONFIG_ARCH_HI3798MV310)
+#include "himci_hi3798mv310.c"
 #endif
 
 static u32 detect_time = HI_MCI_DETECT_TIMEOUT;
@@ -1938,6 +1942,8 @@ static int himciv300_pltm_resume(struct platform_device *pdev)
 static const struct of_device_id
 himciv300_match[] __maybe_unused = {
 	{ .compatible = "hi3798mv200,himciv300_sd", },
+	{ .compatible = "hi3798mv300,himciv300_sd", },
+	{ .compatible = "hi3798mv310,himciv300_sd", },
 	{},
 };
 MODULE_DEVICE_TABLE(of, himciv300_match);

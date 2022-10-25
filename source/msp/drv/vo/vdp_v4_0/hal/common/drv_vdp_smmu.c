@@ -80,7 +80,7 @@ HI_S32 VDP_Hal_SetSmmuErrWrAddr(HI_S32 u32ErrWrAddr)
 }
 
 
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
 
 HI_VOID VDP_Hal_ClearSMMUInt(HI_S32 u32State)
 {
@@ -119,7 +119,7 @@ HI_VOID VDP_Hal_ClearSMMUInt(HI_S32 u32State)
 
 
 
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
 
 HI_VOID VDP_Hal_SetSMMUIntEnable(HI_BOOL bEnable)
 {
@@ -209,7 +209,7 @@ typedef struct SmmuStatusFunc{
     SMMU_GetRdErrAddr pfnGetSmmuFaultAddr;
 }VDP_SMMU_ACCESS_ENTRY_S;
 
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200))
 
 VDP_SMMU_ACCESS_ENTRY_S pfnSmmuAccessEntry[] = {
         {VDP_SMMU_GetIntnsPtwTransSta, "SMMU_WRITE_ERR MODULE:vo,Non-Secure State, ptwtrans error:", VDP_SMMU_GetRdErrAddr},

@@ -28,6 +28,10 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a),
 include $(VENC_DIR)/firmware/product/Hi3798MV200/$(ASM_DST_DIR)/venc_make.cfg
 endif
 
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+include $(VENC_DIR)/firmware/product/Hi3798MV310/$(ASM_DST_DIR)/venc_make.cfg
+endif
+
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv200),)
 include $(VENC_DIR)/firmware/product/Hi3796MV200/$(ASM_DST_DIR)/venc_make.cfg
 endif

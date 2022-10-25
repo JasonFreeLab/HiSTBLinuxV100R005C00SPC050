@@ -292,7 +292,7 @@ typedef union
 #define  REG_RNG_BASE_ADDR_PHY 					(0xF8005000)
 /*Porting to TrustedCore STB begin*/
 //vir=phy
-#if defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined (CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define RNG_BASE_ADDR REG_RNG_BASE_ADDR_PHY
 #define HISEC_COM_TRNG_CTRL				(REG_RNG_BASE_ADDR_PHY + 0x200)
 #define HISEC_COM_TRNG_FIFO_DATA	    (REG_RNG_BASE_ADDR_PHY + 0x204)

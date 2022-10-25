@@ -17,7 +17,8 @@ extern "C" {
     || defined(CHIP_TYPE_hi3796mv100)   \
     || defined(CHIP_TYPE_hi3716dv100)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
-    || defined(CHIP_TYPE_hi3798mv300)
+    || defined(CHIP_TYPE_hi3798mv300)   \
+    || defined(CHIP_TYPE_hi3798mv310)
 
 #define EXCHANGE_IN_INTERRUPT
 

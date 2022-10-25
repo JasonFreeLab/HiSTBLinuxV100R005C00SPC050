@@ -38,6 +38,7 @@ COBJS-$(CONFIG_MXC_MMC) += mxcmmc.o
 COBJS-$(CONFIG_PXA_MMC) += pxa_mmc.o
 COBJS-$(CONFIG_ARCH_HI3798CV2X) += mmc_ids_hi3798cvx.o
 COBJS-$(CONFIG_ARCH_HI3798MV2X) += mmc_ids_hi3798mvx.o
+COBJS-$(CONFIG_ARCH_HI3798MV310) += mmc_ids_hi3798mvx.o
 COBJS-$(CONFIG_ARCH_HI3796MV2X) += mmc_ids_hi3796mv2x.o
 
 COBJS	:= $(COBJS-y)

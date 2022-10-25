@@ -75,6 +75,26 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3
                     -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv200/info \
                     -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv200/frame
     DRIVER_PATH := $(CURDIR)/$(VPSS_DIR_VER)
+else ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+    EXTRA_CFLAGS += -I$(VPSS_DIR)/$(VPSS_DIR_VER)/                    \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal                 \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/vpss_in             \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/alg \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/vpss_in/hi3798mv310 \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310     \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310     \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/vpss_in/hi3798mv310 \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/hal \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/common_inc \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/intf \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/base \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/alg \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/func \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/reg \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/debug \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/info \
+                    -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal/hi3798mv310/frame
+    DRIVER_PATH := $(CURDIR)/$(VPSS_DIR_VER)
 else ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv200),)
     EXTRA_CFLAGS += -I$(VPSS_DIR)/$(VPSS_DIR_VER)                    \
                     -I$(VPSS_DIR)/$(VPSS_DIR_VER)/hal                 \
@@ -184,6 +204,20 @@ $(MOD_NAME)-y   +=  \
                     $(VPSS_DIR_VER)/hal/hi3798mv200/hal/vpss_cbb_hal.o \
                     $(VPSS_DIR_VER)/hal/hi3798mv200/reg/vpss_cbb_reg.o \
                     $(VPSS_DIR_VER)/vpss_in/hi3798mv200/vpss_in_3798mv200.o
+else ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+$(MOD_NAME)-y   +=  \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/alg/vpss_cbb_alg.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/base/vpss_cbb_base.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/debug/vpss_cbb_debug.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/debug/vpss_cbb_assert.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/frame/vpss_cbb_frame.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/func/vpss_cbb_func.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/info/vpss_cbb_info.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/intf/vpss_cbb_intf.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/util/vpss_cbb_util.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/hal/vpss_cbb_hal.o \
+                    $(VPSS_DIR_VER)/hal/hi3798mv310/reg/vpss_cbb_reg.o \
+                    $(VPSS_DIR_VER)/vpss_in/hi3798mv310/vpss_in_hi3798mv310.o
 endif
 
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv200),)

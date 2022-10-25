@@ -823,7 +823,7 @@ static  HI_S16 s16ZmeCoef_2T32P_Gus2_6_75M_a0_5[18][2] =
 #endif
 /*------------------------ 2 TAP ZME COEF END ----------------------------*/
 
-#if defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
 
 const HI_S16 ceof6Tap_1M_a15_vdp [18][8] =
 {
@@ -1603,7 +1603,7 @@ const HI_S16 *g_pVZmeReduceCoef[PQ_HAL_ZME_COEF_RATIO_BUTT][PQ_HAL_ZME_VDP_COEF_
     { &ceof6Tap_35M_a18_vdp[0][0], &ceof5Tap_25M_a20_vdp[0][0],  &ceof4Tap_4M_a15[0][0], &ceof4Tap_4M_a15[0][0], &ceof6Tap_35M_a18[0][0], &ceof4Tap_4M_a15[0][0] }  //else
 };
 
-/* Todo: ÐèÒª·ÂÕæ¸ßÖÐµÍÏµÊý */
+/* Todo: ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ïµï¿½ï¿½ */
 /* HL8 VL6(Real HL6 VL5) HC4 VC4 /32Phase/6bit */
 const HI_S16 *g_pVFrostZmeReduceCoef[PQ_HAL_ZME_COEF_RATIO_BUTT][PQ_HAL_FROST_ZME_VDP_COEF_TYPE_BUTT][PQ_HAL_FROST_LEVEL_BUTT - 1] =
 {

@@ -25,6 +25,9 @@
 #include "vpss_in_3798mv200.h"
 #endif
 
+#if defined(CHIP_TYPE_hi3798mv310)
+#include "vpss_in_3798mv310.h"
+#endif
 
 #if defined(CHIP_TYPE_hi3796mv200)
 #include "vpss_in_3796mv200.h"

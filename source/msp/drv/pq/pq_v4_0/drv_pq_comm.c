@@ -69,7 +69,7 @@ HI_S32 PQ_COMM_CheckChipName(HI_CHAR* pchChipName)
 
 #if defined(CHIP_TYPE_hi3798cv200)
     s32Ret = HI_OSAL_Strncmp(pchChipName , "HI_CHIP_TYPE_HI3798C", strlen("HI_CHIP_TYPE_HI3798C"));
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     s32Ret = HI_OSAL_Strncmp(pchChipName , "HI_CHIP_TYPE_HI3798M", strlen("HI_CHIP_TYPE_HI3798M"));
 #elif defined(CHIP_TYPE_hi3796mv200)
     s32Ret = HI_OSAL_Strncmp(pchChipName , "HI_CHIP_TYPE_HI3796M", strlen("HI_CHIP_TYPE_HI3796M"));

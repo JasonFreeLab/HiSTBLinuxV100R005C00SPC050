@@ -43,7 +43,7 @@ extern "C" {
 
 #define KL_EN_MASK                 (0x00007FFF) // all keyladder set to secure keyladder
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define KL_REG_DIN0                KL_SEC_KLAD_DIN0
 #define KL_REG_DIN1                KL_SEC_KLAD_DIN1
 #define KL_REG_DIN2                KL_SEC_KLAD_DIN2

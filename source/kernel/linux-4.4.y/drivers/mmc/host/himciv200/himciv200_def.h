@@ -116,7 +116,7 @@
 #if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X)
 #define BURST_SIZE                        (0x4<<28)
 #else
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #define BURST_SIZE                        (0x3<<28)
 #else
 #define BURST_SIZE                        (0x2<<28)
@@ -129,7 +129,7 @@
 #define FIFO_DEPTH                         256
 #endif
 
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #define RX_WMARK                           (0xF << 16)
 #define TX_WMARK                           0x10
 #else

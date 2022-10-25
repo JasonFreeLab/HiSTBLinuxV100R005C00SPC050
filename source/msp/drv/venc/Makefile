@@ -16,7 +16,7 @@ endif
 #===============================================================================
 # local variables
 #===============================================================================
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 VENC_VERSION := venc_v2.0
 else
 VENC_VERSION := venc_v1.0

@@ -19,7 +19,7 @@ endif
 LIBS    := libsec_$(notdir $(LOCAL_OUT)).a
 
 KLAD_VERSION :=v200
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3716mv410 hi3716mv420 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3716mv410 hi3716mv420 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv310),)
     CFLAGS += -DHI_KLAD_VERSION_100
     KLAD_VERSION :=v100
 else

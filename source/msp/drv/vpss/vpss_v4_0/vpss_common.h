@@ -301,7 +301,7 @@ typedef union
 #define VPSS_NOT_SUPPORT_MCNR_FMT(fmt) (HI_FALSE)
 #endif
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define VPSS_NOT_SUPPORT_MCNR_FMT(fmt) (VPSS_IS_TILE_FMT(fmt))
 #endif
 

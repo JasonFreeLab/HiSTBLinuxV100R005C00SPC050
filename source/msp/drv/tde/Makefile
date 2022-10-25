@@ -18,7 +18,7 @@ endif
 #===============================================================================
 TARGET := tde
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 HAL_DIR := tde_v2_0
 else
 HAL_DIR := tde_v1_0

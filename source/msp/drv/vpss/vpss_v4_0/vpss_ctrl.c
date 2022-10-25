@@ -632,7 +632,7 @@ HI_S32 VPSS_CTRL_FixTask(VPSS_IP_E enIp, HI_DRV_BUF_ADDR_E enLR, VPSS_TASK_S *ps
             }
 #endif
 #else
-            //Èç¹û¿ªÆôÁËÐý×ª£¬Ê¹ÓÃÐý×ªBUFFER
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½×ªBUFFER
 #ifndef VPSS_HAL_WITH_CBB
             if ((HI_DRV_VPSS_ROTATION_90 == pstInst->stPort[i].enRotation)
                 || (HI_DRV_VPSS_ROTATION_270 == pstInst->stPort[i].enRotation))
@@ -1078,9 +1078,9 @@ HI_BOOL VPSS_CTRL_CheckZME1LStart(VPSS_TASK_S *pstTask, HI_U32 PortId)
 #ifdef ZME_2L_TEST
 /******************************************************************************
 brief      : CNcomment :  check rotate and ZME_2L task
-           :  ±¾º¯Êý¹¦ÄÜ:
-              1  ¸ù¾ÝÊäÈëÍ¼ÏñÐÅÏ¢(½âÂëÍ¼Ïñ)¼ì²âÓëÅÐ¶¨ÊÇ·ñÐèÒª×ö¶þ¼¶Ëõ·Å¼°Ðý×ª²Ù×÷¡£²¢¼ÇÂ¼Ã¿¸öportÏà¹Ø±êÖ¾¡£
-              2  Èç¹ûÐèÒª×ö¶þ¼¶Ëõ·Å(Ðý×ª)£¬Ôò·ÖÅäËùÐèÒªµÄ»º´æÍ¼Ïñbuffer¡£
+           :  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:
+              1  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Ï¢(ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¼ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼Ã¿ï¿½ï¿½portï¿½ï¿½Ø±ï¿½Ö¾ï¿½ï¿½
+              2  ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½×ª)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ä»ï¿½ï¿½ï¿½Í¼ï¿½ï¿½bufferï¿½ï¿½
 attention  :
 param[in]  : enIp      :  vpss ID
              pstTask   :
@@ -1134,12 +1134,12 @@ HI_U32 VPSS_CTRL_Zme2lAndRotateCfg(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
 
         if ( HI_TRUE == pstPort[i]->bEnble && VPSS_INVALID_HANDLE != pstPort[i]->s32PortId )
         {
-            /*  Èç¹ûÐèÒª×öÐý×ª²Ù×÷£¬Ôò¼ÇÂ¼µ±Ç°portÐý×ª±êÖ¾ ²¢ ÉêÇëÏàÓ¦µÄ»º´æbuffer*/
+            /*  ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ç°portï¿½ï¿½×ªï¿½ï¿½Ö¾ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ä»ï¿½ï¿½ï¿½buffer*/
             if (VPSS_CTRL_CheckRotateStart(pstTask, i))
             {
                 pstPort[i]->bNeedRotate = HI_TRUE;
                 u32RotateNeed++;
-                if ( HI_NULL == pstTask->pstFrmNodeRoBuf[i])  //Ö»·ÖÅäÒ»´Î»º´æÖ¡´æ
+                if ( HI_NULL == pstTask->pstFrmNodeRoBuf[i])  //Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î»ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
                 {
                     pstTask->pstFrmNodeRoBuf[i] = (VPSS_FB_NODE_S *)VPSS_VMALLOC(sizeof(VPSS_FB_NODE_S));
                     memset((VPSS_FB_NODE_S *)(pstTask->pstFrmNodeRoBuf[i]), 0x0, (sizeof(VPSS_FB_NODE_S)));
@@ -1216,7 +1216,7 @@ HI_U32 VPSS_CTRL_Zme2lAndRotateCfg(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
             {
                 if (HI_NULL != pstTask->pstFrmNodeRoBuf[i])
                 {
-                    //ÊÍ·ÅÐý×ªÄÚ´æ£¬½ÚÊ¡SDK¿Õ¼äÕ¼ÓÃ
+                    //ï¿½Í·ï¿½ï¿½ï¿½×ªï¿½Ú´æ£¬ï¿½ï¿½Ê¡SDKï¿½Õ¼ï¿½Õ¼ï¿½ï¿½
                     if (0 != pstTask->pstFrmNodeRoBuf[i]->stBuffer.stMemBuf.u32Size)
                     {
                         VPSS_OSAL_FreeMem(&(pstTask->pstFrmNodeRoBuf[i]->stBuffer.stMemBuf));
@@ -1231,7 +1231,7 @@ HI_U32 VPSS_CTRL_Zme2lAndRotateCfg(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
         }
     }
 
-    if ( u32RotateNeed > 0) //Èç¹ûÓÐÐý×ªÈÎÎñ£¬Ôò²»ÔÙ×ö¶þ¼¶Ëõ·Å
+    if ( u32RotateNeed > 0) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         return HI_SUCCESS;
     }
@@ -1242,10 +1242,10 @@ HI_U32 VPSS_CTRL_Zme2lAndRotateCfg(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
     stZmeWin.stPort1Win.u32Width = pstPort[1]->s32OutputWidth;
     stZmeWin.stPort1Win.u32Height = pstPort[1]->s32OutputHeight;
 
-    if (  0 != u32DstW && 0 != u32DstH) //Ö»·ÖÅäÒ»´Î»º´æÖ¡´æ
+    if (  0 != u32DstW && 0 != u32DstH) //Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î»ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
 
     {
-        if (HI_NULL == pstTask->pstFrmNodeZME1L) //Ö»·ÖÅäÒ»´Î»º´æÖ¡´æ
+        if (HI_NULL == pstTask->pstFrmNodeZME1L) //Ö»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î»ï¿½ï¿½ï¿½Ö¡ï¿½ï¿½
         {
             pstTask->pstFrmNodeZME1L = (VPSS_FB_NODE_S *)VPSS_VMALLOC(sizeof(VPSS_FB_NODE_S));
         }
@@ -1299,7 +1299,7 @@ HI_U32 VPSS_CTRL_Zme2lAndRotateCfg(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
     {
         if ( HI_NULL != pstTask->pstFrmNodeZME1L)
         {
-            //ÊÍ·Å¶þ¼¶Ëõ·ÅÄÚ´æ£¬½ÚÊ¡SDK¿Õ¼äÕ¼ÓÃ
+            //ï¿½Í·Å¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´æ£¬ï¿½ï¿½Ê¡SDKï¿½Õ¼ï¿½Õ¼ï¿½ï¿½
             if (0 != pstTask->pstFrmNodeZME1L->stBuffer.stMemBuf.u32Size)
             {
                 VPSS_OSAL_FreeMem(&(pstTask->pstFrmNodeZME1L->stBuffer.stMemBuf));
@@ -1934,7 +1934,7 @@ HI_S32 VPSS_CTRL_StartTask(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
     HI_BOOL bStart3D = HI_FALSE;
     HI_S32 s32Ret;
 
-    /* ËùÓÐ½Úµã¶¼ÖÃÎªHI_FALSE */
+    /* ï¿½ï¿½ï¿½Ð½Úµã¶¼ï¿½ï¿½ÎªHI_FALSE */
 #ifdef VPSS_HAL_WITH_CBB
     for (i = 0; i < VPSS_HAL_NODE_BUTT; i++)
     {
@@ -2021,7 +2021,7 @@ HI_S32 VPSS_CTRL_StartTask(VPSS_IP_E enIp, VPSS_TASK_S *pstTask)
         }
         else
         {
-            //ÊÍ·ÅÐý×ªÄÚ´æ£¬½ÚÊ¡SDK¿Õ¼äÕ¼ÓÃ
+            //ï¿½Í·ï¿½ï¿½ï¿½×ªï¿½Ú´æ£¬ï¿½ï¿½Ê¡SDKï¿½Õ¼ï¿½Õ¼ï¿½ï¿½
             if (0 != g_stVpssCtrl[enIp].stRoBuf[i].stMemBuf.u32Size)
             {
                 VPSS_OSAL_FreeMem(&(g_stVpssCtrl[enIp].stRoBuf[i].stMemBuf));
@@ -2148,7 +2148,7 @@ HI_S32 VPSS_CTRL_UpdatePqWbcData(VPSS_INSTANCE_S *pstInstance, PQ_VPSS_WBC_REG_S
     else
     {
 #ifdef VPSS_SUPPORT_ALG_MCNR
-        //ÖðÐÐ mctnr ¿ªµÄÊ±ºò£¬Ò²ÒªÅäÖÃ pRGMV
+        //ï¿½ï¿½ï¿½ï¿½ mctnr ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ò²Òªï¿½ï¿½ï¿½ï¿½ pRGMV
         if (HI_TRUE == stPqWbcInfo.bMcnrEnableFlag)
         {
             VPSS_ST_RGME_CFG_S stStRgmeCfg;
@@ -2774,7 +2774,7 @@ HI_S32 VPSS_CTRL_ThreadProc(HI_VOID *pArg)
             }
             else
             {
-                /* ´´½¨Task³É¹¦Ö®ºó£¬start±ØÐë³É¹¦ */
+                /* ï¿½ï¿½ï¿½ï¿½Taskï¿½É¹ï¿½Ö®ï¿½ï¿½startï¿½ï¿½ï¿½ï¿½É¹ï¿½ */
                 VPSS_FATAL("...............StartTask Faild\n");
 
                 VPSS_CTRL_ClearTask(enIp, &(pstVpssCtrl->stTask));
@@ -2801,10 +2801,10 @@ HI_S32 VPSS_CTRL_ThreadProc(HI_VOID *pArg)
 
             VPSS_OSAL_ResetEvent(&(pstVpssCtrl->stNewTask), EVENT_UNDO, EVENT_UNDO);
 #ifdef ZME_2L_TEST
-            /*µ±ÉÏ²ã³öÏÖstop²Ù×÷Ê±£¬ÊÍ·Å»º´æµÄbuffer*/
+            /*ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½ï¿½stopï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Í·Å»ï¿½ï¿½ï¿½ï¿½buffer*/
             if ( HI_NULL != pstVpssCtrl->stTask.pstFrmNodeZME1L)
             {
-                //ÊÍ·ÅÐý×ªÄÚ´æ£¬½ÚÊ¡SDK¿Õ¼äÕ¼ÓÃ
+                //ï¿½Í·ï¿½ï¿½ï¿½×ªï¿½Ú´æ£¬ï¿½ï¿½Ê¡SDKï¿½Õ¼ï¿½Õ¼ï¿½ï¿½
                 if (0 != pstVpssCtrl->stTask.pstFrmNodeZME1L->stBuffer.stMemBuf.u32Size)
                 {
                     VPSS_OSAL_FreeMem(&(pstVpssCtrl->stTask.pstFrmNodeZME1L->stBuffer.stMemBuf));
@@ -2852,7 +2852,7 @@ HI_S32 VPSS_CTRL_CreateThread(VPSS_IP_E enIp)
 #endif
 
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #ifdef HI_FPGA_SUPPORT
     /* TO avoid VPSS's reg r/w operation collision with VDH. (they are both on FPGA4) */
     if (num_online_cpus() > 2)

@@ -545,7 +545,7 @@ HI_S32 PQ_MNG_DEI_ParaInit(HI_VOID)
     stDeiPara->u16MinMotionIIrRatio = 32;
     stDeiPara->u16MaxMotionIIrRatio = 64;
 
-    /*stDeiPara->u32StartMotionIIRRatio 1~4 ÐèÒªÈí¼þ¼ÆËã*/
+    /*stDeiPara->u32StartMotionIIRRatio 1~4 ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     stDeiPara->au16MotionIIRRatio[0] = 32;
     stDeiPara->au16MotionIIRRatio[1] = ALG_CLIP3(0, 127, stDeiPara->au16MotionIIRRatio[0] +
                                        ((stDeiPara->as16MotionIIRCurveSlope[0] * ((stDeiPara->au16MotionDiffThd[1] - stDeiPara->au16MotionDiffThd[0]) << 2) + HalfValue) >> Shift));
@@ -576,7 +576,7 @@ HI_S32 PQ_MNG_DEI_ParaInit(HI_VOID)
     stDeiPara->u16MinFrmFldBlendRatio = 0;
     stDeiPara->u16MaxFrmFldBlendRatio = 64;
 
-    /*au16FrmFldBlendRatio[0]ÅäÖÃºÃ£¬1 2 3 4ÐèÒªÈí¼þ¼ÆËã*/
+    /*au16FrmFldBlendRatio[0]ï¿½ï¿½ï¿½ÃºÃ£ï¿½1 2 3 4ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     stDeiPara->au16FrmFldBlendRatio[0] = 0;
     stDeiPara->au16FrmFldBlendRatio[1] = ALG_CLIP3(0, 127, stDeiPara->au16FrmFldBlendRatio[0] +
                                          ((stDeiPara->as16FrmFldBlendSlope[0] * ((stDeiPara->au16FrmFldBlendThd[1] - stDeiPara->au16FrmFldBlendThd[0]) << 2) + HalfValue) >> Shift));
@@ -679,7 +679,7 @@ HI_S32 PQ_MNG_DEI_ParaInit(HI_VOID)
     return HI_SUCCESS;
 }
 
-/* ³õÊ¼»¯DEI globalmotionÈí¼þÏà¹Ø²ÎÊý */
+/* ï¿½ï¿½Ê¼ï¿½ï¿½DEI globalmotionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½ */
 HI_S32 PQ_MNG_DEI_MotionParaInit(HI_VOID)
 {
     HI_U16 HalfValue = 4;
@@ -769,10 +769,10 @@ static HI_S32 PQ_MNG_API_GMD_MA(const HI_U32 *pu32MotionData)
 
 /*****************************************************************************
  Prototype    : DI_SW_ALG
- Description  : DIÈíËã·¨
- Input        : Parm_s * pstMcParm         :MCDIµÄ²ÎÊý
-                DeiVariables_S * pstDeiVar :MADIµÄ²ÎÊý
-                DeiSwAlgCfg_S * pstDeiSwAlgPara :ÈíËã·¨²ÎÊý
+ Description  : DIï¿½ï¿½ï¿½ã·¨
+ Input        : Parm_s * pstMcParm         :MCDIï¿½Ä²ï¿½ï¿½ï¿½
+                DeiVariables_S * pstDeiVar :MADIï¿½Ä²ï¿½ï¿½ï¿½
+                DeiSwAlgCfg_S * pstDeiSwAlgPara :ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½
                 HI_S32 s32Width            :frame width
                 HI_S32 s32Height           :frame height
                 HI_S32 s32IsSceneChange    :scene change infomation
@@ -785,7 +785,7 @@ static HI_S32 PQ_MNG_API_GMD_MA(const HI_U32 *pu32MotionData)
   1.Date         : 2014/12/15
     Author       : sdk
     Modification : Created function
-   ÒÆÖ²: sdk, 2015.02.03
+   ï¿½ï¿½Ö²: sdk, 2015.02.03
 
 *****************************************************************************/
 HI_S32 PQ_MNG_ALG_GetMcDeiParam(MOTION_INPUT_S *pstMotionInput)
@@ -852,7 +852,7 @@ HI_S32 PQ_MNG_ALG_GetMcDeiParam(MOTION_INPUT_S *pstMotionInput)
 
     sg_pstMcParm->K_HFCORE_GMD_MC = nAdjK;
 
-    /* GMD_P for film *//* Õë¶ÔÖðÐÐµ¥¶À´¦Àí£¬ÔÝÊ±ÏÈ×¢ÊÍµô */
+    /* GMD_P for film *//* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½×¢ï¿½Íµï¿½ */
 
     /* GMD for "to3c2flr2" */
     if (nAdjK_STAT > g_pstDeiSwAlgPara.TH_GMD_STAT)
@@ -891,7 +891,7 @@ HI_S32 PQ_MNG_ALG_GetMcDeiParam(MOTION_INPUT_S *pstMotionInput)
         sg_pstDeiVar->stINTERPINFO.MC_EDGE_CORING = 0;
         sg_pstDeiVar->stINTERPINFO.MC_EDGE_SCALE  = 32;
     }
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) ||  defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) ||  defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     if (nHmvSum > g_pstDeiSwAlgPara.TH_H_HMVSUM && nVmvSum < g_pstDeiSwAlgPara.TH_L_VMVSUM)
     {
         sg_pstDeiVar->stMDINFO.rec_mode_fld_motion_step_0 = 3;

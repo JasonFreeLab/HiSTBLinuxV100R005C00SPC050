@@ -18,7 +18,7 @@
 ******************************************************************************/
 
 #include <linux/delay.h>
-#include <dt-bindings/clock/hi3798mv200-clock.h>
+#include <dt-bindings/clock/hi3798mv310-clock.h>
 #include <linux/hikapi.h>
 
 #include "clk-hisi.h"
@@ -75,23 +75,7 @@ static void inno_phy_config_2p(struct hiclk_hw *clk)
 	writel(0x4, regbase + 0x18);
 	mdelay(2);
 
-	if (chipid == _HI3798MV200) {
-		writel(0x1c, regbase);
-		udelay(20);
-		writel(0x14, regbase + 0x78);
-		udelay(20);
-		writel(0x1b, regbase + 0x28);
-		udelay(20);
-		writel(0x7, regbase + 0x18);
-		udelay(20);
-		writel(0x92, regbase + 0x14);
-		udelay(20);
-
-		writel(0x1c, regbase + USB2_PORT1_REGBASE);
-		udelay(20);
-		writel(0x1b, regbase + USB2_PORT1_REGBASE + 0x28);
-		udelay(20);
-	} else if (chipid == _HI3798MV300) {
+	if (chipid == _HI3798MV310) {
 		/* eye height 450mv */
 		writel(0x6c, regbase + 0x08);
 		writel(0x6c, regbase + USB2_PORT1_REGBASE + 0x08);	
@@ -147,7 +131,7 @@ static int hiclk_enable_usb2(struct clk_hw *hw)
 		writel(reg, clk->peri_crg_base + PERI_CRG47_USB2PHY);
 		udelay(200);
 
-#if defined(CONFIG_HI3798MV2X_FPGA) || defined(CONFIG_HI3798MV310_FPGA)
+#if defined(CONFIG_HI3798MV310_FPGA)
 		reg = readl(clk->peri_ctrl_base + PERI_CTRL_USB3);
 		reg |= USB2_2P_SS_WORD_IF_I;  
 		reg &= ~(USB2_2P_SS_ENA_INCR16_I);

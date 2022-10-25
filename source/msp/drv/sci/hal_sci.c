@@ -51,6 +51,7 @@ HI_S32 SCI_EnableClock(HI_UNF_SCI_PORT_E enSciPort,HI_BOOL bEnable)
     }
 #if    defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)
     if (HI_UNF_SCI_PORT1 == enSciPort)
@@ -120,6 +121,7 @@ HI_S32 SCI_ResetClock(HI_UNF_SCI_PORT_E enSciPort,HI_BOOL bReset)
     }
 #if    defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)
     if (HI_UNF_SCI_PORT1 == enSciPort)
@@ -164,6 +166,7 @@ HI_VOID SCI_HAL_SetSCIClock(HI_UNF_SCI_PORT_E enSciPort, HI_BOOL bEnable)
 
 #if    defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
@@ -224,6 +227,7 @@ HI_VOID SCI_HAL_SetSCIReset(HI_UNF_SCI_PORT_E enSciPort)
 {
 #if    defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
@@ -259,6 +263,7 @@ HI_VOID SCI_HAL_ClearSCIReset(HI_UNF_SCI_PORT_E enSciPort)
 {
 #if    defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a)
 
@@ -501,6 +506,7 @@ HI_VOID SCI_HAL_SetResetMode(HI_UNF_SCI_PORT_E enSciPort, HI_UNF_SCI_MODE_E enRe
 #elif  defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
 
@@ -536,6 +542,7 @@ HI_VOID SCI_HAL_SetVccEnMode(HI_UNF_SCI_PORT_E enSciPort, HI_UNF_SCI_MODE_E enVc
 #elif  defined(CHIP_TYPE_hi3798cv200)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
 

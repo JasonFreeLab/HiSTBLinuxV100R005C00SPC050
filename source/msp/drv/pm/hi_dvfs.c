@@ -34,7 +34,7 @@ extern struct clk mpu_ck;
 #define PWM_CPU PERI_PMC6
 #endif
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define PWM_CORE PERI_PMC8
 #elif defined(CHIP_TYPE_hi3798mv100) || defined(CHIP_TYPE_hi3796mv100) || defined(CHIP_TYPE_hi3716dv100)
 #define PWM_CORE PERI_PMC6
@@ -452,7 +452,8 @@ static int _dvfs_scale(struct device *target_dev, struct hi_dvfs_info *tdvfs_inf
  #if   defined(CHIP_TYPE_hi3798cv200) \
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3798mv200) \
-    || defined(CHIP_TYPE_hi3798mv300)	
+    || defined(CHIP_TYPE_hi3798mv300) \
+    || defined(CHIP_TYPE_hi3798mv310)
     if ((tdvfs_info->new_freq > 600000))
  #elif defined(CHIP_TYPE_hi3796mv200)
     if ((tdvfs_info->new_freq > 600000) && (tdvfs_info->new_freq < 1500000))

@@ -40,7 +40,7 @@
 
 #define HI_STD_I2C_NUM  5
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
 #define HI_STD_I2C_NUM  3
 

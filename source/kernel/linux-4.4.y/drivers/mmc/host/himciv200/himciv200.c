@@ -266,7 +266,7 @@ static void himciv200_host_init(struct himciv200_host *host)
 		| VOLT_SWITCH_INT_MASK;
 	mci_writel(host, MCI_INTMASK, regval);
 
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	/* set card read threshold */
 	regval = mci_readl(host, MCI_CARDTHRCTL);
 	regval |= RW_THRESHOLD_SIZE;
@@ -971,7 +971,7 @@ static void himciv200_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 
 	if (ios->clock) {
 		himciv200_control_cclk(host, false);
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined (CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined (CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 		himciv200_set_timing(host, ios->timing);
 #endif
 		himciv200_set_cclk(host, ios->clock);
@@ -1001,7 +1001,7 @@ static void himciv200_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 
 	/* hs200/hs400 cardthrctl reg */
 	regval = mci_readl(host, MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	regval = RW_THRESHOLD_SIZE;
 #else
 	if (ios->timing == MMC_TIMING_MMC_HS200)
@@ -1177,7 +1177,7 @@ static const struct mmc_host_ops himci_ops = {
 	.enable_sdio_irq = himciv200_enable_sdio_irq,
 	.start_signal_voltage_switch = himciv200_switch_voltage,
 	.card_busy = himciv200_card_busy,
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined (CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined (CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	.execute_tuning = himciv200_execute_tuning,
 	.prepare_hs400_tuning = himciv200_prepare_hs400,
 #endif
@@ -1252,7 +1252,7 @@ static int __init himciv200_pltm_probe(struct platform_device *pdev)
 		goto out;
 	}
 
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined (CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined (CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
 	host->ioshare_addr = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR_OR_NULL(host->ioshare_addr)) {
@@ -1456,6 +1456,7 @@ himciv200_match[] __maybe_unused = {
 	{ .compatible = "hi3798cv200,himciv200", },
 	{ .compatible = "hi3798mv200,himciv200", },
 	{ .compatible = "hi3798mv300,himciv200", },
+	{ .compatible = "hi3798mv310,himciv200", },
 	{ .compatible = "hi3796mv200,himciv200", },
 	{},
 };

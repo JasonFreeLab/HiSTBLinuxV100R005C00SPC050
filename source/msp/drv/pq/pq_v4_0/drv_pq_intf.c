@@ -1255,7 +1255,7 @@ static HI_S32 u32PQIoctl_G_HDR_TMLUT(struct inode *inode, struct file *filp, HI_
     return s32Ret;
 }
 
-#if defined(CHIP_TYPE_hi3796mv200)||defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3796mv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 static HI_S32 u32PQIoctl_S_HDR_TM_XPOS(struct inode *inode, struct file *filp, HI_VOID *arg)
 {
     HI_S32 s32Ret = HI_SUCCESS;
@@ -1479,14 +1479,14 @@ static HI_S32 u32PQIoctl_S_DEFAULT_PARAM(struct inode *inode, struct file *filp,
     return s32Ret;
 }
 
-/*PQ 命令实现结构*/
+/*PQ 锟斤拷锟斤拷实锟街结构*/
 typedef struct hiPQ_IOCTRL_CMD_FUN_S
 {
     unsigned int cmd;
-    HI_S32 (*pfIoctrlCmdFunction)(struct inode *inode, struct file *filp, HI_VOID *arg); /*PQ CMD对应的实现函数*/
+    HI_S32 (*pfIoctrlCmdFunction)(struct inode *inode, struct file *filp, HI_VOID *arg); /*PQ CMD锟斤拷应锟斤拷实锟街猴拷锟斤拷*/
 } PQ_IOCTRL_CMD_FUN_S;
 
-/*PQ IOCTRL CMD对应实现函数结构*/
+/*PQ IOCTRL CMD锟斤拷应实锟街猴拷锟斤拷锟结构*/
 PQ_IOCTRL_CMD_FUN_S stPQIoctrlCmdFunction[] =
 {
 #ifdef PQ_ALG_TOOLS
@@ -1617,7 +1617,7 @@ PQ_IOCTRL_CMD_FUN_S stPQIoctrlCmdFunction[] =
 #ifdef PQ_ALG_HDR
     {HIIOC_PQ_S_HDR_TMLUT,       u32PQIoctl_S_HDR_TMLUT},
     {HIIOC_PQ_G_HDR_TMLUT,       u32PQIoctl_G_HDR_TMLUT},
-#if defined(CHIP_TYPE_hi3796mv200)||defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3796mv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     {HIIOC_PQ_S_HDR_TM_XPOS,     u32PQIoctl_S_HDR_TM_XPOS   },
     {HIIOC_PQ_G_HDR_TM_XPOS,     u32PQIoctl_G_HDR_TM_XPOS   },
     {HIIOC_PQ_S_HDR_TM_YMAP,     u32PQIoctl_S_HDR_TM_YMAP   },

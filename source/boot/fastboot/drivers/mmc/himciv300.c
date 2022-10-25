@@ -993,7 +993,7 @@ void check_ext_csd(struct mmc *mmc)
 #endif
 
 #if defined(CONFIG_ARCH_S40) || defined(CONFIG_ARCH_S5) || defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE)\
-	|| defined(CONFIG_ARCH_HI3716MV410) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+	|| defined(CONFIG_ARCH_HI3716MV410) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 
 	/*
 	 * only s40 Architecture support reset pin

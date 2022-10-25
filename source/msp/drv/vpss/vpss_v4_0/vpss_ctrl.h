@@ -14,7 +14,7 @@
 #define VPSS0_IRQ_NUM                   125  //93+32
 #define VPSS1_IRQ_NUM                   110  //78+32
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #ifdef HI_FPGA_SUPPORT
 //keep this macro equal to VPSS_CPU_INDEX value defined in drv_sys_ext_k.c!!!
 #ifndef HI_TEE_SUPPORT

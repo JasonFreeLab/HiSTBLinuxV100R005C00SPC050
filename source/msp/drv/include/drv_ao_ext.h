@@ -59,7 +59,7 @@ HI_S32  HI_DRV_AO_Track_DetachAi(HI_HANDLE hSndTrack, HI_HANDLE hAi);
 #elif defined(CHIP_TYPE_hi3798cv200)
 #define AIAO_SRC_PLL_REG_FRAC_VAL (0x12a5e354)
 #define AIAO_SRC_PLL_REG_INT_VAL  (0x0800209b)
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define AIAO_SRC_PLL_REG_FRAC_VAL (0x12ed9169)
 #define AIAO_SRC_PLL_REG_INT_VAL  (0x0800207c)
 #elif defined(CHIP_TYPE_hi3796mv200)

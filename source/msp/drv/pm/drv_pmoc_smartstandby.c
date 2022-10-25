@@ -38,32 +38,32 @@
 
 typedef enum
 {
-    PMOC_HOLD_ETH = 0x0001,   /**<Keep eth working */    /**<CNcomment:Íø¿Ú²»ÏÂµç */
-    PMOC_HOLD_WIFI = 0x0002,  /**<Keep WIFI working */   /**<CNcomment:WIFI²»ÏÂµç */
-    PMOC_HOLD_USB = 0x0004,   /**<Keep USB working */    /**<CNcomment:USB²»ÏÂµç */
-    PMOC_HOLD_TUNER = 0x0008, /**<Keep tuner working */  /**<CNcomment:Tuner²»ÏÂµç */
-    PMOC_HOLD_DEMUX = 0x0010, /**<Keep demux working */  /**<CNcomment:Demux²»ÏÂµç */
-    PMOC_HOLD_SDIO = 0x0020,  /**<Keep SDIO working */   /**<CNcomment:SD¿¨²»ÏÂµç */
-    PMOC_HOLD_SCI = 0x0040,   /**<Keep SCI working */    /**<CNcomment:SCI²»ÏÂµç */
-    PMOC_HOLD_VENC = 0x0080,  /**<Keep VENC working */   /**<CNcomment:VENC²»ÏÂµç */
-    PMOC_HOLD_PNG = 0x0100,   /**<Keep PNG working */    /**<CNcomment:PNG²»ÏÂµç */
-    PMOC_HOLD_JPGE = 0x0200,  /**<Keep JPGE working */   /**<CNcomment:JPGE²»ÏÂµç */
-    PMOC_HOLD_JPEG = 0x0400,  /**<Keep JPEG working */   /**<CNcomment:JPEG²»ÏÂµç */
-    PMOC_HOLD_WDG = 0x0800,   /**<Keep WDG working */    /**<CNcomment:WDG²»ÏÂµç */
-    PMOC_HOLD_HDMI = 0x1000,  /**<Keep HDMI working */   /**<CNcomment:HDMI²»ÏÂµç */
-    PMOC_HOLD_VO = 0x2000,    /**<Keep VO working */     /**<CNcomment:VO²»ÏÂµç */
-    PMOC_HOLD_DISP = 0x4000,  /**<Keep DISP working */   /**<CNcomment:DISP²»ÏÂµç */
-    PMOC_HOLD_AO = 0x8000,    /**<Keep AO working */     /**<CNcomment:AO²»ÏÂµç */
-    PMOC_HOLD_AI = 0x10000,   /**<Keep AI working */     /**<CNcomment:AI²»ÏÂµç */
-    PMOC_HOLD_ADSP = 0x20000, /**<Keep ADSP working */   /**<CNcomment:ADSP²»ÏÂµç */
-    PMOC_HOLD_CIPHER = 0x40000, /**<Keep CIPHER working */   /**<CNcomment:CIPHER²»ÏÂµç */
-    PMOC_HOLD_VDEC = 0x80000, /**<Keep VDEC working */   /**<CNcomment:VDEC²»ÏÂµç */
-    PMOC_HOLD_VPSS = 0x100000, /**<Keep VPSS working */  /**<CNcomment:VPSS²»ÏÂµç */
-    PMOC_HOLD_OTP = 0x200000, /**<Keep OTP working */    /**<CNcomment:OTP²»ÏÂµç */
-    PMOC_HOLD_TDE = 0x400000, /**<Keep TDE working */    /**<CNcomment:TDE²»ÏÂµç */
-    PMOC_HOLD_I2C = 0x800000, /**<Keep I2C working */    /**<CNcomment:I2C²»ÏÂµç */
-    PMOC_HOLD_GPIO = 0x1000000,/**<Keep GPIO working */  /**<CNcomment:GPIO²»ÏÂµç */
-    PMOC_HOLD_PQ   = 0x2000000,/**<Keep PQ working */  /**<CNcomment:PQ²»ÏÂµç */
+    PMOC_HOLD_ETH = 0x0001,   /**<Keep eth working */    /**<CNcomment:ï¿½ï¿½ï¿½Ú²ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_WIFI = 0x0002,  /**<Keep WIFI working */   /**<CNcomment:WIFIï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_USB = 0x0004,   /**<Keep USB working */    /**<CNcomment:USBï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_TUNER = 0x0008, /**<Keep tuner working */  /**<CNcomment:Tunerï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_DEMUX = 0x0010, /**<Keep demux working */  /**<CNcomment:Demuxï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_SDIO = 0x0020,  /**<Keep SDIO working */   /**<CNcomment:SDï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_SCI = 0x0040,   /**<Keep SCI working */    /**<CNcomment:SCIï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_VENC = 0x0080,  /**<Keep VENC working */   /**<CNcomment:VENCï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_PNG = 0x0100,   /**<Keep PNG working */    /**<CNcomment:PNGï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_JPGE = 0x0200,  /**<Keep JPGE working */   /**<CNcomment:JPGEï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_JPEG = 0x0400,  /**<Keep JPEG working */   /**<CNcomment:JPEGï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_WDG = 0x0800,   /**<Keep WDG working */    /**<CNcomment:WDGï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_HDMI = 0x1000,  /**<Keep HDMI working */   /**<CNcomment:HDMIï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_VO = 0x2000,    /**<Keep VO working */     /**<CNcomment:VOï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_DISP = 0x4000,  /**<Keep DISP working */   /**<CNcomment:DISPï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_AO = 0x8000,    /**<Keep AO working */     /**<CNcomment:AOï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_AI = 0x10000,   /**<Keep AI working */     /**<CNcomment:AIï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_ADSP = 0x20000, /**<Keep ADSP working */   /**<CNcomment:ADSPï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_CIPHER = 0x40000, /**<Keep CIPHER working */   /**<CNcomment:CIPHERï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_VDEC = 0x80000, /**<Keep VDEC working */   /**<CNcomment:VDECï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_VPSS = 0x100000, /**<Keep VPSS working */  /**<CNcomment:VPSSï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_OTP = 0x200000, /**<Keep OTP working */    /**<CNcomment:OTPï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_TDE = 0x400000, /**<Keep TDE working */    /**<CNcomment:TDEï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_I2C = 0x800000, /**<Keep I2C working */    /**<CNcomment:I2Cï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_GPIO = 0x1000000,/**<Keep GPIO working */  /**<CNcomment:GPIOï¿½ï¿½ï¿½Âµï¿½ */
+    PMOC_HOLD_PQ   = 0x2000000,/**<Keep PQ working */  /**<CNcomment:PQï¿½ï¿½ï¿½Âµï¿½ */
     PMOC_HOLD_BUTT = 0x80000000,
 }PMOC_HOLD_MOD_E;
 
@@ -757,7 +757,7 @@ HI_VOID GpioStandby(HI_BOOL bSuspendFlag)
     return;
 }
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
 HI_VOID PqStandby(HI_BOOL bSuspendFlag)
 {
     HI_S32 s32Ret;
@@ -893,7 +893,7 @@ HI_S32 PMEnterSmartStandby(HI_U32 u32HoldModules)
         DispStandby(HI_TRUE);
     }
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     if (0 == (u32HoldModules & PMOC_HOLD_PQ))
     {
         PqStandby(HI_TRUE);
@@ -1003,7 +1003,7 @@ HI_S32 PMQuitSmartStandby(HI_VOID)
         AoStandby(HI_FALSE);
     }
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     if (0 == (g_u32HoldModules & PMOC_HOLD_PQ))
     {
         PqStandby(HI_FALSE);

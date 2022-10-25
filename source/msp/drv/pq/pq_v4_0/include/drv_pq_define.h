@@ -40,6 +40,15 @@ PQ Software Define
 #ifndef HI_PQ_TEE_SUPPORT
 #define TNR_NOTEE_SUPPORT
 #endif
+#elif defined(CHIP_TYPE_hi3798mv310)
+#define PQ_CHIP_NAME    "3798MV310"
+#define PQ_ACC_SUPPORT
+#define GFXZME_REDUCE_SUPPORT
+#define SHARPEN_FHD_SUPPORT
+#define PQ_HDT_TM_64_SUPPORT
+#ifndef HI_PQ_TEE_SUPPORT
+#define TNR_NOTEE_SUPPORT
+#endif
 #elif defined(CHIP_TYPE_hi3796mv200)
 #define PQ_CHIP_NAME    "3796MV200"
 #define PQ_ACC_SUPPORT
@@ -124,7 +133,7 @@ PQ Bin Define
 * PQ Param
 **/
 
-/*PQ ModuleÀàÐÍ*/
+/*PQ Moduleï¿½ï¿½ï¿½ï¿½*/
 typedef enum hiPQ_ALG_MODULE_E
 {
     PQ_ALG_MODULE_DCI = 0,
@@ -134,18 +143,18 @@ typedef enum hiPQ_ALG_MODULE_E
 
 typedef struct hiPQ_FILE_HEADER_S
 {
-    HI_U32          u32FileCheckSum;             /* ²ÎÊýÎÄ¼þµÄÐ£ÑéºÍ£¬File Header£¨³ý´Ë±äÁ¿Íâ£©ºÍdataµÄËùÓÐÖð×Ö½ÚÐ£ÑéºÍ£¬ÓÃÓÚ¼ìÑé²ÎÊýÕýÈ·ÐÔºÍÅÐ¶ÏÊÇ·ñdirty */
-    HI_U32          u32ParamSize;                /* ²ÎÊýÎÄ¼þ´óÐ¡£¬°üÀ¨File headerºÍdata */
-    HI_CHAR         u8Version[STR_LEN_32];       /* °æ±¾ºÅ£¬×Ö·û´®±íÊ¾ */
-    HI_CHAR         u8Author[STR_LEN_32];        /* ²ÎÊýµ÷ÊÔÕßÇ©Ãû£¬×Ö·û´®±íÊ¾ */
-    HI_CHAR         u8Desc[STR_LEN_1024];        /* °æ±¾ÃèÊö£¬×Ö·û´®±íÊ¾ */
-    HI_CHAR         u8Time[STR_LEN_32];          /* ²ÎÊýÎÄ¼þÉú³É£¨ÉÕÐ´£©Ê±¼ä£¬[0] ~ [5]£ºyy mm dd hh mm ss£¬[6]~[7]±£Áô¡£¸ÃÊ±¼äÓÉPQ¹¤¾ß´ÓPCÉÏ×Ô¶¯»ñÈ¡£¬ÎÞÐèÓÃ»§ÊäÈë */
-    HI_CHAR         u8ChipName[STR_LEN_32];      /* ²ÎÊýÎÄ¼þÉú³ÉÊ±µÄChipName */
-    HI_CHAR         u8SDKVersion[STR_LEN_80];    /* ²ÎÊýÎÄ¼þÉú³ÉÊ±µÄSDK°æ±¾ */
-    HI_U32          u32PhyRegNum;                /* ²ÎÊýÎÄ¼þ±£´æµÄÎïÀí¼Ä´æÆ÷¸öÊý */
-    HI_U32          u32SoftRegNum;               /* ²ÎÊýÎÄ¼þ±£´æµÄÈíËã·¨±äÁ¿¸öÊý */
-    HI_U32          u32Offset[PQ_ALG_MODULE_MAX];/* Ëã·¨ÏµÊýÆ«ÒÆµØÖ· */
-    HI_U32          u32PhyOffset;                /* Ëã·¨ÎïÀí¼Ä´æÆ÷Æ«ÒÆµØÖ· */
+    HI_U32          u32FileCheckSum;             /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ð£ï¿½ï¿½Í£ï¿½File Headerï¿½ï¿½ï¿½ï¿½ï¿½Ë±ï¿½ï¿½ï¿½ï¿½â£©ï¿½ï¿½dataï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½Ð£ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½Ôºï¿½ï¿½Ð¶ï¿½ï¿½Ç·ï¿½dirty */
+    HI_U32          u32ParamSize;                /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½File headerï¿½ï¿½data */
+    HI_CHAR         u8Version[STR_LEN_32];       /* ï¿½æ±¾ï¿½Å£ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ */
+    HI_CHAR         u8Author[STR_LEN_32];        /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ */
+    HI_CHAR         u8Desc[STR_LEN_1024];        /* ï¿½æ±¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ */
+    HI_CHAR         u8Time[STR_LEN_32];          /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Ð´ï¿½ï¿½Ê±ï¿½ä£¬[0] ~ [5]ï¿½ï¿½yy mm dd hh mm ssï¿½ï¿½[6]~[7]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½PQï¿½ï¿½ï¿½ß´ï¿½PCï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    HI_CHAR         u8ChipName[STR_LEN_32];      /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ChipName */
+    HI_CHAR         u8SDKVersion[STR_LEN_80];    /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½SDKï¿½æ±¾ */
+    HI_U32          u32PhyRegNum;                /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    HI_U32          u32SoftRegNum;               /* ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    HI_U32          u32Offset[PQ_ALG_MODULE_MAX];/* ï¿½ã·¨Ïµï¿½ï¿½Æ«ï¿½Æµï¿½Ö· */
+    HI_U32          u32PhyOffset;                /* ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½Æ«ï¿½Æµï¿½Ö· */
 } PQ_FILE_HEADER_S;
 
 
@@ -153,7 +162,7 @@ typedef struct hiPQ_FILE_HEADER_S
 * DCI Coef
 **/
 
-/*DCIÇúÏßÅäÖÃ±í*/
+/*DCIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã±ï¿½*/
 typedef struct hiPQ_DCI_LUT_S
 {
     HI_S16 s16WgtCoef0[33];

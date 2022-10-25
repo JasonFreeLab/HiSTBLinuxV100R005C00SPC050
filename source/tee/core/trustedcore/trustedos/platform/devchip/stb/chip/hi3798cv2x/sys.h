@@ -19,7 +19,7 @@
 /* RNG register */
 #if defined(CHIP_TYPE_hi3796mv200)
 #define RNG_REG_BASE              (0xF8ABC200)
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define RNG_REG_BASE              (0xF8005200)
 #else
 #error please defined RNG_REG_BASE
@@ -136,7 +136,7 @@
 #define SEC_MEM_VERIFY_REANGE_BASE      RESERVE_PARA_START
 #define SEC_MEM_VERIFY_REANGE_SIZE      (SEC_SMMU_RW_ERR_START - RESERVE_PARA_START)
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 /*
 -------------------------
  Secure OS (32M)

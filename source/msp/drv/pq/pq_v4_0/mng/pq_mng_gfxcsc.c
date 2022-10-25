@@ -195,7 +195,7 @@ const PQ_GFX_CSC_COEF_S PQ_GFX_CSCTable_Identity =
 
 
 /* the compositor color matrices table with Color Primaries Matching */
-/* add 2020YUV¡¢2020RGB¡¢ 601YUV */
+/* add 2020YUVï¿½ï¿½2020RGBï¿½ï¿½ 601YUV */
 const static PQ_GFX_CSC_COEF_S *PQ_GFX_CSC_MatrixTbl[PQ_GFX_CS_TYPE_BUTT][PQ_GFX_CS_TYPE_BUTT] =
 {
     /* PQ_GFX_CS_eUnknown = 0 */
@@ -504,7 +504,7 @@ static HI_VOID pq_mng_CalcCscDcRGB2RGB(PQ_GFX_CSC_MODE_S *pstGfxCscMode, PQ_GFX_
 
 /***************************************************************************************
 * func          : PQ_MNG_CalcCscDc
-* description   : CNcomment: ¼ÆËãDCÏµÊý CNend\n
+* description   : CNcomment: ï¿½ï¿½ï¿½ï¿½DCÏµï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -700,7 +700,7 @@ static HI_VOID PQ_MNG_CalcCscCoef_YCbCrtoRGB(PQ_GFX_CSC_TUNING_S *pstGfxCscTunin
     return;
 }
 
-/* ¼ÆËãÉ«ÎÂ±ä»»¾ØÕó(for YCbCr->YCbCr µ÷½ÚÉ«ÎÂ) */
+/* ï¿½ï¿½ï¿½ï¿½É«ï¿½Â±ä»»ï¿½ï¿½ï¿½ï¿½(for YCbCr->YCbCr ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½) */
 static HI_VOID PQ_MNG_CalcCscTmprtMat(PQ_GFX_CSC_TUNING_S *pstGfxCscTuning, PQ_GFX_CSC_COEF_S *pMatrixOri, PQ_GFX_CSC_COEF_S *pMatrixDst)
 {
     HI_S32 s32Rgain, s32Ggain, s32Bgain;
@@ -715,7 +715,7 @@ static HI_VOID PQ_MNG_CalcCscTmprtMat(PQ_GFX_CSC_TUNING_S *pstGfxCscTuning, PQ_G
     s32Bgain = 2 * s32Bgain + 100;
 
 
-    /* KrÏµÁÐ¾«¶È100, É«ÎÂ¾ØÕóÏµÊý¾«¶È1000 */
+    /* KrÏµï¿½Ð¾ï¿½ï¿½ï¿½100, É«ï¿½Â¾ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1000 */
     stYCbCrColrTemp.csc_coef00 =  (114 * s32Bgain + 587 * s32Ggain + 299 * s32Rgain) / 100;
     stYCbCrColrTemp.csc_coef01 =  (232 * s32Bgain - 232 * s32Ggain) / 100;
     stYCbCrColrTemp.csc_coef02 = -(341 * s32Ggain - 341 * s32Rgain) / 100;
@@ -761,7 +761,7 @@ static HI_VOID PQ_MNG_CalcCscTmprtMat(PQ_GFX_CSC_TUNING_S *pstGfxCscTuning, PQ_G
     return;
 }
 
-/* ¼ÆËãÉ«²Ê¿Õ¼ä×ª»»ÏµÊý for YCbCr->YCbCr */
+/* ï¿½ï¿½ï¿½ï¿½É«ï¿½Ê¿Õ¼ï¿½×ªï¿½ï¿½Ïµï¿½ï¿½ for YCbCr->YCbCr */
 static HI_VOID PQ_MNG_CalcCscCoef_YCbCrtoYCbCr(PQ_GFX_CSC_TUNING_S *pstGfxCscTuning, const PQ_GFX_CSC_COEF_S *pMatrixOri, PQ_GFX_CSC_COEF_S *pMatrixDst)
 {
     HI_S32 s32ContrstAdj, s32SatAdj;
@@ -817,13 +817,13 @@ static HI_VOID PQ_MNG_CalcCscCoef_YCbCrtoYCbCr(PQ_GFX_CSC_TUNING_S *pstGfxCscTun
 
 /***************************************************************************************
 * func          : PQ_MNG_CalcCscMatrix
-* description   : CNcomment: ¼ÆËãCSC¾àÕó CNend\n
+* description   : CNcomment: ï¿½ï¿½ï¿½ï¿½CSCï¿½ï¿½ï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
 ***************************************************************************************/
 
-/* Note: Õâ²¿·ÖµÄ¼ÆËã, ¾«¶È»¹ÊÇ°´ÕÕÔ­À´µÄ10bitsÅäÖÃ, ¿ÉÒÔÔÚÔËËãµÄ×îºó³ËÉÏ¾«¶È */
+/* Note: ï¿½â²¿ï¿½ÖµÄ¼ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½È»ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½10bitsï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¾ï¿½ï¿½ï¿½ */
 HI_VOID PQ_MNG_CalcCscMatrix(PQ_GFX_CSC_MODE_S *pstGfxCscMode, PQ_GFX_CSC_COEF_S *pstGfxCscCoef, HI_BOOL bIsBGRIn)
 {
     const PQ_GFX_CSC_COEF_S *pCSCMatrixOri  = HI_NULL;
@@ -896,7 +896,7 @@ HI_VOID PQ_MNG_CalcCscMatrix(PQ_GFX_CSC_MODE_S *pstGfxCscMode, PQ_GFX_CSC_COEF_S
 
 /***************************************************************************************
 * func          : PQ_MNG_CalcWcgMatrix
-* description   : CNcomment: ¼ÆËãCSC¾àÕó CNend\n
+* description   : CNcomment: ï¿½ï¿½ï¿½ï¿½CSCï¿½ï¿½ï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -1242,7 +1242,7 @@ static HI_VOID pq_mng_CalcWcgDcRGB2RGB(PQ_GFX_CSC_MODE_S *pstCscMode, PQ_GFX_CSC
 
 /***************************************************************************************
 * func          : PQ_MNG_CalcWcgDc
-* description   : CNcomment: ¼ÆËãDCÏµÊý CNend\n
+* description   : CNcomment: ï¿½ï¿½ï¿½ï¿½DCÏµï¿½ï¿½ CNend\n
 * param[in]     : HI_VOID
 * retval        : NA
 * others:       : NA
@@ -1436,7 +1436,7 @@ HI_S32 PQ_MNG_SetGfxCscCoef(HI_PQ_GFX_LAYER_E enGfxCscLayer, HI_PQ_GFX_CSC_MODE_
             stHalGfxCscPara.eInputCS  = PQ_HAL_GFX_CS_BT2020_RGB_FULL;
             stHalGfxCscPara.eOutputCS = PQ_HAL_GFX_CS_BT2020_YUV_LIMITED;
             PQ_HAL_SetGfxRgbtYuvMode(&stHalGfxCscPara);
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
             PQ_HAL_GFX_CSC_MODE_S stHalGfxCscPara;
             stHalGfxCscPara.eInputCS  = PQ_HAL_GFX_CS_BT709_RGB_FULL;
             stHalGfxCscPara.eOutputCS = PQ_HAL_GFX_CS_BT2020_YUV_LIMITED;
@@ -1453,7 +1453,7 @@ HI_S32 PQ_MNG_SetGfxCscCoef(HI_PQ_GFX_LAYER_E enGfxCscLayer, HI_PQ_GFX_CSC_MODE_
         else
         {
             stCscCtrl.bCSCEn    = HI_TRUE;
-            stCscCtrl.u32CscPre = 15; /* ToDo: 98CV200µÄ¾«¶ÈÓë98MV200²»Ò»ÖÂ, ÏÖÔÚ½«98MV200µÄ¾«¶È×ª»»ÒÆµ½ÁËhal²ã£¬ºÏ»ØÖ÷¸ÉÊ±¿´ÓÐÎÞ±ØÒª */
+            stCscCtrl.u32CscPre = 15; /* ToDo: 98CV200ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½98MV200ï¿½ï¿½Ò»ï¿½ï¿½, ï¿½ï¿½ï¿½Ú½ï¿½98MV200ï¿½Ä¾ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½halï¿½ã£¬ï¿½Ï»ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Þ±ï¿½Òª */
             stCscCtrl.enCscType = HI_PQ_CSC_TUNING_GP0; /* may need tuning */
             if ((PQ_GFX_CS_BT709_RGB_FULL == pstGfxCscMode->eInputCS)
                 && (PQ_GFX_CS_BT709_YUV_FULL == pstGfxCscMode->eOutputCS))
@@ -1494,7 +1494,7 @@ HI_S32 PQ_MNG_SetGfxCscCoef(HI_PQ_GFX_LAYER_E enGfxCscLayer, HI_PQ_GFX_CSC_MODE_
 #if defined(CHIP_TYPE_hi3798cv200)
             PQ_HAL_SetGfxCvmCscCoef(&stCscCoef, &stCscDcCoef);
             PQ_HAL_SetGdmCtrl(HI_FALSE); /* Close Gdm of 2020 module */
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
             PQ_HAL_SetGfxGdmCsc(HAL_GFX_GP0, stCscCtrl.bCSCEn, &stCscCoef, &stCscDcCoef);
 #elif defined(CHIP_TYPE_hi3796mv200)
             PQ_HAL_SetGfxGdmCsc(HAL_GFX_GP0, stCscCtrl.bCSCEn, &stCscCoef, &stCscDcCoef);

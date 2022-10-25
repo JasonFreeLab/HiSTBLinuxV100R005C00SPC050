@@ -39,7 +39,7 @@
 
 #define HI_GPIO_GROUP_NUM   13
 
-#elif defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
 #define HI_GPIO_GROUP_NUM 10
 #elif defined (CHIP_TYPE_hi3796mv200)
@@ -106,7 +106,7 @@
 #define     HI_GPIO_11_ADDR 0xF8B2B000
 #define     HI_GPIO_12_ADDR 0xF8B2C000
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define     HI_GPIO_MAX_GROUP_NUM   10
 #define     HI_GPIO_IRQ_NO (108 + 32)
 #define     HI_GPIO_0_ADDR 0xF8B20000

@@ -50,45 +50,45 @@ Date                          Author                Modification
     #endif
 
     /** if support crop */
-    /** CNcomment:ÊÇ·ñÖ§³Ö²Ã¼ô¹¦ÄÜ */
+    /** CNcomment:ï¿½Ç·ï¿½Ö§ï¿½Ö²Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½ */
     #define CONFIG_JPEG_OUTPUT_CROP
     /** if support suspend */
-    /** CNcomment:ÊÇ·ñÖ§³Ö´ý»ú¹¦ÄÜ,ÔÚ½âÂë¹ý³ÌÖÐ´ý»úµÄÊ±ºò´¦ÀíÊ±ÖÓµÈÓÐµãÎÊÌâ£¬ÏÈ¹Ø±Õ¸Ã¹¦ÄÜ */
+    /** CNcomment:ï¿½Ç·ï¿½Ö§ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Óµï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½â£¬ï¿½È¹Ø±Õ¸Ã¹ï¿½ï¿½ï¿½ */
     //#define CONFIG_JPEG_SUSPEND
 
     /** get jpeg dec time */
-    /** CNcomment:»ñÈ¡jpeg½âÂëµÄÊ±¼ä */
+    /** CNcomment:ï¿½ï¿½È¡jpegï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ */
     #define CONFIG_JPEG_GETDECTIME
 
     /** all jpeg dec output yuv420sp */
-    /** CNcomment:Í³Ò»½âÂëÊä³öyuv420sp,Ó²¼þºÍÈí¼þ¶¼²»Ö§³Öyuv400 -> yuv420
-                ¡¡ÒªÊÇÐèÒªÖ§³ÖÌî³ä0x80 */
+    /** CNcomment:Í³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½yuv420sp,Ó²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½yuv400 -> yuv420
+                ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ÒªÖ§ï¿½ï¿½ï¿½ï¿½ï¿½0x80 */
     #define CONFIG_JPEG_OUTPUT_YUV420SP
 
     /** dec jpeg file output lu pixel value sum */
-    /** CNcomment:Í³¼ÆÁÁ¶ÈÖµ */
+    /** CNcomment:Í³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ */
     #define CONFIG_JPEG_OUTPUT_LUPIXSUM
 
     /** sample factor support **/
-    /** CNcomment:hifoneÖ®ºóÐÞ¸ÄµÄ°´ÕÕ²ÉÑùÒò×ÓÀ´½âÂë **/
+    /** CNcomment:hifoneÖ®ï¿½ï¿½ï¿½Þ¸ÄµÄ°ï¿½ï¿½Õ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ **/
     #define CONFIG_JPEG_SET_SAMPLEFACTOR
 
     /** dri support **/
-    /** CNcomment:ÔÚdri²»·ûºÏ±ê×¼Ð­ÒéµÃÇé¿öÏÂ½âÂë»¨ÆÁ **/
+    /** CNcomment:ï¿½ï¿½driï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½×¼Ð­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ë»¨ï¿½ï¿½ **/
     #define CONFIG_JPEG_DRI_SUPPORT
 
     /**<-- support exif parase and decode >**/
-    /**<-- Ö§³Öexif  ÐÅÏ¢½âÎöºÍ½âÂë>**/
+    /**<-- Ö§ï¿½ï¿½exif  ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ï¿½ï¿½>**/
     #define CONFIG_JPEG_EXIF_SUPPORT
 
     /**<-- support stream seek >**/
-    /**<-- Ö§³ÖÂëÁ÷»ØÍË>**/
+    /**<-- Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½>**/
     #ifdef CONFIG_GFX_ANDROID_SDK
     #define CONFIG_JPEG_SEEK_SUPPORT
     #endif
 
     /**<-- savn scen >**/
-    /**<-- µ÷ÊÔÊ¹ÓÃ±£´æÏÖ³¡>**/
+    /**<-- ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã±ï¿½ï¿½ï¿½ï¿½Ö³ï¿½>**/
     //#define CONFIG_JPEG_SAVE_SCEN
 
     #ifdef CONFIG_GFX_BVT_SDK
@@ -116,7 +116,7 @@ Date                          Author                Modification
         #undef CONFIG_JPEG_OUTPUT_YUV420SP
         #undef CONFIG_JPEG_OUTPUT_LUPIXSUM
         /** the save stream buffer whether 4 byte align */
-        /** CNcomment:´æ´¢ÂëÁ÷bufferÊÇ·ñÐèÒª4×Ö½Ú¶ÔÆë**/
+        /** CNcomment:ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½bufferï¿½Ç·ï¿½ï¿½ï¿½Òª4ï¿½Ö½Ú¶ï¿½ï¿½ï¿½**/
         #define CONFIG_JPEG_STREAMBUF_4ALIGN
     #endif
 
@@ -127,6 +127,7 @@ Date                          Author                Modification
     #if   !defined(CHIP_TYPE_hi3798cv200)     \
        && !defined(CHIP_TYPE_hi3798mv200)     \
        && !defined(CHIP_TYPE_hi3798mv300)	  \
+       && !defined(CHIP_TYPE_hi3798mv310)	  \
        && !defined(CHIP_TYPE_hi3798mv200_a)   \
        && !defined(CHIP_TYPE_hi3796mv200)     \
        && !defined(CHIP_TYPE_hi3716mv410)     \
@@ -140,6 +141,7 @@ Date                          Author                Modification
        && !defined(CHIP_TYPE_hi3798cv200)     \
        && !defined(CHIP_TYPE_hi3798mv200)     \
        && !defined(CHIP_TYPE_hi3798mv300)	  \
+       && !defined(CHIP_TYPE_hi3798mv310)	  \
        && !defined(CHIP_TYPE_hi3798mv200_a)   \
        && !defined(CHIP_TYPE_hi3796mv200)     \
        && !defined(CHIP_TYPE_hi3531a)
@@ -173,13 +175,13 @@ Date                          Author                Modification
     #endif
 
 
-    #if    defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)   \
+    #if    defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)   \
         || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200) \
         && !defined(HI_BUILD_IN_BOOT)
         #define CONFIG_JPEG_HARDDEC2ARGB
     #endif
 
-    #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+    #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
         #define CONFIG_JPEG_LOW_DELAY_SUPPORT
     #endif
 

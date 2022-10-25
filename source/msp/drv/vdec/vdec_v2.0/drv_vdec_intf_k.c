@@ -3343,7 +3343,7 @@ static HI_S32 VDEC_SetAttr(VDEC_CHANNEL_S* pstChan)
 
     stVdecChanCfg.s32LowdlyEnable = 0;//pstChan->bLowdelay;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     stVdecChanCfg.s32SedOnlyEnable = 1;
 #else
     stVdecChanCfg.s32SedOnlyEnable = 0;
@@ -7378,7 +7378,7 @@ static HI_VOID ConvertFrm_GetBufAddr(HI_UNF_VCODEC_TYPE_E enType,
             pstFrame->stBufAddr_LB[0].u32PhyAddr_Y = pstImage->luma_2bit_phy_addr;
             pstFrame->stBufAddr_LB[0].u32PhyAddr_C = pstImage->chrom_2bit_phy_addr;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
             pstFrame->stBufAddr_LB[0].u32Stride_Y  = pstImage->image_stride_2bit / 16;
             pstFrame->stBufAddr_LB[0].u32Stride_C  = pstImage->image_stride_2bit / 16;
 #else

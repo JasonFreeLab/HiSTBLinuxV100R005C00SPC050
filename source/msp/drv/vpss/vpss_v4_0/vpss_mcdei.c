@@ -125,11 +125,11 @@ HI_S32 VPSS_INST_McDeiInit(VPSS_MCDEI_INFO_S *pstMcdeiInfo, HI_DRV_VIDEO_FRAME_S
 
     stSttAttr.u32Width = VPSS_INST_McDeiGetMedsWidth(pstSrcImage);
     stSttAttr.u32Height = u32StreamH;
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     stSttAttr.bSecure = HI_FALSE;
     if (pstSrcImage->bProgressive)
     {
-        stSttAttr.u32Height = u32StreamH * 2; //ÏÂÃæÊÇ°´ÕÕ³¡Ä£Ê½¼ÆËã, ¸ß¶È¹Ì¶¨/2, ËùÒÔÖðÐÐÊ±ÉÏ²ã*2
+        stSttAttr.u32Height = u32StreamH * 2; //ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Õ³ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½, ï¿½ß¶È¹Ì¶ï¿½/2, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ï²ï¿½*2
     }
 
 #ifdef VPSS_SUPPORT_MCDEI_IN_H265I
@@ -213,7 +213,7 @@ HI_S32 VPSS_INST_McDeiInit(VPSS_MCDEI_INFO_S *pstMcdeiInfo, HI_DRV_VIDEO_FRAME_S
     stWbcRgmeAttr.ePixFormat = pstSrcImage->ePixFormat;
     stWbcRgmeAttr.enMode = VPSS_RGME_MODE_4FIELD;
     stWbcRgmeAttr.enRefMode = VPSS_RGME_PREIMG_MODE_INIT;
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     stWbcRgmeAttr.bSecure = HI_FALSE;
 #else
     stWbcRgmeAttr.bSecure = pstSrcImage->bSecure;
@@ -271,7 +271,7 @@ HI_S32 VPSS_INST_McDeiDeInit(VPSS_MCDEI_INFO_S *pstMcdeiInfo)
     pstPrjhInfo = &(pstMcdeiInfo->stPrjhInfo);
     pstPrjvInfo = &(pstMcdeiInfo->stPrjvInfo);
 
-    /*?a??¦Ì?¡¤?2??¨¹?¡À?¨®¨ª?3?¡ê?¡¤¨¤?1?¨²¡ä?D1??*/
+    /*?a??ï¿½ï¿½?ï¿½ï¿½?2??ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?3?ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½?1?ï¿½ï¿½ï¿½ï¿½?D1??*/
     if (HI_TRUE != pstMcdeiInfo->bMcEnable)
     {
         //return HI_SUCCESS;

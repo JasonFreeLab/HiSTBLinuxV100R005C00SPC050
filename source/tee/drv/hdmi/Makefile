@@ -28,6 +28,12 @@ CTRL_DIR := hisiv100
 PRODUCT_DIR := product/hisiv100
 endif
 
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+CHIP_NAME := hi3798mv310
+CTRL_DIR := hisiv100
+PRODUCT_DIR := product/hisiv100
+endif
+
 LIBS    := libsec_$(notdir $(LOCAL_OUT)).a
 OBJS    :=  \
 	tee_drv_hdmi_srm.o \
@@ -41,7 +47,7 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE),  hi3798cv200),)
 OBJS += hal/$(CTRL_DIR)/tee_drv_hdmi_tx_reg.o
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE),  hi3798mv200 hi3798mv300 hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE),  hi3798mv200 hi3798mv300 hi3798mv310 hi3796mv200),)
 OBJS += hal/$(CTRL_DIR)/tee_hdmi_hal_hdcp14.o\
 		regs/tee_hdmi_reg_com.o \
 		regs/$(CHIP_NAME)/tee_hdmi_reg_sec.o \

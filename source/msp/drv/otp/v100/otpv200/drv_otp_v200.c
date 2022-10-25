@@ -519,7 +519,7 @@ HI_S32 OTP_V200_GetSTBRootKeyLockFlag(HI_BOOL *pBLock)
     return HI_SUCCESS;
 }
 
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 static HI_S32 OTP_V200_WriteSTBTARootkey(HI_U8 *pKey)
 {
     HI_S32 ret = HI_SUCCESS;
@@ -615,7 +615,7 @@ HI_S32 OTP_V200_WriteRootkey(OTP_ROOT_KEY_S *pRootkey)
 
     switch (pRootkey->type)
     {
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     case OTP_STBTA_ROOTKEY:
         ret = OTP_V200_WriteSTBTARootkey(pRootkey->key);
         break;
@@ -640,7 +640,7 @@ HI_S32 OTP_V200_GetRootkeyLockStat(OTP_ROOT_KEY_LOCK_S *pRootkeyLock)
 
     switch (pRootkeyLock->type)
     {
-#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
     case OTP_STBTA_ROOTKEY:
         ret = OTP_V200_GetSTBTARootkeyLockStat(&(pRootkeyLock->bLock));
         break;
@@ -820,8 +820,19 @@ HI_S32 OTP_V200_DieID_Check(HI_VOID)
     return HI_SUCCESS;
 }
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 static HI_VOID OTP_98mv200_setReset(HI_VOID)
+{
+    otp_write_reg(OTP_V200_SOFTRST_REQ, 0x1);
+    otp_wait(10000);/* 10ms */
+    otp_write_reg(OTP_V200_SOFTRST_REQ, 0x0);
+    otp_wait(10000);
+    return;
+}
+#endif
+
+#if defined(CHIP_TYPE_hi3798mv310)
+static HI_VOID OTP_98mv310_setReset(HI_VOID)
 {
     otp_write_reg(OTP_V200_SOFTRST_REQ, 0x1);
     otp_wait(10000);/* 10ms */
@@ -837,6 +848,9 @@ HI_S32 OTP_V200_Reset(HI_VOID)
 #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
     OTP_98mv200_setReset();
 #else
+#if defined(CHIP_TYPE_hi3798mv310)
+    OTP_98mv310_setReset();
+#else
     U_PERI_CRG48 unOTPCrg;
 /* Reset request */
     unOTPCrg.u32 = g_pstRegCrg->PERI_CRG48.u32;
@@ -849,6 +863,7 @@ HI_S32 OTP_V200_Reset(HI_VOID)
     unOTPCrg.u32 = g_pstRegCrg->PERI_CRG48.u32;
     unOTPCrg.bits.otp_srst_req = 0;
     g_pstRegCrg->PERI_CRG48.u32 = unOTPCrg.u32;
+#endif
 #endif
 
     return HI_SUCCESS;

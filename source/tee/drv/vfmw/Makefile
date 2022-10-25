@@ -89,6 +89,10 @@ ifneq ($(findstring $(HI_CHIP_TYPE),hi3798mv200 hi3798mv300),)
 VFMW_PRODUCT := Hi3798MV200
 endif
 
+ifneq ($(findstring $(HI_CHIP_TYPE),hi3798mv310),)
+VFMW_PRODUCT := Hi3798MV310
+endif
+
 ifneq ($(findstring $(HI_CHIP_TYPE),hi3796mv200),)
 VFMW_PRODUCT := Hi3796MV200
 endif

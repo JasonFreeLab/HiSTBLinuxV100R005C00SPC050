@@ -11,7 +11,7 @@ unsigned long long sp804_clocksource_gettime(void);
 
 unsigned long usec_to_clocktime(unsigned long us);
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || \
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || \
  defined (CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3796mv200)
 
 #define SP804_TIMER_CLK_MHZ	24

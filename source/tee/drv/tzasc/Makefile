@@ -19,7 +19,7 @@ ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv100 hi3798mv100 hi3716dv100),)
 TZASC_VERSION := v100
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310),)
 TZASC_VERSION := v200
 endif
 

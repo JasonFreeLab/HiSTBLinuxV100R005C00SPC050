@@ -15,7 +15,7 @@ HI_VOID VPSS_ST_RGME_CalBufSize(HI_U32 *pSize, HI_U32 *pStride, VPSS_MC_ATTR_S *
     u32Width = pstAttr->u32Width;
     u32Height = pstAttr->u32Height;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32Stride = ((u32Width + 33) / 64 * 8 + 15) & 0xfffffff0;
     u32Stride = HI_ALIGN_8BIT_YSTRIDE(u32Stride);
     *pSize = u32Stride * (u32Height / 2 + 5) / 8;
@@ -162,7 +162,7 @@ HI_S32 VPSS_ST_RGME_DeInit(VPSS_ST_RGME_S *pstStRgme)
 
 }
 
-//获取RGME运动信息
+//锟斤拷取RGME锟剿讹拷锟斤拷息
 HI_S32 VPSS_ST_RGME_GetCfg(VPSS_ST_RGME_S *pstStRgme,
                            VPSS_ST_RGME_CFG_S *pstStRgmeCfg)
 {
@@ -199,7 +199,7 @@ HI_S32 VPSS_ST_RGME_GetCfg(VPSS_ST_RGME_S *pstStRgme,
 
 }
 
-//RGME运动信息队列轮转
+//RGME锟剿讹拷锟斤拷息锟斤拷锟斤拷锟斤拷转
 HI_S32 VPSS_ST_RGME_Complete(VPSS_ST_RGME_S *pstStRgme)
 {
     if (HI_NULL == pstStRgme)
@@ -220,7 +220,7 @@ HI_S32 VPSS_ST_RGME_Complete(VPSS_ST_RGME_S *pstStRgme)
     return HI_SUCCESS;
 }
 
-//RGME运动信息队列reset
+//RGME锟剿讹拷锟斤拷息锟斤拷锟斤拷reset
 HI_S32 VPSS_ST_RGME_Reset(VPSS_ST_RGME_S *pstStRgme)
 {
     if (HI_NULL == pstStRgme)
@@ -444,7 +444,7 @@ HI_S32 VPSS_ST_BLKMV_GetCfg(VPSS_ST_BLKMV_S *pstStBlkmv,
 }
 
 
-//BLKMV运动信息队列轮转
+//BLKMV锟剿讹拷锟斤拷息锟斤拷锟斤拷锟斤拷转
 HI_S32 VPSS_ST_BLKMV_Complete(VPSS_ST_BLKMV_S *pstStBlkmv)
 {
     if (HI_NULL == pstStBlkmv)
@@ -465,7 +465,7 @@ HI_S32 VPSS_ST_BLKMV_Complete(VPSS_ST_BLKMV_S *pstStBlkmv)
     return HI_SUCCESS;
 }
 
-//BLKMV运动信息队列reset
+//BLKMV锟剿讹拷锟斤拷息锟斤拷锟斤拷reset
 HI_S32 VPSS_ST_BLKMV_Reset(VPSS_ST_BLKMV_S *pstStBlkmv)
 {
     if (HI_NULL == pstStBlkmv)
@@ -670,7 +670,7 @@ HI_S32 VPSS_ST_BLKMT_GetCfg(VPSS_ST_BLKMT_S *pstStBLKMT,
 }
 
 
-//BLKMT运动信息队列轮转
+//BLKMT锟剿讹拷锟斤拷息锟斤拷锟斤拷锟斤拷转
 HI_S32 VPSS_ST_BLKMT_Complete(VPSS_ST_BLKMT_S *pstStBLKMT)
 {
     if (HI_NULL == pstStBLKMT)
@@ -691,7 +691,7 @@ HI_S32 VPSS_ST_BLKMT_Complete(VPSS_ST_BLKMT_S *pstStBLKMT)
     return HI_SUCCESS;
 }
 
-//BLKMT运动信息队列reset
+//BLKMT锟剿讹拷锟斤拷息锟斤拷锟斤拷reset
 HI_S32 VPSS_ST_BLKMT_Reset(VPSS_ST_BLKMT_S *pstStBLKMT)
 {
     if (HI_NULL == pstStBLKMT)
@@ -902,7 +902,7 @@ HI_S32 VPSS_ST_DICNT_GetCfg(VPSS_ST_DICNT_S *pstStDICNT,
 }
 
 
-//DICNT运动信息队列轮转
+//DICNT锟剿讹拷锟斤拷息锟斤拷锟斤拷锟斤拷转
 HI_S32 VPSS_ST_DICNT_Complete(VPSS_ST_DICNT_S *pstStDICNT)
 {
     if (HI_NULL == pstStDICNT)
@@ -923,7 +923,7 @@ HI_S32 VPSS_ST_DICNT_Complete(VPSS_ST_DICNT_S *pstStDICNT)
     return HI_SUCCESS;
 }
 
-//DICNT运动信息队列reset
+//DICNT锟剿讹拷锟斤拷息锟斤拷锟斤拷reset
 HI_S32 VPSS_ST_DICNT_Reset(VPSS_ST_DICNT_S *pstStDICNT)
 {
     if (HI_NULL == pstStDICNT)
@@ -968,7 +968,7 @@ HI_VOID VPSS_ST_PRJH_CalBufSize(HI_U32 *pSize, HI_U32 *pStride, VPSS_MC_ATTR_S *
     u32Width = pstAttr->u32Width;
     u32Height = pstAttr->u32Height;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32Stride = (((u32Width + 33) / 64 * 256) + 15) & 0xFFFFFFF0;
     u32Stride = HI_ALIGN_8BIT_YSTRIDE(u32Stride);
     *pSize = u32Stride * (u32Height / 2 + 5) / 8;
@@ -1103,7 +1103,7 @@ HI_S32 VPSS_ST_PRJH_DeInit(VPSS_ST_PRJH_S *pstStPrjh)
 
 }
 
-//获取PRJH运动信息
+//锟斤拷取PRJH锟剿讹拷锟斤拷息
 HI_S32 VPSS_ST_PRJH_GetCfg(VPSS_ST_PRJH_S *pstStPrjh,
                            VPSS_ST_PRJH_CFG_S *pstStPrjhCfg)
 {
@@ -1135,7 +1135,7 @@ HI_S32 VPSS_ST_PRJH_GetCfg(VPSS_ST_PRJH_S *pstStPrjh,
 
 }
 
-//PRJH运动信息队列轮转
+//PRJH锟剿讹拷锟斤拷息锟斤拷锟斤拷锟斤拷转
 HI_S32 VPSS_ST_PRJH_Complete(VPSS_ST_PRJH_S *pstStPrjh)
 {
     if (HI_NULL == pstStPrjh)
@@ -1157,7 +1157,7 @@ HI_S32 VPSS_ST_PRJH_Complete(VPSS_ST_PRJH_S *pstStPrjh)
 
 }
 
-//PRJH运动信息队列reset
+//PRJH锟剿讹拷锟斤拷息锟斤拷锟斤拷reset
 HI_S32 VPSS_ST_PRJH_Reset(VPSS_ST_PRJH_S *pstStPrjh)
 {
     if (HI_NULL == pstStPrjh)
@@ -1201,7 +1201,7 @@ HI_VOID VPSS_ST_PRJV_CalBufSize(HI_U32 *pSize, HI_U32 *pStride, VPSS_MC_ATTR_S *
     u32Width = pstAttr->u32Width;
     u32Height = pstAttr->u32Height;
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     u32Stride = ((u32Width + 33) / 64 * 64 + 15) & 0xFFFFFFF0;
     u32Stride = HI_ALIGN_8BIT_YSTRIDE(u32Stride);
     *pSize = u32Stride * (u32Height / 2 + 5) / 8;
@@ -1337,7 +1337,7 @@ HI_S32 VPSS_ST_PRJV_DeInit(VPSS_ST_PRJV_S *pstStPrjv)
 
 }
 
-//获取PRJV运动信息
+//锟斤拷取PRJV锟剿讹拷锟斤拷息
 HI_S32 VPSS_ST_PRJV_GetCfg(VPSS_ST_PRJV_S *pstStPrjv,
                            VPSS_ST_PRJV_CFG_S *pstStPrjvCfg)
 {
@@ -1369,7 +1369,7 @@ HI_S32 VPSS_ST_PRJV_GetCfg(VPSS_ST_PRJV_S *pstStPrjv,
 
 }
 
-//PRJV运动信息队列轮转
+//PRJV锟剿讹拷锟斤拷息锟斤拷锟斤拷锟斤拷转
 HI_S32 VPSS_ST_PRJV_Complete(VPSS_ST_PRJV_S *pstStPrjv)
 {
     if (HI_NULL == pstStPrjv)
@@ -1391,7 +1391,7 @@ HI_S32 VPSS_ST_PRJV_Complete(VPSS_ST_PRJV_S *pstStPrjv)
 
 }
 
-//PRJV运动信息队列reset
+//PRJV锟剿讹拷锟斤拷息锟斤拷锟斤拷reset
 HI_S32 VPSS_ST_PRJV_Reset(VPSS_ST_PRJV_S *pstStPrjv)
 {
     if (HI_NULL == pstStPrjv)

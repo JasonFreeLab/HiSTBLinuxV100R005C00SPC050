@@ -464,7 +464,7 @@ HI_S32 VPSS_SRC_PutImage(VPSS_SRC_S *pstSrc, VPSS_SRC_DATA_S *pstData)
     VPSS_SRC_NODE_S *pstDstNode;
     HI_DRV_VIDEO_PRIVATE_S *pstFrmPriv;
     HI_VDEC_PRIV_FRAMEINFO_S *pstVdecPriv;
-#if defined(CHIP_TYPE_hi3798mv200) | defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     HI_U32 u32BaseAddr;
     HI_U32 u32BaseStride;
 #endif
@@ -587,7 +587,7 @@ HI_S32 VPSS_SRC_PutImage(VPSS_SRC_S *pstSrc, VPSS_SRC_DATA_S *pstData)
         pstVdecPriv = (HI_VDEC_PRIV_FRAMEINFO_S *) & (pstFrmPriv->u32Reserve[0]);
         pstSndDstNode->stSrcData.u32Pts = pstFstDstNode->stSrcData.u32Pts + pstVdecPriv->s32InterPtsDelta;
         pstSndDstNode->stSrcData.s64OmxPts = pstFstDstNode->stSrcData.s64OmxPts + (HI_S64)pstVdecPriv->s32InterPtsDelta * 1000;
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
         switch (pstData->ePixFormat)
         {
             case HI_DRV_PIX_FMT_NV12_TILE:
@@ -955,7 +955,7 @@ HI_S32 VPSS_SRCIN_Init(VPSS_SRCIN_S *pSrcIn)
     INIT_LIST_HEAD(&pSrcIn->stFreeList);
     INIT_LIST_HEAD(&pSrcIn->stReleaseList);
 
-    /* 空闲buffer初始化时空闲buffer全部插入到free队列 */
+    /* 锟斤拷锟斤拷buffer锟斤拷始锟斤拷时锟斤拷锟斤拷buffer全锟斤拷锟斤拷锟诫到free锟斤拷锟斤拷 */
     for (i = 0; i < SRCIN_NODE_NUM; i++)
     {
         list_add_tail(&pSrcIn->astSrcNode[i].node, &pSrcIn->stFreeList);

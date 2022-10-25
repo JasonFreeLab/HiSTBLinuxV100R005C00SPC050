@@ -16,7 +16,7 @@ endif
 #===============================================================================
 # local variables
 #===============================================================================
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
 VFMW_MAKE_DIR = vfmw_v5.0/product/make_stb
 else
 VFMW_MAKE_DIR = vfmw_v4.0

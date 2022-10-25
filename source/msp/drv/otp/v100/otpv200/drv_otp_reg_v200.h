@@ -148,7 +148,7 @@ typedef union
 #define OTP_V200_INTERNAL_DATALOCK_1           (0x14)
 #define OTP_V200_INTERNEL_ONEWAY_0             (0x18)
 #define OTP_V200_INTERNAL_DATALOCK_2           (0x1C)
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 #define OTP_V200_INTERNAL_STB_ROOTKEY         (0xE0)
 #define OTP_V200_INTERNAL_CHECKSUM_STB_ROOT_KEY         (0x42a)
 #else
@@ -209,7 +209,7 @@ typedef union
     HI_U32 u32;
 } OTP_V200_INTERNAL_PV_1_U;
 
-#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3716mv410) || defined(CHIP_TYPE_hi3716mv420) || defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 typedef union
 {
     struct

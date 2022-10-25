@@ -14,7 +14,7 @@ ifeq ($(CFG_HI_EXPORT_FLAG),)
 endif
 
 OTP_DIR := v200
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3716mv410 hi3716mv420 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv200_a),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3716dv100 hi3716mv410 hi3716mv420 hi3796mv100 hi3798cv200 hi3798mv100 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a),)
     OTP_DIR := v100
 endif
 

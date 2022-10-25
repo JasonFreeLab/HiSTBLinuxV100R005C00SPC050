@@ -23,7 +23,7 @@ extern "C" {
 
 #define HI_STD_I2C_NUM  3
 
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
 #define HI_STD_I2C_NUM  3
 
@@ -36,7 +36,7 @@ extern "C" {
 #define HI_ERR_I2C_READ_ACK_ERR                     (HI_S32)(0x8044000A)
 
 /**Inter-integrated (I2C) channel used by the tuner*/
-/**CNcomment:TUNER使用的I2C通道*/
+/**CNcomment:TUNER使锟矫碉拷I2C通锟斤拷*/
 #define HI_I2C_MAX_LENGTH  2048
 
 HI_S32  HI_DRV_I2C_SetRate(HI_U32 I2cNum, HI_U32 I2cRate);

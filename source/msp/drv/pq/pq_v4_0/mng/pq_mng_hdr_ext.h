@@ -26,7 +26,7 @@ extern "C" {
 #endif
 #endif
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 
 #define PQ_DEGMM_SEG_SIZE       4
 #define PQ_TMAP_SEG_SIZE        8
@@ -74,9 +74,9 @@ extern "C" {
 
 typedef enum hiPQ_DISP_OUT_TYPE_E
 {
-    HI_PQ_DISP_TYPE_NORMAL = 0,    /* ÆÕÍ¨ÐÅºÅÏÔÊ¾ BT601 BT709*/
-    HI_PQ_DISP_TYPE_HDR10  = 1,    /* ±ê×¼HDRÐÅºÅÏÔÊ¾ */
-    HI_PQ_DISP_TYPE_HLG    = 2,    /* ±ê×¼HLGÐÅºÅÏÔÊ¾ */
+    HI_PQ_DISP_TYPE_NORMAL = 0,    /* ï¿½ï¿½Í¨ï¿½Åºï¿½ï¿½ï¿½Ê¾ BT601 BT709*/
+    HI_PQ_DISP_TYPE_HDR10  = 1,    /* ï¿½ï¿½×¼HDRï¿½Åºï¿½ï¿½ï¿½Ê¾ */
+    HI_PQ_DISP_TYPE_HLG    = 2,    /* ï¿½ï¿½×¼HLGï¿½Åºï¿½ï¿½ï¿½Ê¾ */
 
     HI_PQ_DISP_TYPE_BUTT
 } HI_PQ_DISP_OUT_TYPE_E;
@@ -163,13 +163,13 @@ typedef struct hiPQ_HDR_CSC_MODE_S
 typedef struct hiPQ_HDR_TM_PARAM_S
 {
     HI_U32    u32SrcMinLum ;       // Src Min Luminance Value : nits        x1 = 0.005*10000;       //METADATE
-    HI_U32    u32SrcAvgLum ;       // Src Avg Luminance Value : nits     x2 = 15*10000;              //ÐéÄâ¼Ä´æÆ÷
+    HI_U32    u32SrcAvgLum ;       // Src Avg Luminance Value : nits     x2 = 15*10000;              //ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
     HI_U32    u32SrcMaxLum ;      // Src Max Luminance Value : nits    x3 = 1200*10000;           //METADATE
-    HI_U32    u32TargMinLum ;       // Target min Luminance Value : nits  y1 = 0.1*10000;          //ÐéÄâ¼Ä´æÆ÷
-    HI_U32    u32TargAvgLum;       // Target Avg Luminance Value : nits   y2 = 200*10000;        //ÐéÄâ¼Ä´æÆ÷
-    HI_U32    u32TargMaxLum ;      // Target Max Luminance Value : nits     y3 = 300*10000;        //ÐéÄâ¼Ä´æÆ÷
-    HI_U32    u32Contrast  ;     //µ÷½Ú¶Ô±È¶È             n = 1.25*256;             //ÐéÄâ¼Ä´æÆ÷
-    HI_U32    u32LwAvg    ;  // Ô´¾ùÖµÁÁ¶È //TM_EXP                                   //ÐéÄâ¼Ä´æÆ÷
+    HI_U32    u32TargMinLum ;       // Target min Luminance Value : nits  y1 = 0.1*10000;          //ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+    HI_U32    u32TargAvgLum;       // Target Avg Luminance Value : nits   y2 = 200*10000;        //ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+    HI_U32    u32TargMaxLum ;      // Target Max Luminance Value : nits     y3 = 300*10000;        //ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+    HI_U32    u32Contrast  ;     //ï¿½ï¿½ï¿½Ú¶Ô±È¶ï¿½             n = 1.25*256;             //ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+    HI_U32    u32LwAvg    ;  // Ô´ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ //TM_EXP                                   //ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 } HDR_TM_PARAM_S;
 
 typedef struct hiPQ_HDR_TMExpPARAM_S
@@ -184,7 +184,7 @@ typedef struct hiPQ_HDR_TMExpPARAM_S
 
 typedef struct hiDM_INFO_S
 {
-    HI_U32 u32SrcMaxPQ;   //Ô´µÄ
+    HI_U32 u32SrcMaxPQ;   //Ô´ï¿½ï¿½
     HI_U32 u32SrcMinPQ;
 } DM_INFO_S;
 
@@ -329,7 +329,7 @@ typedef struct hiPQ_HDR_R2Y
     HI_U16 u16ClipMaxR2Y_UV ;                /* U10.0  [0,1023] */
 } PQ_HDR_R2Y;
 
-#if defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
 
 typedef struct hiPQ_HDR_CFG
 {
@@ -342,7 +342,7 @@ typedef struct hiPQ_HDR_CFG
     HI_BOOL bDitherEn       ;         /*Dither enable*/
     HI_BOOL bR2YEn          ;         /*RGB2YUV enable*/
     HI_BOOL bChromaAdjEn    ;         /*ChromaAdjust enable*/
-    HI_BOOL bBT2020CL       ;         /* 1£ºBT2020CL£» 0£ºBT2020NCL */
+    HI_BOOL bBT2020CL       ;         /* 1ï¿½ï¿½BT2020CLï¿½ï¿½ 0ï¿½ï¿½BT2020NCL */
     HI_BOOL vdm_v0_gamma_en ;         /* 96add vdm bypass or not */
     HI_BOOL vdm_v1_gamma_en ;         /* 96add vdm bypass or not */
 

@@ -1035,7 +1035,7 @@ HI_VOID PQ_MNG_VpssZmeSQSetSptAddr(ALG_VZME_MEM_S *pstMem, ALG_VZME_DRV_PARA_S *
     return;
 }
 
-#if defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
 
 /* Add from 3798mv200 reduce */
 static HI_U32 GetReduceHLFilterCoef(ALG_VZME_COEF_ADDR_S *pstCoefAddr, HI_U32 u32Ratio)
@@ -1271,7 +1271,7 @@ ZME_VDP_FUNC_S stZmeVdpFunc[HI_PQ_DISP_LAYER_ZME_BUTT]  =
     {HI_NULL, HI_NULL},   /* V3  */
     {HI_NULL, HI_NULL},   /* V4  */
     {PQ_MNG_VdpZmeSQSetSptAddr, PQ_HAL_WbcZmeRegCfg},   /* WBC */
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     {HI_NULL, HI_NULL}, /* V0  */
     {HI_NULL, HI_NULL}, /* V1  */
     {HI_NULL, HI_NULL}, /* V2  */
@@ -1297,7 +1297,7 @@ ZME_VPSS_FUNC_S stZmeVpssFunc[HI_PQ_VPSS_LAYER_ZME_BUTT]  =
     {PQ_MNG_VpssZmeSQSetSptAddr, PQ_HAL_VpssZmeRegCfg},    /* PORT1 */
     {PQ_MNG_VpssZmeSQSetSptAddr, PQ_HAL_VpssZmeRegCfg},    /* PORT2 */
     {HI_NULL, HI_NULL},                                    /* HSCL  */
-#elif defined(CHIP_TYPE_hi3798mv200)||defined(CHIP_TYPE_hi3798mv300)||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
     {PQ_MNG_VpssZmeSQReduceSptAddr, PQ_HAL_VpssZmeRegCfg}, /* PORT0 */
     {PQ_MNG_VpssZmeSQReduceSptAddr, PQ_HAL_VpssZmeRegCfg}, /* PORT1 */
     {PQ_MNG_VpssZmeSQReduceSptAddr, PQ_HAL_VpssZmeRegCfg}, /* PORT2 */

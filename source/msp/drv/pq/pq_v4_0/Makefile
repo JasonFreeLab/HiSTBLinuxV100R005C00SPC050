@@ -41,6 +41,11 @@ CHIP := 3798mv200
 module :=  comm table tools zme csc dei fmd gfxcsc gfxzme hdr db dm tnr snr acc lccolor sharpen mcnr artds
 endif
 
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+CHIP := 3798mv310
+module :=  comm table tools zme csc dei fmd gfxcsc gfxzme hdr db dm tnr snr acc lccolor sharpen mcnr artds
+endif
+
 ifeq ($(CFG_HI_CHIP_TYPE), hi3796mv200)
 CHIP := 3796mv200
 module :=  comm table tools zme csc dei fmd gfxcsc gfxzme hdr db dm tnr snr vdp4ksnr acc lccolor sharpen mcnr artds vpsscsc vpssgamma

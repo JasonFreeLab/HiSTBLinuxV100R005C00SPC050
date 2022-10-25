@@ -1762,6 +1762,7 @@ HI_S32 SCI_ConfResetMode(HI_UNF_SCI_PORT_E enSciPort, HI_UNF_SCI_MODE_E enResetM
     || defined(CHIP_TYPE_hi3716dv100)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3716mv410)   \
@@ -1805,6 +1806,7 @@ HI_S32 SCI_ConfVccEnMode(HI_UNF_SCI_PORT_E enSciPort, HI_UNF_SCI_MODE_E enVccEnM
     || defined(CHIP_TYPE_hi3716dv100)   \
     || defined(CHIP_TYPE_hi3798mv200)   \
     || defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3796mv200)   \
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3716mv410)   \

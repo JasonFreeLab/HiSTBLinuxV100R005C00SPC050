@@ -35,7 +35,7 @@ $(MOD_NAME)-y   :=  drv_sync.o           \
                     drv_sync_intf.o      \
                     drv_sync_intf_k.o
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3796mv200),)
 $(MOD_NAME)-y   +=  drv_sync_stc.o
 EXTRA_CFLAGS    += -DSYNC_PCR_ADJUST_STC_SUPPORT
 endif

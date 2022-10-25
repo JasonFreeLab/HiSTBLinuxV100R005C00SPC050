@@ -44,7 +44,7 @@ typedef union
 	HI_U32 Value;
 }SCI_SCR0_REG;
 
-#if defined(CHIP_TYPE_hi3798cv200)||defined (CHIP_TYPE_hi3798mv200)|| defined(CHIP_TYPE_hi3798mv300) ||defined(CHIP_TYPE_hi3798mv200_a)||defined(CHIP_TYPE_hi3796mv200)
+#if defined(CHIP_TYPE_hi3798cv200) || defined (CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) ||defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3796mv200)
 typedef union
 {
 	struct

@@ -46,6 +46,9 @@ endif
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv200 hi3798mv300),)
 include $(VFMW_DIR)/product/Hi3798MV200/LNX_CFG/vfmw_make.cfg
 endif
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+include $(VFMW_DIR)/product/Hi3798MV310/LNX_CFG/vfmw_make.cfg
+endif
 ifeq ($(CFG_HI_CHIP_TYPE), hi3796mv200)
 include $(VFMW_DIR)/product/Hi3796MV200/LNX_CFG/vfmw_make.cfg
 endif

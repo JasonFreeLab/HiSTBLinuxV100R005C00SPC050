@@ -190,7 +190,7 @@ typedef union
 #define TS_CNT6_31_H(RecId)              (0xC504 + ((RecId) << 3))   /* TS packet counter 6-31 of joining on someone record buffer high 8 bits */
 
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 /* Define the union U_PERI_CRG63 */
 typedef union
 {

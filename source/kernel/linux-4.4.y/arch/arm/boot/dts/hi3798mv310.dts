@@ -465,7 +465,7 @@
 		};
 
 		emmc: himciv200.MMC@0xf9830000 {
-			compatible = "hi3798mv200,himciv200";
+			compatible = "hi3798mv310,himciv200";
 			reg = <0xf9830000 0x1000>,<0xF8A21000 0x40>;
 			interrupts = <0 35 4>;
 
@@ -479,7 +479,7 @@
 		};
 
 		sd:himciv200.SD@0xf9820000 {
-			compatible = "hi3798mv200,himciv200";
+			compatible = "hi3798mv310,himciv200";
 			reg = <0xf9820000 0x1000>,<0xF8A210C0 0x40>;
 			interrupts = <0 34 4>;
 
@@ -496,7 +496,7 @@
 		};
 
 		sdio:himciv200.SD@0xf9c40000 {
-			compatible = "hi3798mv200,himciv200";
+			compatible = "hi3798mv310,himciv200";
 			reg = <0xf9c40000 0x1000>,<0xF8A21090 0x20>,<0xF8A20008 0x20>;
 			interrupts = <0 86 4>;
 
@@ -520,7 +520,7 @@
 		};
 
 		hisilicon_clock: hisilicon_clock {
-			compatible = "hi3798mv200.clock","hisilicon,clock-reset";
+			compatible = "hi3798mv310.clock","hisilicon,clock-reset";
 			reg = <0xF8A22000 0x400>, <0xF8A20000 0x0848>;
 			#clock-cells = <1>;
 			#reset-cells = <2>;
@@ -581,7 +581,7 @@
             		status = "disabled";
 		};
 
-		otg:hi3798cv200.hiusbotg {
+		otg:hi3798mv310.hiusbotg {
 			compatible = "hiusbotg";
 			reg = <0xf9880000 0x10000>,<0xf9890000 0x10000>,<0xf8a2012c 0x4>;
 			host_time = <1500 4>;

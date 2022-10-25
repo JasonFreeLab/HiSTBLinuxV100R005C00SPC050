@@ -64,7 +64,7 @@
 #define BUS_MASTER_DSP              (1 << 29)
 #define BUS_MASTER_PVR              (1 << 30)
 #define BUS_MASTER_GSF              (1 << 31)
-#elif defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798cv200) || defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define BUS_MASTER_CPU              (1 << 0)
 #define BUS_MASTER_GPU              (1 << 1)
 #define BUS_MASTER_MCU              (1 << 2)

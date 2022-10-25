@@ -150,7 +150,7 @@
 #define HI_VDD_MPU_OPP5_HPM 0x11c
 #define HI_VDD_MPU_OPP6_HPM 0x14a
 #define HI_VDD_MPU_OPP7_HPM 0x150
-#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300)
+#elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
 #define HI_VDD_MPU_OPP1_UV 930
 #define HI_VDD_MPU_OPP2_UV 930
 #define HI_VDD_MPU_OPP3_UV 930
@@ -217,6 +217,7 @@
 #define CORE_VMIN   650     /*mv*/
 #elif  defined(CHIP_TYPE_hi3798mv200)   \
 	|| defined(CHIP_TYPE_hi3798mv300)	\
+    || defined(CHIP_TYPE_hi3798mv310)	\
     || defined(CHIP_TYPE_hi3798mv200_a) \
     || defined(CHIP_TYPE_hi3796mv200)
 #define CPU_VMAX    1250    /*mv*/
