@@ -1076,7 +1076,7 @@ static int hi_mci_initialize(bd_t * bis)
 #endif
 #if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	mmc->iovoltage = get_mmc_io_voltage();
-#ifndef CONFIG_ARCH_HI3798MV2X && ndef(CONFIG_ARCH_HI3798MV310)
+#if undef(CONFIG_ARCH_HI3798MV2X) || undef(CONFIG_ARCH_HI3798MV310)
 	if (mmc->iovoltage == EMMC_IO_VOL_1_8V) {
 		mmc->host_caps |= MMC_MODE_HS200 | MMC_MODE_HS400;
 #ifdef CONFIG_EMMC_PARAM_TAG

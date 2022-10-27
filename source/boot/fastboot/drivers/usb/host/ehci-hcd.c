@@ -57,6 +57,10 @@
 #  include "hiusb-hi3798mv2x.c"
 #endif
 
+#if defined(CONFIG_ARCH_HI3798MV310)
+#  include "hiusb-hi3798mv310.c"
+#endif
+
 #if defined(CONFIG_ARCH_HI3798CV2X)
 #  include "hiusb-hi3798cv2x.c"
 #endif

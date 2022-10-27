@@ -921,15 +921,19 @@ static int hi_mci_initialize(bd_t * bis)
 	else
 		mmc->timing = MMC_TIMING_LEGACY;
 
-#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
 //#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
 	if (_HI3798M_V300 != get_chipid())
+		mmc->host_caps |= MMC_MODE_DDR_52MHz;
+#endif
+#if defined(CONFIG_ARCH_HI3798MV310)
+	if (_HI3798M_V310 != get_chipid())
 		mmc->host_caps |= MMC_MODE_DDR_52MHz;
 #endif
 #if ((defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)) && !defined(CHIP_TYPE_hi3798mv200_a))
 	mmc->iovoltage = get_mmc_io_voltage();
 #ifndef CONFIG_ARCH_HI3796MV2X
-	if ((mmc->iovoltage == EMMC_IO_VOL_1_8V) && (_HI3798M_V300 != get_chipid())) {
+	if ((mmc->iovoltage == EMMC_IO_VOL_1_8V) && ((_HI3798M_V300 != get_chipid() || (_HI3798M_V310 != get_chipid())))) {
 		mmc->host_caps |= MMC_MODE_HS200 | MMC_MODE_HS400;
 #ifdef CONFIG_EMMC_PARAM_TAG
 		emmc_caps2 = (MMC_MODE_HS200 | MMC_MODE_HS400)>>7;

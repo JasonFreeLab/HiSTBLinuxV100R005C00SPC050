@@ -556,7 +556,7 @@ void download_boot(int (*handle)(void))
 {
 	if (_HI3798C_V200 == get_chipid() || _HI3798M_V200 == get_chipid()
 		|| _HI3798M_A_V200 == get_chipid()  || _HI3796M_V200_15X15 == get_chipid()
-		|| _HI3796M_V200_21X21 == get_chipid() || _HI3798M_V300 == get_chipid())
+		|| _HI3796M_V200_21X21 == get_chipid() || _HI3798M_V300 == get_chipid() || _HI3798M_V310 == get_chipid())
 		download_boot_normal(handle);
 	else if (CHIPSET_CATYPE_NORMAL == get_ca_type())
 		download_boot_normal(handle);

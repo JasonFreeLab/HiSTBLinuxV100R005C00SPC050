@@ -174,21 +174,21 @@
  *  boot reg0
  * 
  */
-#define BOOT_REG0	"$SDK/source/boot/fastboot/hi3798mv3dmb_hi3798mv310_ddr3_2gbyte_8bitx4_4layers_dbg.reg"
+#define BOOT_REG0	"$SDK/source/boot/fastboot/sysreg/hi3798mv310/hi3798m31dmg_hi3798mv310_DDR3-1866-2RANK_1GB_16bitx4_4layers_cm.reg"
 
 
 /*
  *  boot reg1
  * 
  */
-#define BOOT_REG1	"$SDK/source/boot/fastboot/hi3798mv3dmc_hi3798mv310_ddr4_2gbyte_16bitx2_4layers.reg"
+#define BOOT_REG1	"$SDK/source/boot/fastboot/sysreg/hi3798mv310/hi3798m31dmg_hi3798mv310_DDR3-1866-2RANK_1GB_16bitx4_4layers_cm.reg"
 
 
 /*
  *  boot reg2
  * 
  */
-#define BOOT_REG2	"$SDK/source/boot/fastboot/hi3798mv3dmd_hi3798mv310_ddr3_1gbyte_16bitx2_4layers.reg"
+#define BOOT_REG2	"$SDK/source/boot/fastboot/sysreg/hi3798mv310/hi3798m31dmg_hi3798mv310_DDR3-1866-2RANK_1GB_16bitx4_4layers_cm.reg"
 
 
 /*

@@ -567,7 +567,7 @@ Addr
 #endif
 /* default is hieth-switch-fabric */
 #ifdef CONFIG_NET_HISFV300
-#  define CONFIG_NET_HISFV300_HI3798MV310      1
+#  define CONFIG_NET_HISFV300_HI3798MV310     1
 #  define HISFV_MII_MODE                      0
 #  define HISFV_RMII_MODE                     1
 #  define HIETH_MII_RMII_MODE_U               HISFV_MII_MODE /* XXX only for hi3719 FPGA. */

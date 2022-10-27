@@ -29,6 +29,10 @@
 #ifdef CONFIG_ARCH_HI3798MV2X
 #  include "sys-hi3798mv2x.c"
 #endif
+
+#ifdef CONFIG_ARCH_HI3798MV310
+#  include "sys-hi3798mv310.c"
+#endif
 /**************************************************/
 void hieth_sys_startup(void)
 {
