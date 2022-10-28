@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # SDK version: KERNELVERSION
-# Sun Oct 23 22:55:33 2022
+# Sun Oct 23 00:57:19 2022
 #
 
 #
@@ -16,14 +16,14 @@ CFG_HI_ENG_MODE=y
 # CFG_HI3716MV420 is not set
 # CFG_HI3798MV100 is not set
 # CFG_HI3798MV200 is not set
-# CFG_HI3798MV300 is not set
-CFG_HI3798MV310=y
+CFG_HI3798MV300=y
+# CFG_HI3798MV310 is not set
 # CFG_HI3798MV200_A is not set
 # CFG_HI3796MV100 is not set
 # CFG_HI3796MV200 is not set
 # CFG_HI3716DV100 is not set
 # CFG_HI3798CV200 is not set
-CFG_HI_CHIP_TYPE=hi3798mv310
+CFG_HI_CHIP_TYPE=hi3798mv300
 # CFG_HI_DONGLE_SUPPORT is not set
 
 #
@@ -542,7 +542,7 @@ CFG_HI_SND_MUTECTL_LEVEL=0
 CFG_HI_DAC_CVBS=0
 # CFG_HI_VO_VDAC_LC_CIRCUIT is not set
 CFG_HI_VO_VDAC_VIDEO_BUFFER=y
-CFG_HI_BOOT_REG_NAME=hi3798m31dmg_hi3798mv310_DDR3-1866-2RANK_1GB_16bitx4_4layers_cm.reg
+CFG_HI_BOOT_REG_NAME=hi3798mv3dmw_hi3798mv300_DDR3-1866_1GB_16bitx2_2layers.reg
 
 #
 # Boot Regfile Config List

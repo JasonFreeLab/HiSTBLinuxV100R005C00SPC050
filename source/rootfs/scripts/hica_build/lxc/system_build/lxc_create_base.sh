@@ -3,7 +3,7 @@
 if [ $# -ne 3 ]
 then
     echo -e "usage: ./lxc_creat.sh mode rootbox_dir lxc_name"
-    echo -e "        for example: ./lxc_creat.sh DEBUG /home/user/HiSTBLinuxV100R002/out/hi3716mv410/hi3716m41dma_ca_debug/rootbox stb"
+    echo -e "        for example: ./lxc_creat.sh DEBUG $(HOME)/HiSTBLinuxV100R005C00SPC050/out/hi3716mv410/hi3716m41dma_ca_debug/rootbox stb"
     exit 1
 fi
 

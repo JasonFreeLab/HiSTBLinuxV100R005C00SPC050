@@ -3,7 +3,7 @@
 if [ $# -ne 3 ]
 then
     echo -e "usage: $0  outdir  mode toolchain"
-    echo -e "        for example: $0 /home/user/HiSTBLinuxV100R002/out/hi3716mv410/hi3716m41dma_ca_debug/rootbox DEBUG arm-histbv300-linux"
+    echo -e "        for example: $0 $(HOME)/HiSTBLinuxV100R005C00SPC050/out/hi3716mv410/hi3716m41dma_ca_debug/rootbox DEBUG arm-histbv300-linux"
     exit 1
 fi
 

@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # SDK version: KERNELVERSION
-# Sun Oct 23 22:55:33 2022
+# Fri Oct 28 10:35:18 2022
 #
 
 #
@@ -43,7 +43,7 @@ CFG_HI_CPU_ARCH=arm
 # CFG_ARM_HISTBV310_LINUX is not set
 CFG_ARM_HISTBV320_LINUX=y
 CFG_HI_ARM_TOOLCHAINS_NAME=arm-histbv320-linux
-CFG_HI_OUT_DIR=hi3798mv3dmw
+CFG_HI_OUT_DIR=hi3798mv31dmg
 CFG_HI_SMMU_SUPPORT=y
 CFG_HI_HDR_SUPPORT=y
 # CFG_HI_LOADER_SUPPORT is not set
@@ -582,7 +582,7 @@ CFG_HI_BUILD_WITH_PRODUCT=y
 # CFG_LINUX-3.18.y is not set
 CFG_LINUX-4.4.y=y
 CFG_HI_KERNEL_VERSION=linux-4.4.y
-CFG_HI_KERNEL_CFG=hi3798mv300_defconfig
+CFG_HI_KERNEL_CFG=hi3798mv310_defconfig
 # CFG_HI_FS_BUILDIN is not set
 # CFG_HI_MSP_BUILDIN is not set
 

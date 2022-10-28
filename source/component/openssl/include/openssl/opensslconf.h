@@ -118,8 +118,8 @@ extern "C" {
 
 #if !(defined(VMS) || defined(__VMS)) /* VMS uses logical names instead */
 #if defined(HEADER_CRYPTLIB_H) && !defined(OPENSSLDIR)
-#define ENGINESDIR "/home/qinshaotian/V1R2/HiSTBLinuxV100R002/source/component/openssl/release/lib/engines"
-#define OPENSSLDIR "/home/qinshaotian/V1R2/HiSTBLinuxV100R002/source/component/openssl/release/ssl"
+#define ENGINESDIR "$(HOME)/HiSTBLinuxV100R005C00SPC050/source/component/openssl/release/lib/engines"
+#define OPENSSLDIR "$(HOME)/HiSTBLinuxV100R005C00SPC050/source/component/openssl/release/ssl"
 #endif
 #endif
 

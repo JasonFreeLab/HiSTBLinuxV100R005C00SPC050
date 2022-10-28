@@ -64,8 +64,13 @@ ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv200_a)
 HAL_DIR := 98mv200_a
 endif
 
-ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv310 hi3798mv200_a hi3796mv200),)
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798cv200 hi3798mv200 hi3798mv300 hi3798mv200_a hi3796mv200),)
 CFLAGS += -DFPGA_98CV200
+DRIVER_PATH := vdp_v4_0
+endif
+
+ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3798mv310),)
+CFLAGS += -DFPGA_98MV310
 DRIVER_PATH := vdp_v4_0
 endif
 
@@ -114,7 +119,11 @@ CFLAGS  += -I$(DISP_DIR)/$(DRIVER_PATH)/drv
 CFLAGS  += -I$(DISP_DIR)/$(DRIVER_PATH)/hal/common
 CFLAGS  += -I$(DISP_DIR)/$(DRIVER_PATH)/hal/$(HAL_DIR)
 CFLAGS  += -I$(DISP_DIR)/$(DRIVER_PATH)/hal/$(HAL_DIR)/inc
+ifeq ($(CFG_HI_CHIP_TYPE), hi3798mv310)
+CFLAGS  += -I$(SDK_DIR)/source/common/drv/include/hi3798mv310
+else
 CFLAGS  += -I$(SDK_DIR)/source/common/drv/include/hi3798cv200
+endif
 
 LIBS    := libdisp.a
 

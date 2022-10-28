@@ -11,7 +11,7 @@ srcdir := .
 abs_srcdir := $(abspath $(srcdir))
 
 # The name of the builddir.
-builddir_name ?= /home/tanzhipeng/HiSTBLinuxV100R005C00SPC050_98mv200/sample/widevine/GoogleTest/out/hi3798mv200
+builddir_name ?= $(HOME)/HiSTBLinuxV100R005C00SPC050/sample/widevine/GoogleTest/out/hi3798mv200
 
 # The V=1 flag on command line makes us verbosely print command lines.
 ifdef V
@@ -323,7 +323,7 @@ ifeq ($(strip $(foreach prefix,$(NO_LOAD),\
 endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
-cmd_regen_makefile = cd $(srcdir); ./build.py -fmake --ignore-environment "--toplevel-dir=/home/tanzhipeng/HiSTBLinuxV100R005C00SPC050_98mv200/sample/widevine/GoogleTest" -I/home/tanzhipeng/HiSTBLinuxV100R005C00SPC050_98mv200/sample/widevine/GoogleTest/platforms/hi3798mv200/settings.gypi "--depth=/home/tanzhipeng/HiSTBLinuxV100R005C00SPC050_98mv200/sample/widevine/GoogleTest" "-Goutput_dir=/home/tanzhipeng/HiSTBLinuxV100R005C00SPC050_98mv200/sample/widevine/GoogleTest/out/hi3798mv200" cdm_unittests.gyp
+cmd_regen_makefile = cd $(srcdir); ./build.py -fmake --ignore-environment "--toplevel-dir=$(HOME)/HiSTBLinuxV100R005C00SPC050/sample/widevine/GoogleTest" -I$(HOME)/HiSTBLinuxV100R005C00SPC050/sample/widevine/GoogleTest/platforms/hi3798mv200/settings.gypi "--depth=$(HOME)/HiSTBLinuxV100R005C00SPC050/sample/widevine/GoogleTest" "-Goutput_dir=$(HOME)/HiSTBLinuxV100R005C00SPC050/sample/widevine/GoogleTest/out/hi3798mv200" cdm_unittests.gyp
 Makefile: oemcrypto_unittests.gypi third_party/gmock.gyp platforms/hi3798mv200/settings.gypi core_unittests.gypi cdm_unittests.gyp cdm_unittests.gypi
 	$(call do_cmd,regen_makefile)
 
