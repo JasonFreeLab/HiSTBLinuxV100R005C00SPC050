@@ -72,7 +72,7 @@ $(obj)/uImage:  $(obj)/Image rm_uimage FORCE
 	$(if $(CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE),@cat $(DTB_OBJS) >>$@,)
 	@$(kecho) '  Image $@ is ready'
 
-ifeq ($(findstring y, $(CONFIG_ARCH_HI3796MV2X)$(CONFIG_ARCH_HI3798MV2X)$(CONFIG_ARCH_HI3798CV2X)),y)
+ifeq ($(findstring y, $(CONFIG_ARCH_HI3796MV2X)$(CONFIG_ARCH_HI3798MV2X)$(CONFIG_ARCH_HI3798MV310)$(CONFIG_ARCH_HI3798CV2X)),y)
 	@echo "##Enable ARM64 uncompressed"
 	$(AT)test -d $(LINUX_DIR)/arch/arm64/boot/compressed || mkdir -p $(LINUX_DIR)/arch/arm64/boot/compressed
 	@mv $(LINUX_DIR)/arch/$(CFG_HI_CPU_ARCH)/boot/uImage $(LINUX_DIR)/arch/$(CFG_HI_CPU_ARCH)/boot/uImage.bak

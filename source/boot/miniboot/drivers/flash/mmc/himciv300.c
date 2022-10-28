@@ -50,6 +50,11 @@ extern unsigned int get_mmc_io_voltage(void);
 #  include "himciv300_hi3798mv2x.c"
 #endif
 
+#if defined(CONFIG_ARCH_HI3798MV310)
+extern unsigned int get_mmc_io_voltage(void);
+#  include "himciv300_hi3798mv310.c"
+#endif
+
 /*************************************************************************/
 #if defined(CONFIG_HIMCI_V300)
 #  define DRIVER_NAME "himci v300"
@@ -742,7 +747,7 @@ static void hi_mci_set_ios(struct mmc_dev_t *mmc_dev)
 
 	/* set cardthrctl reg */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	tmp_reg = RW_THRESHOLD_SIZE;
 #else
 	if (mmc->timing == MMC_TIMING_MMC_HS200)
@@ -767,7 +772,7 @@ static void hi_mci_prepare_hs400(struct mmc_dev_t *mmc_dev)
 
 	/* set cardthrctl reg */
 	tmp_reg = himci_readl(host->base + MCI_CARDTHRCTL);
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	tmp_reg = RW_THRESHOLD_SIZE;
 #else
 	tmp_reg = READ_THRESHOLD_SIZE;
@@ -848,7 +853,7 @@ static int hi_mci_execute_tuning(struct mmc_dev_t *mmc_dev, unsigned int datastr
 	unsigned int phase_180 = 0;
 	int err = 0;
 	struct himci_host *host = mmc_dev->priv;
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	if (!datastrobe) {
 		err = himciv300_execute_tuning(mmc_dev, datastrobe);
 		return err;
@@ -884,7 +889,7 @@ tuning_start:
 		if((!datastrobe)&&(raise_point == min)&&(fall_point == max-1)) {
 			if (tuning_count < 10) {
 				goto tuning_start;
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 			} else if ((mmc_dev->timing == MMC_TIMING_MMC_HS400) && (tuning_count < 20)) {
 				tmp_reg = himci_readl(reg_addr);
 				tmp_reg |= EMMC_CLK_MODE;
@@ -910,7 +915,7 @@ tuning_start:
 				return -1;
 			}
 		}
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 		if (phase_180 == 1) {
 			if (value < 2)
 				value = 6;
@@ -1060,10 +1065,10 @@ struct mmc_dev_t *hi_mci_initialize(void)
 	mmc_dev->host_caps = MMC_MODE_HS | MMC_MODE_HS_52MHz
 		| MMC_MODE_4BIT | MMC_MODE_8BIT | MMC_MODE_CMD23;
 
-#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	mmc_dev->host_caps |= MMC_MODE_DDR_52MHz;
 #endif
-#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	mmc_dev->iovoltage = get_mmc_io_voltage();
 	if (mmc_dev->iovoltage == EMMC_IO_VOL_1_8V) {
 		mmc_dev->host_caps |= MMC_MODE_HS200 | MMC_MODE_HS400;
@@ -1276,7 +1281,7 @@ void print_mmcinfo(struct mmc_dev_t *mmc_dev)
 	printf("    Speed:       %sHz\n", ultohstr(mmc_dev->speed));
 	printf("    Mode:        %s\n", ((mmc_dev->timing == MMC_TIMING_MMC_HS400) ? "HS400":
 		((mmc_dev->timing == MMC_TIMING_MMC_HS200)?"HS200":"DDR50")));
-#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	printf("    Voltage:     %sV\n", (mmc_dev->iovoltage == EMMC_IO_VOL_1_8V)?"1.8":"3.3");
 #endif
 	printf("    Bus Width:   %dbit\n", mmc_dev->bus_width);

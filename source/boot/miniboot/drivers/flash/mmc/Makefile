@@ -24,5 +24,6 @@ SRCS-y += mmc_drv.c mmc_if.c mmc_unif.c
 SRCS-$(CONFIG_CMDLINE) += cmd_mmc.c
 SRCS-$(CONFIG_ARCH_HI3798CV2X) += mmc_ids_hi3798cvx.c
 SRCS-$(CONFIG_ARCH_HI3798MV2X) += mmc_ids_hi3798mv2x.c
+SRCS-$(CONFIG_ARCH_HI3798MV310) += mmc_ids_hi3798mv310.c
 #unsparse.c
 

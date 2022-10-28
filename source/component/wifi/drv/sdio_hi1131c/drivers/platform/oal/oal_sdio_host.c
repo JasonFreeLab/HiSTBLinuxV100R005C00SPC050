@@ -126,6 +126,8 @@ oal_void oal_sdio_detectcard_to_core(oal_int32 val)
     dw_mci_sdio_card_detect_change();
 #elif defined(CONFIG_ARCH_HI3798MV2X)
     himciv200_sdio_card_detect_change();
+#elif defined(CONFIG_ARCH_HI3798MV310)
+    himciv200_sdio_card_detect_change();
 #else
     himci_sdio_card_detect_change();
 #endif
@@ -468,7 +470,7 @@ OAL_STATIC oal_int32 oal_sdio_msg_stat(struct oal_sdio *hi_sdio, oal_uint32* msg
     }
 #ifdef CONFIG_SDIO_D2H_MSG_ACK
     /*read from old register*/
-    /*µ±Ê¹ÓÃ0x30¼Ä´æÆ÷Ê±ÐèÒªÏÂ·¢CMD52¶Á0x2B ²Å»á²úÉúHOST2ARM ACKÖÐ¶Ï*/
+    /*ï¿½ï¿½Ê¹ï¿½ï¿½0x30ï¿½Ä´ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Òªï¿½Â·ï¿½CMD52ï¿½ï¿½0x2B ï¿½Å»ï¿½ï¿½ï¿½ï¿½HOST2ARM ACKï¿½Ð¶ï¿½*/
     (void)oal_sdio_readb(hi_sdio->func, HISDIO_REG_FUNC1_MSG_HIGH_FROM_DEV, &ret);
     if (ret)
     {
@@ -545,14 +547,14 @@ oal_int32 oal_sdio_msg_irq(struct oal_sdio *hi_sdio)
     //if(oal_bit_atomic_test(D2H_MSG_HEARTBEAT, (unsigned long *)&msg))
     //{
     //    /*Heartbeat msg.*/
-    //    /*ÐèÒªÌí¼ÓÐÄÌø´¦Àíº¯Êý*/
+    //    /*ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     //    //OAL_IO_PRINT("device heartbeat msg come, 0x%8x\n", msg);
     //}
 
     oal_sdio_release_host(hi_sdio);
     oal_sdio_rx_transfer_unlock(hi_sdio);
 
-    /*ÓÅÏÈ´¦ÀíPanicÏûÏ¢*/
+    /*ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½Panicï¿½ï¿½Ï¢*/
     if(oal_bit_atomic_test_and_clear(D2H_MSG_DEVICE_PANIC, &msg_tmp))
     {
         bit = D2H_MSG_DEVICE_PANIC;
@@ -641,7 +643,7 @@ OAL_STATIC oal_int32 oal_sdio_extend_buf_get(struct oal_sdio *hi_sdio)
                                 HISDIO_COMM_REG_SEQ_GET(hi_sdio->sdio_extend->credit_info));
             oal_print_hex_dump((oal_void*)hi_sdio->sdio_extend,sizeof(struct hisdio_extend_func),32,"extend :");
 
-            /* ´Ëcredit¸üÐÂÖ»ÔÚµ÷ÊÔÊ±Ê¹ÓÃ */
+            /* ï¿½ï¿½creditï¿½ï¿½ï¿½ï¿½Ö»ï¿½Úµï¿½ï¿½ï¿½Ê±Ê¹ï¿½ï¿½ */
             if (oal_sdio_credit_info_update(hi_sdio))
             {
                 if (OAL_LIKELY(hi_sdio->credit_update_cb))
@@ -1271,7 +1273,7 @@ OAL_STATIC irqreturn_t wlan_gpio_irq(oal_int32 irq, oal_void *dev_id)
     //OAL_IO_PRINT(KERN_ERR"[SDIO][DBG]wlan_gpio_irq get pm state=%d\r\n",(oal_uint32)ul_state);
     if(0 == ul_state)
     {
-        /*0==HOST_DISALLOW_TO_SLEEP±íÊ¾²»ÔÊÐíÐÝÃß*/
+        /*0==HOST_DISALLOW_TO_SLEEPï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
         hi_sdio->data_int_count++;
 
         //OAL_IO_PRINT("[SDIO][DBG]Sdio Rx Data Interrupt.\n");
@@ -1281,7 +1283,7 @@ OAL_STATIC irqreturn_t wlan_gpio_irq(oal_int32 irq, oal_void *dev_id)
     }
     else
     {
-        /*1==HOST_ALLOW_TO_SLEEP±íÊ¾µ±Ç°ÊÇÐÝÃß£¬»½ÐÑhost*/
+        /*1==HOST_ALLOW_TO_SLEEPï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½host*/
         OAL_BUG_ON(!hi_sdio->pst_pm_callback->wlan_pm_wakeup_host);
         hi_sdio->wakeup_int_count++;
 #if (_PRE_OS_VERSION_LINUX == _PRE_OS_VERSION)
@@ -1434,18 +1436,18 @@ oal_void oal_unregister_gpio_intr(struct oal_sdio *hi_sdio)
 }
 
 /*****************************************************************************
- º¯ Êý Ãû  : oal_wlan_gpio_intr_enable
- ¹¦ÄÜÃèÊö  : Ê¹ÄÜ/¹Ø±Õ WLAN GPIO ÖÐ¶Ï
- ÊäÈë²ÎÊý  : 1:enable; 0:disenable
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : ³É¹¦»òÊ§°ÜÔ­Òò
- µ÷ÓÃº¯Êý  : ÎÞ
- ±»µ÷º¯Êý  : ÎÞ
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : oal_wlan_gpio_intr_enable
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : Ê¹ï¿½ï¿½/ï¿½Ø±ï¿½ WLAN GPIO ï¿½Ð¶ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : 1:enable; 0:disenable
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : ï¿½É¹ï¿½ï¿½ï¿½Ê§ï¿½ï¿½Ô­ï¿½ï¿½
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê5ÔÂ20ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½5ï¿½ï¿½20ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_void oal_wlan_gpio_intr_enable(struct oal_sdio *hi_sdio,oal_uint32  ul_en)
@@ -2036,18 +2038,18 @@ failed_sdio_alloc:
 
 #if 0
 /*****************************************************************************
- º¯ Êý Ãû  : oal_sdio_wake_release_lock
- ¹¦ÄÜÃèÊö  : ÊÍ·ÅÖ¸¶¨´ÎÊýwakelockËø
- ÊäÈë²ÎÊý  : ÎÞ
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : ³É¹¦»òÊ§°ÜÔ­Òò
- µ÷ÓÃº¯Êý  : ÎÞ
- ±»µ÷º¯Êý  : ÎÞ
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : oal_sdio_wake_release_lock
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½Í·ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½wakelockï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : ï¿½É¹ï¿½ï¿½ï¿½Ê§ï¿½ï¿½Ô­ï¿½ï¿½
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê5ÔÂ20ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½5ï¿½ï¿½20ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 
@@ -2088,18 +2090,18 @@ oal_int  oal_sdio_wake_release_lock(struct oal_sdio *pst_hi_sdio, oal_uint32 ul_
 #endif
 
 /*****************************************************************************
- º¯ Êý Ãû  : oal_sdio_wakelocks_release_detect
- ¹¦ÄÜÃèÊö  : Ç¿ÐÐÊÍ·ÅwakelockËø
- ÊäÈë²ÎÊý  : ÎÞ
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : ³É¹¦»òÊ§°ÜÔ­Òò
- µ÷ÓÃº¯Êý  : ÎÞ
- ±»µ÷º¯Êý  : ÎÞ
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : oal_sdio_wakelocks_release_detect
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : Ç¿ï¿½ï¿½ï¿½Í·ï¿½wakelockï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : ï¿½É¹ï¿½ï¿½ï¿½Ê§ï¿½ï¿½Ô­ï¿½ï¿½
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê5ÔÂ20ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½5ï¿½ï¿½20ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 

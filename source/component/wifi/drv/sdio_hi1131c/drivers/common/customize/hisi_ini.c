@@ -75,7 +75,7 @@ int8 g_ini_file_path[INI_FILE_PATH_LEN] = {0};
 //#define INI_FILE_PATH           (g_ini_file_name)
 #if defined(CONFIG_ARCH_HI3650)
     #define INI_FILE_PATH           "/system/vendor/firmware/cfg_hisi_1131_k3v5.ini"
-#elif defined(CONFIG_ARCH_HI3798MV2X)
+#elif defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
     #if defined(CFG_PRODUCT_TYPE_LINUX)
             #define INI_FILE_PATH           "/etc/Wireless/firmware/cfg_hisi_1131_hi3798.ini"    
     #else
@@ -1611,7 +1611,7 @@ int ini_cfg_init(void)
     }
     snprintf(auc_cust_ini_path, sizeof(auc_cust_ini_path), "%s%s", CUST_PATH, auc_dts_ini_path);
 
-    /*如果ini文件在cust中，则使用cust中的ini文件，否则使用dts中配置的ini文件*/
+    /*锟斤拷锟絠ni锟侥硷拷锟斤拷cust锟叫ｏ拷锟斤拷使锟斤拷cust锟叫碉拷ini锟侥硷拷锟斤拷锟斤拷锟斤拷使锟斤拷dts锟斤拷锟斤拷锟矫碉拷ini锟侥硷拷*/
     if (ini_file_exist(auc_cust_ini_path))
     {
         snprintf(g_ini_file_name, sizeof(g_ini_file_name), "%s", auc_cust_ini_path);

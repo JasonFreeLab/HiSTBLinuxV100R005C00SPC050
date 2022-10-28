@@ -59,6 +59,8 @@ ifeq ($(CONFIG_ARCH_HI3650),y)
 board-objs := board_k3v5/board.o
 else ifeq ($(CONFIG_ARCH_HI3798MV2X),y)
 board-objs := board_hi3798/board.o
+else ifeq ($(CONFIG_ARCH_HI3798MV310),y)
+board-objs := board_hi3798/board.o
 else
 board-objs := board_hi3516/board.o
 endif
@@ -127,6 +129,8 @@ HI1102_INCLUDES += -I$(DRIVER_PATH)/sdt
 ifeq ($(CONFIG_ARCH_HI3650),y)
 HI1102_INCLUDES += -I$(DRIVER_PATH)/board/board_k3v5
 else ifeq ($(CONFIG_ARCH_HI3798MV2X),y)
+HI1102_INCLUDES += -I$(DRIVER_PATH)/board/board_hi3798
+else ifeq ($(CONFIG_ARCH_HI3798MV310),y)
 HI1102_INCLUDES += -I$(DRIVER_PATH)/board/board_hi3798
 else
 HI1102_INCLUDES += -I$(DRIVER_PATH)/board/board_hi3516

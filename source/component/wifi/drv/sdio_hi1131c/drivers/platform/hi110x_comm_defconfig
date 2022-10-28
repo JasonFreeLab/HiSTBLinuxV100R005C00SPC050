@@ -137,3 +137,8 @@ COPTS +=-DCFG_PRODUCT_TYPE_LINUX
 endif
 endif
 
+ifeq ($(CONFIG_ARCH_HI3798MV310),y)
+ifeq ($(CFG_PRODUCT_TYPE),linux)
+COPTS +=-DCFG_PRODUCT_TYPE_LINUX
+endif
+endif

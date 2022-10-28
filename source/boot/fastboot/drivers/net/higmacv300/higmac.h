@@ -148,7 +148,7 @@ struct higmac_netdev_local {
 #ifdef CONFIG_ARCH_HIFONE
 #define CONFIG_GMAC_NUMS			(3)
 #else
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3799MV310)
 #define CONFIG_GMAC_NUMS			(1)
 #else
 #define CONFIG_GMAC_NUMS			(2)

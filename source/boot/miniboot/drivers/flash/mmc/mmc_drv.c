@@ -909,7 +909,7 @@ SwitchDDR50:
 			return ret;
 
 		if (mmc_dev->card_caps&MMC_MODE_HS400) {
-#ifdef CONFIG_ARCH_HI3798MV2X
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 			mmc_dev->speed = HS400_MAX_CLK;
 #else
 			mmc_dev->speed = 150000000;

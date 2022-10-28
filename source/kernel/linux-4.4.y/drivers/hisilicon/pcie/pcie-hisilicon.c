@@ -177,7 +177,7 @@ fail:
 
 static void hipcie_dbi_w_mode(struct pcie_port *pp, bool on)
 {
-#if !defined (CONFIG_ARCH_HI3798MV2X) && !defined(CONFIG_ARCH_HI3796MV2X)
+#if !defined (CONFIG_ARCH_HI3798MV2X) && !defined(CONFIG_ARCH_HI3798MV310) && !defined(CONFIG_ARCH_HI3796MV2X)
 	u32 val;
 	struct hipcie_host *hipcie = to_hipcie(pp);
 
@@ -196,7 +196,7 @@ static void hipcie_dbi_w_mode(struct pcie_port *pp, bool on)
 
 static void hipcie_dbi_r_mode(struct pcie_port *pp, bool on)
 {
-#if !defined (CONFIG_ARCH_HI3798MV2X) && !defined(CONFIG_ARCH_HI3796MV2X)
+#if !defined (CONFIG_ARCH_HI3798MV2X) && !defined(CONFIG_ARCH_HI3798MV310) && !defined(CONFIG_ARCH_HI3796MV2X)
 	u32 val;
 	struct hipcie_host *hipcie = to_hipcie(pp);
 
@@ -289,7 +289,7 @@ static int hipcie_establish_link(struct pcie_port *pp)
 		return 0;
 	}
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	/* dbi read/write enable */
 	regval = readl(hipcie->sys_addr + PCIE_SYS_CTRL7);
 	regval |= PCIE_DBI_ENABLE;
@@ -305,7 +305,7 @@ static int hipcie_establish_link(struct pcie_port *pp)
 	/* setup root complex */
 	dw_pcie_setup_rc(pp);
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	/* ioremap pcie Link Control 2 Register */
 	if (!pcie_host0_regbase) {
 		pcie_host0_regbase = ioremap_nocache(PCIE_LINK_CTRL_2_REG, 0x20);
@@ -424,7 +424,7 @@ static int __init hipcie_pltm_probe(struct platform_device *pdev)
 		goto fail_clk;
 	}
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 2);
 	hipcie->ca_reg_addr = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(hipcie->ca_reg_addr)) {
@@ -467,7 +467,7 @@ static int __init hipcie_pltm_probe(struct platform_device *pdev)
 		| (pcie_read_ctrl.phyaddr + pcie_read_ctrl.size);
 
 	/* ca: config ddr bank for ep dma before cancel reset */
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	hipcie_config_ddr_bank(regvalwt, regvalrd, hipcie->ca_reg_addr);
 #else
 	hipcie_config_ddr_bank(regvalwt, regvalrd, hipcie->sys_addr);
@@ -543,7 +543,7 @@ static int hipci_set_power_state(struct pci_dev *dev, pci_power_t state)
 		| (pcie_read_ctrl.phyaddr + pcie_read_ctrl.size);
 
 	/* ca: config ddr bank for ep dma before cancel reset */
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 	hipcie_config_ddr_bank(regvalwt, regvalrd, hipcie->ca_reg_addr);
 #else
 	hipcie_config_ddr_bank(regvalwt, regvalrd, hipcie->sys_addr);

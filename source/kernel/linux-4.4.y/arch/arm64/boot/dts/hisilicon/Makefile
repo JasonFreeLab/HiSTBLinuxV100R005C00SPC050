@@ -10,6 +10,14 @@ dtb-y += hi3798mv200.dtb
 endif
 endif
 
+ifdef CONFIG_ARCH_HI3798MV310
+ifdef CONFIG_HI3798MV310_FPGA
+dtb-y += hi3798mv310_fpga.dtb
+else
+dtb-y += hi3798mv310.dtb
+endif
+endif
+
 always		:= $(dtb-y)
 subdir-y	:= $(dts-dirs)
 clean-files	:= *.dtb

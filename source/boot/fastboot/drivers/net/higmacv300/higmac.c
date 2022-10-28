@@ -168,7 +168,7 @@ static void parse_module_parameters(void)
 #if GMAC_AT_LEAST_3PORT
 	higmac_board_info[GSF1_PORT0].phy_intf = get_eth_phyintf(2, ETH_PHY_RGMII);
 #endif
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3799MV310)
 	higmac_board_info[GSF0_PORT0].phy_intf = get_eth_phyintf(1, ETH_PHY_MII);
 #endif
 
@@ -191,7 +191,7 @@ static void parse_module_parameters(void)
 #if GMAC_AT_LEAST_3PORT
 	higmac_board_info[GSF1_PORT0].phy_addr = get_eth_phyaddr(2, INVALID_PHY_ADDR);
 #endif
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3799MV310)
 	higmac_board_info[GSF0_PORT0].phy_addr = get_eth_phyaddr(1, INVALID_PHY_ADDR);
 #endif
 	get_eth_phygpio(0, &higmac_board_info[GSF0_PORT0].gpio_base,

@@ -179,7 +179,7 @@
 #define DATA_BUSY	(0x1<<9)
 
 /* MCI_FIFOTH(0x4c) details */
-#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #define BURST_SIZE	(0x4<<28)
 #else
 #define BURST_SIZE	(0x2<<28)
@@ -194,7 +194,7 @@
 #  define MCI_VERID_VALUE2                                  0x5342210A  /* avoid compile error */
 #elif defined(CONFIG_HIMCI_V300)
 #  define MCI_VERID_VALUE                                   0x5342250A
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #  define MCI_VERID_VALUE2                                  0x5342290A
 #else
 #  define MCI_VERID_VALUE2                                  0x5342270A

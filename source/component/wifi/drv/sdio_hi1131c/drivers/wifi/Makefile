@@ -75,6 +75,8 @@ ifeq ($(CONFIG_ARCH_HI3650),y)
 HI1102_INCLUDES += -I$(HI1102_DRIVER_SRC_PATH)/platform/board/board_k3v5
 else ifeq ($(CONFIG_ARCH_HI3798MV2X),y)
 HI1102_INCLUDES += -I$(HI1102_DRIVER_SRC_PATH)/platform/board/board_hi3798
+else ifeq ($(CONFIG_ARCH_HI3798MV310),y)
+HI1102_INCLUDES += -I$(HI1102_DRIVER_SRC_PATH)/platform/board/board_hi3798
 else
 HI1102_INCLUDES += -I$(HI1102_DRIVER_SRC_PATH)/platform/board/board_hi3516
 endif

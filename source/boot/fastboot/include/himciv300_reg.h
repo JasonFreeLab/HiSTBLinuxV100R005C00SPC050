@@ -180,7 +180,7 @@
 #if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X)
 #define BURST_SIZE	(0x4<<28)
 #else
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 #define BURST_SIZE	(0x4<<28)
 #else
 #define BURST_SIZE	(0x2<<28)
@@ -189,7 +189,7 @@
 
 #define FIFO_DEPTH	256
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 #define RX_WMARK	((FIFO_DEPTH/2 - 1) << 16)
 #define TX_WMARK	((FIFO_DEPTH/2) << 0)
 #else
@@ -199,7 +199,7 @@
 
 #if defined(CONFIG_HIMCI_V300)
 #  define MCI_VERID_VALUE                                   0x5342250A
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 #  define MCI_VERID_VALUE2                                  0x5342290A
 #else
 #  define MCI_VERID_VALUE2                                  0x5342270A

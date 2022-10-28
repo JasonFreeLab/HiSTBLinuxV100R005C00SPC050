@@ -866,7 +866,7 @@ tuning_out:
 		if((!datastrobe)&&(raise_point == min)&&(fall_point == max-1)) {
 			if (tuning_count < 10) {
 				goto tuning_start;
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 			} else if ((mmc_dev->timing == MMC_TIMING_MMC_HS400) && (tuning_count < 20)) {
 				tmp_reg = himci_readl(reg_addr);
 				tmp_reg |= EMMC_CLK_MODE;
@@ -892,7 +892,7 @@ tuning_out:
 				return -1;
 			}
 		}
-#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 		if (phase_180 == 1) {
 			if (value < 2)
 				value = 6;
@@ -1042,7 +1042,7 @@ struct mmc_dev_t *hi_mci_initialize(void)
 	mmc_dev->host_caps = MMC_MODE_HS | MMC_MODE_HS_52MHz
 		| MMC_MODE_4BIT | MMC_MODE_8BIT | MMC_MODE_CMD23;
 
-#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MX) || defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	mmc_dev->host_caps |= MMC_MODE_DDR_52MHz;
 #endif
 #if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X)
@@ -1258,7 +1258,7 @@ void print_mmcinfo(struct mmc_dev_t *mmc_dev)
 	printf("    Speed:       %sHz\n", ultohstr(mmc_dev->speed));
 	printf("    Mode:        %s\n", ((mmc_dev->timing == MMC_TIMING_MMC_HS400) ? "HS400":
 		((mmc_dev->timing == MMC_TIMING_MMC_HS200)?"HS200":"DDR50")));
-#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HIFONE) || defined(CONFIG_ARCH_HI3798CV2X) || defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 	printf("    Voltage:     %sV\n", (mmc_dev->iovoltage == EMMC_IO_VOL_1_8V)?"1.8":"3.3");
 #endif
 	printf("    Bus Width:   %dbit\n", mmc_dev->bus_width);

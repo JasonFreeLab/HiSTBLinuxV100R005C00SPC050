@@ -50,6 +50,7 @@ COBJS-$(CONFIG_ARCH_HI3716MV410)  += hifmc100_clock_hi3716mv410.o
 COBJS-$(CONFIG_ARCH_HI3716MV420N)  += hifmc100_clock_hi3716mv410.o
 COBJS-$(CONFIG_ARCH_HI3798CV2X)   += hifmc100_clock_hi3798cv2x.o
 COBJS-$(CONFIG_ARCH_HI3798MV2X)   += hifmc100_clock_hi3798mv2x.o
+COBJS-$(CONFIG_ARCH_HI3798MV310)   += hifmc100_clock_hi3798mv310.o
 COBJS-$(CONFIG_ARCH_HI3796MV2X)   += hifmc100_clock_hi3796mv2x.o
 
 ################################################################################

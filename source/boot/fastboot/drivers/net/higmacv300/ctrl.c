@@ -12,7 +12,7 @@
 #define MACIF1_CLK_BIT	BIT(13)
 #define MACIF1_RST_BIT	BIT(14)
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3799MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 #define PHY0_RST_BIT	BIT(5)
 #define PHY1_RST_BIT	BIT(15)
 #else
@@ -34,7 +34,7 @@
 
 #define msleep(a)	udelay((a) * 1000)
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3799MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 void higmac_set_macif(struct higmac_netdev_local *ld, int mode, int speed)
 {
 	unsigned int p = HIGMAC_SYS_CTL_IO_BASE;
@@ -201,7 +201,7 @@ int higmac_glb_preinit_dummy(struct higmac_netdev_local *ld)
 	return 0;
 }
 
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3799MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 /* reset phy by GMAC CRG register */
 void higmac_reset_phy_by_crg(void)
 {

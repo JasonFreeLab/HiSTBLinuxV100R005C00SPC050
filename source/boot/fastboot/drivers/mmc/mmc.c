@@ -1290,14 +1290,14 @@ SwitchDDR50:
 			return err;
 
 		if (mmc->card_caps&MMC_MODE_HS400) {
-#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3796MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310) || defined(CONFIG_ARCH_HI3796MV2X)
 			mmc->tran_speed = HS400_MAX_CLK;
 #else
 			mmc->tran_speed = 150000000;
 #endif
 			mmc_set_timing(mmc, MMC_TIMING_MMC_HS400);
 		} else {
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 			mmc->tran_speed = HS200_MAX_CLK;
 #else
 			mmc->tran_speed = 200000000;

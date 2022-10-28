@@ -1,22 +1,22 @@
 /******************************************************************************
 
-                  °æÈ¨ËùÓÐ (C), 2001-2011, º£Ë¼°ëµ¼ÌåÓÐÏÞ¹«Ë¾
+                  ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ (C), 2001-2011, ï¿½ï¿½Ë¼ï¿½ëµ¼ï¿½ï¿½ï¿½ï¿½ï¿½Þ¹ï¿½Ë¾
 
  ******************************************************************************
-  ÎÄ ¼þ Ãû   : hmac_auto_adjust_freq.c
-  °æ ±¾ ºÅ   : ³õ¸å
-  ×÷    Õß   : wangtd
-  Éú³ÉÈÕÆÚ   : 2015Äê3ÔÂ4ÈÕ
-  ×î½üÐÞ¸Ä   :
-  ¹¦ÄÜÃèÊö   : ÐÔÄÜÎ¬²â
-  º¯ÊýÁÐ±í   :
-  ÐÞ¸ÄÀúÊ·   :
-  1.ÈÕ    ÆÚ   : 2015Äê3ÔÂ4ÈÕ
-    ×÷    Õß   : Wlan_mib_temp
-    ÐÞ¸ÄÄÚÈÝ   : ´´½¨ÎÄ¼þ
-  2.ÈÕ    ÆÚ   : 2015Äê8ÔÂ15ÈÕ
-    ×÷    Õß   : 
-    ÐÞ¸ÄÄÚÈÝ   : Ìí¼Óthruput bypass TX·½ÏòÎ¬²âµã
+  ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½   : hmac_auto_adjust_freq.c
+  ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½
+  ï¿½ï¿½    ï¿½ï¿½   : wangtd
+  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   : 2015ï¿½ï¿½3ï¿½ï¿½4ï¿½ï¿½
+  ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½   :
+  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½
+  ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½   :
+  ï¿½Þ¸ï¿½ï¿½ï¿½Ê·   :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½3ï¿½ï¿½4ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   : Wlan_mib_temp
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+  2.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½8ï¿½ï¿½15ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   : 
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½thruput bypass TXï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½
 ******************************************************************************/
 
 
@@ -28,11 +28,11 @@ extern "C" {
 
 
 /*****************************************************************************
-  1 Í·ÎÄ¼þ°üº¬
+  1 Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 *****************************************************************************/
 #ifdef _PRE_WLAN_FEATURE_AUTO_FREQ
 /*****************************************************************************
-  1 Í·ÎÄ¼þ°üº¬
+  1 Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 *****************************************************************************/
 #include "oal_net.h"
 #include "oal_types.h"
@@ -57,29 +57,29 @@ extern "C" {
 #define THIS_FILE_ID OAM_FILE_ID_MAC_AUTO_ADJUST_FREQ_C
 
 /*****************************************************************************
-  2 È«¾Ö±äÁ¿¶¨Òå
+  2 È«ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 *****************************************************************************/
 #ifndef WIN32
 OAL_STATIC oal_uint32 pre_jiffies            = 0;
 OAL_STATIC oal_uint32 g_adjust_count            = 0;
 
-/*ÓÉ¶¨ÖÆ»¯½øÐÐ³õÊ¼»¯*/
+/*ï¿½É¶ï¿½ï¿½Æ»ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ê¼ï¿½ï¿½*/
 host_speed_freq_level_stru g_host_speed_freq_level[] = {
-    /*ppsÃÅÏÞ                   CPUÖ÷ÆµÏÂÏÞ                     DDRÖ÷ÆµÏÂÏÞ*/
+    /*ppsï¿½ï¿½ï¿½ï¿½                   CPUï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½                     DDRï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½*/
     {PPS_VALUE_0,          CPU_MIN_FREQ_VALUE_0,            DDR_MIN_FREQ_VALUE_0},
     {PPS_VALUE_1,          CPU_MIN_FREQ_VALUE_1,            DDR_MIN_FREQ_VALUE_1},
     {PPS_VALUE_2,          CPU_MIN_FREQ_VALUE_2,            DDR_MIN_FREQ_VALUE_2},
     {PPS_VALUE_3,          CPU_MIN_FREQ_VALUE_3,            DDR_MIN_FREQ_VALUE_3},
 };
 host_speed_freq_level_stru g_host_no_ba_freq_level[] = {
-    /*ppsÃÅÏÞ                        CPUÖ÷ÆµÏÂÏÞ                      DDRÖ÷ÆµÏÂÏÞ*/
+    /*ppsï¿½ï¿½ï¿½ï¿½                        CPUï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½                      DDRï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½*/
     {NO_BA_PPS_VALUE_0,          CPU_MIN_FREQ_VALUE_0,            DDR_MIN_FREQ_VALUE_0},
     {NO_BA_PPS_VALUE_1,          CPU_MIN_FREQ_VALUE_1,            DDR_MIN_FREQ_VALUE_1},
     {NO_BA_PPS_VALUE_2,          CPU_MIN_FREQ_VALUE_2,            DDR_MIN_FREQ_VALUE_2},
     {NO_BA_PPS_VALUE_3,          CPU_MIN_FREQ_VALUE_2,            DDR_MIN_FREQ_VALUE_2},
 };
 device_speed_freq_level_stru g_device_speed_freq_level[] = {
-    /*deviceÖ÷ÆµÀàÐÍ*/
+    /*deviceï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½*/
     {FREQ_IDLE},
     {FREQ_MIDIUM},
     {FREQ_HIGHER},
@@ -100,14 +100,14 @@ OAL_STATIC oal_uint32 g_ul_orig_ddr_max_freq       = 0;
 oal_uint32 pre_jiffies;
 
 host_speed_freq_level_stru g_host_speed_freq_level[] = {
-    /*ppsÃÅÏÞ                   CPUÖ÷ÆµÏÂÏÞ                     DDRÖ÷ÆµÏÂÏÞ*/
+    /*ppsï¿½ï¿½ï¿½ï¿½                   CPUï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½                     DDRï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½*/
     {PPS_VALUE_0,          CPU_MIN_FREQ_VALUE_0,            DDR_MIN_FREQ_VALUE_0},
     {PPS_VALUE_1,          CPU_MIN_FREQ_VALUE_1,            DDR_MIN_FREQ_VALUE_1},
     {PPS_VALUE_2,          CPU_MIN_FREQ_VALUE_2,            DDR_MIN_FREQ_VALUE_2},
     {PPS_VALUE_3,          CPU_MIN_FREQ_VALUE_3,            DDR_MIN_FREQ_VALUE_3},
 };
 device_speed_freq_level_stru g_device_speed_freq_level[] = {
-    /*deviceÖ÷ÆµÀàÐÍ*/
+    /*deviceï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½*/
     {FREQ_IDLE},
     {FREQ_MIDIUM},
     {FREQ_HIGHEST},
@@ -132,19 +132,19 @@ oal_uint32 g_ul_orig_ddr_max_freq;
 #endif
 
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_set_auto_freq_mod
- ¹¦ÄÜÃèÊö  : ÉèÖÃauto freqÊ¹ÄÜ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_set_auto_freq_mod
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ï¿½ï¿½auto freqÊ¹ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32 * pst_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_uint8 hmac_set_auto_freq_mod(oal_uint8 uc_freq_enable)
@@ -171,19 +171,19 @@ oal_uint8 hmac_set_auto_freq_mod(oal_uint8 uc_freq_enable)
     return OAL_SUCC;
 }
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_set_auto_freq_debug_print
- ¹¦ÄÜÃèÊö  : ÉèÖÃauto freqÊ¹ÄÜ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_set_auto_freq_debug_print
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ï¿½ï¿½auto freqÊ¹ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32 * pst_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_bool_enum_uint8 hmac_set_auto_freq_debug_print(oal_bool_enum_uint8 en_debug_print)
@@ -193,19 +193,19 @@ oal_bool_enum_uint8 hmac_set_auto_freq_debug_print(oal_bool_enum_uint8 en_debug_
     return 0;
 }
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_set_auto_freq_bypass_device_auto_freq
- ¹¦ÄÜÃèÊö  : ÉèÖÃauto freqÊ¹ÄÜ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_set_auto_freq_bypass_device_auto_freq
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ï¿½ï¿½auto freqÊ¹ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32 * pst_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_bool_enum_uint8 hmac_set_auto_freq_bypass_device_auto_freq(oal_bool_enum_uint8 en_bypass_device)
@@ -215,18 +215,18 @@ oal_bool_enum_uint8 hmac_set_auto_freq_bypass_device_auto_freq(oal_bool_enum_uin
     return 0;
 }
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_set_auto_freq_process_func
- ¹¦ÄÜÃèÊö  : ÉèÖÃhccÖÐ×Ô¶¯µ÷ÆµµÄ»Øµ÷º¯Êý
- ÊäÈë²ÎÊý  : hmac_auto_freq_process_func p_func
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : oal_int32
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_set_auto_freq_process_func
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ï¿½ï¿½hccï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Æµï¿½Ä»Øµï¿½ï¿½ï¿½ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : hmac_auto_freq_process_func p_func
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : oal_int32
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ18ÈÕ
-    ×÷    Õß   : 
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½18ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   : 
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_int32 hmac_set_auto_freq_process_func(oal_void)
@@ -255,19 +255,19 @@ oal_int32 hmac_set_auto_freq_process_func(oal_void)
 
 #if (_PRE_OS_VERSION_LINUX == _PRE_OS_VERSION)
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_get_cpu_freq_raw
- ¹¦ÄÜÃèÊö  : »ñÈ¡CPUÖ÷ÆµÖµ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_get_cpu_freq_raw
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½È¡CPUï¿½ï¿½ÆµÖµ
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32 * pst_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 OAL_STATIC OAL_INLINE oal_bool_enum_uint8 hmac_get_cpu_freq_raw(oal_uint8 uc_freq_type, oal_uint32 * pst_ul_freq_value)
@@ -285,7 +285,7 @@ OAL_STATIC OAL_INLINE oal_bool_enum_uint8 hmac_get_cpu_freq_raw(oal_uint8 uc_fre
 
     if (IS_ERR_OR_NULL(filp))
     {
-        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_get_cpu_freq_raw:¡¡freq¡¡= %d error !}",uc_freq_type);
+        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_get_cpu_freq_raw:ï¿½ï¿½freqï¿½ï¿½= %d error !}",uc_freq_type);
         return -1;
     }
     old_fs = get_fs();
@@ -305,19 +305,19 @@ OAL_STATIC OAL_INLINE oal_bool_enum_uint8 hmac_get_cpu_freq_raw(oal_uint8 uc_fre
 }
 
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_get_cpu_freq_raw
- ¹¦ÄÜÃèÊö  : ÉèÖÃCPUÖ÷ÆµÖµ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_get_cpu_freq_raw
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ï¿½ï¿½CPUï¿½ï¿½ÆµÖµ
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32 * pst_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_bool_enum_uint8 hmac_set_cpu_freq_raw(oal_uint8 uc_freq_type, oal_uint32 ul_freq_value)
@@ -337,7 +337,7 @@ oal_bool_enum_uint8 hmac_set_cpu_freq_raw(oal_uint8 uc_freq_type, oal_uint32 ul_
 
     if (IS_ERR_OR_NULL(filp))
     {
-        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_set_cpu_freq_raw:¡¡freq¡¡= %d error !}",ul_freq_value);
+        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_set_cpu_freq_raw:ï¿½ï¿½freqï¿½ï¿½= %d error !}",ul_freq_value);
         return -1;
     }
     old_fs = get_fs();
@@ -352,19 +352,19 @@ oal_bool_enum_uint8 hmac_set_cpu_freq_raw(oal_uint8 uc_freq_type, oal_uint32 ul_
 
 
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_get_ddr_freq_raw
- ¹¦ÄÜÃèÊö  : »ñÈ¡DDRÖ÷ÆµÖµ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_get_ddr_freq_raw
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½È¡DDRï¿½ï¿½ÆµÖµ
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32* ul_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 OAL_STATIC OAL_INLINE oal_bool_enum_uint8 hmac_get_ddr_freq_raw(oal_uint8 uc_freq_type, oal_uint32 * pst_ul_freq_value)
@@ -382,7 +382,7 @@ OAL_STATIC OAL_INLINE oal_bool_enum_uint8 hmac_get_ddr_freq_raw(oal_uint8 uc_fre
 
     if (IS_ERR_OR_NULL(filp))
     {
-        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_get_ddr_freq_raw:¡¡freq¡¡= %d error !}",uc_freq_type);
+        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_get_ddr_freq_raw:ï¿½ï¿½freqï¿½ï¿½= %d error !}",uc_freq_type);
         return -1;
     }
     old_fs = get_fs();
@@ -403,19 +403,19 @@ OAL_STATIC OAL_INLINE oal_bool_enum_uint8 hmac_get_ddr_freq_raw(oal_uint8 uc_fre
 
 
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_set_ddr_freq_raw
- ¹¦ÄÜÃèÊö  : ÉèÖÃDDRÖ÷ÆµÖµ
- ÊäÈë²ÎÊý  : oal_uint8 uc_freq_type
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_set_ddr_freq_raw
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ï¿½ï¿½DDRï¿½ï¿½ÆµÖµ
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : oal_uint8 uc_freq_type
              oal_uint32 ul_freq_value
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : OAL_STATIC OAL_INLINE oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_bool_enum_uint8 hmac_set_ddr_freq_raw(oal_uint8 uc_freq_type, oal_uint32 ul_freq_value)
@@ -436,7 +436,7 @@ oal_bool_enum_uint8 hmac_set_ddr_freq_raw(oal_uint8 uc_freq_type, oal_uint32 ul_
 
     if (IS_ERR_OR_NULL(filp))
     {
-        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_set_ddr_freq_raw:¡¡freq¡¡= %d error !}",ul_freq_value);
+        OAM_ERROR_LOG1(0,OAM_SF_ANY,"{hmac_set_ddr_freq_raw:ï¿½ï¿½freqï¿½ï¿½= %d error !}",ul_freq_value);
         return -1;
     }
     old_fs = get_fs();
@@ -447,7 +447,7 @@ oal_bool_enum_uint8 hmac_set_ddr_freq_raw(oal_uint8 uc_freq_type, oal_uint32 ul_
     set_fs(old_fs);
 #else
 /* HI1131C modify begin */
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
     /*HI3798MV2X don't support android lower power*/
 #else
     pm_qos_update_request(g_pst_wifi_auto_ddr, ul_freq_value);
@@ -486,13 +486,13 @@ oal_void hmac_adjust_freq_to_level(oal_void)
 }
 
 /*****************************************************************************
- º¯ Êý Ãû  : hwifi_perform_calc_rwtotal_throughput
- ¹¦ÄÜÃèÊö  : Í³¼ÆSDIO²ãËùÓÐÊý¾Ý(°üÀ¨ÊÕ·¢)µÄÍÌÍÂÁ¿
-             ·µ»ØSDIO²ãµÄÊÕ·¢ËÙÂÊ
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2013Äê8ÔÂ14ÈÕ
-    ×÷    Õß   : ÕÅ»ª 
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hwifi_perform_calc_rwtotal_throughput
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : Í³ï¿½ï¿½SDIOï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½Õ·ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+             ï¿½ï¿½ï¿½ï¿½SDIOï¿½ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½ï¿½ï¿½
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2013ï¿½ï¿½8ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   : ï¿½Å»ï¿½ 
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 void hmac_perform_calc_rwtotal_throughput(oal_uint32 ul_rxtx_total,oal_uint32 ul_sdio_dur_us)
@@ -567,7 +567,7 @@ oal_void hmac_adjust_freq(oal_void)
     ul_sdio_dur_us = OAL_JIFFIES_TO_MSECS(ul_cur_jiffies - pre_jiffies);
     pre_jiffies = ul_cur_jiffies;
 
-    /*¼ÆËãµ÷Æµ¼¶±ð*/
+    /*ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½*/
     hmac_perform_calc_rwtotal_throughput(g_ul_wifi_rxtx_total,ul_sdio_dur_us);
     g_freq_lock_control.uc_req_lock_level = hmac_get_freq_level(g_freq_lock_control.ul_total_sdio_rate);
 
@@ -580,7 +580,7 @@ oal_void hmac_adjust_freq(oal_void)
         {
             if(uc_req_lock_level < g_freq_lock_control.uc_curr_lock_level)
             {
-                /*Á¬ÐøMAX_DEGRADE_FREQ_TIME_THRESHOLDºó²Å½µÆµ£¬±£Ö¤ÐÔÄÜ*/
+                /*ï¿½ï¿½ï¿½ï¿½MAX_DEGRADE_FREQ_TIME_THRESHOLDï¿½ï¿½Å½ï¿½Æµï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½*/
                 g_adjust_count++;
                 if(0 != g_ul_wifi_rxtx_total)
                 {
@@ -601,7 +601,7 @@ oal_void hmac_adjust_freq(oal_void)
             }
             else
             {
-                /*ÉýÆµ²»µÈ´ý£¬Á¢¼´Ö´ÐÐ±£Ö¤ÐÔÄÜ*/
+                /*ï¿½ï¿½Æµï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð±ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½*/
                 g_adjust_count = 0;
                 wlan_pm_adjust_feq();
             }
@@ -619,18 +619,18 @@ oal_void hmac_adjust_freq(oal_void)
     }
 }
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_wifi_init_freq_threshold
- ¹¦ÄÜÃèÊö  : ³õÊ¼»¯ÃÅÏÞÖµ,ºÍ¶¨ÖÆ»¯½Ó¿Ú
- ÊäÈë²ÎÊý  : void
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : oal_void
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_wifi_init_freq_threshold
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ,ï¿½Í¶ï¿½ï¿½Æ»ï¿½ï¿½Ó¿ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : void
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : oal_void
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ17ÈÕ
-    ×÷    Õß   : 
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½17ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   : 
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_void hmac_wifi_init_freq_threshold(void)
@@ -648,7 +648,7 @@ oal_void hmac_wifi_auto_ddr_init(oal_void)
     }
     g_pst_wifi_auto_ddr->pm_qos_class = 0;
 /* HI1131C modify begin */
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
     /*HI3798MV2X don't support android lower power*/
 #else
     pm_qos_add_request(g_pst_wifi_auto_ddr, PM_QOS_MEMORY_THROUGHPUT,
@@ -660,7 +660,7 @@ oal_void hmac_wifi_auto_ddr_init(oal_void)
 oal_void hmac_wifi_auto_ddr_exit(oal_void)
 {
     /* HI1131C modify begin */
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
         /*HI3798MV2X don't support android lower power*/
 #else
     pm_qos_remove_request(g_pst_wifi_auto_ddr);
@@ -672,18 +672,18 @@ oal_void hmac_wifi_auto_ddr_exit(oal_void)
 }
 #endif
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_wifi_auto_freq_ctrl_init
- ¹¦ÄÜÃèÊö  : µ÷ÆµÄ£¿é³õÊ¼»¯
- ÊäÈë²ÎÊý  : void
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_wifi_auto_freq_ctrl_init
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ÆµÄ£ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : void
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_void hmac_wifi_auto_freq_ctrl_init(void)
@@ -717,18 +717,18 @@ oal_void hmac_wifi_auto_freq_ctrl_init(void)
 #endif
 }
 /*****************************************************************************
- º¯ Êý Ãû  : hmac_wifi_auto_freq_ctrl_deinit
- ¹¦ÄÜÃèÊö  : µ÷ÆµÄ£¿éÈ¥³õÊ¼»¯
- ÊäÈë²ÎÊý  : void
- Êä³ö²ÎÊý  : ÎÞ
- ·µ »Ø Öµ  : oal_bool_enum_uint8
- µ÷ÓÃº¯Êý  :
- ±»µ÷º¯Êý  :
+ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½  : hmac_wifi_auto_freq_ctrl_deinit
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½ÆµÄ£ï¿½ï¿½È¥ï¿½ï¿½Ê¼ï¿½ï¿½
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : void
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  : ï¿½ï¿½
+ ï¿½ï¿½ ï¿½ï¿½ Öµ  : oal_bool_enum_uint8
+ ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½  :
+ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  :
 
- ÐÞ¸ÄÀúÊ·      :
-  1.ÈÕ    ÆÚ   : 2015Äê9ÔÂ14ÈÕ
-    ×÷    Õß   :  
-    ÐÞ¸ÄÄÚÈÝ   : ÐÂÉú³Éº¯Êý
+ ï¿½Þ¸ï¿½ï¿½ï¿½Ê·      :
+  1.ï¿½ï¿½    ï¿½ï¿½   : 2015ï¿½ï¿½9ï¿½ï¿½14ï¿½ï¿½
+    ï¿½ï¿½    ï¿½ï¿½   :  
+    ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½   : ï¿½ï¿½ï¿½ï¿½ï¿½Éºï¿½ï¿½ï¿½
 
 *****************************************************************************/
 oal_void hmac_wifi_auto_freq_ctrl_deinit(void)
@@ -783,7 +783,7 @@ oal_uint32 hmac_hcc_auto_freq_process(oal_void)
 {
     oal_uint32 ul_return_total_count = 0;
 
-    /*±£´æÖ®Ç°µÄÖµ£¬·µ»Ø¸øÆ½Ì¨*/
+    /*ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½Æ½Ì¨*/
     ul_return_total_count = g_ul_wifi_rxtx_total;
     if(FREQ_LOCK_ENABLE == g_freq_lock_control.uc_lock_mod)
     {
