@@ -77,6 +77,9 @@
 #define _HI3798M_V300                 (0x0037980210LL)
 #define _HI3798M_V300_MASK            (0xFFFFFFFFFFLL)
 
+#define _HI3798M_V310                 (0x0037980220LL)//
+#define _HI3798M_V310_MASK            (0xFFFFFFFFFFLL)
+
 #define _HI3798M_A_V200               (0x0037988200LL)
 #define _HI3798M_A_V200_MASK          (0xFFFFFFFFFFLL)
 
