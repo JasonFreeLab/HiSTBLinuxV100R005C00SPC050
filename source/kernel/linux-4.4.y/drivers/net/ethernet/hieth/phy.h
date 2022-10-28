@@ -2,7 +2,7 @@
 #define __HIETH_FEPHY_FIX_H
 
 #ifdef CONFIG_ARM64
-#  ifdef CONFIG_ARCH_HI3798MV2X
+#  if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #    define HIETHPHY_SYSREG_REG         0x0388
 #  endif
 #endif

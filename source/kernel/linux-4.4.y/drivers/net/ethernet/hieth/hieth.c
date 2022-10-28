@@ -666,7 +666,7 @@ static void hieth_net_timeout(struct net_device *dev)
 	pr_err("tx timeout\n");
 }
 
-#if defined(CONFIG_ARCH_HI3798MV2X)
+#if defined(CONFIG_ARCH_HI3798MV2X) || defined(CONFIG_ARCH_HI3798MV310)
 #define HIETH_COPY_WHEN_XMIT
 #endif
 

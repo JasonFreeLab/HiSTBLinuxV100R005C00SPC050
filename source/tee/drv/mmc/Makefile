@@ -31,12 +31,20 @@ CFLAGS += -DCONFIG_HIMCI_V200
 OBJS += himciv200.o
 endif
 
+ifeq ($(findstring y, $(CFG_HI3798MV200)$(CFG_HI3798MV300)),y)
 ifeq ($(strip $(CFG_HI3798MV200)), y)
 CFLAGS += -DCONFIG_ARCH_HI3798MV2X 
 OBJS += mmc_ids_hi3798mv2x.o
 CFLAGS += -DCONFIG_HIMCI_V300 
 OBJS += himciv300.o
-endif	
+endif
+
+ifeq ($(strip $(CFG_HI3798MV310)), y)
+CFLAGS += -DCONFIG_ARCH_HI3798MV310
+OBJS += mmc_ids_hi3798mv310.o
+CFLAGS += -DCONFIG_HIMCI_V300 
+OBJS += himciv300.o
+endif
 
 ifeq ($(strip $(CFG_HI3796MV200)), y)
 CFLAGS += -DCONFIG_ARCH_HI3796MV2X 
