@@ -140,7 +140,7 @@ OBJS    := $(SRC:%.c=%.o)
 all:  $(LIBS)
 
 prepare:
-	echo "hahahaha"${EXTRA_CFLAGS}
+	${EXTRA_CFLAGS}
 	$(AT)rm -rf $(DISP_DIR)/$(DRIVER_PATH)
 	cp -rf $(MSP_DIR)/drv/vo/$(DRIVER_PATH)  $(DISP_DIR)/
 	find . -name "*.o" -o -name "*.so" -o -name "*.a" |xargs rm -fr

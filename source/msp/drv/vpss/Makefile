@@ -217,7 +217,7 @@ $(MOD_NAME)-y   +=  \
                     $(VPSS_DIR_VER)/hal/hi3798mv310/util/vpss_cbb_util.o \
                     $(VPSS_DIR_VER)/hal/hi3798mv310/hal/vpss_cbb_hal.o \
                     $(VPSS_DIR_VER)/hal/hi3798mv310/reg/vpss_cbb_reg.o \
-                    $(VPSS_DIR_VER)/vpss_in/hi3798mv310/vpss_in_hi3798mv310.o
+                    $(VPSS_DIR_VER)/vpss_in/hi3798mv310/vpss_in_3798mv310.o
 endif
 
 ifneq ($(findstring $(CFG_HI_CHIP_TYPE), hi3796mv200),)

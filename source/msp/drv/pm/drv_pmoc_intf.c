@@ -1255,7 +1255,7 @@ static HI_S32 c51_GetStandbyPeriod(HI_U32 *pu32StandbyPeriod)
 
 static HI_S32 c51_GetWakeUpMode(C51_WAKEUP_MODE_S * psWakeUpMode)
 {
-#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300 || defined(CHIP_TYPE_hi3798mv310))) && defined(HI_TEE_SUPPORT)
+#if (defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)) && defined(HI_TEE_SUPPORT)
     psWakeUpMode->enWakeUpMode = g_pstRegSysCtrl->SC_GENy[29];
     if (C51_PMOC_WAKEUP_IR == psWakeUpMode->enWakeUpMode)
     {

@@ -44,7 +44,7 @@ config TEE_RESERVED_MEM_SIZE
 config ARM32_ATF_SUPPORT
 	bool "Support 32bits kernel to send smc to ATF "
 	default n
-	depends on TEE && (ARCH_HI3798MV310 || ARCH_HI3798CV2X || ARCH_HI3798MV2X)
+	depends on TEE && (ARCH_HI3798MV310 || ARCH_HI3798CV2X || ARCH_HI3798MV2X || ARCH_HI3798MV310)
 	help
 	 When startup using ATF+32bits Kernel,select this.
 

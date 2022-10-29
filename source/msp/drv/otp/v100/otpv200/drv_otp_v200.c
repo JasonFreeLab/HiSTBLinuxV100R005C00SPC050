@@ -820,7 +820,7 @@ HI_S32 OTP_V200_DieID_Check(HI_VOID)
     return HI_SUCCESS;
 }
 
-#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
+#if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv200_a) || defined(CHIP_TYPE_hi3798mv300)
 static HI_VOID OTP_98mv200_setReset(HI_VOID)
 {
     otp_write_reg(OTP_V200_SOFTRST_REQ, 0x1);
