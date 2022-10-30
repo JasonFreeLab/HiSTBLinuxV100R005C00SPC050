@@ -118,6 +118,10 @@ HI_VOID HI_DRV_SYS_GetChipVersion(HI_CHIP_TYPE_E *penChipType, HI_CHIP_VERSION_E
             ChipType    = HI_CHIP_TYPE_HI3798M;
             ChipVersion = HI_CHIP_VERSION_V300;
             break;
+        case 0x37980310:
+            ChipType    = HI_CHIP_TYPE_HI3798M;
+            ChipVersion = HI_CHIP_VERSION_V310;
+            break;
         case 0x37988200:
             ChipType    = HI_CHIP_TYPE_HI3798M_A;
             ChipVersion = HI_CHIP_VERSION_V200;
@@ -200,7 +204,7 @@ HI_S32 HI_DRV_SYS_GetChipPackageType(HI_CHIP_PACKAGE_TYPE_E *penPackageType)
         return HI_SUCCESS;
     }
 #elif defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310) || defined(CHIP_TYPE_hi3798mv200_a)
-    if ((0x37986200 == g_pstRegSysCtrl->SC_SYSID) || (0x37980210 == g_pstRegSysCtrl->SC_SYSID) || (0x37988200 == g_pstRegSysCtrl->SC_SYSID))
+    if ((0x37986200 == g_pstRegSysCtrl->SC_SYSID) || (0x37980210 == g_pstRegSysCtrl->SC_SYSID) || (0x37980310 == g_pstRegSysCtrl->SC_SYSID) || (0x37988200 == g_pstRegSysCtrl->SC_SYSID))
     {
         *penPackageType = HI_CHIP_PACKAGE_TYPE_BGA_14_14;
         return HI_SUCCESS;

@@ -78,7 +78,7 @@ static struct pll_table gpu_pll_table[] = {
 	{800000000, 0x0}
 };
 
-static struct pll_table gpu_pll_table_98mv300[] = {
+static struct pll_table gpu_pll_table_98mv310[] = {
 	{200000000, 0x7},
 	{300000000, 0x4},
 	{400000000, 0x1},
@@ -107,15 +107,15 @@ static void hisi_gpu_update_vmin_table(void)
 {
 #define SYSID_REG_ADDR_BASE   (0xf8000ee0)
 #define SYSID_REG_ADDR_SIZE   (0x1000)
-#define SYSID_REG_VERTION300  (0x37980210)
+#define SYSID_REG_VERTION310  (0x37980310)
 #define MODEID_REG_ADDR_BASE  (0xf8a22030)
 #define MODEID_REG_ADDR_SIZE  (0x1000)
 #define MODEID_REG_YOUTUBE    (0x12560418)
 	unsigned int *chip_info = (unsigned int*)ioremap_nocache(SYSID_REG_ADDR_BASE, SYSID_REG_ADDR_SIZE);
 	unsigned int *chip_mode = (unsigned int*)ioremap_nocache(MODEID_REG_ADDR_BASE, MODEID_REG_ADDR_SIZE);
 
-	if (*chip_info == SYSID_REG_VERTION300) {
-		memcpy(gpu_pll_table, gpu_pll_table_98mv300, sizeof(gpu_pll_table_98mv300));
+	if (*chip_info == SYSID_REG_VERTION310) {
+		memcpy(gpu_pll_table, gpu_pll_table_98mv310, sizeof(gpu_pll_table_98mv310));
 	}
 
 	if ((*chip_mode & 0xffffffff) == MODEID_REG_YOUTUBE) {

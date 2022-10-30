@@ -34,6 +34,7 @@ typedef enum{
 static char *clock_table[3] = {"operating-points-ff", "operating-points-tt", "operating-points-ss"};
 
 #if defined(CHIP_TYPE_hi3798mv200) || defined(CHIP_TYPE_hi3798mv300) || defined(CHIP_TYPE_hi3798mv310)
+static char *clock_table_98mv310[3] = {"operating-points-ff-98mv310", "operating-points-tt-98mv310", "operating-points-ss-98mv310"};
 static char *clock_table_98mv300[3] = {"operating-points-ff-98mv300", "operating-points-tt-98mv300", "operating-points-ss-98mv300"};
 static char *clock_table_youtube[3] = {"operating-points-ff-youtube", "operating-points-tt-youtube", "operating-points-ss-youtube"};
 #endif
@@ -83,16 +84,24 @@ char* opps_get_svb_type(void)
 
         return clock_table_98mv300[svb_type - 1];
     }
+    /* 98mv310 ChipType had 3 solutions */
+    else if((HI_CHIP_TYPE_HI3798M == ChipType) && (HI_CHIP_VERSION_V310 == ChipID))
+    {
+        /* (2)98mv310 mode : Max freq is 675M, select 98mv310 clock table */
+        s_MaxFreq = 675000000;
+
+        return clock_table_98mv310[svb_type - 1];
+    }
     else if(1 == ChipMode)
     {
-        /* (2)98mv200 youtube mode : Max freq is 800M, select youtube clock table */
+        /* (3)98mv200 youtube mode : Max freq is 800M, select youtube clock table */
         s_MaxFreq = 800000000;
 
         return clock_table_youtube[svb_type - 1];
     }
     else
     {
-        /* (3)98mv200 non-youtube mode : Max freq is 750M, it can be 800M in some BenchMark */
+        /* (4)98mv200 non-youtube mode : Max freq is 750M, it can be 800M in some BenchMark */
         s_MaxFreq = 750000000;
     }
 #endif

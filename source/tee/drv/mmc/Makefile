@@ -32,7 +32,6 @@ OBJS += himciv200.o
 endif
 
 ifeq ($(findstring y, $(CFG_HI3798MV200)$(CFG_HI3798MV300)),y)
-ifeq ($(strip $(CFG_HI3798MV200)), y)
 CFLAGS += -DCONFIG_ARCH_HI3798MV2X 
 OBJS += mmc_ids_hi3798mv2x.o
 CFLAGS += -DCONFIG_HIMCI_V300 
