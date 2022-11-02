@@ -5,7 +5,7 @@
 <Part Sel="1" PartitionName="baseparam" FlashType="emmc" FileSystem="none" Start="2M" Length="4M" SelectFile="baseparam.img"/>
 <Part Sel="1" PartitionName="pqparam" FlashType="emmc" FileSystem="none" Start="6M" Length="4M" SelectFile="pq_param.bin"/>
 <Part Sel="1" PartitionName="logo" FlashType="emmc" FileSystem="none" Start="10M" Length="4M" SelectFile="logo.img"/>
-<Part Sel="1" PartitionName="kernel" FlashType="emmc" FileSystem="none" Start="66M" Length="32M" SelectFile="hi_kernel.bin"/>
-<Part Sel="1" PartitionName="rootfs" FlashType="emmc" FileSystem="ext3/4" Start="98M" Length="256M" SelectFile="rootfs_256M.ext4"/>
-<Part Sel="1" PartitionName="ubuntu" FlashType="emmc" FileSystem="ext3/4" Start="354M" Length="1024M" SelectFile="ubuntu-rootfs_1024M.ext4"/>
+<Part Sel="1" PartitionName="kernel" FlashType="emmc" FileSystem="none" Start="14M" Length="32M" SelectFile="hi_kernel.bin"/>
+<Part Sel="1" PartitionName="rootfs" FlashType="emmc" FileSystem="ext3/4" Start="46M" Length="256M" SelectFile="rootfs_256M.ext4"/>
+<Part Sel="1" PartitionName="ubuntu" FlashType="emmc" FileSystem="ext3/4" Start="302M" Length="1024M" SelectFile="ubuntu-rootfs_1024M.ext4"/>
 </Partition_Info>
